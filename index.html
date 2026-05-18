@@ -154,11 +154,20 @@
             toyota: '', korean: '', american: '', german: '', other: ''
         };
 
-        // Switch Tabs
+        // Switch Tabs (مع حماية كلمة المرور)
+        const adminPassword = "050904"; // 🔴 يمكنك تغيير الرقم السري من هنا
+
         function switchTab(tab) {
+            if (tab === 'admin') {
+                const pass = prompt("🔒 الرجاء إدخال الرقم السري لفتح لوحة التاجر:");
+                if (pass !== adminPassword) {
+                    alert("❌ كلمة المرور غير صحيحة!");
+                    return; // منع الدخول وإيقاف التنفيذ
+                }
+                renderOrders();
+            }
             document.getElementById('customer-view').classList.toggle('hidden', tab !== 'customer');
             document.getElementById('admin-view').classList.toggle('hidden', tab !== 'admin');
-            if (tab === 'admin') renderOrders();
         }
 
         // Form Submit
