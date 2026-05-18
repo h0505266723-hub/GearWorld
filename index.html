@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب تسعيرة قطع غيار</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-700"><i class="fa-solid fa-gears ml-2"></i>قطع غيار</h1>
+            <button onclick="switchTab('admin')" class="text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition"><i class="fa-solid fa-lock ml-1"></i>لوحة التاجر</button>
+        </div>
+    </nav>
+
+    <main class="max-w-md mx-auto p-4 pb-24">
+        
+        <section id="customer-view" class="block">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">طلب تسعيرة قطع</h2>
+                <p class="text-center text-slate-500 text-sm mb-6">أدخل بيانات سيارتك للحصول على أفضل سعر</p>
+                
+                <form id="orderForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">اسم العميل</label>
+                        <input type="text" id="custName" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="مثال: أحمد">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الواتساب</label>
+                        <input type="tel" id="custPhone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="05xxxxxxxx">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">ماركة السيارة</label>
+                            <select id="carBrand" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                                <option value="" disabled selected>اختر الماركة</option>
+                                <optgroup label="ياباني">
+                                    <option value="تويوتا">تويوتا</option>
+                                    <option value="لكزس">لكزس</option>
+                                    <option value="نيسان">نيسان</option>
+                                    <option value="هوندا">هوندا</option>
+                                    <option value="مازدا">مازدا</option>
+                                </optgroup>
+                                <optgroup label="كوري">
+                                    <option value="هيونداي">هيونداي</option>
+                                    <option value="كيا">كيا</option>
+                                </optgroup>
+                                <optgroup label="أمريكي">
+                                    <option value="فورد">فورد</option>
+                                    <option value="شفروليه">شفروليه</option>
+                                    <option value="جي ام سي">جي ام سي</option>
+                                    <option value="دودج">دودج</option>
+                                </optgroup>
+                                <optgroup label="ألماني">
+                                    <option value="مرسيدس">مرسيدس</option>
+                                    <option value="بي إم دبليو">بي إم دبليو</option>
+                                    <option value="أودي">أودي</option>
+                                    <option value="فولكس فاجن">فولكس فاجن</option>
+                                    <option value="بورش">بورش</option>
+                                </optgroup>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">اسم السيارة / الفئة</label>
+                            <input type="text" id="carModel" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="مثال: كامري">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">الموديل (سنة الصنع)</label>
+                        <select id="carYear" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                            <option value="" disabled selected>اختر السنة</option>
+                            <script>
+                                for(let y=2028; y>=1990; y--) document.write(`<option value="${y}">${y}</option>`);
+                            </script>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الهيكل (الشاصيه)</label>
+                        <input type="text" id="carVin" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase text-left" dir="ltr" placeholder="17 حرف ورقم">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">القطع المطلوبة</label>
+                        <textarea id="carParts" required rows="4" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="1. فحمات أمامية&#10;2. فلتر زيت&#10;..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl shadow-md hover:bg-indigo-700 transition mt-4">إرسال الطلب</button>
+                </form>
+                <div id="successMsg" class="hidden mt-4 p-4 bg-green-50 text-green-700 rounded-xl text-center font-bold">
+                    <i class="fa-solid fa-circle-check text-2xl mb-2 block"></i>تم إرسال طلبك بنجاح! سنتواصل معك قريباً بالتسعيرة.
+                </div>
+            </div>
+        </section>
+
+        <section id="admin-view" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-slate-800">الطلبات الواردة</h2>
+                <div class="flex gap-2">
+                    <button onclick="openSuppliersModal()" class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-address-book ml-1"></i>أرقام الموردين</button>
+                    <button onclick="switchTab('customer')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-300 transition">رجوع للنموذج</button>
+                </div>
+            </div>
+            
+            <div id="ordersContainer" class="space-y-4">
+                </div>
+        </section>
+    </main>
+
+    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-800">إعدادات الموردين</h3>
+                <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">أدخل أرقام الواتس. لإضافة أكثر من مورد، افصل بفاصلة (،) مثال: 966500, 966511</p>
+            <div class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي تويوتا / لكزس</label>
+                    <input type="text" id="supToyota" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الكوري (هيونداي/كيا)</label>
+                    <input type="text" id="supKorean" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الأمريكي</label>
+                    <input type="text" id="supAmerican" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الألماني</label>
+                    <input type="text" id="supGerman" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الشركات الأخرى</label>
+                    <input type="text" id="supOther" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+                </div>
+            </div>
+            <button onclick="saveSuppliers()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg mt-4">حفظ الأرقام</button>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let orders = JSON.parse(localStorage.getItem('partsOrders')) || [];
+        let suppliersList = JSON.parse(localStorage.getItem('suppliersList')) || {
+            toyota: '', korean: '', american: '', german: '', other: ''
+        };
+
+        // Switch Tabs
+        function switchTab(tab) {
+            document.getElementById('customer-view').classList.toggle('hidden', tab !== 'customer');
+            document.getElementById('admin-view').classList.toggle('hidden', tab !== 'admin');
+            if (tab === 'admin') renderOrders();
+        }
+
+        // Form Submit
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newOrder = {
+                id: Date.now(),
+                customerName: document.getElementById('custName').value,
+                phone: document.getElementById('custPhone').value,
+                brand: document.getElementById('carBrand').value,
+                model: document.getElementById('carModel').value,
+                year: document.getElementById('carYear').value,
+                vin: document.getElementById('carVin').value || 'لم يُدخل',
+                parts: document.getElementById('carParts').value,
+                date: new Date().toLocaleString('ar-SA')
+            };
+            orders.unshift(newOrder);
+            localStorage.setItem('partsOrders', JSON.stringify(orders));
+            
+            this.reset();
+            document.getElementById('successMsg').classList.remove('hidden');
+            setTimeout(() => document.getElementById('successMsg').classList.add('hidden'), 4000);
+        });
+
+        // Copy Text Function
+        window.copyOrderText = function(text, btnElement) {
+            navigator.clipboard.writeText(decodeURIComponent(text)).then(() => {
+                const originalHTML = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check text-green-600"></i>';
+                setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
+            });
+        };
+
+        // Render Orders
+        function renderOrders() {
+            const container = document.getElementById('ordersContainer');
+            container.innerHTML = '';
+
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-slate-500"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>لا توجد طلبات حتى الآن</p></div>';
+                return;
+            }
+
+            orders.forEach(order => {
+                let targetSupplierPhones = suppliersList.other;
+                if (['تويوتا', 'لكزس'].includes(order.brand)) targetSupplierPhones = suppliersList.toyota;
+                else if (['هيونداي', 'كيا'].includes(order.brand)) targetSupplierPhones = suppliersList.korean;
+                else if (['جي ام سي', 'شفروليه', 'فورد', 'دودج'].includes(order.brand)) targetSupplierPhones = suppliersList.american;
+                else if (['مرسيدس', 'بي إم دبليو', 'أودي', 'فولكس فاجن', 'بورش'].includes(order.brand)) targetSupplierPhones = suppliersList.german;
+
+                const rawMessage = `*طلب تسعير قطع غيار*\n🚗 السيارة: ${order.brand} - ${order.model}\n📅 الموديل: ${order.year}\n🔢 رقم الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
+                const supplierMessage = encodeURIComponent(rawMessage);
+
+                let buttonsHtml = '';
+                if (targetSupplierPhones) {
+                    const numbers = targetSupplierPhones.split(/[,،]/).map(n => n.trim().replace(/[^0-9+]/g, '')).filter(n => n.length > 0);
+                    if (numbers.length > 0) {
+                        buttonsHtml = `<div class="flex flex-wrap gap-2 w-full">`;
+                        numbers.forEach((num, index) => {
+                            buttonsHtml += `<a href="https://wa.me/${num}?text=${supplierMessage}" target="_blank" class="flex-1 min-w-[80px] text-center bg-green-50 text-green-700 border border-green-200 py-2 rounded-lg text-sm font-bold hover:bg-green-600 hover:text-white transition"><i class="fa-brands fa-whatsapp ml-1"></i>مورد ${index + 1}</a>`;
+                        });
+                        buttonsHtml += `<button onclick="copyOrderText('${supplierMessage.replace(/'/g, "\\'")}', this)" class="bg-slate-100 border border-slate-200 text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-200 transition tooltip" title="نسخ النص"><i class="fa-regular fa-copy"></i></button></div>`;
+                    } else {
+                        buttonsHtml = `<p class="text-xs text-red-500 text-center w-full">يرجى إضافة رقم المورد من الإعدادات</p>`;
+                    }
+                } else {
+                    buttonsHtml = `<p class="text-xs text-red-500 text-center w-full">يرجى إضافة رقم المورد من الإعدادات</p>`;
+                }
+
+                container.innerHTML += `
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                        <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-start">
+                            <div>
+                                <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded mb-1 inline-block">${order.brand}</span>
+                                <h3 class="font-bold text-slate-800">${order.model} (${order.year})</h3>
+                                <p class="text-xs text-slate-500">${order.date}</p>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-slate-700">${order.customerName}</p>
+                                <a href="https://wa.me/${order.phone.replace(/^0/, '966')}" target="_blank" class="text-xs text-blue-600 font-bold hover:underline"><i class="fa-brands fa-whatsapp ml-1"></i>للعميل</a>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="mb-3">
+                                <span class="text-xs text-slate-500 font-bold block mb-1">رقم الهيكل</span>
+                                <span class="font-mono bg-slate-100 px-2 py-1 rounded text-sm block text-left" dir="ltr">${order.vin}</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 font-bold block mb-1">القطع المطلوبة</span>
+                                <p class="text-sm bg-blue-50 p-2 rounded whitespace-pre-line border border-blue-100">${order.parts}</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
+                            ${buttonsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Modals logic
+        window.openSuppliersModal = () => {
+            document.getElementById('supToyota').value = suppliersList.toyota || '';
+            document.getElementById('supKorean').value = suppliersList.korean || '';
+            document.getElementById('supAmerican').value = suppliersList.american || '';
+            document.getElementById('supGerman').value = suppliersList.german || '';
+            document.getElementById('supOther').value = suppliersList.other || '';
+            document.getElementById('suppliersModal').classList.remove('hidden');
+        };
+        window.closeSuppliersModal = () => document.getElementById('suppliersModal').classList.add('hidden');
+        
+        window.saveSuppliers = () => {
+            suppliersList = {
+                toyota: document.getElementById('supToyota').value,
+                korean: document.getElementById('supKorean').value,
+                american: document.getElementById('supAmerican').value,
+                german: document.getElementById('supGerman').value,
+                other: document.getElementById('supOther').value,
+            };
+            localStorage.setItem('suppliersList', JSON.stringify(suppliersList));
+            closeSuppliersModal();
+            renderOrders();
+        };
+    </script>
+</body>
+</html>
