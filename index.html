@@ -122,10 +122,10 @@
     <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-slate-800">إعدادات الموردين</h3>
+                <h3 class="text-xl font-bold text-slate-800">إعدادات الموردين السحابية</h3>
                 <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <p class="text-xs text-slate-500 mb-4">أدخل أرقام الواتس. لإضافة أكثر من مورد، افصل بفاصلة (،) مثال: 966500, 966511</p>
+            <p class="text-xs text-slate-500 mb-4">أدخل أرقام الواتس. سيتم حفظ الأرقام سحابياً وتحديثها على جميع أجهزتك فوراً.</p>
             <div class="space-y-3 max-h-60 overflow-y-auto pr-1">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">موردي تويوتا / لكزس</label>
@@ -148,7 +148,7 @@
                     <input type="text" id="supOther" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
                 </div>
             </div>
-            <button onclick="saveSuppliers()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg mt-4">حفظ الأرقام</button>
+            <button id="saveSupBtn" onclick="saveSuppliersCloud()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg mt-4">حفظ الأرقام سحابياً</button>
         </div>
     </div>
 
@@ -161,7 +161,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // مفاتيح مشروعك الخاصة بـ GearWorld
         const firebaseConfig = {
@@ -178,9 +178,8 @@
 
         const adminPassword = "123";
 
-        let suppliersList = JSON.parse(localStorage.getItem('suppliersList')) || {
-            toyota: '', korean: '', american: '', german: '', other: ''
-        };
+        // كائن افتراضي للموردين سيتم جلب قيمته الحقيقية من السحابة
+        let suppliersList = { toyota: '', korean: '', american: '', german: '', other: '' };
 
         // دالة تحويل ملف الصورة لنص Base64 خفيف للحفظ المباشر
         function convertImageToBase64(file) {
@@ -195,18 +194,62 @@
 
         window.switchTab = async function(tab) {
             if (tab === 'admin') {
-                const pass = prompt("🔒 الرجاء إدخال الرقم السري لفتح لوحة التاجر:");
+                const pass = prompt("🔒 الرجاء إدخل الرقم السري لفتح لوحة التاجر:");
                 if (pass !== adminPassword) {
                     alert("❌ كلمة المرور غير صحيحة!");
                     return;
                 }
+                // جلب الموردين والطلبات سحابياً عند فتح لوحة التحكم
+                await loadSuppliersFromCloud();
                 await loadOrdersFromCloud();
             }
             document.getElementById('customer-view').classList.toggle('hidden', tab !== 'customer');
             document.getElementById('admin-view').classList.toggle('hidden', tab !== 'admin');
         };
 
-        // إرسال الطلب وحفظ البيانات والاصورة سحابياً
+        // جلب أرقام الموردين من سحابة فايربيس لتزامنها بين الأجهزة
+        async function loadSuppliersFromCloud() {
+            try {
+                const docRef = doc(db, "settings", "suppliers");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    suppliersList = docSnap.data();
+                }
+            } catch (error) {
+                console.error("خطأ في جلب أرقام الموردين سحابياً: ", error);
+            }
+        }
+
+        // حفظ أرقام الموردين داخل السحابة مباشرة لتحديثها على كل الهواتف واللابتوبات
+        window.saveSuppliersCloud = async function() {
+            const saveBtn = document.getElementById('saveSupBtn');
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin ml-2"></i>جاري الحفظ السحابي...';
+            saveBtn.disabled = true;
+
+            const updatedSuppliers = {
+                toyota: document.getElementById('supToyota').value,
+                korean: document.getElementById('supKorean').value,
+                american: document.getElementById('supAmerican').value,
+                german: document.getElementById('supGerman').value,
+                other: document.getElementById('supOther').value,
+            };
+
+            try {
+                await setDoc(doc(db, "settings", "suppliers"), updatedSuppliers);
+                suppliersList = updatedSuppliers;
+                alert("☁️ تم حفظ أرقام الموردين وتحديثها سحابياً بنجاح!");
+                closeSuppliersModal();
+                await loadOrdersFromCloud(); // إعادة بناء الأزرار بالأرقام الجديدة
+            } catch (error) {
+                console.error("خطأ في حفظ الموردين سحابياً: ", error);
+                alert("❌ فشل الحفظ في السحابة.");
+            } finally {
+                saveBtn.innerHTML = 'حفظ الأرقام سحابياً';
+                saveBtn.disabled = false;
+            }
+        };
+
+        // إرسال الطلب وحفظ البيانات والصورة سحابياً
         document.getElementById('orderForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -220,9 +263,8 @@
                 const imageFile = document.getElementById('carImage').files[0];
                 let base64Image = "";
                 
-                // لو العميل رفع صورة، يتم معالجتها
                 if(imageFile) {
-                    if (imageFile.size > 2 * 1024 * 1024) { // الحد الأقصى 2 ميجا بايت لسرعة السحابة
+                    if (imageFile.size > 2 * 1024 * 1024) { 
                         alert("❌ حجم الصورة كبير جداً، يرجى إرفاق صورة بحجم أقل من 2 ميجابايت.");
                         submitBtn.innerHTML = originalBtnText;
                         submitBtn.disabled = false;
@@ -239,7 +281,7 @@
                     year: document.getElementById('carYear').value,
                     vin: document.getElementById('carVin').value || 'لم يُدخل',
                     parts: document.getElementById('carParts').value,
-                    imageData: base64Image, // حفظ الصورة سحابياً بنجاح
+                    imageData: base64Image, 
                     date: new Date().toLocaleString('ar-SA'),
                     timestamp: serverTimestamp() 
                 };
@@ -284,7 +326,7 @@
                 try {
                     await deleteDoc(doc(db, "orders", orderId));
                     alert("🗑️ تم حذف الطلب بنجاح.");
-                    await loadOrdersFromCloud(); // إعادة جلب وتحديث الشاشة فوراً
+                    await loadOrdersFromCloud(); 
                 } catch (error) {
                     console.error("خطأ أثناء الحذف: ", error);
                     alert("❌ فشل حذف الطلب.");
@@ -318,7 +360,6 @@
                 const rawMessage = `*طلب تسعير قطع غيار*\n🚗 السيارة: ${order.brand} - ${order.model}\n📅 الموديل: ${order.year}\n🔢 رقم الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
                 const supplierMessage = encodeURIComponent(rawMessage);
 
-                // بناء كود الصورة إذا كانت مرفقة
                 let imageHtml = "";
                 if (order.imageData) {
                     imageHtml = `
@@ -396,19 +437,6 @@
         };
         
         window.closeSuppliersModal = () => document.getElementById('suppliersModal').classList.add('hidden');
-        
-        window.saveSuppliers = () => {
-            suppliersList = {
-                toyota: document.getElementById('supToyota').value,
-                korean: document.getElementById('supKorean').value,
-                american: document.getElementById('supAmerican').value,
-                german: document.getElementById('supGerman').value,
-                other: document.getElementById('supOther').value,
-            };
-            localStorage.setItem('suppliersList', JSON.stringify(suppliersList));
-            closeSuppliersModal();
-            loadOrdersFromCloud();
-        };
     </script>
 </body>
 </html>
