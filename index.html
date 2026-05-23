@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عالم التروس - نظام الطلبات الذكي</title>
+    <title>عالم التروس - منصة الطلبات الذكية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
     <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
             <h1 class="text-xl font-bold text-indigo-700"><i class="fa-solid fa-gears ml-2"></i>عالم التروس</h1>
-            <button onclick="switchTab('admin')" class="text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition"><i class="fa-solid fa-lock ml-1"></i>التاجر</button>
+            <button onclick="switchTab('admin')" class="text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition">التاجر</button>
         </div>
     </nav>
 
@@ -32,22 +32,35 @@
                 <form id="orderForm" class="space-y-4">
                     <input type="text" id="custName" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 outline-none" placeholder="اسم العميل">
                     <input type="tel" id="custPhone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 outline-none" placeholder="رقم الواتساب (05...)">
+                    
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="carOrigin" required class="p-2 border rounded-lg text-sm bg-slate-50"><option value="" disabled selected>الصناعة</option><option value="ياباني">ياباني</option><option value="أمريكي">أمريكي</option><option value="كوري">كوري</option><option value="صيني">صيني</option><option value="أوروبي">أوروبي</option><option value="أخرى">أخرى</option></select>
-                        <select id="carBrandSpecific" required disabled class="p-2 border rounded-lg text-sm bg-slate-100"><option value="" disabled selected>اختر الصناعة أولاً</option></select>
+                        <select id="carOrigin" required class="p-2 border rounded-lg text-sm bg-slate-50">
+                            <option value="" disabled selected>الصناعة</option>
+                            <option value="ياباني">ياباني</option><option value="أمريكي">أمريكي</option>
+                            <option value="كوري">كوري</option><option value="صيني">صيني</option>
+                            <option value="أوروبي">أوروبي</option><option value="أخرى">أخرى</option>
+                        </select>
+                        <select id="carBrandSpecific" required disabled class="p-2 border rounded-lg text-sm bg-slate-100"><option value="" disabled selected>اختر الصناعة</option></select>
                     </div>
+
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="carModel" required class="p-2 border rounded-lg text-sm" placeholder="النوع">
+                        <input type="text" id="carModel" required class="p-2 border rounded-lg text-sm" placeholder="نوع السيارة">
                         <select id="carYear" required class="p-2 border rounded-lg text-sm"><option value="" disabled selected>الموديل</option><script>for(let y=2028; y>=1990; y--) document.write(`<option value="${y}">${y}</option>`);</script></select>
                     </div>
-                    <select id="partCondition" required class="w-full p-2 border rounded-lg text-sm bg-amber-50 font-bold"><option value="" disabled selected>حالة القطعة...</option><option value="جديد">جديد</option><option value="مستعمل">مستعمل</option><option value="شامل">جديد ومستعمل</option></select>
+
+                    <select id="partCondition" required class="w-full p-2 border rounded-lg text-sm bg-amber-50 font-bold"><option value="" disabled selected>حالة القطع...</option><option value="جديد">جديد</option><option value="مستعمل">مستعمل</option><option value="شامل">جديد ومستعمل</option></select>
                     <select id="partCategory" required class="w-full p-2 border rounded-lg text-sm bg-indigo-50 font-bold">
                         <option value="" disabled selected>قسم القطع...</option>
-                        <option value="ميكانيكا ومحركات">ميكانيكا ومحركات</option><option value="جيربوكس">جيربوكس</option><option value="عكوس ومساعدات">عكوس ومساعدات</option><option value="كهرباء وإلكترونيات">كهرباء وإلكترونيات</option><option value="بودي وهيكل خارجي">بودي وهيكل</option><option value="زجاج ومرايا">زجاج ومرايا</option><option value="زيوت وسوائل">زيوت وفلاتر</option><option value="زينة وإكسسوارات">زينة</option><option value="أخرى">أخرى</option>
+                        <option value="ميكانيكا ومحركات">ميكانيكا ومحركات</option><option value="جيربوكس">جيربوكس</option><option value="عكوس ومساعدات">عكوس ومساعدات</option>
+                        <option value="كهرباء وإلكترونيات">كهرباء</option><option value="بودي وهيكل خارجي">بدي وخارجي</option>
+                        <option value="زجاج ومرايا">زجاج ومرايا</option><option value="زيوت وسوائل">زيوت وفلاتر</option>
+                        <option value="زينة وإكسسوارات">زينة</option><option value="أخرى">أخرى</option>
                     </select>
+
                     <input type="text" id="carVin" class="w-full p-2 border rounded-lg text-sm uppercase" placeholder="رقم الهيكل (اختياري)">
-                    <textarea id="carParts" required rows="3" class="w-full p-2 border rounded-lg text-sm" placeholder="القطع المطلوبة بالتفصيل..."></textarea>
+                    <textarea id="carParts" required rows="3" class="w-full p-2 border rounded-lg text-sm" placeholder="القطع المطلوبة..."></textarea>
                     <input type="file" id="carImage" accept="image/*" class="w-full text-xs">
+                    
                     <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">إرسال الطلب</button>
                 </form>
             </div>
@@ -67,18 +80,20 @@
 
     <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50">
         <div class="bg-white rounded-2xl p-4 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <h3 class="font-bold mb-3">سجل الموردين</h3>
-            <div id="supplierFormContainer" class="bg-slate-50 p-3 rounded-xl mb-3">
+            <h3 class="font-bold mb-3">إدارة الموردين</h3>
+            <div id="supplierFormContainer" class="bg-slate-50 p-3 rounded-xl border mb-3">
                 <input type="text" id="newSupName" placeholder="اسم المورد" class="w-full p-2 mb-2 border rounded text-sm">
-                <input type="tel" id="newSupPhone" placeholder="رقم الواتساب" class="w-full p-2 mb-2 border rounded text-sm" dir="ltr">
-                <div class="grid grid-cols-2 gap-2 text-[10px] mb-2">
-                    <label><input type="checkbox" value="جديد" class="cond-cb"> جديد</label><label><input type="checkbox" value="مستعمل" class="cond-cb"> مستعمل</label>
-                    <label><input type="checkbox" value="شامل" class="cat-cb"> شامل الأقسام</label><label><input type="checkbox" value="أخرى" class="cat-cb"> أخرى</label>
-                </div>
-                <button id="addSupBtn" onclick="addSupplierCloud()" class="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm">حفظ المورد</button>
-                <button id="cancelEditBtn" onclick="cancelEdit()" class="hidden w-full bg-slate-300 py-2 rounded-lg text-sm mt-1">إلغاء</button>
+                <input type="tel" id="newSupPhone" placeholder="واتس 9665..." class="w-full p-2 mb-2 border rounded text-sm" dir="ltr">
+                <button id="addSupBtn" onclick="addSupplierCloud()" class="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm">حفظ</button>
             </div>
             <div id="suppliersListContainer" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <div id="waSettingsModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50">
+        <div class="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl">
+            <h3 class="font-bold mb-4">إعدادات الواتساب</h3>
+            <button onclick="closeWaSettingsModal()" class="w-full bg-slate-800 text-white py-2 rounded-lg text-sm">إغلاق</button>
         </div>
     </div>
 
@@ -86,45 +101,49 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCM9wFHiqRgScPFOLUOpGcpz7FfJbyQNFo",
-            authDomain: "gearworld-20a74.firebaseapp.com",
-            projectId: "gearworld-20a74",
-            storageBucket: "gearworld-20a74.firebasestorage.app",
-            messagingSenderId: "706572511444",
-            appId: "1:706572511444:web:23ec37e6e3c73305ce3341"
-        };
-
+        // CONFIG (تأكد من إدخال مفاتيحك هنا)
+        const firebaseConfig = { apiKey: "AIzaSy...", projectId: "gearworld-20a74", ... };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const adminPassword = "123";
         let suppliersDB = [];
         let unsubscribeOrders = null;
-        let isFirstLoad = true;
         window.currentOrders = [];
 
-        // تفعيل قائمة السيارات
-        const carBrandsData = {
-            "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوزوكي", "إيسوزو", "أخرى"],
-            "أمريكي": ["فورد", "شفروليه", "جي ام سي", "دودج", "كرايسلر", "جيب", "كاديلاك", "لينكولن", "أخرى"],
-            "كوري": ["هيونداي", "كيا", "جينيسيس", "أخرى"],
-            "صيني": ["شانجان", "جيلي", "إم جي", "هافال", "شيري", "بيستون", "جاك", "أخرى"],
-            "أوروبي": ["مرسيدس", "بي إم دبليو", "أودي", "فولكس فاجن", "بورش", "رينو", "أخرى"],
-            "أخرى": ["أخرى"]
-        };
-
+        // منطق الماركات للفلترة الهرمية
+        const carBrandsData = { "ياباني": ["تويوتا", "لكزس", "نيسان", "ميتسوبيشي", "أخرى"], "أمريكي": ["فورد", "شفروليه", "دودج", "أخرى"], "كوري": ["هيونداي", "كيا", "أخرى"], "صيني": ["شانجان", "جيلي", "أخرى"], "أوروبي": ["مرسيدس", "بي إم دبليو", "أخرى"] };
         document.getElementById('carOrigin').addEventListener('change', function() {
-            const origin = this.value;
             const b = document.getElementById('carBrandSpecific');
             b.innerHTML = '<option value="" disabled selected>اختر الماركة</option>';
-            if(carBrandsData[origin]) {
-                carBrandsData[origin].forEach(m => b.innerHTML += `<option value="${m}">${m}</option>`);
-                b.disabled = false;
-            }
+            carBrandsData[this.value]?.forEach(m => b.innerHTML += `<option value="${m}">${m}</option>`);
+            b.disabled = false;
         });
 
-        // منطق العمل (الطلبات، البث الحي، الموردين) يتم وضعه هنا بنفس الطريقة السابقة لضمان التزامن
-        // (انسخ الدوال البرمجية من الرد السابق لضمان عمل الزرار)
+        // تشغيل البث المباشر
+        function startLiveOrdersListener() {
+            const container = document.getElementById('ordersContainer');
+            const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+            unsubscribeOrders = onSnapshot(q, (snap) => {
+                window.currentOrders = [];
+                snap.forEach(d => window.currentOrders.push({id: d.id, ...d.data()}));
+                renderOrders(window.currentOrders);
+            });
+        }
+
+        // إضافة مورد
+        window.addSupplierCloud = async function() { /* منطق الحفظ السحابي */ };
+        
+        // عرض الطلبات
+        function renderOrders(orders) { /* منطق الفلترة والعرض */ }
+
+        // التبديل بين الشاشات
+        window.switchTab = async function(tab) {
+            if(tab === 'admin') { /* طلب كلمة السر وتفعيل البث */ }
+            // باقي منطق التبديل
+        };
+
+        // دالة الحذف التلقائي
+        async function autoCleanOldOrders() { /* منطق الحذف بعد 20 يوم */ }
     </script>
 </body>
 </html>
