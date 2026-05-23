@@ -16,7 +16,6 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #334155; cursor: pointer; }
         .checkbox-label input { width: 1rem; height: 1rem; accent-color: #4f46e5; cursor: pointer; }
-        /* تحسينات القوائم المنسدلة للموردين */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
     </style>
@@ -180,12 +179,12 @@
     <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-4 max-w-md w-full mx-4 shadow-2xl max-h-[95vh] flex flex-col">
             <div class="flex justify-between items-center mb-3">
-                <h3 class="text-xl font-bold text-slate-800">سجل الموردين (التصنيف الدقيق)</h3>
+                <h3 class="text-xl font-bold text-slate-800">سجل الموردين وإدارتهم</h3>
                 <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             
-            <div class="mb-3 bg-slate-50 p-3 rounded-xl border border-slate-200 overflow-y-auto max-h-[55vh]">
-                <h4 class="text-sm font-bold text-indigo-700 mb-2"><i class="fa-solid fa-plus ml-1"></i>إضافة مورد جديد</h4>
+            <div id="supplierFormContainer" class="mb-3 bg-slate-50 p-3 rounded-xl border border-slate-200 overflow-y-auto max-h-[55vh]">
+                <h4 id="formTitle" class="text-sm font-bold text-indigo-700 mb-2"><i class="fa-solid fa-plus ml-1"></i>إضافة مورد جديد</h4>
                 
                 <div class="grid grid-cols-2 gap-2 mb-3">
                     <input type="text" id="newSupName" placeholder="اسم المورد (أبو علي)" class="px-2 py-2 text-sm border rounded outline-none focus:border-indigo-500">
@@ -203,7 +202,6 @@
 
                 <div class="mb-3 bg-white p-2 rounded border border-slate-300">
                     <span class="block text-xs font-bold text-slate-800 mb-2 border-b pb-1">تخصص السيارات (اختر الماركات):</span>
-                    
                     <label class="checkbox-label mb-2 p-1 bg-indigo-50 rounded border border-indigo-100"><input type="checkbox" value="شامل الكل" class="brand-cb font-bold text-indigo-700">شامل جميع سيارات العالم</label>
                     
                     <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
@@ -291,7 +289,10 @@
                     </div>
                 </div>
 
-                <button id="addSupBtn" onclick="addSupplierCloud()" class="w-full bg-indigo-600 text-white text-sm font-bold py-2 rounded-lg hover:bg-indigo-700 transition">حفظ المورد سحابياً</button>
+                <div class="flex gap-2">
+                    <button id="addSupBtn" onclick="addSupplierCloud()" class="flex-1 bg-indigo-600 text-white text-sm font-bold py-2 rounded-lg hover:bg-indigo-700 transition">حفظ المورد سحابياً</button>
+                    <button id="cancelEditBtn" onclick="cancelEdit()" class="hidden bg-slate-200 text-slate-700 text-sm font-bold py-2 px-4 rounded-lg hover:bg-slate-300 transition">إلغاء</button>
+                </div>
             </div>
 
             <h4 class="text-sm font-bold text-slate-700 mb-2 border-b pb-1">الموردين المسجلين:</h4>
@@ -327,11 +328,11 @@
         let unsubscribeOrders = null; 
         let isFirstLoad = true; 
         window.currentOrders = []; 
+        let editingSupId = null; // 🔴 متغير جديد لحفظ الـ ID للمورد الجاري تعديله
 
         let waSettings = JSON.parse(localStorage.getItem('waSettings')) || { customerApp: 'default', supplierApp: 'default' };
         const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
 
-        // 🔴 بيانات السيارات لبرمجة القائمة المنسدلة للعميل
         const carBrandsData = {
             "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوبارو", "سوزوكي", "إيسوزو", "أخرى"],
             "أمريكي": ["فورد", "شفروليه", "جي ام سي", "دودج", "كرايسلر", "جيب", "كاديلاك", "لينكولن", "تيسلا", "أخرى"],
@@ -341,7 +342,6 @@
             "أخرى": ["أخرى"]
         };
 
-        // تفعيل تفاعل قائمة الصناعة مع قائمة الماركة
         document.getElementById('carOrigin').addEventListener('change', function() {
             const origin = this.value;
             const brandSelect = document.getElementById('carBrandSpecific');
@@ -351,9 +351,7 @@
                     brandSelect.innerHTML += `<option value="${brand}">${brand}</option>`;
                 });
                 brandSelect.disabled = false;
-            } else {
-                brandSelect.disabled = true;
-            }
+            } else { brandSelect.disabled = true; }
         });
 
         window.getWhatsAppLink = function(phone, text, type) {
@@ -422,7 +420,7 @@
 
         async function loadSuppliersFromCloud() {
             try {
-                // 🔴 إنشاء جدول V4 ليتوافق مع الماركات الدقيقة
+                // 🔴 اسم الجدول تم تثبيته ولن يتغير أبداً
                 const docRef = doc(db, "settings", "suppliers_advanced_v4");
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists() && docSnap.data().list) {
@@ -431,6 +429,47 @@
                 renderSuppliersModalList();
             } catch (error) { console.error(error); }
         }
+
+        // 🔴 دالة جلب بيانات المورد لنموذج التعديل
+        window.editSupplier = function(id) {
+            const sup = suppliersDB.find(s => s.id === id);
+            if(!sup) return;
+
+            editingSupId = id;
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square ml-1"></i>تعديل بيانات المورد';
+            document.getElementById('newSupName').value = sup.name;
+            document.getElementById('newSupPhone').value = sup.phone;
+
+            document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = sup.conditions.includes(cb.value));
+            document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = sup.brands.includes(cb.value));
+            document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = sup.categories.includes(cb.value));
+
+            const btn = document.getElementById('addSupBtn');
+            btn.innerHTML = 'تحديث بيانات المورد سحابياً';
+            btn.classList.replace('bg-indigo-600', 'bg-emerald-600');
+            btn.classList.replace('hover:bg-indigo-700', 'hover:bg-emerald-700');
+            
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+            document.getElementById('supplierFormContainer').scrollTop = 0; // رفع التمرير للأعلى
+        };
+
+        // 🔴 دالة إلغاء التعديل والعودة لوضع الإضافة
+        window.cancelEdit = function() {
+            editingSupId = null;
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus ml-1"></i>إضافة مورد جديد';
+            document.getElementById('newSupName').value = '';
+            document.getElementById('newSupPhone').value = '';
+            document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
+
+            const btn = document.getElementById('addSupBtn');
+            btn.innerHTML = 'حفظ المورد سحابياً';
+            btn.classList.replace('bg-emerald-600', 'bg-indigo-600');
+            btn.classList.replace('hover:bg-emerald-700', 'hover:bg-indigo-700');
+            
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        };
 
         window.addSupplierCloud = async function() {
             const name = document.getElementById('newSupName').value.trim();
@@ -446,29 +485,34 @@
             if(selectedCategories.length === 0) { alert("يرجى تحديد تخصص القطع!"); return; }
 
             const btn = document.getElementById('addSupBtn');
+            const originalBtnText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
 
-            suppliersDB.push({
-                id: Date.now().toString(),
-                name: name,
-                phone: phone,
-                conditions: selectedConditions,
-                brands: selectedBrands,
-                categories: selectedCategories
-            });
+            // 🔴 التمييز بين الإضافة الجديدة وتحديث مورد موجود
+            if (editingSupId) {
+                suppliersDB = suppliersDB.map(s => s.id === editingSupId ? {
+                    ...s, name: name, phone: phone, conditions: selectedConditions, brands: selectedBrands, categories: selectedCategories
+                } : s);
+            } else {
+                suppliersDB.push({
+                    id: Date.now().toString(),
+                    name: name,
+                    phone: phone,
+                    conditions: selectedConditions,
+                    brands: selectedBrands,
+                    categories: selectedCategories
+                });
+            }
 
             try {
                 await setDoc(doc(db, "settings", "suppliers_advanced_v4"), { list: suppliersDB });
-                document.getElementById('newSupName').value = '';
-                document.getElementById('newSupPhone').value = '';
-                document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
-                document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = false);
-                document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
-                
+                cancelEdit(); // لتفريغ الحقول وإعادة الأزرار لطبيعتها
                 renderSuppliersModalList();
                 renderOrders(window.currentOrders);
-            } catch (error) { alert("فشل الحفظ السحابي"); } 
-            finally { btn.innerHTML = 'حفظ المورد سحابياً'; btn.disabled = false; }
+            } catch (error) { 
+                alert("فشل الحفظ السحابي"); 
+                btn.innerHTML = originalBtnText; btn.disabled = false;
+            } 
         };
 
         window.deleteSupplier = async function(id) {
@@ -492,7 +536,7 @@
                 const condsText = sup.conditions.join('، '); 
                 const catsText = sup.categories.join('، ');
                 let brandsText = sup.brands.join('، ');
-                if(brandsText.length > 50) brandsText = brandsText.substring(0, 50) + "..."; // ترتيب الشكل
+                if(brandsText.length > 50) brandsText = brandsText.substring(0, 50) + "..."; 
                 
                 container.innerHTML += `
                     <div class="flex justify-between items-center bg-white border border-slate-200 p-3 rounded-lg text-sm">
@@ -502,7 +546,10 @@
                             <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-indigo-600">الماركات:</span> ${brandsText}</p>
                             <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-emerald-600">الأقسام:</span> ${catsText}</p>
                         </div>
-                        <button onclick="deleteSupplier('${sup.id}')" class="text-red-500 hover:text-red-700 p-2 bg-red-50 rounded-lg ml-1"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="flex flex-col gap-1 ml-2">
+                            <button onclick="editSupplier('${sup.id}')" class="text-blue-500 hover:text-blue-700 p-2 bg-blue-50 rounded-lg tooltip" title="تعديل"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteSupplier('${sup.id}')" class="text-red-500 hover:text-red-700 p-2 bg-red-50 rounded-lg tooltip" title="حذف"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
                     </div>
                 `;
             });
@@ -526,8 +573,8 @@
                     base64Image = await convertImageToBase64(imageFile);
                 }
 
-                const brandGroup = document.getElementById('carOrigin').value; // أمريكي، ياباني..
-                const brandSpecific = document.getElementById('carBrandSpecific').value; // فورد، ميتسوبيشي..
+                const brandGroup = document.getElementById('carOrigin').value; 
+                const brandSpecific = document.getElementById('carBrandSpecific').value; 
 
                 const newOrder = {
                     customerName: document.getElementById('custName').value,
@@ -547,7 +594,7 @@
 
                 await addDoc(collection(db, "orders"), newOrder);
                 this.reset();
-                document.getElementById('carBrandSpecific').disabled = true; // إعادة إغلاق الماركة
+                document.getElementById('carBrandSpecific').disabled = true; 
                 document.getElementById('successMsg').classList.remove('hidden');
                 setTimeout(() => document.getElementById('successMsg').classList.add('hidden'), 4000);
             } catch (error) { alert("❌ حدث خطأ أثناء الاتصال."); } 
@@ -598,7 +645,6 @@
             });
         };
 
-        // 🔴 دالة الفلترة الخارقة بعد التطوير الجذري للماركات
         function renderOrders(orders) {
             const container = document.getElementById('ordersContainer');
             container.innerHTML = '';
@@ -609,15 +655,8 @@
 
             orders.forEach(order => {
                 const matchedSuppliers = suppliersDB.filter(sup => {
-                    // 1. فحص الحالة
                     const matchCondition = sup.conditions.includes('شامل') || sup.conditions.includes(order.partCondition) || order.partCondition === 'شامل';
-                    
-                    // 2. فحص الماركة: هل المورد يشمل كل السيارات؟ أو كل صناعة (مثل: شامل ياباني)؟ أو الماركة المحددة (ميتسوبيشي)؟
-                    const matchBrand = sup.brands.includes('شامل الكل') || 
-                                       sup.brands.includes('شامل ' + order.brandGroup) || 
-                                       sup.brands.includes(order.brand);
-                    
-                    // 3. فحص القطعة
+                    const matchBrand = sup.brands.includes('شامل الكل') || sup.brands.includes('شامل ' + order.brandGroup) || sup.brands.includes(order.brand);
                     const matchCategory = sup.categories.includes('شامل') || sup.categories.includes(order.partCategory) || order.partCategory === 'شامل';
                     
                     return matchCondition && matchBrand && matchCategory;
