@@ -16,6 +16,9 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #334155; cursor: pointer; }
         .checkbox-label input { width: 1rem; height: 1rem; accent-color: #4f46e5; cursor: pointer; }
+        /* تحسينات القوائم المنسدلة للموردين */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="text-slate-800">
@@ -43,58 +46,40 @@
                         <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الواتساب</label>
                         <input type="tel" id="custPhone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="05xxxxxxxx">
                     </div>
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1">ماركة السيارة</label>
-                            <select id="carBrand" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-                                <option value="" disabled selected>اختر الماركة</option>
-                                <optgroup label="ياباني">
-                                    <option value="تويوتا">تويوتا</option>
-                                    <option value="لكزس">لكزس</option>
-                                    <option value="نيسان">نيسان</option>
-                                    <option value="هوندا">هوندا</option>
-                                    <option value="مازدا">مازدا</option>
-                                    <option value="ميتسوبيشي">ميتسوبيشي</option>
-                                </optgroup>
-                                <optgroup label="كوري">
-                                    <option value="هيونداي">هيونداي</option>
-                                    <option value="كيا">كيا</option>
-                                </optgroup>
-                                <optgroup label="أمريكي">
-                                    <option value="فورد">فورد</option>
-                                    <option value="شفروليه">شفروليه</option>
-                                    <option value="جي ام سي">جي ام سي</option>
-                                    <option value="دودج">دودج</option>
-                                </optgroup>
-                                <optgroup label="ألماني">
-                                    <option value="مرسيدس">مرسيدس</option>
-                                    <option value="بي إم دبليو">بي إم دبليو</option>
-                                    <option value="أودي">أودي</option>
-                                    <option value="فولكس فاجن">فولكس فاجن</option>
-                                    <option value="بورش">بورش</option>
-                                </optgroup>
-                                <option value="أخرى">أخرى</option>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">صناعة السيارة</label>
+                            <select id="carOrigin" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition bg-slate-50">
+                                <option value="" disabled selected>اختر الصناعة</option>
+                                <option value="ياباني">ياباني 🇯🇵</option>
+                                <option value="أمريكي">أمريكي 🇺🇸</option>
+                                <option value="كوري">كوري 🇰🇷</option>
+                                <option value="صيني">صيني 🇨🇳</option>
+                                <option value="أوروبي">ألماني وأوروبي 🇪🇺</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1">اسم السيارة / الفئة</label>
-                            <input type="text" id="carModel" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="مثال: كامري">
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">ماركة السيارة</label>
+                            <select id="carBrandSpecific" required disabled class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition disabled:bg-slate-100 disabled:opacity-50">
+                                <option value="" disabled selected>اختر الصناعة أولاً</option>
+                            </select>
                         </div>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1">الموديل (سنة الصنع)</label>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">اسم السيارة / الفئة</label>
+                            <input type="text" id="carModel" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="مثال: كامري">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">الموديل (السنة)</label>
                             <select id="carYear" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
                                 <option value="" disabled selected>اختر السنة</option>
                                 <script>
                                     for(let y=2028; y>=1990; y--) document.write(`<option value="${y}">${y}</option>`);
                                 </script>
                             </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-slate-700 mb-1">إرفاق صورة (اختياري)</label>
-                            <input type="file" id="carImage" accept="image/*" class="w-full px-2 py-2 text-xs rounded-xl border border-slate-300 outline-none file:ml-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition">
                         </div>
                     </div>
                     
@@ -122,10 +107,17 @@
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الهيكل (الشاصيه)</label>
-                        <input type="text" id="carVin" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase text-left" dir="ltr" placeholder="17 حرف ورقم">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الهيكل (الشاصيه)</label>
+                            <input type="text" id="carVin" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase text-left" dir="ltr" placeholder="17 حرف ورقم">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">إرفاق صورة (اختياري)</label>
+                            <input type="file" id="carImage" accept="image/*" class="w-full px-2 py-2 text-xs rounded-xl border border-slate-300 outline-none file:ml-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition">
+                        </div>
                     </div>
+                    
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">القطع المطلوبة بالتفصيل</label>
                         <textarea id="carParts" required rows="4" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="1. فحمات أمامية&#10;2. فلتر زيت&#10;..."></textarea>
@@ -159,7 +151,6 @@
                 <h3 class="text-xl font-bold text-slate-800">إعدادات أرقام الواتساب</h3>
                 <button onclick="closeWaSettingsModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <p class="text-xs text-slate-500 mb-4">حدد التطبيق الذي ترغب بفتحه عند مراسلة العميل أو المورد لفصل أرقامك.</p>
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-bold text-indigo-700 mb-1">عند مراسلة (العميل) افتح:</label>
@@ -189,7 +180,7 @@
     <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
         <div class="bg-white rounded-2xl p-4 max-w-md w-full mx-4 shadow-2xl max-h-[95vh] flex flex-col">
             <div class="flex justify-between items-center mb-3">
-                <h3 class="text-xl font-bold text-slate-800">سجل الموردين الذكي (V3)</h3>
+                <h3 class="text-xl font-bold text-slate-800">سجل الموردين (التصنيف الدقيق)</h3>
                 <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             
@@ -210,28 +201,82 @@
                     </div>
                 </div>
 
-                <div class="mb-3 bg-white p-2 rounded border border-slate-200">
-                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص الماركات (حدد بدقة):</span>
-                    <div class="max-h-32 overflow-y-auto pr-1 mt-2 border border-slate-100 rounded p-2 bg-slate-50">
-                        <label class="checkbox-label mb-2 pb-1 border-b"><input type="checkbox" value="شامل" class="brand-cb font-bold">شامل (يبيع كل السيارات)</label>
-                        <div class="grid grid-cols-2 gap-2">
+                <div class="mb-3 bg-white p-2 rounded border border-slate-300">
+                    <span class="block text-xs font-bold text-slate-800 mb-2 border-b pb-1">تخصص السيارات (اختر الماركات):</span>
+                    
+                    <label class="checkbox-label mb-2 p-1 bg-indigo-50 rounded border border-indigo-100"><input type="checkbox" value="شامل الكل" class="brand-cb font-bold text-indigo-700">شامل جميع سيارات العالم</label>
+                    
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات اليابانية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل ياباني" class="brand-cb">شامل (كل الياباني)</label>
                             <label class="checkbox-label"><input type="checkbox" value="تويوتا" class="brand-cb">تويوتا</label>
                             <label class="checkbox-label"><input type="checkbox" value="لكزس" class="brand-cb">لكزس</label>
                             <label class="checkbox-label"><input type="checkbox" value="نيسان" class="brand-cb">نيسان</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إنفينيتي" class="brand-cb">إنفينيتي</label>
                             <label class="checkbox-label"><input type="checkbox" value="هوندا" class="brand-cb">هوندا</label>
                             <label class="checkbox-label"><input type="checkbox" value="مازدا" class="brand-cb">مازدا</label>
-                            <label class="checkbox-label"><input type="checkbox" value="ميتسوبيشي" class="brand-cb font-bold text-indigo-600">ميتسوبيشي</label>
-                            <label class="checkbox-label"><input type="checkbox" value="هيونداي" class="brand-cb">هيونداي</label>
-                            <label class="checkbox-label"><input type="checkbox" value="كيا" class="brand-cb">كيا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="ميتسوبيشي" class="brand-cb">ميتسوبيشي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="سوزوكي" class="brand-cb">سوزوكي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="سوبارو" class="brand-cb">سوبارو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إيسوزو" class="brand-cb">إيسوزو</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الأمريكية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل أمريكي" class="brand-cb">شامل (كل الأمريكي)</label>
                             <label class="checkbox-label"><input type="checkbox" value="فورد" class="brand-cb">فورد</label>
                             <label class="checkbox-label"><input type="checkbox" value="شفروليه" class="brand-cb">شفروليه</label>
                             <label class="checkbox-label"><input type="checkbox" value="جي ام سي" class="brand-cb">جي ام سي</label>
                             <label class="checkbox-label"><input type="checkbox" value="دودج" class="brand-cb">دودج</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كرايسلر" class="brand-cb">كرايسلر</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جيب" class="brand-cb">جيب</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كاديلاك" class="brand-cb">كاديلاك</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لينكولن" class="brand-cb">لينكولن</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الكورية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل كوري" class="brand-cb">شامل (كل الكوري)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هيونداي" class="brand-cb">هيونداي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كيا" class="brand-cb">كيا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جينيسيس" class="brand-cb">جينيسيس</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الصينية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل صيني" class="brand-cb">شامل (كل الصيني)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شانجان" class="brand-cb">شانجان</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جيلي" class="brand-cb">جيلي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إم جي" class="brand-cb">إم جي (MG)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هافال" class="brand-cb">هافال</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شيري" class="brand-cb">شيري</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بيستون" class="brand-cb">بيستون</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بي واي دي" class="brand-cb">بي واي دي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جاك" class="brand-cb">جاك (JAC)</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الأوروبية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل أوروبي" class="brand-cb">شامل (كل الأوروبي)</label>
                             <label class="checkbox-label"><input type="checkbox" value="مرسيدس" class="brand-cb">مرسيدس</label>
                             <label class="checkbox-label"><input type="checkbox" value="بي إم دبليو" class="brand-cb">بي إم دبليو</label>
-                            <label class="checkbox-label"><input type="checkbox" value="أخرى" class="brand-cb">أخرى</label>
+                            <label class="checkbox-label"><input type="checkbox" value="أودي" class="brand-cb">أودي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فولكس فاجن" class="brand-cb">فولكس فاجن</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بورش" class="brand-cb">بورش</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لاند روفر" class="brand-cb">لاند روفر</label>
+                            <label class="checkbox-label"><input type="checkbox" value="رينو" class="brand-cb">رينو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بيجو" class="brand-cb">بيجو</label>
                         </div>
-                    </div>
+                    </details>
                 </div>
 
                 <div class="mb-3 bg-white p-2 rounded border border-slate-200">
@@ -284,8 +329,32 @@
         window.currentOrders = []; 
 
         let waSettings = JSON.parse(localStorage.getItem('waSettings')) || { customerApp: 'default', supplierApp: 'default' };
-
         const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
+
+        // 🔴 بيانات السيارات لبرمجة القائمة المنسدلة للعميل
+        const carBrandsData = {
+            "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوبارو", "سوزوكي", "إيسوزو", "أخرى"],
+            "أمريكي": ["فورد", "شفروليه", "جي ام سي", "دودج", "كرايسلر", "جيب", "كاديلاك", "لينكولن", "تيسلا", "أخرى"],
+            "كوري": ["هيونداي", "كيا", "جينيسيس", "أخرى"],
+            "صيني": ["شانجان", "جيلي", "إم جي", "هافال", "شيري", "بيستون", "بايك", "جاك", "بي واي دي", "جريت وال", "أخرى"],
+            "أوروبي": ["مرسيدس", "بي إم دبليو", "أودي", "فولكس فاجن", "بورش", "لاند روفر", "رينو", "بيجو", "أخرى"],
+            "أخرى": ["أخرى"]
+        };
+
+        // تفعيل تفاعل قائمة الصناعة مع قائمة الماركة
+        document.getElementById('carOrigin').addEventListener('change', function() {
+            const origin = this.value;
+            const brandSelect = document.getElementById('carBrandSpecific');
+            brandSelect.innerHTML = '<option value="" disabled selected>اختر الماركة</option>';
+            if(carBrandsData[origin]) {
+                carBrandsData[origin].forEach(brand => {
+                    brandSelect.innerHTML += `<option value="${brand}">${brand}</option>`;
+                });
+                brandSelect.disabled = false;
+            } else {
+                brandSelect.disabled = true;
+            }
+        });
 
         window.getWhatsAppLink = function(phone, text, type) {
             let t = text ? encodeURIComponent(text) : '';
@@ -329,8 +398,7 @@
                 querySnapshot.forEach(async (docSnap) => {
                     const data = docSnap.data();
                     if (data.timestamp && data.timestamp.toMillis) {
-                        const orderTime = data.timestamp.toMillis();
-                        if (now - orderTime > twentyDaysInMs) {
+                        if (now - data.timestamp.toMillis() > twentyDaysInMs) {
                             await deleteDoc(doc(db, "orders", docSnap.id)); 
                         }
                     }
@@ -354,8 +422,8 @@
 
         async function loadSuppliersFromCloud() {
             try {
-                // 🔴 تغيير اسم قاعدة البيانات لـ V3 لضمان التطابق مع الماركات الجديدة
-                const docRef = doc(db, "settings", "suppliers_advanced_v3");
+                // 🔴 إنشاء جدول V4 ليتوافق مع الماركات الدقيقة
+                const docRef = doc(db, "settings", "suppliers_advanced_v4");
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists() && docSnap.data().list) {
                     suppliersDB = docSnap.data().list;
@@ -373,9 +441,9 @@
             const selectedCategories = Array.from(document.querySelectorAll('.cat-cb:checked')).map(cb => cb.value);
 
             if(!name || !phone) { alert("يرجى إدخال اسم ورقم المورد!"); return; }
-            if(selectedConditions.length === 0) { alert("يرجى اختيار حالة القطع!"); return; }
-            if(selectedBrands.length === 0) { alert("يرجى اختيار ماركة واحدة على الأقل!"); return; }
-            if(selectedCategories.length === 0) { alert("يرجى اختيار تخصص قطع واحد على الأقل!"); return; }
+            if(selectedConditions.length === 0) { alert("يرجى تحديد حالة القطع!"); return; }
+            if(selectedBrands.length === 0) { alert("يرجى تحديد تخصص السيارات!"); return; }
+            if(selectedCategories.length === 0) { alert("يرجى تحديد تخصص القطع!"); return; }
 
             const btn = document.getElementById('addSupBtn');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
@@ -390,12 +458,13 @@
             });
 
             try {
-                await setDoc(doc(db, "settings", "suppliers_advanced_v3"), { list: suppliersDB });
+                await setDoc(doc(db, "settings", "suppliers_advanced_v4"), { list: suppliersDB });
                 document.getElementById('newSupName').value = '';
                 document.getElementById('newSupPhone').value = '';
                 document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
                 document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = false);
                 document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
+                
                 renderSuppliersModalList();
                 renderOrders(window.currentOrders);
             } catch (error) { alert("فشل الحفظ السحابي"); } 
@@ -406,7 +475,7 @@
             if(confirm("حذف هذا المورد نهائياً؟")) {
                 suppliersDB = suppliersDB.filter(s => s.id !== id);
                 try {
-                    await setDoc(doc(db, "settings", "suppliers_advanced_v3"), { list: suppliersDB });
+                    await setDoc(doc(db, "settings", "suppliers_advanced_v4"), { list: suppliersDB });
                     renderSuppliersModalList();
                     renderOrders(window.currentOrders);
                 } catch (error) {}
@@ -420,9 +489,10 @@
                 container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا يوجد موردين مسجلين بعد.</p>'; return;
             }
             suppliersDB.forEach(sup => {
-                const condsText = (sup.conditions || ['شامل']).join('، '); 
-                const brandsText = sup.brands.join('، ');
+                const condsText = sup.conditions.join('، '); 
                 const catsText = sup.categories.join('، ');
+                let brandsText = sup.brands.join('، ');
+                if(brandsText.length > 50) brandsText = brandsText.substring(0, 50) + "..."; // ترتيب الشكل
                 
                 container.innerHTML += `
                     <div class="flex justify-between items-center bg-white border border-slate-200 p-3 rounded-lg text-sm">
@@ -449,7 +519,6 @@
                 const imageFile = document.getElementById('carImage').files[0];
                 let base64Image = "";
                 if(imageFile) {
-                    // 🔴 تخفيض الحد الأقصى للصورة لضمان عدم استهلاك الباقة المجانية
                     if (imageFile.size > 700 * 1024) { 
                         alert("❌ حجم الصورة كبير جداً، يرجى إرفاق صورة بحجم أقل من 700 كيلوبايت لضمان سرعة الإرسال.");
                         submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; return;
@@ -457,10 +526,14 @@
                     base64Image = await convertImageToBase64(imageFile);
                 }
 
+                const brandGroup = document.getElementById('carOrigin').value; // أمريكي، ياباني..
+                const brandSpecific = document.getElementById('carBrandSpecific').value; // فورد، ميتسوبيشي..
+
                 const newOrder = {
                     customerName: document.getElementById('custName').value,
                     phone: document.getElementById('custPhone').value,
-                    brand: document.getElementById('carBrand').value, // الماركة المباشرة (ميتسوبيشي، تويوتا..)
+                    brandGroup: brandGroup, 
+                    brand: brandSpecific,
                     model: document.getElementById('carModel').value,
                     year: document.getElementById('carYear').value,
                     partCondition: document.getElementById('partCondition').value, 
@@ -474,6 +547,7 @@
 
                 await addDoc(collection(db, "orders"), newOrder);
                 this.reset();
+                document.getElementById('carBrandSpecific').disabled = true; // إعادة إغلاق الماركة
                 document.getElementById('successMsg').classList.remove('hidden');
                 setTimeout(() => document.getElementById('successMsg').classList.add('hidden'), 4000);
             } catch (error) { alert("❌ حدث خطأ أثناء الاتصال."); } 
@@ -524,7 +598,7 @@
             });
         };
 
-        // 🔴 دالة الفلترة المبنية على המاركة الدقيقة الآن
+        // 🔴 دالة الفلترة الخارقة بعد التطوير الجذري للماركات
         function renderOrders(orders) {
             const container = document.getElementById('ordersContainer');
             container.innerHTML = '';
@@ -535,10 +609,16 @@
 
             orders.forEach(order => {
                 const matchedSuppliers = suppliersDB.filter(sup => {
+                    // 1. فحص الحالة
                     const matchCondition = sup.conditions.includes('شامل') || sup.conditions.includes(order.partCondition) || order.partCondition === 'شامل';
-                    // 🔴 المطابقة الدقيقة للماركة
-                    const matchBrand = sup.brands.includes('شامل') || sup.brands.includes(order.brand) || (order.brand === 'أخرى' && sup.brands.includes('أخرى'));
-                    const matchCategory = sup.categories.includes('شامل') || sup.categories.includes(order.partCategory) || order.partCategory === 'شامل' || sup.categories.includes('أخرى');
+                    
+                    // 2. فحص الماركة: هل المورد يشمل كل السيارات؟ أو كل صناعة (مثل: شامل ياباني)؟ أو الماركة المحددة (ميتسوبيشي)؟
+                    const matchBrand = sup.brands.includes('شامل الكل') || 
+                                       sup.brands.includes('شامل ' + order.brandGroup) || 
+                                       sup.brands.includes(order.brand);
+                    
+                    // 3. فحص القطعة
+                    const matchCategory = sup.categories.includes('شامل') || sup.categories.includes(order.partCategory) || order.partCategory === 'شامل';
                     
                     return matchCondition && matchBrand && matchCategory;
                 });
