@@ -10,6 +10,12 @@
     <style>
         body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
         .hidden { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #334155; cursor: pointer; }
+        .checkbox-label input { width: 1rem; height: 1rem; accent-color: #4f46e5; cursor: pointer; }
     </style>
 </head>
 <body class="text-slate-800">
@@ -74,6 +80,7 @@
                             <input type="text" id="carModel" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="مثال: كامري">
                         </div>
                     </div>
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-slate-700 mb-1">الموديل (سنة الصنع)</label>
@@ -89,12 +96,37 @@
                             <input type="file" id="carImage" accept="image/*" class="w-full px-2 py-2 text-xs rounded-xl border border-slate-300 outline-none file:ml-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition">
                         </div>
                     </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">حالة القطع المطلوبة (مهم)</label>
+                        <select id="partCondition" required class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:ring-2 focus:ring-amber-500 outline-none transition bg-amber-50 text-amber-900 font-semibold">
+                            <option value="" disabled selected>اختر حالة القطع...</option>
+                            <option value="جديد">قطع جديدة (وكالة أو تجاري)</option>
+                            <option value="مستعمل">قطع مستعملة (تشليح أو مستورد)</option>
+                            <option value="شامل">لا يهم / أريد تسعيرة للجديد والمستعمل</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">تصنيف نوع القطع (مهم)</label>
+                        <select id="partCategory" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition bg-indigo-50">
+                            <option value="" disabled selected>اختر نوع القطع...</option>
+                            <option value="ميكانيكا ومحركات">ميكانيكا ومحركات (مكائن، جربوكس، رديتر...)</option>
+                            <option value="بودي وهيكل خارجي">بودي وهيكل خارجي (صدامات، أبواب، شمعات...)</option>
+                            <option value="عكوس ومساعدات">عكوس ونظام تعليق (مقصات، فحمات، هوبات...)</option>
+                            <option value="كهرباء وإلكترونيات">كهرباء وإلكترونيات (ظفائر، حساسات، كمبيوتر...)</option>
+                            <option value="زجاج ومرايا">زجاج ومرايا</option>
+                            <option value="شامل">تشكيلة متنوعة (أكثر من نوع معاً)</option>
+                            <option value="أخرى">أخرى (قطع غير مصنفة)</option>
+                        </select>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الهيكل (الشاصيه)</label>
                         <input type="text" id="carVin" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase text-left" dir="ltr" placeholder="17 حرف ورقم">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">القطع المطلوبة</label>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">القطع المطلوبة بالتفصيل</label>
                         <textarea id="carParts" required rows="4" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="1. فحمات أمامية&#10;2. فلتر زيت&#10;..."></textarea>
                     </div>
                     
@@ -108,10 +140,12 @@
 
         <section id="admin-view" class="hidden">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-slate-800">الطلبات الواردة <span id="liveBadge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-normal animate-pulse">مباشر حى</span></h2>
+                <h2 class="text-2xl font-bold text-slate-800">الطلبات <span id="liveBadge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-normal animate-pulse">مباشر حى</span></h2>
                 <div class="flex gap-2">
-                    <button onclick="openSuppliersModal()" class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-address-book ml-1"></i>أرقام الموردين</button>
-                    <button onclick="switchTab('customer')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-300 transition">رجوع للنموذج</button>
+                    <button onclick="openWaSettingsModal()" class="bg-green-100 text-green-700 px-2.5 py-1.5 rounded-lg text-lg font-bold hover:bg-green-200 transition tooltip" title="إعدادات الأرقام"><i class="fa-brands fa-whatsapp"></i></button>
+                    
+                    <button onclick="openSuppliersModal()" class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-address-book ml-1"></i>الموردين</button>
+                    <button onclick="switchTab('customer')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-300 transition">النموذج</button>
                 </div>
             </div>
             
@@ -119,36 +153,94 @@
         </section>
     </main>
 
-    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+    <div id="waSettingsModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-slate-800">إعدادات الموردين السحابية</h3>
+                <h3 class="text-xl font-bold text-slate-800">إعدادات أرقام الواتساب</h3>
+                <button onclick="closeWaSettingsModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <p class="text-xs text-slate-500 mb-4">حدد التطبيق الذي ترغب بفتحه عند مراسلة العميل أو المورد لفصل أرقامك (مفيد جداً لأصحاب الأندرويد واللابتوب).</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-indigo-700 mb-1">عند مراسلة (العميل) افتح:</label>
+                    <select id="custWaType" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                        <option value="default">الافتراضي (حسب إعدادات الجهاز)</option>
+                        <option value="wa_web">واتساب ويب (من متصفح اللابتوب)</option>
+                        <option value="wa_app">برنامج الواتساب المثبت (PC/Mac)</option>
+                        <option value="android_normal">واتساب العادي (لأجهزة الأندرويد)</option>
+                        <option value="android_business">واتساب للأعمال (لأجهزة الأندرويد)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-emerald-700 mb-1">عند مراسلة (المورد) افتح:</label>
+                    <select id="supWaType" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-emerald-500">
+                        <option value="default">الافتراضي (حسب إعدادات الجهاز)</option>
+                        <option value="wa_web">واتساب ويب (من متصفح اللابتوب)</option>
+                        <option value="wa_app">برنامج الواتساب المثبت (PC/Mac)</option>
+                        <option value="android_normal">واتساب العادي (لأجهزة الأندرويد)</option>
+                        <option value="android_business">واتساب للأعمال (لأجهزة الأندرويد)</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="saveWaSettings()" class="w-full bg-slate-800 text-white text-sm font-bold py-2.5 rounded-lg mt-5 hover:bg-slate-900 transition">حفظ إعدادات التوجيه</button>
+        </div>
+    </div>
+
+    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-800">سجل الموردين الذكي</h3>
                 <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <p class="text-xs text-slate-500 mb-4">أدخل أرقام الواتس. سيتم حفظ الأرقام سحابياً وتحديثها على جميع أجهزتك فوراً.</p>
-            <div class="space-y-3 max-h-60 overflow-y-auto pr-1">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي تويوتا / لكزس</label>
-                    <input type="text" id="supToyota" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+            
+            <div class="mb-4 bg-slate-50 p-3 rounded-xl border border-slate-200 overflow-y-auto max-h-[50vh]">
+                <h4 class="text-sm font-bold text-indigo-700 mb-2"><i class="fa-solid fa-plus ml-1"></i>إضافة مورد جديد</h4>
+                
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <input type="text" id="newSupName" placeholder="اسم المورد (أبو علي)" class="px-2 py-2 text-sm border rounded outline-none focus:border-indigo-500">
+                    <input type="tel" id="newSupPhone" placeholder="رقم الواتس (9665...)" class="px-2 py-2 text-sm border rounded outline-none focus:border-indigo-500" dir="ltr">
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الكوري (هيونداي/كيا)</label>
-                    <input type="text" id="supKorean" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+                
+                <div class="mb-3 bg-white p-2 rounded border border-amber-200">
+                    <span class="block text-xs font-bold text-amber-800 mb-1 border-b border-amber-100 pb-1">حالة القطع (الجديد/المستعمل):</span>
+                    <div class="grid grid-cols-3 gap-2 mt-2">
+                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cond-cb">شامل (الكل)</label>
+                        <label class="checkbox-label"><input type="checkbox" value="جديد" class="cond-cb">جديد</label>
+                        <label class="checkbox-label"><input type="checkbox" value="مستعمل" class="cond-cb">مستعمل (تشليح)</label>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الأمريكي</label>
-                    <input type="text" id="supAmerican" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+
+                <div class="mb-3 bg-white p-2 rounded border border-slate-200">
+                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص السيارات:</span>
+                    <div class="grid grid-cols-3 gap-2 mt-2">
+                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="brand-cb">شامل</label>
+                        <label class="checkbox-label"><input type="checkbox" value="ياباني" class="brand-cb">ياباني</label>
+                        <label class="checkbox-label"><input type="checkbox" value="كوري" class="brand-cb">كوري</label>
+                        <label class="checkbox-label"><input type="checkbox" value="أمريكي" class="brand-cb">أمريكي</label>
+                        <label class="checkbox-label"><input type="checkbox" value="ألماني" class="brand-cb">ألماني</label>
+                        <label class="checkbox-label"><input type="checkbox" value="أخرى" class="brand-cb">أخرى</label>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الألماني</label>
-                    <input type="text" id="supGerman" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
+
+                <div class="mb-3 bg-white p-2 rounded border border-slate-200">
+                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص القطع:</span>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cat-cb">شامل / كل الأنواع</label>
+                        <label class="checkbox-label"><input type="checkbox" value="ميكانيكا ومحركات" class="cat-cb">ميكانيكا ومحركات</label>
+                        <label class="checkbox-label"><input type="checkbox" value="بودي وهيكل خارجي" class="cat-cb">بودي وهيكل خارجي</label>
+                        <label class="checkbox-label"><input type="checkbox" value="عكوس ومساعدات" class="cat-cb">عكوس ونظام تعليق</label>
+                        <label class="checkbox-label"><input type="checkbox" value="كهرباء وإلكترونيات" class="cat-cb">كهرباء وإلكترونيات</label>
+                        <label class="checkbox-label"><input type="checkbox" value="زجاج ومرايا" class="cat-cb">زجاج ومرايا</label>
+                        <label class="checkbox-label"><input type="checkbox" value="أخرى" class="cat-cb">أخرى</label>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">موردي الشركات الأخرى</label>
-                    <input type="text" id="supOther" class="w-full px-3 py-2 border rounded-lg text-sm text-left" dir="ltr">
-                </div>
+
+                <button id="addSupBtn" onclick="addSupplierCloud()" class="w-full bg-indigo-600 text-white text-sm font-bold py-2 rounded-lg hover:bg-indigo-700 transition">حفظ المورد سحابياً</button>
             </div>
-            <button id="saveSupBtn" onclick="saveSuppliersCloud()" class="w-full bg-green-600 text-white font-bold py-2.5 rounded-lg mt-4">حفظ الأرقام سحابياً</button>
+
+            <h4 class="text-sm font-bold text-slate-700 mb-2 border-b pb-1">الموردين المسجلين:</h4>
+            <div class="overflow-y-auto pr-1 flex-1 space-y-2" id="suppliersListContainer"></div>
         </div>
     </div>
 
@@ -161,9 +253,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // مفاتيح مشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyCM9wFHiqRgScPFOLUOpGcpz7FfJbyQNFo",
             authDomain: "gearworld-20a74.firebaseapp.com",
@@ -177,11 +268,46 @@
         const db = getFirestore(app);
 
         const adminPassword = "123";
-        let suppliersList = { toyota: '', korean: '', american: '', german: '', other: '' };
+        let suppliersDB = []; 
         let unsubscribeOrders = null; 
         let isFirstLoad = true; 
+        window.currentOrders = []; // تخزين الطلبات الحالية لإعادة عرضها عند تغيير الإعدادات
+
+        // إعدادات توجيه الواتساب الافتراضية
+        let waSettings = JSON.parse(localStorage.getItem('waSettings')) || { customerApp: 'default', supplierApp: 'default' };
 
         const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
+
+        // 🔴 الدالة المسؤولة عن تحويل الروابط للواتساب المطلوب
+        window.getWhatsAppLink = function(phone, text, type) {
+            let t = text ? encodeURIComponent(text) : '';
+            let p = phone.replace(/[^0-9+]/g, ''); 
+            if (type === 'wa_web') return `https://web.whatsapp.com/send?phone=${p}&text=${t}`;
+            if (type === 'wa_app') return `whatsapp://send?phone=${p}&text=${t}`;
+            if (type === 'android_normal') return `intent://send?phone=${p}&text=${t}#Intent;package=com.whatsapp;scheme=whatsapp;end;`;
+            if (type === 'android_business') return `intent://send?phone=${p}&text=${t}#Intent;package=com.whatsapp.w4b;scheme=whatsapp;end;`;
+            return `https://wa.me/${p}?text=${t}`; // default
+        };
+
+        // نوافذ إعدادات الواتساب
+        window.openWaSettingsModal = () => {
+            document.getElementById('custWaType').value = waSettings.customerApp;
+            document.getElementById('supWaType').value = waSettings.supplierApp;
+            document.getElementById('waSettingsModal').classList.remove('hidden');
+        };
+
+        window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
+
+        window.saveWaSettings = () => {
+            waSettings = {
+                customerApp: document.getElementById('custWaType').value,
+                supplierApp: document.getElementById('supWaType').value
+            };
+            localStorage.setItem('waSettings', JSON.stringify(waSettings));
+            closeWaSettingsModal();
+            renderOrders(window.currentOrders); // إعادة عرض الطلبات لتحديث الروابط فوراً
+            alert("✅ تم تطبيق الإعدادات. سيتم فتح الروابط في التطبيقات المحددة الآن.");
+        };
 
         function convertImageToBase64(file) {
             return new Promise((resolve, reject) => {
@@ -193,25 +319,21 @@
             });
         }
 
-        // 🔴 دالة الحذف التلقائي الذكية (المنظف) للطلبات الأقدم من 20 يوم
         async function autoCleanOldOrders() {
             try {
                 const now = new Date().getTime();
-                const twentyDaysInMs = 20 * 24 * 60 * 60 * 1000; // 20 يوم بالمللي ثانية
-                
+                const twentyDaysInMs = 20 * 24 * 60 * 60 * 1000; 
                 const querySnapshot = await getDocs(collection(db, "orders"));
                 querySnapshot.forEach(async (docSnap) => {
                     const data = docSnap.data();
                     if (data.timestamp && data.timestamp.toMillis) {
                         const orderTime = data.timestamp.toMillis();
                         if (now - orderTime > twentyDaysInMs) {
-                            await deleteDoc(doc(db, "orders", docSnap.id)); // حذف صامت
+                            await deleteDoc(doc(db, "orders", docSnap.id)); 
                         }
                     }
                 });
-            } catch (error) {
-                console.error("خطأ في التنظيف التلقائي: ", error);
-            }
+            } catch (error) { console.error(error); }
         }
 
         window.switchTab = async function(tab) {
@@ -222,10 +344,7 @@
                     return;
                 }
                 await loadSuppliersFromCloud();
-                
-                // 🔴 تشغيل التنظيف التلقائي بصمت قبل عرض الطلبات
                 await autoCleanOldOrders(); 
-
                 startLiveOrdersListener(); 
             } else {
                 if(unsubscribeOrders) {
@@ -239,71 +358,131 @@
 
         async function loadSuppliersFromCloud() {
             try {
-                const docRef = doc(db, "settings", "suppliers");
+                const docRef = doc(db, "settings", "suppliers_advanced_v2");
                 const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    suppliersList = docSnap.data();
+                if (docSnap.exists() && docSnap.data().list) {
+                    suppliersDB = docSnap.data().list;
+                } else {
+                    suppliersDB = []; 
                 }
-            } catch (error) {
-                console.error("خطأ في جلب أرقام الموردين: ", error);
-            }
+                renderSuppliersModalList();
+            } catch (error) { console.error(error); }
         }
 
-        window.saveSuppliersCloud = async function() {
-            const saveBtn = document.getElementById('saveSupBtn');
-            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin ml-2"></i>جاري الحفظ السحابي...';
-            saveBtn.disabled = true;
+        window.addSupplierCloud = async function() {
+            const name = document.getElementById('newSupName').value.trim();
+            const phone = document.getElementById('newSupPhone').value.trim().replace(/[^0-9+]/g, '');
+            
+            const selectedConditions = Array.from(document.querySelectorAll('.cond-cb:checked')).map(cb => cb.value);
+            const selectedBrands = Array.from(document.querySelectorAll('.brand-cb:checked')).map(cb => cb.value);
+            const selectedCategories = Array.from(document.querySelectorAll('.cat-cb:checked')).map(cb => cb.value);
 
-            const updatedSuppliers = {
-                toyota: document.getElementById('supToyota').value,
-                korean: document.getElementById('supKorean').value,
-                american: document.getElementById('supAmerican').value,
-                german: document.getElementById('supGerman').value,
-                other: document.getElementById('supOther').value,
-            };
+            if(!name || !phone) { alert("يرجى إدخال اسم ورقم المورد!"); return; }
+            if(selectedConditions.length === 0) { alert("يرجى اختيار حالة القطع!"); return; }
+            if(selectedBrands.length === 0) { alert("يرجى اختيار تخصص سيارة واحد على الأقل!"); return; }
+            if(selectedCategories.length === 0) { alert("يرجى اختيار تخصص قطع واحد على الأقل!"); return; }
+
+            const btn = document.getElementById('addSupBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            suppliersDB.push({
+                id: Date.now().toString(),
+                name: name,
+                phone: phone,
+                conditions: selectedConditions,
+                brands: selectedBrands,
+                categories: selectedCategories
+            });
 
             try {
-                await setDoc(doc(db, "settings", "suppliers"), updatedSuppliers);
-                suppliersList = updatedSuppliers;
-                alert("☁️ تم حفظ أرقام الموردين وتحديثها سحابياً بنجاح!");
-                closeSuppliersModal();
+                await setDoc(doc(db, "settings", "suppliers_advanced_v2"), { list: suppliersDB });
+                document.getElementById('newSupName').value = '';
+                document.getElementById('newSupPhone').value = '';
+                document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
+                document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = false);
+                document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
+                renderSuppliersModalList();
+                renderOrders(window.currentOrders);
             } catch (error) {
-                console.error("خطأ في حفظ الموردين: ", error);
-                alert("❌ فشل الحفظ السحابي.");
+                alert("فشل الحفظ السحابي للمورد");
             } finally {
-                saveBtn.innerHTML = 'حفظ الأرقام سحابياً';
-                saveBtn.disabled = false;
+                btn.innerHTML = 'حفظ المورد سحابياً';
+                btn.disabled = false;
             }
         };
+
+        window.deleteSupplier = async function(id) {
+            if(confirm("حذف هذا المورد نهائياً؟")) {
+                suppliersDB = suppliersDB.filter(s => s.id !== id);
+                try {
+                    await setDoc(doc(db, "settings", "suppliers_advanced_v2"), { list: suppliersDB });
+                    renderSuppliersModalList();
+                    renderOrders(window.currentOrders);
+                } catch (error) {}
+            }
+        };
+
+        function renderSuppliersModalList() {
+            const container = document.getElementById('suppliersListContainer');
+            container.innerHTML = '';
+            if(suppliersDB.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا يوجد موردين مسجلين بعد.</p>';
+                return;
+            }
+            suppliersDB.forEach(sup => {
+                const condsText = (sup.conditions || ['شامل']).join('، '); 
+                const brandsText = sup.brands.join('، ');
+                const catsText = sup.categories.join('، ');
+                
+                container.innerHTML += `
+                    <div class="flex justify-between items-center bg-white border border-slate-200 p-3 rounded-lg text-sm">
+                        <div class="flex-1">
+                            <p class="font-bold text-slate-800 text-base">${sup.name} <span class="text-xs text-slate-400 bg-slate-100 px-1 rounded" dir="ltr">${sup.phone}</span></p>
+                            <p class="text-[0.70rem] text-slate-500 mt-1"><span class="font-bold text-amber-600">الحالة:</span> ${condsText}</p>
+                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-indigo-600">سيارات:</span> ${brandsText}</p>
+                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-emerald-600">قطع:</span> ${catsText}</p>
+                        </div>
+                        <button onclick="deleteSupplier('${sup.id}')" class="text-red-500 hover:text-red-700 p-2 bg-red-50 rounded-lg ml-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `;
+            });
+        }
 
         document.getElementById('orderForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الطلب سحابياً...';
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الطلب...';
             submitBtn.disabled = true;
 
             try {
                 const imageFile = document.getElementById('carImage').files[0];
                 let base64Image = "";
-                
                 if(imageFile) {
                     if (imageFile.size > 2 * 1024 * 1024) { 
                         alert("❌ حجم الصورة كبير، يرجى إرفاق صورة بحجم أقل من 2 ميجابايت.");
-                        submitBtn.innerHTML = originalBtnText;
-                        submitBtn.disabled = false;
-                        return;
+                        submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; return;
                     }
                     base64Image = await convertImageToBase64(imageFile);
                 }
 
+                const rawBrand = document.getElementById('carBrand').value;
+                let groupBrand = "أخرى";
+                if (['تويوتا', 'لكزس', 'نيسان', 'هوندا', 'مازدا'].includes(rawBrand)) groupBrand = 'ياباني';
+                if (['هيونداي', 'كيا'].includes(rawBrand)) groupBrand = 'كوري';
+                if (['فورد', 'شفروليه', 'جي ام سي', 'دودج'].includes(rawBrand)) groupBrand = 'أمريكي';
+                if (['مرسيدس', 'بي إم دبليو', 'أودي', 'فولكس فاجن', 'بورش'].includes(rawBrand)) groupBrand = 'ألماني';
+
                 const newOrder = {
                     customerName: document.getElementById('custName').value,
                     phone: document.getElementById('custPhone').value,
-                    brand: document.getElementById('carBrand').value,
+                    brand: rawBrand,
+                    brandGroup: groupBrand, 
                     model: document.getElementById('carModel').value,
                     year: document.getElementById('carYear').value,
+                    partCondition: document.getElementById('partCondition').value, 
+                    partCategory: document.getElementById('partCategory').value, 
                     vin: document.getElementById('carVin').value || 'لم يُدخل',
                     parts: document.getElementById('carParts').value,
                     imageData: base64Image, 
@@ -316,8 +495,7 @@
                 document.getElementById('successMsg').classList.remove('hidden');
                 setTimeout(() => document.getElementById('successMsg').classList.add('hidden'), 4000);
             } catch (error) {
-                console.error("خطأ في الإرسال: ", error);
-                alert("❌ حدث خطأ أثناء الاتصال بالسحابة.");
+                alert("❌ حدث خطأ أثناء الاتصال.");
             } finally {
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
@@ -326,36 +504,25 @@
 
         function startLiveOrdersListener() {
             const container = document.getElementById('ordersContainer');
-            container.innerHTML = '<div class="text-center py-10 text-indigo-500"><i class="fa-solid fa-wifi text-4xl mb-3 animate-ping"></i><p class="font-bold">جاري فتح القناة الحية المباشرة...</p></div>';
+            container.innerHTML = '<div class="text-center py-10 text-indigo-500"><i class="fa-solid fa-wifi text-4xl mb-3 animate-ping"></i></div>';
 
             const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
-            
             unsubscribeOrders = onSnapshot(q, (querySnapshot) => {
                 const orders = [];
-                querySnapshot.forEach((doc) => {
-                    orders.push({ id: doc.id, ...doc.data() });
-                });
-
+                querySnapshot.forEach((doc) => { orders.push({ id: doc.id, ...doc.data() }); });
+                
                 if (!isFirstLoad && querySnapshot.docChanges().some(change => change.type === "added")) {
-                    audioAlert.play().catch(e => console.log("الصوت ينتظر تفاعل"));
+                    audioAlert.play().catch(e => console.log("الصوت معلق"));
                 }
                 isFirstLoad = false;
-
+                window.currentOrders = orders; // حفظ نسخة للتحديث
                 renderOrders(orders);
-            }, (error) => {
-                console.error("خطأ في البث الحي: ", error);
-                container.innerHTML = '<div class="text-center py-10 text-red-500"><i class="fa-solid fa-triangle-exclamation text-4xl mb-3"></i><p>❌ انقطع الاتصال المباشر بالسحابة.</p></div>';
             });
         }
 
         window.deleteOrder = async function(orderId) {
-            if (confirm("⚠️ هل أنت متأكد من حذف هذا الطلب نهائياً من السحابة؟")) {
-                try {
-                    await deleteDoc(doc(db, "orders", orderId));
-                } catch (error) {
-                    console.error("خطأ أثناء الحذف: ", error);
-                    alert("❌ فشل حذف الطلب.");
-                }
+            if (confirm("⚠️ حذف الطلب نهائياً من السحابة؟")) {
+                try { await deleteDoc(doc(db, "orders", orderId)); } catch (error) {}
             }
         };
 
@@ -364,63 +531,94 @@
             document.getElementById('imageModal').classList.remove('hidden');
         };
 
+        window.copyOrderImage = async function(base64, btnElement) {
+            try {
+                const fetchRes = await fetch(base64);
+                const blob = await fetchRes.blob();
+                await navigator.clipboard.write([ new ClipboardItem({ [blob.type]: blob }) ]);
+                const originalHTML = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
+            } catch (err) { alert("انسخ الصورة يدوياً بالضغط المطول عليها."); }
+        };
+
+        window.copyOrderText = function(text, btnElement) {
+            navigator.clipboard.writeText(decodeURIComponent(text)).then(() => {
+                const originalHTML = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
+            });
+        };
+
         function renderOrders(orders) {
             const container = document.getElementById('ordersContainer');
             container.innerHTML = '';
 
             if (orders.length === 0) {
-                container.innerHTML = '<div class="text-center py-10 text-slate-500"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>لا توجد طلبات سحابية حالياً</p></div>';
+                container.innerHTML = '<div class="text-center py-10 text-slate-500"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>لا توجد طلبات</p></div>';
                 return;
             }
 
             orders.forEach(order => {
-                let targetSupplierPhones = suppliersList.other;
-                if (['تويوتا', 'لكزس'].includes(order.brand)) targetSupplierPhones = suppliersList.toyota;
-                else if (['هيونداي', 'كيا'].includes(order.brand)) targetSupplierPhones = suppliersList.korean;
-                else if (['جي ام سي', 'شفروليه', 'فورد', 'دودج'].includes(order.brand)) targetSupplierPhones = suppliersList.american;
-                else if (['مرسيدس', 'بي إم دبليو', 'أودي', 'فولكس فاجن', 'بورش'].includes(order.brand)) targetSupplierPhones = suppliersList.german;
+                const matchedSuppliers = suppliersDB.filter(sup => {
+                    const supConds = sup.conditions || ['شامل']; 
 
-                const rawMessage = `*طلب تسعير قطع غيار*\n🚗 السيارة: ${order.brand} - ${order.model}\n📅 الموديل: ${order.year}\n🔢 رقم الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
-                const supplierMessage = encodeURIComponent(rawMessage);
+                    const matchCondition = supConds.includes('شامل') || supConds.includes(order.partCondition) || order.partCondition === 'شامل';
+                    const matchBrand = sup.brands.includes('شامل') || sup.brands.includes(order.brandGroup) || sup.brands.includes('أخرى');
+                    const matchCategory = sup.categories.includes('شامل') || sup.categories.includes(order.partCategory) || order.partCategory === 'شامل' || sup.categories.includes('أخرى');
+                    
+                    return matchCondition && matchBrand && matchCategory;
+                });
 
+                let rawMessage = `*طلب تسعير قطع غيار*\n🚗 السيارة: ${order.brand} - ${order.model}\n📅 الموديل: ${order.year}\n💎 حالة القطع: ${order.partCondition === 'شامل' ? 'تسعيرة لجديد ومستعمل' : (order.partCondition || 'غير محدد')}\n🗂️ النوع: ${order.partCategory || 'غير محدد'}\n🔢 الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
+                if (order.imageData) rawMessage += `\n\n*(ملاحظة: توجد صورة مرفقة للقطعة سأرسلها لك الآن)*`;
+                
                 let imageHtml = "";
                 if (order.imageData) {
                     imageHtml = `
                         <div class="mb-3">
                             <span class="text-xs text-slate-500 font-bold block mb-1">الصورة المرفقة</span>
-                            <img src="${order.imageData}" onclick="viewImage('${order.imageData}')" class="w-24 h-24 object-cover rounded-xl border border-slate-300 cursor-pointer hover:opacity-80 transition" title="اضغط لتكبير الصورة">
+                            <img src="${order.imageData}" onclick="viewImage('${order.imageData}')" class="w-24 h-24 object-cover rounded-xl border border-slate-300 cursor-pointer hover:opacity-80 transition">
                         </div>
                     `;
                 }
 
-                let buttonsHtml = '';
-                if (targetSupplierPhones) {
-                    const numbers = targetSupplierPhones.split(/[,،]/).map(n => n.trim().replace(/[^0-9+]/g, '')).filter(n => n.length > 0);
-                    if (numbers.length > 0) {
-                        buttonsHtml = `<div class="flex flex-wrap gap-2 w-full">`;
-                        numbers.forEach((num, index) => {
-                            buttonsHtml += `<a href="https://wa.me/${num}?text=${supplierMessage}" target="_blank" class="flex-1 min-w-[80px] text-center bg-green-50 text-green-700 border border-green-200 py-2 rounded-lg text-sm font-bold hover:bg-green-600 hover:text-white transition"><i class="fa-brands fa-whatsapp ml-1"></i>مورد ${index + 1}</a>`;
-                        });
-                        buttonsHtml += `<button onclick="copyOrderText('${supplierMessage.replace(/'/g, "\\'")}', this)" class="bg-slate-100 border border-slate-200 text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-200 transition tooltip" title="نسخ النص"><i class="fa-regular fa-copy"></i></button></div>`;
-                    } else {
-                        buttonsHtml = `<p class="text-xs text-red-500 text-center w-full">يرجى إضافة رقم المورد من الإعدادات</p>`;
-                    }
+                // 🔴 بناء أزرار الموردين مع تطبيق رابط الواتساب المخصص للمورد
+                let buttonsHtml = '<div class="flex flex-wrap gap-2 w-full">';
+                if (matchedSuppliers.length > 0) {
+                    matchedSuppliers.forEach((sup) => {
+                        let supplierLink = getWhatsAppLink(sup.phone, rawMessage, waSettings.supplierApp);
+                        buttonsHtml += `<a href="${supplierLink}" target="_blank" class="flex-1 min-w-[80px] text-center bg-green-50 text-green-700 border border-green-200 py-2 rounded-lg text-sm font-bold hover:bg-green-600 hover:text-white transition tooltip" title="${sup.categories.join(', ')}"><i class="fa-brands fa-whatsapp ml-1"></i>${sup.name}</a>`;
+                    });
                 } else {
-                    buttonsHtml = `<p class="text-xs text-red-500 text-center w-full">يرجى إضافة رقم المورد من الإعدادات</p>`;
+                    buttonsHtml += `<p class="text-xs text-red-500 text-center w-full py-2 bg-red-50 rounded-lg">لا يوجد مورد يطابق (حالة+سيارة+نوع) هذا الطلب</p>`;
                 }
+                
+                let encodedMessage = encodeURIComponent(rawMessage);
+                buttonsHtml += `<div class="flex gap-2 w-full mt-1">
+                                    <button onclick="copyOrderText('${encodedMessage.replace(/'/g, "\\'")}', this)" class="flex-1 bg-slate-100 border border-slate-200 text-slate-600 px-3 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition"><i class="fa-regular fa-copy ml-1"></i>نسخ النص</button>`;
+                if (order.imageData) {
+                    buttonsHtml += `<button onclick="copyOrderImage('${order.imageData}', this)" class="flex-1 bg-indigo-100 border border-indigo-200 text-indigo-700 px-3 py-2 rounded-lg text-sm font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-image ml-1"></i>نسخ الصورة</button>`;
+                }
+                buttonsHtml += `</div></div>`;
+
+                // 🔴 بناء زر العميل مع تطبيق رابط الواتساب المخصص للعميل
+                let custPhoneStr = order.phone.replace(/^0/, '966');
+                let customerLink = getWhatsAppLink(custPhoneStr, '', waSettings.customerApp);
 
                 container.innerHTML += `
                     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4 relative">
                         <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-start">
                             <div>
-                                <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded mb-1 inline-block">${order.brand}</span>
-                                <h3 class="font-bold text-slate-800">${order.model} (${order.year})</h3>
+                                <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded inline-block">${order.brand} - ${order.partCategory || 'عام'}</span>
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded inline-block ml-1">${order.partCondition || 'غير محدد'}</span>
+                                <h3 class="font-bold text-slate-800 mt-1">${order.model} (${order.year})</h3>
                                 <p class="text-xs text-slate-500">${order.date || ''}</p>
                             </div>
                             <div class="text-left flex flex-col items-end gap-2">
-                                <button onclick="deleteOrder('${order.id}')" class="text-red-500 hover:text-red-700 transition" title="حذف الطلب نهائياً"><i class="fa-solid fa-trash-can text-lg"></i></button>
+                                <button onclick="deleteOrder('${order.id}')" class="text-red-500 hover:text-red-700 transition" title="حذف الطلب"><i class="fa-solid fa-trash-can text-lg"></i></button>
                                 <p class="text-sm font-bold text-slate-700">${order.customerName}</p>
-                                <a href="https://wa.me/${order.phone.replace(/^0/, '966')}" target="_blank" class="text-xs text-blue-600 font-bold hover:underline"><i class="fa-brands fa-whatsapp ml-1"></i>للعميل</a>
+                                <a href="${customerLink}" target="_blank" class="text-xs text-blue-600 font-bold hover:underline"><i class="fa-brands fa-whatsapp ml-1"></i>للعميل</a>
                             </div>
                         </div>
                         <div class="p-4">
@@ -442,23 +640,10 @@
             });
         }
 
-        window.copyOrderText = function(text, btnElement) {
-            navigator.clipboard.writeText(decodeURIComponent(text)).then(() => {
-                const originalHTML = btnElement.innerHTML;
-                btnElement.innerHTML = '<i class="fa-solid fa-check text-green-600"></i>';
-                setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
-            });
-        };
-
         window.openSuppliersModal = () => {
-            document.getElementById('supToyota').value = suppliersList.toyota || '';
-            document.getElementById('supKorean').value = suppliersList.korean || '';
-            document.getElementById('supAmerican').value = suppliersList.american || '';
-            document.getElementById('supGerman').value = suppliersList.german || '';
-            document.getElementById('supOther').value = suppliersList.other || '';
+            renderSuppliersModalList();
             document.getElementById('suppliersModal').classList.remove('hidden');
         };
-        
         window.closeSuppliersModal = () => document.getElementById('suppliersModal').classList.add('hidden');
     </script>
 </body>
