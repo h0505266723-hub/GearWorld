@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عالم التروس - منصة الطلبات الذكية</title>
+    <title>طلب تسعيرة قطع غيار</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -11,89 +11,299 @@
         body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
         .hidden { display: none !important; }
         ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #334155; cursor: pointer; }
         .checkbox-label input { width: 1rem; height: 1rem; accent-color: #4f46e5; cursor: pointer; }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="text-slate-800">
 
     <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-indigo-700"><i class="fa-solid fa-gears ml-2"></i>عالم التروس</h1>
-            <button onclick="switchTab('admin')" class="text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition">التاجر</button>
+            <h1 class="text-xl font-bold text-indigo-700"><i class="fa-solid fa-gears ml-2"></i>قطع غيار</h1>
+            <button onclick="switchTab('admin')" class="text-sm font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition"><i class="fa-solid fa-lock ml-1"></i>لوحة التاجر</button>
         </div>
     </nav>
 
     <main class="max-w-md mx-auto p-4 pb-24">
+        
         <section id="customer-view" class="block">
             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-                <h2 class="text-2xl font-bold text-center text-slate-800 mb-6">طلب تسعيرة قطع</h2>
+                <h2 class="text-2xl font-bold text-center text-slate-800 mb-2">طلب تسعيرة قطع</h2>
+                <p class="text-center text-slate-500 text-sm mb-6">أدخل بيانات سيارتك للحصول على أفضل سعر</p>
+                
                 <form id="orderForm" class="space-y-4">
-                    <input type="text" id="custName" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 outline-none" placeholder="اسم العميل">
-                    <input type="tel" id="custPhone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 outline-none" placeholder="رقم الواتساب (05...)">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">اسم العميل</label>
+                        <input type="text" id="custName" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="مثال: أحمد">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الواتساب</label>
+                        <input type="tel" id="custPhone" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="05xxxxxxxx">
+                    </div>
                     
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="carOrigin" required class="p-2 border rounded-lg text-sm bg-slate-50">
-                            <option value="" disabled selected>الصناعة</option>
-                            <option value="ياباني">ياباني</option><option value="أمريكي">أمريكي</option>
-                            <option value="كوري">كوري</option><option value="صيني">صيني</option>
-                            <option value="أوروبي">أوروبي</option><option value="أخرى">أخرى</option>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">صناعة السيارة</label>
+                            <select id="carOrigin" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition bg-slate-50">
+                                <option value="" disabled selected>اختر الصناعة</option>
+                                <option value="ياباني">ياباني 🇯🇵</option>
+                                <option value="أمريكي">أمريكي 🇺🇸</option>
+                                <option value="كوري">كوري 🇰🇷</option>
+                                <option value="صيني">صيني 🇨🇳</option>
+                                <option value="أوروبي">ألماني وأوروبي 🇪🇺</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">ماركة السيارة</label>
+                            <select id="carBrandSpecific" required disabled class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition disabled:bg-slate-100 disabled:opacity-50">
+                                <option value="" disabled selected>اختر الصناعة أولاً</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">اسم السيارة / الفئة</label>
+                            <input type="text" id="carModel" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="مثال: كامري">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">الموديل (السنة)</label>
+                            <select id="carYear" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                                <option value="" disabled selected>اختر السنة</option>
+                                <script>
+                                    for(let y=2028; y>=1990; y--) document.write(`<option value="${y}">${y}</option>`);
+                                </script>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">حالة القطع المطلوبة (مهم)</label>
+                        <select id="partCondition" required class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:ring-2 focus:ring-amber-500 outline-none transition bg-amber-50 text-amber-900 font-semibold">
+                            <option value="" disabled selected>اختر حالة القطع...</option>
+                            <option value="جديد">قطع جديدة (وكالة أو تجاري)</option>
+                            <option value="مستعمل">قطع مستعملة (تشليح أو مستورد)</option>
+                            <option value="شامل">لا يهم / أريد تسعيرة للجديد والمستعمل</option>
                         </select>
-                        <select id="carBrandSpecific" required disabled class="p-2 border rounded-lg text-sm bg-slate-100"><option value="" disabled selected>اختر الصناعة</option></select>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="carModel" required class="p-2 border rounded-lg text-sm" placeholder="نوع السيارة">
-                        <select id="carYear" required class="p-2 border rounded-lg text-sm"><option value="" disabled selected>الموديل</option><script>for(let y=2028; y>=1990; y--) document.write(`<option value="${y}">${y}</option>`);</script></select>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">تصنيف نوع القطع (مهم)</label>
+                        <select id="partCategory" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition bg-indigo-50">
+                            <option value="" disabled selected>اختر نوع القطع...</option>
+                            <option value="ميكانيكا ومحركات">ميكانيكا ومحركات (مكائن، جربوكس، رديتر...)</option>
+                            <option value="بودي وهيكل خارجي">بودي وهيكل خارجي (صدامات، أبواب، شمعات...)</option>
+                            <option value="عكوس ومساعدات">عكوس ونظام تعليق (مقصات، فحمات، هوبات...)</option>
+                            <option value="كهرباء وإلكترونيات">كهرباء وإلكترونيات (ظفائر، حساسات، كمبيوتر...)</option>
+                            <option value="زجاج ومرايا">زجاج ومرايا</option>
+                            <option value="شامل">تشكيلة متنوعة (أكثر من نوع معاً)</option>
+                            <option value="أخرى">أخرى (قطع غير مصنفة)</option>
+                        </select>
                     </div>
 
-                    <select id="partCondition" required class="w-full p-2 border rounded-lg text-sm bg-amber-50 font-bold"><option value="" disabled selected>حالة القطع...</option><option value="جديد">جديد</option><option value="مستعمل">مستعمل</option><option value="شامل">جديد ومستعمل</option></select>
-                    <select id="partCategory" required class="w-full p-2 border rounded-lg text-sm bg-indigo-50 font-bold">
-                        <option value="" disabled selected>قسم القطع...</option>
-                        <option value="ميكانيكا ومحركات">ميكانيكا ومحركات</option><option value="جيربوكس">جيربوكس</option><option value="عكوس ومساعدات">عكوس ومساعدات</option>
-                        <option value="كهرباء وإلكترونيات">كهرباء</option><option value="بودي وهيكل خارجي">بدي وخارجي</option>
-                        <option value="زجاج ومرايا">زجاج ومرايا</option><option value="زيوت وسوائل">زيوت وفلاتر</option>
-                        <option value="زينة وإكسسوارات">زينة</option><option value="أخرى">أخرى</option>
-                    </select>
-
-                    <input type="text" id="carVin" class="w-full p-2 border rounded-lg text-sm uppercase" placeholder="رقم الهيكل (اختياري)">
-                    <textarea id="carParts" required rows="3" class="w-full p-2 border rounded-lg text-sm" placeholder="القطع المطلوبة..."></textarea>
-                    <input type="file" id="carImage" accept="image/*" class="w-full text-xs">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">رقم الهيكل (الشاصيه)</label>
+                            <input type="text" id="carVin" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase text-left" dir="ltr" placeholder="17 حرف ورقم">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">إرفاق صورة (اختياري)</label>
+                            <input type="file" id="carImage" accept="image/*" class="w-full px-2 py-2 text-xs rounded-xl border border-slate-300 outline-none file:ml-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition">
+                        </div>
+                    </div>
                     
-                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl">إرسال الطلب</button>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">القطع المطلوبة بالتفصيل</label>
+                        <textarea id="carParts" required rows="4" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition" placeholder="1. فحمات أمامية&#10;2. فلتر زيت&#10;..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl shadow-md hover:bg-indigo-700 transition mt-4">إرسال الطلب</button>
                 </form>
+                <div id="successMsg" class="hidden mt-4 p-4 bg-green-50 text-green-700 rounded-xl text-center font-bold">
+                    <i class="fa-solid fa-circle-check text-2xl mb-2 block"></i>تم إرسال طلبك بنجاح! سنتواصل معك قريباً بالتسعيرة.
+                </div>
             </div>
         </section>
 
         <section id="admin-view" class="hidden">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold">الطلبات <span class="bg-red-500 text-white text-xs px-2 rounded-full animate-pulse">مباشر</span></h2>
+                <h2 class="text-2xl font-bold text-slate-800">الطلبات <span id="liveBadge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-normal animate-pulse">مباشر حى</span></h2>
                 <div class="flex gap-2">
-                    <button onclick="openWaSettingsModal()" class="bg-green-100 text-green-700 px-3 py-1 rounded-lg"><i class="fa-brands fa-whatsapp"></i></button>
-                    <button onclick="openSuppliersModal()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg">الموردين</button>
+                    <button onclick="openWaSettingsModal()" class="bg-green-100 text-green-700 px-2.5 py-1.5 rounded-lg text-lg font-bold hover:bg-green-200 transition tooltip" title="إعدادات الأرقام"><i class="fa-brands fa-whatsapp"></i></button>
+                    <button onclick="openSuppliersModal()" class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-address-book ml-1"></i>الموردين</button>
+                    <button onclick="switchTab('customer')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-300 transition">النموذج</button>
                 </div>
             </div>
+            
             <div id="ordersContainer" class="space-y-4"></div>
         </section>
     </main>
 
-    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50">
-        <div class="bg-white rounded-2xl p-4 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <h3 class="font-bold mb-3">إدارة الموردين</h3>
-            <div id="supplierFormContainer" class="bg-slate-50 p-3 rounded-xl border mb-3">
-                <input type="text" id="newSupName" placeholder="اسم المورد" class="w-full p-2 mb-2 border rounded text-sm">
-                <input type="tel" id="newSupPhone" placeholder="واتس 9665..." class="w-full p-2 mb-2 border rounded text-sm" dir="ltr">
-                <button id="addSupBtn" onclick="addSupplierCloud()" class="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm">حفظ</button>
+    <div id="waSettingsModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-800">إعدادات أرقام الواتساب</h3>
+                <button onclick="closeWaSettingsModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <div id="suppliersListContainer" class="space-y-2"></div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-indigo-700 mb-1">عند مراسلة (العميل) افتح:</label>
+                    <select id="custWaType" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-indigo-500">
+                        <option value="default">الافتراضي (حسب إعدادات الجهاز)</option>
+                        <option value="wa_web">واتساب ويب (من متصفح اللابتوب)</option>
+                        <option value="wa_app">برنامج الواتساب المثبت (PC/Mac)</option>
+                        <option value="android_normal">واتساب العادي (لأجهزة الأندرويد)</option>
+                        <option value="android_business">واتساب للأعمال (لأجهزة الأندرويد)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-emerald-700 mb-1">عند مراسلة (المورد) افتح:</label>
+                    <select id="supWaType" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:border-emerald-500">
+                        <option value="default">الافتراضي (حسب إعدادات الجهاز)</option>
+                        <option value="wa_web">واتساب ويب (من متصفح اللابتوب)</option>
+                        <option value="wa_app">برنامج الواتساب المثبت (PC/Mac)</option>
+                        <option value="android_normal">واتساب العادي (لأجهزة الأندرويد)</option>
+                        <option value="android_business">واتساب للأعمال (لأجهزة الأندرويد)</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="saveWaSettings()" class="w-full bg-slate-800 text-white text-sm font-bold py-2.5 rounded-lg mt-5 hover:bg-slate-900 transition">حفظ إعدادات التوجيه</button>
         </div>
     </div>
 
-    <div id="waSettingsModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/50">
-        <div class="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl">
-            <h3 class="font-bold mb-4">إعدادات الواتساب</h3>
-            <button onclick="closeWaSettingsModal()" class="w-full bg-slate-800 text-white py-2 rounded-lg text-sm">إغلاق</button>
+    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl p-4 max-w-md w-full mx-4 shadow-2xl max-h-[95vh] flex flex-col">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-xl font-bold text-slate-800">سجل الموردين وإدارتهم</h3>
+                <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div id="supplierFormContainer" class="mb-3 bg-slate-50 p-3 rounded-xl border border-slate-200 overflow-y-auto max-h-[55vh]">
+                <h4 id="formTitle" class="text-sm font-bold text-indigo-700 mb-2"><i class="fa-solid fa-plus ml-1"></i>إضافة مورد جديد</h4>
+                
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <input type="text" id="newSupName" placeholder="اسم المورد (أبو علي)" class="px-2 py-2 text-sm border rounded outline-none focus:border-indigo-500">
+                    <input type="tel" id="newSupPhone" placeholder="رقم الواتس (9665...)" class="px-2 py-2 text-sm border rounded outline-none focus:border-indigo-500" dir="ltr">
+                </div>
+                
+                <div class="mb-3 bg-white p-2 rounded border border-amber-200">
+                    <span class="block text-xs font-bold text-amber-800 mb-1 border-b border-amber-100 pb-1">حالة القطع التي يبيعها:</span>
+                    <div class="grid grid-cols-3 gap-2 mt-2">
+                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cond-cb font-bold">شامل (الكل)</label>
+                        <label class="checkbox-label"><input type="checkbox" value="جديد" class="cond-cb">جديد</label>
+                        <label class="checkbox-label"><input type="checkbox" value="مستعمل" class="cond-cb">مستعمل (تشليح)</label>
+                    </div>
+                </div>
+
+                <div class="mb-3 bg-white p-2 rounded border border-slate-300">
+                    <span class="block text-xs font-bold text-slate-800 mb-2 border-b pb-1">تخصص السيارات (اختر الماركات):</span>
+                    <label class="checkbox-label mb-2 p-1 bg-indigo-50 rounded border border-indigo-100"><input type="checkbox" value="شامل الكل" class="brand-cb font-bold text-indigo-700">شامل جميع سيارات العالم</label>
+                    
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات اليابانية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل ياباني" class="brand-cb">شامل (كل الياباني)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="تويوتا" class="brand-cb">تويوتا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لكزس" class="brand-cb">لكزس</label>
+                            <label class="checkbox-label"><input type="checkbox" value="نيسان" class="brand-cb">نيسان</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إنفينيتي" class="brand-cb">إنفينيتي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هوندا" class="brand-cb">هوندا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="مازدا" class="brand-cb">مازدا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="ميتسوبيشي" class="brand-cb">ميتسوبيشي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="سوزوكي" class="brand-cb">سوزوكي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="سوبارو" class="brand-cb">سوبارو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إيسوزو" class="brand-cb">إيسوزو</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الأمريكية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل أمريكي" class="brand-cb">شامل (كل الأمريكي)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فورد" class="brand-cb">فورد</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شفروليه" class="brand-cb">شفروليه</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جي ام سي" class="brand-cb">جي ام سي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="دودج" class="brand-cb">دودج</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كرايسلر" class="brand-cb">كرايسلر</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جيب" class="brand-cb">جيب</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كاديلاك" class="brand-cb">كاديلاك</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لينكولن" class="brand-cb">لينكولن</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الكورية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل كوري" class="brand-cb">شامل (كل الكوري)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هيونداي" class="brand-cb">هيونداي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كيا" class="brand-cb">كيا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جينيسيس" class="brand-cb">جينيسيس</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1 mb-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الصينية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل صيني" class="brand-cb">شامل (كل الصيني)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شانجان" class="brand-cb">شانجان</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جيلي" class="brand-cb">جيلي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إم جي" class="brand-cb">إم جي (MG)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هافال" class="brand-cb">هافال</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شيري" class="brand-cb">شيري</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بيستون" class="brand-cb">بيستون</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بي واي دي" class="brand-cb">بي واي دي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جاك" class="brand-cb">جاك (JAC)</label>
+                        </div>
+                    </details>
+
+                    <details class="bg-slate-50 border border-slate-200 rounded p-1">
+                        <summary class="font-bold cursor-pointer text-xs p-2 hover:bg-slate-100 rounded text-slate-700"><i class="fa-solid fa-caret-down ml-1 text-slate-400"></i>السيارات الأوروبية</summary>
+                        <div class="grid grid-cols-2 gap-2 p-2 mt-1 bg-white rounded border border-slate-100">
+                            <label class="checkbox-label col-span-2 text-indigo-600 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل أوروبي" class="brand-cb">شامل (كل الأوروبي)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="مرسيدس" class="brand-cb">مرسيدس</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بي إم دبليو" class="brand-cb">بي إم دبليو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="أودي" class="brand-cb">أودي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فولكس فاجن" class="brand-cb">فولكس فاجن</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بورش" class="brand-cb">بورش</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لاند روفر" class="brand-cb">لاند روفر</label>
+                            <label class="checkbox-label"><input type="checkbox" value="رينو" class="brand-cb">رينو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بيجو" class="brand-cb">بيجو</label>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="mb-3 bg-white p-2 rounded border border-slate-200">
+                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص الأقسام:</span>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cat-cb font-bold">شامل / كل الأقسام</label>
+                        <label class="checkbox-label"><input type="checkbox" value="ميكانيكا ومحركات" class="cat-cb">ميكانيكا ومحركات</label>
+                        <label class="checkbox-label"><input type="checkbox" value="بودي وهيكل خارجي" class="cat-cb">بودي وهيكل خارجي</label>
+                        <label class="checkbox-label"><input type="checkbox" value="عكوس ومساعدات" class="cat-cb">عكوس ونظام تعليق</label>
+                        <label class="checkbox-label"><input type="checkbox" value="كهرباء وإلكترونيات" class="cat-cb">كهرباء وإلكترونيات</label>
+                        <label class="checkbox-label"><input type="checkbox" value="زجاج ومرايا" class="cat-cb">زجاج ومرايا</label>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button id="addSupBtn" onclick="addSupplierCloud()" class="flex-1 bg-indigo-600 text-white text-sm font-bold py-2 rounded-lg hover:bg-indigo-700 transition">حفظ المورد سحابياً</button>
+                    <button id="cancelEditBtn" onclick="cancelEdit()" class="hidden bg-slate-200 text-slate-700 text-sm font-bold py-2 px-4 rounded-lg hover:bg-slate-300 transition">إلغاء</button>
+                </div>
+            </div>
+
+            <h4 class="text-sm font-bold text-slate-700 mb-2 border-b pb-1">الموردين المسجلين:</h4>
+            <div class="overflow-y-auto pr-1 flex-1 space-y-2" id="suppliersListContainer"></div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm" onclick="this.classList.add('hidden')">
+        <div class="max-w-2xl max-h-[85vh] p-2 relative">
+            <img id="modalImg" src="" class="max-w-full max-h-[80vh] rounded-xl shadow-2xl mx-auto object-contain">
+            <p class="text-white text-center mt-2 text-sm">اضغط للإغلاق</p>
         </div>
     </div>
 
@@ -101,49 +311,430 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // CONFIG (تأكد من إدخال مفاتيحك هنا)
-        const firebaseConfig = { apiKey: "AIzaSy...", projectId: "gearworld-20a74", ... };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCM9wFHiqRgScPFOLUOpGcpz7FfJbyQNFo",
+            authDomain: "gearworld-20a74.firebaseapp.com",
+            projectId: "gearworld-20a74",
+            storageBucket: "gearworld-20a74.firebasestorage.app",
+            messagingSenderId: "706572511444",
+            appId: "1:706572511444:web:23ec37e6e3c73305ce3341"
+        };
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const adminPassword = "123";
-        let suppliersDB = [];
-        let unsubscribeOrders = null;
-        window.currentOrders = [];
 
-        // منطق الماركات للفلترة الهرمية
-        const carBrandsData = { "ياباني": ["تويوتا", "لكزس", "نيسان", "ميتسوبيشي", "أخرى"], "أمريكي": ["فورد", "شفروليه", "دودج", "أخرى"], "كوري": ["هيونداي", "كيا", "أخرى"], "صيني": ["شانجان", "جيلي", "أخرى"], "أوروبي": ["مرسيدس", "بي إم دبليو", "أخرى"] };
+        const adminPassword = "123";
+        let suppliersDB = []; 
+        let unsubscribeOrders = null; 
+        let isFirstLoad = true; 
+        window.currentOrders = []; 
+        let editingSupId = null; // 🔴 متغير جديد لحفظ الـ ID للمورد الجاري تعديله
+
+        let waSettings = JSON.parse(localStorage.getItem('waSettings')) || { customerApp: 'default', supplierApp: 'default' };
+        const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
+
+        const carBrandsData = {
+            "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوبارو", "سوزوكي", "إيسوزو", "أخرى"],
+            "أمريكي": ["فورد", "شفروليه", "جي ام سي", "دودج", "كرايسلر", "جيب", "كاديلاك", "لينكولن", "تيسلا", "أخرى"],
+            "كوري": ["هيونداي", "كيا", "جينيسيس", "أخرى"],
+            "صيني": ["شانجان", "جيلي", "إم جي", "هافال", "شيري", "بيستون", "بايك", "جاك", "بي واي دي", "جريت وال", "أخرى"],
+            "أوروبي": ["مرسيدس", "بي إم دبليو", "أودي", "فولكس فاجن", "بورش", "لاند روفر", "رينو", "بيجو", "أخرى"],
+            "أخرى": ["أخرى"]
+        };
+
         document.getElementById('carOrigin').addEventListener('change', function() {
-            const b = document.getElementById('carBrandSpecific');
-            b.innerHTML = '<option value="" disabled selected>اختر الماركة</option>';
-            carBrandsData[this.value]?.forEach(m => b.innerHTML += `<option value="${m}">${m}</option>`);
-            b.disabled = false;
+            const origin = this.value;
+            const brandSelect = document.getElementById('carBrandSpecific');
+            brandSelect.innerHTML = '<option value="" disabled selected>اختر الماركة</option>';
+            if(carBrandsData[origin]) {
+                carBrandsData[origin].forEach(brand => {
+                    brandSelect.innerHTML += `<option value="${brand}">${brand}</option>`;
+                });
+                brandSelect.disabled = false;
+            } else { brandSelect.disabled = true; }
         });
 
-        // تشغيل البث المباشر
-        function startLiveOrdersListener() {
-            const container = document.getElementById('ordersContainer');
-            const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
-            unsubscribeOrders = onSnapshot(q, (snap) => {
-                window.currentOrders = [];
-                snap.forEach(d => window.currentOrders.push({id: d.id, ...d.data()}));
-                renderOrders(window.currentOrders);
+        window.getWhatsAppLink = function(phone, text, type) {
+            let t = text ? encodeURIComponent(text) : '';
+            let p = phone.replace(/[^0-9+]/g, ''); 
+            if (type === 'wa_web') return `https://web.whatsapp.com/send?phone=${p}&text=${t}`;
+            if (type === 'wa_app') return `whatsapp://send?phone=${p}&text=${t}`;
+            if (type === 'android_normal') return `intent://send?phone=${p}&text=${t}#Intent;package=com.whatsapp;scheme=whatsapp;end;`;
+            if (type === 'android_business') return `intent://send?phone=${p}&text=${t}#Intent;package=com.whatsapp.w4b;scheme=whatsapp;end;`;
+            return `https://wa.me/${p}?text=${t}`; 
+        };
+
+        window.openWaSettingsModal = () => {
+            document.getElementById('custWaType').value = waSettings.customerApp;
+            document.getElementById('supWaType').value = waSettings.supplierApp;
+            document.getElementById('waSettingsModal').classList.remove('hidden');
+        };
+        window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
+        window.saveWaSettings = () => {
+            waSettings = { customerApp: document.getElementById('custWaType').value, supplierApp: document.getElementById('supWaType').value };
+            localStorage.setItem('waSettings', JSON.stringify(waSettings));
+            closeWaSettingsModal();
+            renderOrders(window.currentOrders);
+            alert("✅ تم تطبيق الإعدادات.");
+        };
+
+        function convertImageToBase64(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) resolve(""); 
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
             });
         }
 
-        // إضافة مورد
-        window.addSupplierCloud = async function() { /* منطق الحفظ السحابي */ };
-        
-        // عرض الطلبات
-        function renderOrders(orders) { /* منطق الفلترة والعرض */ }
+        async function autoCleanOldOrders() {
+            try {
+                const now = new Date().getTime();
+                const twentyDaysInMs = 20 * 24 * 60 * 60 * 1000; 
+                const querySnapshot = await getDocs(collection(db, "orders"));
+                querySnapshot.forEach(async (docSnap) => {
+                    const data = docSnap.data();
+                    if (data.timestamp && data.timestamp.toMillis) {
+                        if (now - data.timestamp.toMillis() > twentyDaysInMs) {
+                            await deleteDoc(doc(db, "orders", docSnap.id)); 
+                        }
+                    }
+                });
+            } catch (error) { console.error(error); }
+        }
 
-        // التبديل بين الشاشات
         window.switchTab = async function(tab) {
-            if(tab === 'admin') { /* طلب كلمة السر وتفعيل البث */ }
-            // باقي منطق التبديل
+            if (tab === 'admin') {
+                const pass = prompt("🔒 الرجاء إدخال الرقم السري لفتح لوحة التاجر:");
+                if (pass !== adminPassword) { alert("❌ كلمة المرور غير صحيحة!"); return; }
+                await loadSuppliersFromCloud();
+                await autoCleanOldOrders(); 
+                startLiveOrdersListener(); 
+            } else {
+                if(unsubscribeOrders) { unsubscribeOrders(); unsubscribeOrders = null; }
+            }
+            document.getElementById('customer-view').classList.toggle('hidden', tab !== 'customer');
+            document.getElementById('admin-view').classList.toggle('hidden', tab !== 'admin');
         };
 
-        // دالة الحذف التلقائي
-        async function autoCleanOldOrders() { /* منطق الحذف بعد 20 يوم */ }
+        async function loadSuppliersFromCloud() {
+            try {
+                // 🔴 اسم الجدول تم تثبيته ولن يتغير أبداً
+                const docRef = doc(db, "settings", "suppliers_advanced_v4");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().list) {
+                    suppliersDB = docSnap.data().list;
+                } else { suppliersDB = []; }
+                renderSuppliersModalList();
+            } catch (error) { console.error(error); }
+        }
+
+        // 🔴 دالة جلب بيانات المورد لنموذج التعديل
+        window.editSupplier = function(id) {
+            const sup = suppliersDB.find(s => s.id === id);
+            if(!sup) return;
+
+            editingSupId = id;
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square ml-1"></i>تعديل بيانات المورد';
+            document.getElementById('newSupName').value = sup.name;
+            document.getElementById('newSupPhone').value = sup.phone;
+
+            document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = sup.conditions.includes(cb.value));
+            document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = sup.brands.includes(cb.value));
+            document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = sup.categories.includes(cb.value));
+
+            const btn = document.getElementById('addSupBtn');
+            btn.innerHTML = 'تحديث بيانات المورد سحابياً';
+            btn.classList.replace('bg-indigo-600', 'bg-emerald-600');
+            btn.classList.replace('hover:bg-indigo-700', 'hover:bg-emerald-700');
+            
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+            document.getElementById('supplierFormContainer').scrollTop = 0; // رفع التمرير للأعلى
+        };
+
+        // 🔴 دالة إلغاء التعديل والعودة لوضع الإضافة
+        window.cancelEdit = function() {
+            editingSupId = null;
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus ml-1"></i>إضافة مورد جديد';
+            document.getElementById('newSupName').value = '';
+            document.getElementById('newSupPhone').value = '';
+            document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
+
+            const btn = document.getElementById('addSupBtn');
+            btn.innerHTML = 'حفظ المورد سحابياً';
+            btn.classList.replace('bg-emerald-600', 'bg-indigo-600');
+            btn.classList.replace('hover:bg-emerald-700', 'hover:bg-indigo-700');
+            
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        };
+
+        window.addSupplierCloud = async function() {
+            const name = document.getElementById('newSupName').value.trim();
+            const phone = document.getElementById('newSupPhone').value.trim().replace(/[^0-9+]/g, '');
+            
+            const selectedConditions = Array.from(document.querySelectorAll('.cond-cb:checked')).map(cb => cb.value);
+            const selectedBrands = Array.from(document.querySelectorAll('.brand-cb:checked')).map(cb => cb.value);
+            const selectedCategories = Array.from(document.querySelectorAll('.cat-cb:checked')).map(cb => cb.value);
+
+            if(!name || !phone) { alert("يرجى إدخال اسم ورقم المورد!"); return; }
+            if(selectedConditions.length === 0) { alert("يرجى تحديد حالة القطع!"); return; }
+            if(selectedBrands.length === 0) { alert("يرجى تحديد تخصص السيارات!"); return; }
+            if(selectedCategories.length === 0) { alert("يرجى تحديد تخصص القطع!"); return; }
+
+            const btn = document.getElementById('addSupBtn');
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
+
+            // 🔴 التمييز بين الإضافة الجديدة وتحديث مورد موجود
+            if (editingSupId) {
+                suppliersDB = suppliersDB.map(s => s.id === editingSupId ? {
+                    ...s, name: name, phone: phone, conditions: selectedConditions, brands: selectedBrands, categories: selectedCategories
+                } : s);
+            } else {
+                suppliersDB.push({
+                    id: Date.now().toString(),
+                    name: name,
+                    phone: phone,
+                    conditions: selectedConditions,
+                    brands: selectedBrands,
+                    categories: selectedCategories
+                });
+            }
+
+            try {
+                await setDoc(doc(db, "settings", "suppliers_advanced_v4"), { list: suppliersDB });
+                cancelEdit(); // لتفريغ الحقول وإعادة الأزرار لطبيعتها
+                renderSuppliersModalList();
+                renderOrders(window.currentOrders);
+            } catch (error) { 
+                alert("فشل الحفظ السحابي"); 
+                btn.innerHTML = originalBtnText; btn.disabled = false;
+            } 
+        };
+
+        window.deleteSupplier = async function(id) {
+            if(confirm("حذف هذا المورد نهائياً؟")) {
+                suppliersDB = suppliersDB.filter(s => s.id !== id);
+                try {
+                    await setDoc(doc(db, "settings", "suppliers_advanced_v4"), { list: suppliersDB });
+                    renderSuppliersModalList();
+                    renderOrders(window.currentOrders);
+                } catch (error) {}
+            }
+        };
+
+        function renderSuppliersModalList() {
+            const container = document.getElementById('suppliersListContainer');
+            container.innerHTML = '';
+            if(suppliersDB.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا يوجد موردين مسجلين بعد.</p>'; return;
+            }
+            suppliersDB.forEach(sup => {
+                const condsText = sup.conditions.join('، '); 
+                const catsText = sup.categories.join('، ');
+                let brandsText = sup.brands.join('، ');
+                if(brandsText.length > 50) brandsText = brandsText.substring(0, 50) + "..."; 
+                
+                container.innerHTML += `
+                    <div class="flex justify-between items-center bg-white border border-slate-200 p-3 rounded-lg text-sm">
+                        <div class="flex-1">
+                            <p class="font-bold text-slate-800 text-base">${sup.name} <span class="text-xs text-slate-400 bg-slate-100 px-1 rounded" dir="ltr">${sup.phone}</span></p>
+                            <p class="text-[0.70rem] text-slate-500 mt-1"><span class="font-bold text-amber-600">الحالة:</span> ${condsText}</p>
+                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-indigo-600">الماركات:</span> ${brandsText}</p>
+                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-emerald-600">الأقسام:</span> ${catsText}</p>
+                        </div>
+                        <div class="flex flex-col gap-1 ml-2">
+                            <button onclick="editSupplier('${sup.id}')" class="text-blue-500 hover:text-blue-700 p-2 bg-blue-50 rounded-lg tooltip" title="تعديل"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteSupplier('${sup.id}')" class="text-red-500 hover:text-red-700 p-2 bg-red-50 rounded-lg tooltip" title="حذف"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الطلب...';
+            submitBtn.disabled = true;
+
+            try {
+                const imageFile = document.getElementById('carImage').files[0];
+                let base64Image = "";
+                if(imageFile) {
+                    if (imageFile.size > 700 * 1024) { 
+                        alert("❌ حجم الصورة كبير جداً، يرجى إرفاق صورة بحجم أقل من 700 كيلوبايت لضمان سرعة الإرسال.");
+                        submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; return;
+                    }
+                    base64Image = await convertImageToBase64(imageFile);
+                }
+
+                const brandGroup = document.getElementById('carOrigin').value; 
+                const brandSpecific = document.getElementById('carBrandSpecific').value; 
+
+                const newOrder = {
+                    customerName: document.getElementById('custName').value,
+                    phone: document.getElementById('custPhone').value,
+                    brandGroup: brandGroup, 
+                    brand: brandSpecific,
+                    model: document.getElementById('carModel').value,
+                    year: document.getElementById('carYear').value,
+                    partCondition: document.getElementById('partCondition').value, 
+                    partCategory: document.getElementById('partCategory').value, 
+                    vin: document.getElementById('carVin').value || 'لم يُدخل',
+                    parts: document.getElementById('carParts').value,
+                    imageData: base64Image, 
+                    date: new Date().toLocaleString('ar-SA'),
+                    timestamp: serverTimestamp() 
+                };
+
+                await addDoc(collection(db, "orders"), newOrder);
+                this.reset();
+                document.getElementById('carBrandSpecific').disabled = true; 
+                document.getElementById('successMsg').classList.remove('hidden');
+                setTimeout(() => document.getElementById('successMsg').classList.add('hidden'), 4000);
+            } catch (error) { alert("❌ حدث خطأ أثناء الاتصال."); } 
+            finally { submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; }
+        });
+
+        function startLiveOrdersListener() {
+            const container = document.getElementById('ordersContainer');
+            container.innerHTML = '<div class="text-center py-10 text-indigo-500"><i class="fa-solid fa-wifi text-4xl mb-3 animate-ping"></i></div>';
+
+            const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+            unsubscribeOrders = onSnapshot(q, (querySnapshot) => {
+                const orders = [];
+                querySnapshot.forEach((doc) => { orders.push({ id: doc.id, ...doc.data() }); });
+                
+                if (!isFirstLoad && querySnapshot.docChanges().some(change => change.type === "added")) {
+                    audioAlert.play().catch(e => console.log("الصوت معلق"));
+                }
+                isFirstLoad = false;
+                window.currentOrders = orders; 
+                renderOrders(orders);
+            });
+        }
+
+        window.deleteOrder = async function(orderId) {
+            if (confirm("⚠️ حذف الطلب نهائياً من السحابة؟")) {
+                try { await deleteDoc(doc(db, "orders", orderId)); } catch (error) {}
+            }
+        };
+
+        window.viewImage = function(src) {
+            document.getElementById('modalImg').src = src; document.getElementById('imageModal').classList.remove('hidden');
+        };
+
+        window.copyOrderImage = async function(base64, btnElement) {
+            try {
+                const fetchRes = await fetch(base64); const blob = await fetchRes.blob();
+                await navigator.clipboard.write([ new ClipboardItem({ [blob.type]: blob }) ]);
+                const originalHTML = btnElement.innerHTML; btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
+            } catch (err) { alert("انسخ الصورة يدوياً بالضغط المطول عليها."); }
+        };
+
+        window.copyOrderText = function(text, btnElement) {
+            navigator.clipboard.writeText(decodeURIComponent(text)).then(() => {
+                const originalHTML = btnElement.innerHTML; btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
+            });
+        };
+
+        function renderOrders(orders) {
+            const container = document.getElementById('ordersContainer');
+            container.innerHTML = '';
+
+            if (orders.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-slate-500"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>لا توجد طلبات</p></div>'; return;
+            }
+
+            orders.forEach(order => {
+                const matchedSuppliers = suppliersDB.filter(sup => {
+                    const matchCondition = sup.conditions.includes('شامل') || sup.conditions.includes(order.partCondition) || order.partCondition === 'شامل';
+                    const matchBrand = sup.brands.includes('شامل الكل') || sup.brands.includes('شامل ' + order.brandGroup) || sup.brands.includes(order.brand);
+                    const matchCategory = sup.categories.includes('شامل') || sup.categories.includes(order.partCategory) || order.partCategory === 'شامل';
+                    
+                    return matchCondition && matchBrand && matchCategory;
+                });
+
+                let rawMessage = `*طلب تسعير قطع غيار*\n🚗 السيارة: ${order.brand} - ${order.model}\n📅 الموديل: ${order.year}\n💎 حالة القطع: ${order.partCondition === 'شامل' ? 'تسعيرة لجديد ومستعمل' : (order.partCondition || 'غير محدد')}\n🗂️ النوع: ${order.partCategory || 'غير محدد'}\n🔢 الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
+                if (order.imageData) rawMessage += `\n\n*(ملاحظة: توجد صورة مرفقة للقطعة سأرسلها لك الآن)*`;
+                
+                let imageHtml = "";
+                if (order.imageData) {
+                    imageHtml = `
+                        <div class="mb-3">
+                            <span class="text-xs text-slate-500 font-bold block mb-1">الصورة المرفقة</span>
+                            <img src="${order.imageData}" onclick="viewImage('${order.imageData}')" class="w-24 h-24 object-cover rounded-xl border border-slate-300 cursor-pointer hover:opacity-80 transition">
+                        </div>
+                    `;
+                }
+
+                let buttonsHtml = '<div class="flex flex-wrap gap-2 w-full">';
+                if (matchedSuppliers.length > 0) {
+                    matchedSuppliers.forEach((sup) => {
+                        let supplierLink = getWhatsAppLink(sup.phone, rawMessage, waSettings.supplierApp);
+                        buttonsHtml += `<a href="${supplierLink}" target="_blank" class="flex-1 min-w-[80px] text-center bg-green-50 text-green-700 border border-green-200 py-2 rounded-lg text-sm font-bold hover:bg-green-600 hover:text-white transition tooltip" title="${sup.categories.join(', ')}"><i class="fa-brands fa-whatsapp ml-1"></i>${sup.name}</a>`;
+                    });
+                } else {
+                    buttonsHtml += `<p class="text-xs text-red-500 text-center w-full py-2 bg-red-50 rounded-lg">لا يوجد مورد يطابق (حالة+ماركة+نوع) هذا الطلب</p>`;
+                }
+                
+                let encodedMessage = encodeURIComponent(rawMessage);
+                buttonsHtml += `<div class="flex gap-2 w-full mt-1">
+                                    <button onclick="copyOrderText('${encodedMessage.replace(/'/g, "\\'")}', this)" class="flex-1 bg-slate-100 border border-slate-200 text-slate-600 px-3 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition"><i class="fa-regular fa-copy ml-1"></i>نسخ النص</button>`;
+                if (order.imageData) {
+                    buttonsHtml += `<button onclick="copyOrderImage('${order.imageData}', this)" class="flex-1 bg-indigo-100 border border-indigo-200 text-indigo-700 px-3 py-2 rounded-lg text-sm font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-image ml-1"></i>نسخ الصورة</button>`;
+                }
+                buttonsHtml += `</div></div>`;
+
+                let custPhoneStr = order.phone.replace(/^0/, '966');
+                let customerLink = getWhatsAppLink(custPhoneStr, '', waSettings.customerApp);
+
+                container.innerHTML += `
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4 relative">
+                        <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-start">
+                            <div>
+                                <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2 py-1 rounded inline-block">${order.brand} - ${order.partCategory || 'عام'}</span>
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded inline-block ml-1">${order.partCondition || 'غير محدد'}</span>
+                                <h3 class="font-bold text-slate-800 mt-1">${order.model} (${order.year})</h3>
+                                <p class="text-xs text-slate-500">${order.date || ''}</p>
+                            </div>
+                            <div class="text-left flex flex-col items-end gap-2">
+                                <button onclick="deleteOrder('${order.id}')" class="text-red-500 hover:text-red-700 transition" title="حذف الطلب"><i class="fa-solid fa-trash-can text-lg"></i></button>
+                                <p class="text-sm font-bold text-slate-700">${order.customerName}</p>
+                                <a href="${customerLink}" target="_blank" class="text-xs text-blue-600 font-bold hover:underline"><i class="fa-brands fa-whatsapp ml-1"></i>للعميل</a>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="mb-3">
+                                <span class="text-xs text-slate-500 font-bold block mb-1">رقم الهيكل</span>
+                                <span class="font-mono bg-slate-100 px-2 py-1 rounded text-sm block text-left" dir="ltr">${order.vin}</span>
+                            </div>
+                            ${imageHtml}
+                            <div>
+                                <span class="text-xs text-slate-500 font-bold block mb-1">القطع المطلوبة</span>
+                                <p class="text-sm bg-blue-50 p-2 rounded whitespace-pre-line border border-blue-100">${order.parts}</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-white border-t border-slate-100 flex gap-2">
+                            ${buttonsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.openSuppliersModal = () => {
+            renderSuppliersModalList();
+            document.getElementById('suppliersModal').classList.remove('hidden');
+        };
+        window.closeSuppliersModal = () => document.getElementById('suppliersModal').classList.add('hidden');
     </script>
 </body>
 </html>
