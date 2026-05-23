@@ -54,6 +54,7 @@
                                     <option value="نيسان">نيسان</option>
                                     <option value="هوندا">هوندا</option>
                                     <option value="مازدا">مازدا</option>
+                                    <option value="ميتسوبيشي">ميتسوبيشي</option>
                                 </optgroup>
                                 <optgroup label="كوري">
                                     <option value="هيونداي">هيونداي</option>
@@ -143,7 +144,6 @@
                 <h2 class="text-2xl font-bold text-slate-800">الطلبات <span id="liveBadge" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-normal animate-pulse">مباشر حى</span></h2>
                 <div class="flex gap-2">
                     <button onclick="openWaSettingsModal()" class="bg-green-100 text-green-700 px-2.5 py-1.5 rounded-lg text-lg font-bold hover:bg-green-200 transition tooltip" title="إعدادات الأرقام"><i class="fa-brands fa-whatsapp"></i></button>
-                    
                     <button onclick="openSuppliersModal()" class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-address-book ml-1"></i>الموردين</button>
                     <button onclick="switchTab('customer')" class="bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-300 transition">النموذج</button>
                 </div>
@@ -159,8 +159,7 @@
                 <h3 class="text-xl font-bold text-slate-800">إعدادات أرقام الواتساب</h3>
                 <button onclick="closeWaSettingsModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
-            <p class="text-xs text-slate-500 mb-4">حدد التطبيق الذي ترغب بفتحه عند مراسلة العميل أو المورد لفصل أرقامك (مفيد جداً لأصحاب الأندرويد واللابتوب).</p>
-            
+            <p class="text-xs text-slate-500 mb-4">حدد التطبيق الذي ترغب بفتحه عند مراسلة العميل أو المورد لفصل أرقامك.</p>
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-bold text-indigo-700 mb-1">عند مراسلة (العميل) افتح:</label>
@@ -188,13 +187,13 @@
     </div>
 
     <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl p-5 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-slate-800">سجل الموردين الذكي</h3>
+        <div class="bg-white rounded-2xl p-4 max-w-md w-full mx-4 shadow-2xl max-h-[95vh] flex flex-col">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-xl font-bold text-slate-800">سجل الموردين الذكي (V3)</h3>
                 <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             
-            <div class="mb-4 bg-slate-50 p-3 rounded-xl border border-slate-200 overflow-y-auto max-h-[50vh]">
+            <div class="mb-3 bg-slate-50 p-3 rounded-xl border border-slate-200 overflow-y-auto max-h-[55vh]">
                 <h4 class="text-sm font-bold text-indigo-700 mb-2"><i class="fa-solid fa-plus ml-1"></i>إضافة مورد جديد</h4>
                 
                 <div class="grid grid-cols-2 gap-2 mb-3">
@@ -203,36 +202,47 @@
                 </div>
                 
                 <div class="mb-3 bg-white p-2 rounded border border-amber-200">
-                    <span class="block text-xs font-bold text-amber-800 mb-1 border-b border-amber-100 pb-1">حالة القطع (الجديد/المستعمل):</span>
+                    <span class="block text-xs font-bold text-amber-800 mb-1 border-b border-amber-100 pb-1">حالة القطع التي يبيعها:</span>
                     <div class="grid grid-cols-3 gap-2 mt-2">
-                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cond-cb">شامل (الكل)</label>
+                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cond-cb font-bold">شامل (الكل)</label>
                         <label class="checkbox-label"><input type="checkbox" value="جديد" class="cond-cb">جديد</label>
                         <label class="checkbox-label"><input type="checkbox" value="مستعمل" class="cond-cb">مستعمل (تشليح)</label>
                     </div>
                 </div>
 
                 <div class="mb-3 bg-white p-2 rounded border border-slate-200">
-                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص السيارات:</span>
-                    <div class="grid grid-cols-3 gap-2 mt-2">
-                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="brand-cb">شامل</label>
-                        <label class="checkbox-label"><input type="checkbox" value="ياباني" class="brand-cb">ياباني</label>
-                        <label class="checkbox-label"><input type="checkbox" value="كوري" class="brand-cb">كوري</label>
-                        <label class="checkbox-label"><input type="checkbox" value="أمريكي" class="brand-cb">أمريكي</label>
-                        <label class="checkbox-label"><input type="checkbox" value="ألماني" class="brand-cb">ألماني</label>
-                        <label class="checkbox-label"><input type="checkbox" value="أخرى" class="brand-cb">أخرى</label>
+                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص الماركات (حدد بدقة):</span>
+                    <div class="max-h-32 overflow-y-auto pr-1 mt-2 border border-slate-100 rounded p-2 bg-slate-50">
+                        <label class="checkbox-label mb-2 pb-1 border-b"><input type="checkbox" value="شامل" class="brand-cb font-bold">شامل (يبيع كل السيارات)</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="checkbox-label"><input type="checkbox" value="تويوتا" class="brand-cb">تويوتا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لكزس" class="brand-cb">لكزس</label>
+                            <label class="checkbox-label"><input type="checkbox" value="نيسان" class="brand-cb">نيسان</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هوندا" class="brand-cb">هوندا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="مازدا" class="brand-cb">مازدا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="ميتسوبيشي" class="brand-cb font-bold text-indigo-600">ميتسوبيشي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هيونداي" class="brand-cb">هيونداي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كيا" class="brand-cb">كيا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فورد" class="brand-cb">فورد</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شفروليه" class="brand-cb">شفروليه</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جي ام سي" class="brand-cb">جي ام سي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="دودج" class="brand-cb">دودج</label>
+                            <label class="checkbox-label"><input type="checkbox" value="مرسيدس" class="brand-cb">مرسيدس</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بي إم دبليو" class="brand-cb">بي إم دبليو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="أخرى" class="brand-cb">أخرى</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="mb-3 bg-white p-2 rounded border border-slate-200">
-                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص القطع:</span>
+                    <span class="block text-xs font-bold text-slate-700 mb-1 border-b pb-1">تخصص الأقسام:</span>
                     <div class="grid grid-cols-2 gap-2 mt-2">
-                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cat-cb">شامل / كل الأنواع</label>
+                        <label class="checkbox-label"><input type="checkbox" value="شامل" class="cat-cb font-bold">شامل / كل الأقسام</label>
                         <label class="checkbox-label"><input type="checkbox" value="ميكانيكا ومحركات" class="cat-cb">ميكانيكا ومحركات</label>
                         <label class="checkbox-label"><input type="checkbox" value="بودي وهيكل خارجي" class="cat-cb">بودي وهيكل خارجي</label>
                         <label class="checkbox-label"><input type="checkbox" value="عكوس ومساعدات" class="cat-cb">عكوس ونظام تعليق</label>
                         <label class="checkbox-label"><input type="checkbox" value="كهرباء وإلكترونيات" class="cat-cb">كهرباء وإلكترونيات</label>
                         <label class="checkbox-label"><input type="checkbox" value="زجاج ومرايا" class="cat-cb">زجاج ومرايا</label>
-                        <label class="checkbox-label"><input type="checkbox" value="أخرى" class="cat-cb">أخرى</label>
                     </div>
                 </div>
 
@@ -247,7 +257,7 @@
     <div id="imageModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm" onclick="this.classList.add('hidden')">
         <div class="max-w-2xl max-h-[85vh] p-2 relative">
             <img id="modalImg" src="" class="max-w-full max-h-[80vh] rounded-xl shadow-2xl mx-auto object-contain">
-            <p class="text-white text-center mt-2 text-sm">اضغط في أي مكان للإغلاق</p>
+            <p class="text-white text-center mt-2 text-sm">اضغط للإغلاق</p>
         </div>
     </div>
 
@@ -271,14 +281,12 @@
         let suppliersDB = []; 
         let unsubscribeOrders = null; 
         let isFirstLoad = true; 
-        window.currentOrders = []; // تخزين الطلبات الحالية لإعادة عرضها عند تغيير الإعدادات
+        window.currentOrders = []; 
 
-        // إعدادات توجيه الواتساب الافتراضية
         let waSettings = JSON.parse(localStorage.getItem('waSettings')) || { customerApp: 'default', supplierApp: 'default' };
 
         const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
 
-        // 🔴 الدالة المسؤولة عن تحويل الروابط للواتساب المطلوب
         window.getWhatsAppLink = function(phone, text, type) {
             let t = text ? encodeURIComponent(text) : '';
             let p = phone.replace(/[^0-9+]/g, ''); 
@@ -286,27 +294,21 @@
             if (type === 'wa_app') return `whatsapp://send?phone=${p}&text=${t}`;
             if (type === 'android_normal') return `intent://send?phone=${p}&text=${t}#Intent;package=com.whatsapp;scheme=whatsapp;end;`;
             if (type === 'android_business') return `intent://send?phone=${p}&text=${t}#Intent;package=com.whatsapp.w4b;scheme=whatsapp;end;`;
-            return `https://wa.me/${p}?text=${t}`; // default
+            return `https://wa.me/${p}?text=${t}`; 
         };
 
-        // نوافذ إعدادات الواتساب
         window.openWaSettingsModal = () => {
             document.getElementById('custWaType').value = waSettings.customerApp;
             document.getElementById('supWaType').value = waSettings.supplierApp;
             document.getElementById('waSettingsModal').classList.remove('hidden');
         };
-
         window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
-
         window.saveWaSettings = () => {
-            waSettings = {
-                customerApp: document.getElementById('custWaType').value,
-                supplierApp: document.getElementById('supWaType').value
-            };
+            waSettings = { customerApp: document.getElementById('custWaType').value, supplierApp: document.getElementById('supWaType').value };
             localStorage.setItem('waSettings', JSON.stringify(waSettings));
             closeWaSettingsModal();
-            renderOrders(window.currentOrders); // إعادة عرض الطلبات لتحديث الروابط فوراً
-            alert("✅ تم تطبيق الإعدادات. سيتم فتح الروابط في التطبيقات المحددة الآن.");
+            renderOrders(window.currentOrders);
+            alert("✅ تم تطبيق الإعدادات.");
         };
 
         function convertImageToBase64(file) {
@@ -339,18 +341,12 @@
         window.switchTab = async function(tab) {
             if (tab === 'admin') {
                 const pass = prompt("🔒 الرجاء إدخال الرقم السري لفتح لوحة التاجر:");
-                if (pass !== adminPassword) {
-                    alert("❌ كلمة المرور غير صحيحة!");
-                    return;
-                }
+                if (pass !== adminPassword) { alert("❌ كلمة المرور غير صحيحة!"); return; }
                 await loadSuppliersFromCloud();
                 await autoCleanOldOrders(); 
                 startLiveOrdersListener(); 
             } else {
-                if(unsubscribeOrders) {
-                    unsubscribeOrders();
-                    unsubscribeOrders = null;
-                }
+                if(unsubscribeOrders) { unsubscribeOrders(); unsubscribeOrders = null; }
             }
             document.getElementById('customer-view').classList.toggle('hidden', tab !== 'customer');
             document.getElementById('admin-view').classList.toggle('hidden', tab !== 'admin');
@@ -358,13 +354,12 @@
 
         async function loadSuppliersFromCloud() {
             try {
-                const docRef = doc(db, "settings", "suppliers_advanced_v2");
+                // 🔴 تغيير اسم قاعدة البيانات لـ V3 لضمان التطابق مع الماركات الجديدة
+                const docRef = doc(db, "settings", "suppliers_advanced_v3");
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists() && docSnap.data().list) {
                     suppliersDB = docSnap.data().list;
-                } else {
-                    suppliersDB = []; 
-                }
+                } else { suppliersDB = []; }
                 renderSuppliersModalList();
             } catch (error) { console.error(error); }
         }
@@ -379,12 +374,11 @@
 
             if(!name || !phone) { alert("يرجى إدخال اسم ورقم المورد!"); return; }
             if(selectedConditions.length === 0) { alert("يرجى اختيار حالة القطع!"); return; }
-            if(selectedBrands.length === 0) { alert("يرجى اختيار تخصص سيارة واحد على الأقل!"); return; }
+            if(selectedBrands.length === 0) { alert("يرجى اختيار ماركة واحدة على الأقل!"); return; }
             if(selectedCategories.length === 0) { alert("يرجى اختيار تخصص قطع واحد على الأقل!"); return; }
 
             const btn = document.getElementById('addSupBtn');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
 
             suppliersDB.push({
                 id: Date.now().toString(),
@@ -396,7 +390,7 @@
             });
 
             try {
-                await setDoc(doc(db, "settings", "suppliers_advanced_v2"), { list: suppliersDB });
+                await setDoc(doc(db, "settings", "suppliers_advanced_v3"), { list: suppliersDB });
                 document.getElementById('newSupName').value = '';
                 document.getElementById('newSupPhone').value = '';
                 document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
@@ -404,19 +398,15 @@
                 document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
                 renderSuppliersModalList();
                 renderOrders(window.currentOrders);
-            } catch (error) {
-                alert("فشل الحفظ السحابي للمورد");
-            } finally {
-                btn.innerHTML = 'حفظ المورد سحابياً';
-                btn.disabled = false;
-            }
+            } catch (error) { alert("فشل الحفظ السحابي"); } 
+            finally { btn.innerHTML = 'حفظ المورد سحابياً'; btn.disabled = false; }
         };
 
         window.deleteSupplier = async function(id) {
             if(confirm("حذف هذا المورد نهائياً؟")) {
                 suppliersDB = suppliersDB.filter(s => s.id !== id);
                 try {
-                    await setDoc(doc(db, "settings", "suppliers_advanced_v2"), { list: suppliersDB });
+                    await setDoc(doc(db, "settings", "suppliers_advanced_v3"), { list: suppliersDB });
                     renderSuppliersModalList();
                     renderOrders(window.currentOrders);
                 } catch (error) {}
@@ -427,8 +417,7 @@
             const container = document.getElementById('suppliersListContainer');
             container.innerHTML = '';
             if(suppliersDB.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا يوجد موردين مسجلين بعد.</p>';
-                return;
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-2">لا يوجد موردين مسجلين بعد.</p>'; return;
             }
             suppliersDB.forEach(sup => {
                 const condsText = (sup.conditions || ['شامل']).join('، '); 
@@ -440,8 +429,8 @@
                         <div class="flex-1">
                             <p class="font-bold text-slate-800 text-base">${sup.name} <span class="text-xs text-slate-400 bg-slate-100 px-1 rounded" dir="ltr">${sup.phone}</span></p>
                             <p class="text-[0.70rem] text-slate-500 mt-1"><span class="font-bold text-amber-600">الحالة:</span> ${condsText}</p>
-                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-indigo-600">سيارات:</span> ${brandsText}</p>
-                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-emerald-600">قطع:</span> ${catsText}</p>
+                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-indigo-600">الماركات:</span> ${brandsText}</p>
+                            <p class="text-[0.70rem] text-slate-500"><span class="font-bold text-emerald-600">الأقسام:</span> ${catsText}</p>
                         </div>
                         <button onclick="deleteSupplier('${sup.id}')" class="text-red-500 hover:text-red-700 p-2 bg-red-50 rounded-lg ml-1"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
@@ -460,25 +449,18 @@
                 const imageFile = document.getElementById('carImage').files[0];
                 let base64Image = "";
                 if(imageFile) {
-                    if (imageFile.size > 2 * 1024 * 1024) { 
-                        alert("❌ حجم الصورة كبير، يرجى إرفاق صورة بحجم أقل من 2 ميجابايت.");
+                    // 🔴 تخفيض الحد الأقصى للصورة لضمان عدم استهلاك الباقة المجانية
+                    if (imageFile.size > 700 * 1024) { 
+                        alert("❌ حجم الصورة كبير جداً، يرجى إرفاق صورة بحجم أقل من 700 كيلوبايت لضمان سرعة الإرسال.");
                         submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; return;
                     }
                     base64Image = await convertImageToBase64(imageFile);
                 }
 
-                const rawBrand = document.getElementById('carBrand').value;
-                let groupBrand = "أخرى";
-                if (['تويوتا', 'لكزس', 'نيسان', 'هوندا', 'مازدا'].includes(rawBrand)) groupBrand = 'ياباني';
-                if (['هيونداي', 'كيا'].includes(rawBrand)) groupBrand = 'كوري';
-                if (['فورد', 'شفروليه', 'جي ام سي', 'دودج'].includes(rawBrand)) groupBrand = 'أمريكي';
-                if (['مرسيدس', 'بي إم دبليو', 'أودي', 'فولكس فاجن', 'بورش'].includes(rawBrand)) groupBrand = 'ألماني';
-
                 const newOrder = {
                     customerName: document.getElementById('custName').value,
                     phone: document.getElementById('custPhone').value,
-                    brand: rawBrand,
-                    brandGroup: groupBrand, 
+                    brand: document.getElementById('carBrand').value, // الماركة المباشرة (ميتسوبيشي، تويوتا..)
                     model: document.getElementById('carModel').value,
                     year: document.getElementById('carYear').value,
                     partCondition: document.getElementById('partCondition').value, 
@@ -494,12 +476,8 @@
                 this.reset();
                 document.getElementById('successMsg').classList.remove('hidden');
                 setTimeout(() => document.getElementById('successMsg').classList.add('hidden'), 4000);
-            } catch (error) {
-                alert("❌ حدث خطأ أثناء الاتصال.");
-            } finally {
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-            }
+            } catch (error) { alert("❌ حدث خطأ أثناء الاتصال."); } 
+            finally { submitBtn.innerHTML = originalBtnText; submitBtn.disabled = false; }
         });
 
         function startLiveOrdersListener() {
@@ -515,7 +493,7 @@
                     audioAlert.play().catch(e => console.log("الصوت معلق"));
                 }
                 isFirstLoad = false;
-                window.currentOrders = orders; // حفظ نسخة للتحديث
+                window.currentOrders = orders; 
                 renderOrders(orders);
             });
         }
@@ -527,44 +505,39 @@
         };
 
         window.viewImage = function(src) {
-            document.getElementById('modalImg').src = src;
-            document.getElementById('imageModal').classList.remove('hidden');
+            document.getElementById('modalImg').src = src; document.getElementById('imageModal').classList.remove('hidden');
         };
 
         window.copyOrderImage = async function(base64, btnElement) {
             try {
-                const fetchRes = await fetch(base64);
-                const blob = await fetchRes.blob();
+                const fetchRes = await fetch(base64); const blob = await fetchRes.blob();
                 await navigator.clipboard.write([ new ClipboardItem({ [blob.type]: blob }) ]);
-                const originalHTML = btnElement.innerHTML;
-                btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
+                const originalHTML = btnElement.innerHTML; btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
                 setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
             } catch (err) { alert("انسخ الصورة يدوياً بالضغط المطول عليها."); }
         };
 
         window.copyOrderText = function(text, btnElement) {
             navigator.clipboard.writeText(decodeURIComponent(text)).then(() => {
-                const originalHTML = btnElement.innerHTML;
-                btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
+                const originalHTML = btnElement.innerHTML; btnElement.innerHTML = '<i class="fa-solid fa-check"></i>';
                 setTimeout(() => { btnElement.innerHTML = originalHTML; }, 2000);
             });
         };
 
+        // 🔴 دالة الفلترة المبنية على המاركة الدقيقة الآن
         function renderOrders(orders) {
             const container = document.getElementById('ordersContainer');
             container.innerHTML = '';
 
             if (orders.length === 0) {
-                container.innerHTML = '<div class="text-center py-10 text-slate-500"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>لا توجد طلبات</p></div>';
-                return;
+                container.innerHTML = '<div class="text-center py-10 text-slate-500"><i class="fa-solid fa-box-open text-4xl mb-3"></i><p>لا توجد طلبات</p></div>'; return;
             }
 
             orders.forEach(order => {
                 const matchedSuppliers = suppliersDB.filter(sup => {
-                    const supConds = sup.conditions || ['شامل']; 
-
-                    const matchCondition = supConds.includes('شامل') || supConds.includes(order.partCondition) || order.partCondition === 'شامل';
-                    const matchBrand = sup.brands.includes('شامل') || sup.brands.includes(order.brandGroup) || sup.brands.includes('أخرى');
+                    const matchCondition = sup.conditions.includes('شامل') || sup.conditions.includes(order.partCondition) || order.partCondition === 'شامل';
+                    // 🔴 المطابقة الدقيقة للماركة
+                    const matchBrand = sup.brands.includes('شامل') || sup.brands.includes(order.brand) || (order.brand === 'أخرى' && sup.brands.includes('أخرى'));
                     const matchCategory = sup.categories.includes('شامل') || sup.categories.includes(order.partCategory) || order.partCategory === 'شامل' || sup.categories.includes('أخرى');
                     
                     return matchCondition && matchBrand && matchCategory;
@@ -583,7 +556,6 @@
                     `;
                 }
 
-                // 🔴 بناء أزرار الموردين مع تطبيق رابط الواتساب المخصص للمورد
                 let buttonsHtml = '<div class="flex flex-wrap gap-2 w-full">';
                 if (matchedSuppliers.length > 0) {
                     matchedSuppliers.forEach((sup) => {
@@ -591,7 +563,7 @@
                         buttonsHtml += `<a href="${supplierLink}" target="_blank" class="flex-1 min-w-[80px] text-center bg-green-50 text-green-700 border border-green-200 py-2 rounded-lg text-sm font-bold hover:bg-green-600 hover:text-white transition tooltip" title="${sup.categories.join(', ')}"><i class="fa-brands fa-whatsapp ml-1"></i>${sup.name}</a>`;
                     });
                 } else {
-                    buttonsHtml += `<p class="text-xs text-red-500 text-center w-full py-2 bg-red-50 rounded-lg">لا يوجد مورد يطابق (حالة+سيارة+نوع) هذا الطلب</p>`;
+                    buttonsHtml += `<p class="text-xs text-red-500 text-center w-full py-2 bg-red-50 rounded-lg">لا يوجد مورد يطابق (حالة+ماركة+نوع) هذا الطلب</p>`;
                 }
                 
                 let encodedMessage = encodeURIComponent(rawMessage);
@@ -602,7 +574,6 @@
                 }
                 buttonsHtml += `</div></div>`;
 
-                // 🔴 بناء زر العميل مع تطبيق رابط الواتساب المخصص للعميل
                 let custPhoneStr = order.phone.replace(/^0/, '966');
                 let customerLink = getWhatsAppLink(custPhoneStr, '', waSettings.customerApp);
 
