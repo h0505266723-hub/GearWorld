@@ -314,42 +314,124 @@
         </div>
     </div>
 
-    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-        <div class="bg-white rounded-3xl p-5 max-w-2xl w-full shadow-2xl max-h-[90vh] flex flex-col">
+    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-2 sm:p-4">
+        <div class="bg-white rounded-3xl p-5 max-w-2xl w-full shadow-2xl max-h-[92vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
-                <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-address-book ml-2 text-indigo-500"></i>سجل الموردين</h3>
+                <h3 class="font-bold text-slate-800 text-lg"><i class="fa-solid fa-address-book ml-2 text-indigo-500"></i>سجل الموردين المعتمدين</h3>
                 <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-slate-600 bg-slate-100 w-8 h-8 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <button onclick="openAddSupplierManual()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-2xl text-sm mb-4 hover:bg-indigo-700 transition shadow-md flex items-center justify-center gap-2">
-                <i class="fa-solid fa-plus-circle text-base"></i> إضافة مورد جديد يدوياً
+            <button onclick="openAddSupplierManual()" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-800 text-white font-black py-3 rounded-2xl text-sm mb-4 hover:shadow-md transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-plus-circle text-base"></i> إضافة مورد جديد يدويًا بالنظام الاحترافي
             </button>
             
-            <div id="supplierFormContainer" class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 mb-4 overflow-y-auto max-h-[55vh] hidden">
-                <h4 id="formTitle" class="text-sm font-black text-indigo-700 mb-3 flex items-center"><i class="fa-solid fa-plus-circle ml-1.5"></i>إضافة مورد جديد</h4>
+            <div id="supplierFormContainer" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-4 overflow-y-auto max-h-[60vh] hidden space-y-4">
+                <h4 id="formTitle" class="text-sm font-black text-indigo-700 border-b pb-2 flex items-center"><i class="fa-solid fa-plus-circle ml-1.5"></i>إضافة مورد جديد يدوياً</h4>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                    <input type="text" id="newSupName" placeholder="اسم المورد أو المتجر" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm outline-none focus:border-indigo-500">
-                    <input type="tel" id="newSupPhone" placeholder="رقم الواتساب (966...)" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm outline-none focus:border-indigo-500 text-left" dir="ltr">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">اسم المتجر / المورد</label>
+                        <input type="text" id="newSupName" placeholder="مثال: تشليح أبو علي" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">رقم الواتساب للاستقبال</label>
+                        <input type="tel" id="newSupPhone" placeholder="9665xxxxxxxx" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-left font-mono" dir="ltr">
+                    </div>
                 </div>
                 
-                <div class="bg-white p-3 rounded-xl border border-slate-200 mb-3">
-                    <span class="block text-xs font-bold text-slate-700 mb-2 border-b pb-1">تحديد سريع للفلترة والتخصصات:</span>
-                    <div class="grid grid-cols-2 gap-2 text-xs">
-                        <label class="checkbox-label"><input type="checkbox" value="جديد" class="cond-cb"> يبيع جديد</label> 
-                        <label class="checkbox-label"><input type="checkbox" value="مستعمل" class="cond-cb"> يبيع مستعمل</label>
-                        <label class="checkbox-label font-bold text-indigo-600"><input type="checkbox" value="شامل الكل" class="brand-cb"> شامل جميع السيارات</label>
-                        <label class="checkbox-label font-bold text-emerald-600"><input type="checkbox" value="شامل" class="cat-cb"> شامل جميع الأقسام</label>
+                <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                    <span class="block text-xs font-bold text-amber-900 mb-2">حالة القطع المتوفرة لديه:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="checkbox-label font-bold"><input type="checkbox" value="جديد" class="cond-cb">جديد (وكالة/تجاري)</label> 
+                        <label class="checkbox-label font-bold"><input type="checkbox" value="مستعمل" class="cond-cb">مستعمل (تشليح)</label>
                     </div>
                 </div>
 
-                <div class="flex gap-2 mt-4">
-                    <button id="addSupBtn" onclick="addSupplierCloud()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 shadow-md">حفظ البيانات</button>
+                <div class="bg-indigo-50/70 p-3 rounded-xl border border-indigo-100">
+                    <span class="block text-xs font-bold text-indigo-900 mb-2">تخصص السيارات (الماركات):</span>
+                    <div class="max-h-48 overflow-y-auto bg-white p-2 rounded-xl border border-indigo-100 shadow-sm">
+                        <label class="checkbox-label mb-2 pb-1 border-b text-indigo-700 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل الكل" class="brand-cb">جميع سيارات العالم (شامل)</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-0.5 text-[11px]">
+                            <label class="checkbox-label font-bold text-indigo-600"><input type="checkbox" value="شامل ياباني" class="brand-cb">شامل ياباني</label>
+                            <label class="checkbox-label"><input type="checkbox" value="تويوتا" class="brand-cb">تويوتا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لكزس" class="brand-cb">لكزس</label>
+                            <label class="checkbox-label"><input type="checkbox" value="نيسان" class="brand-cb">نيسان</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إنفينيتي" class="brand-cb">إنفينيتي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هوندا" class="brand-cb">هوندا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="مازدا" class="brand-cb">مازدا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="ميتسوبيشي" class="brand-cb">ميتسوبيشي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="سوزوكي" class="brand-cb">سوزوكي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="سوبارو" class="brand-cb">سوبارو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إيسوزو" class="brand-cb">إيسوزو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="دايهاتسو" class="brand-cb">دايهاتسو</label>
+                            
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-2"><input type="checkbox" value="شامل أمريكي" class="brand-cb">شامل أمريكي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فورد" class="brand-cb">فورد</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شفروليه" class="brand-cb">شفروليه</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جي ام سي" class="brand-cb">جي ام سي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="دودج" class="brand-cb">دودج</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كرايسلر" class="brand-cb">كرايسلر</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جيب" class="brand-cb">جيب</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كاديلاك" class="brand-cb">كاديلاك</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لينكولن" class="brand-cb">لينكولن</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هامر" class="brand-cb">هامر</label>
+                            <label class="checkbox-label"><input type="checkbox" value="تيسلا" class="brand-cb">تيسلا</label>
+
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-2"><input type="checkbox" value="شامل كوري" class="brand-cb">شامل كوري</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هيونداي" class="brand-cb">هيونداي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="كيا" class="brand-cb">كيا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جينيسيس" class="brand-cb">جينيسيس</label>
+                            
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-2"><input type="checkbox" value="شامل صيني" class="brand-cb">شامل صيني</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شانجان" class="brand-cb">شانجان</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جيلي" class="brand-cb">جيلي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إم جي" class="brand-cb">إم جي (MG)</label>
+                            <label class="checkbox-label"><input type="checkbox" value="هافال" class="brand-cb">هافال</label>
+                            <label class="checkbox-label"><input type="checkbox" value="شيري" class="brand-cb">شيري</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بيستون" class="brand-cb">بيستون</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بي واي دي" class="brand-cb">بي واي دي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جاك" class="brand-cb">جاك</label>
+                            <label class="checkbox-label"><input type="checkbox" value="إكسيد" class="brand-cb">إكسيد</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جي أيه سي" class="brand-cb">GAC</label>
+
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-2"><input type="checkbox" value="شامل أوروبي" class="brand-cb">شامل أوروبي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="مرسيدس" class="brand-cb">مرسيدس</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بي إم دبليو" class="brand-cb">بي إم دبليو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="أودي" class="brand-cb">أودي</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فولكس فاجن" class="brand-cb">فولكس فاجن</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بورش" class="brand-cb">بورش</label>
+                            <label class="checkbox-label"><input type="checkbox" value="لاند روفر" class="brand-cb">لاند روفر</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فولفو" class="brand-cb">فولفو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="فيات" class="brand-cb">فيات</label>
+                            <label class="checkbox-label"><input type="checkbox" value="رينو" class="brand-cb">رينو</label>
+                            <label class="checkbox-label"><input type="checkbox" value="بيجو" class="brand-cb">بيجو</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 p-3 rounded-xl border border-slate-200">
+                    <span class="block text-xs font-bold text-slate-700 mb-2">تخصص الأقسام والقطع:</span>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <label class="checkbox-label font-bold text-indigo-600"><input type="checkbox" value="شامل" class="cat-cb">شامل كل الأقسام</label>
+                        <label class="checkbox-label"><input type="checkbox" value="ميكانيكا ومحركات" class="cat-cb">ميكانيكا ومحركات</label>
+                        <label class="checkbox-label"><input type="checkbox" value="جيربوكس وناقل حركة" class="cat-cb">جيربوكس وناقل حركة</label>
+                        <label class="checkbox-label"><input type="checkbox" value="نظام التعليق والمقصات" class="cat-cb">التعليق (عكوس/مساعدات)</label>
+                        <label class="checkbox-label"><input type="checkbox" value="كهرباء وإلكترونيات" class="cat-cb">كهرباء وإلكترونيات</label>
+                        <label class="checkbox-label"><input type="checkbox" value="بودي وهيكل خارجي" class="cat-cb">بودي وهيكل خارجي</label>
+                        <label class="checkbox-label"><input type="checkbox" value="زجاج ومرايا" class="cat-cb">زجاج ومرايا</label>
+                        <label class="checkbox-label"><input type="checkbox" value="زيوت وفلاتر" class="cat-cb">زيوت وفلاتر</label>
+                        <label class="checkbox-label"><input type="checkbox" value="زينة وإكسسوارات" class="cat-cb">زينة وإكسسوارات</label>
+                        <label class="checkbox-label"><input type="checkbox" value="أخرى" class="cat-cb">أخرى</label>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button id="addSupBtn" onclick="addSupplierCloud()" class="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 shadow-md">حفظ البيانات سحابياً</button>
                     <button id="cancelEditBtn" onclick="cancelEdit()" class="flex-1 bg-slate-200 text-slate-700 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-300">إلغاء</button>
                 </div>
             </div>
             
-            <h4 class="text-sm font-bold text-slate-700 mb-2">الموردين النشطين حالياً:</h4>
+            <h4 class="text-sm font-bold text-slate-700 mb-2">الموردين المسجلين في النظام الحالي:</h4>
             <div id="suppliersListContainer" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
         </div>
     </div>
@@ -387,7 +469,7 @@
         const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
 
         const carBrandsData = {
-            "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوبارو", "سوزوكي", "إيسوزو", "ايةاتسو"],
+            "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوبارو", "سوزوكي", "إيسوزو", "دايهاتسو"],
             "أمريكي": ["فورد", "شفروليه", "جي ام سي", "دودج", "كرايسلر", "جيب", "كاديلاك", "لينكولن", "هامر", "تيسلا"],
             "كوري": ["هيونداي", "كيا", "جينيسيس", "سانج يونج"],
             "صيني": ["شانجان", "جيلي", "إم جي", "هافال", "شيري", "بيستون", "بايك", "جاك", "بي واي دي", "جريت وال", "فاو", "إكسيد", "جي أيه سي"],
@@ -463,11 +545,11 @@
             document.getElementById('admin-view').classList.toggle('hidden', tab !== 'admin');
         };
 
-        // 🔵 ميزة فتح النموذج لإضافة مورد يدويًا
+        // 🟢 ميزة فتح النموذج لإضافة مورد يدويًا بكامل حقوله الاحترافية
         window.openAddSupplierManual = function() {
             editingSupId = null;
             document.getElementById('supplierFormContainer').classList.remove('hidden');
-            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus-circle ml-1.5"></i>إضافة مورد جديد يدويًا';
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus-circle ml-1.5"></i>إضافة مورد جديد يدويًا (النموذج الاحترافي)';
             document.getElementById('newSupName').value = '';
             document.getElementById('newSupPhone').value = '';
             document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
@@ -475,11 +557,11 @@
             document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
             
             const btn = document.getElementById('addSupBtn');
-            btn.innerHTML = 'حفظ البيانات سحابياً';
+            btn.innerHTML = 'حفظ المورد سحابياً';
             btn.className = "flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 shadow-md";
         };
 
-        // 🔵 إرسال طلب انضمام المورد من الرابط
+        // 🔵 إرسال طلب انضمام المورد (عبر رابط الدعوة الخارجي)
         document.getElementById('supplierRegForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]');
@@ -497,7 +579,7 @@
             if(customCats) categories.push(...customCats.split(',').map(c=>c.trim()).filter(c=>c));
 
             if(conditions.length===0 || brands.length===0 || categories.length===0){
-                alert("يرجى اختيار حالة القطع والسيارات والأقسام.");
+                alert("يرجى اختيار حالة القطع والسيارات والأقسام المتاحة لديك.");
                 btn.innerHTML = orig; btn.disabled = false; return;
             }
 
@@ -510,7 +592,7 @@
             finally { btn.innerHTML = orig; btn.disabled = false; }
         });
 
-        // 🔴 بث حي لطلبات الانتظار
+        // 🔴 بث حي ومراقبة الموردين المعلقين في الانتظار
         function startLivePendingListener() {
             const q = query(collection(db, "pending_suppliers"), orderBy("timestamp", "desc"));
             unsubscribePending = onSnapshot(q, (snap) => {
@@ -518,7 +600,7 @@
                 const badge = document.getElementById('pendingBadge');
                 list.innerHTML = '';
                 if(snap.empty) {
-                    list.innerHTML = '<p class="text-center text-slate-500 text-sm py-10 bg-slate-50 rounded-xl border border-dashed">لا توجد طلبات انضمام معلقة</p>';
+                    list.innerHTML = '<p class="text-center text-slate-500 text-sm py-10 bg-slate-50 rounded-xl border border-dashed">لا توجد طلبات انضمام معلقة حالياً</p>';
                     badge.classList.add('hidden');
                 } else {
                     badge.innerHTML = snap.size; badge.classList.remove('hidden');
@@ -536,8 +618,8 @@
                                     <p><span class="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">الأقسام:</span> ${data.categories.join('، ')}</p>
                                 </div>
                                 <div class="flex gap-2 mt-4">
-                                    <button onclick="approveSupplier('${id}', '${dataStr}')" class="flex-1 bg-emerald-500 text-white font-bold py-2 rounded-xl hover:bg-emerald-600 shadow-sm">موافقة وإضافة</button>
-                                    <button onclick="rejectSupplier('${id}')" class="flex-1 bg-rose-100 text-rose-700 font-bold py-2 rounded-xl hover:bg-rose-200">رفض</button>
+                                    <button onclick="approveSupplier('${id}', '${dataStr}')" class="flex-1 bg-emerald-500 text-white font-bold py-2 rounded-xl hover:bg-emerald-600 shadow-sm">موافقة وإضافة تلقائية</button>
+                                    <button onclick="rejectSupplier('${id}')" class="flex-1 bg-rose-100 text-rose-700 font-bold py-2 rounded-xl hover:bg-rose-200">رفض الطلب</button>
                                 </div>
                             </div>
                         `;
@@ -553,10 +635,10 @@
                 await setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB });
                 await deleteDoc(doc(db, "pending_suppliers", docId));
                 renderSuppliersModalList(); renderOrders(window.currentOrders);
-            } catch (e) { alert("حدث خطأ"); }
+            } catch (e) { alert("حدث خطأ في تفعيل المورد"); }
         };
 
-        window.rejectSupplier = async function(docId) { if(confirm("رفض الطلب؟")) await deleteDoc(doc(db, "pending_suppliers", docId)); };
+        window.rejectSupplier = async function(docId) { if(confirm("هل تود رفض وحذف هذا المورد؟")) await deleteDoc(doc(db, "pending_suppliers", docId)); };
 
         async function loadSuppliersFromCloud() {
             try {
@@ -569,7 +651,7 @@
 
         function renderSuppliersModalList() {
             const container = document.getElementById('suppliersListContainer'); container.innerHTML = '';
-            if(suppliersDB.length === 0) { container.innerHTML = '<p class="text-sm text-slate-400 text-center py-10 bg-slate-50 rounded-xl border border-dashed">السجل فارغ.</p>'; return; }
+            if(suppliersDB.length === 0) { container.innerHTML = '<p class="text-sm text-slate-400 text-center py-10 bg-slate-50 rounded-xl border border-dashed">سجل الموردين المعتمدين فارغ.</p>'; return; }
             suppliersDB.forEach(sup => {
                 const condsText = (sup.conditions || []).join('، '); const catsText = (sup.categories || []).join('، ');
                 let brandsText = (sup.brands || []).join('، '); if(brandsText.length > 40) brandsText = brandsText.substring(0, 40) + "...";
@@ -582,8 +664,8 @@
                             <p class="text-[10px] text-slate-500"><span class="font-bold text-emerald-600 bg-emerald-50 px-1 rounded">الأقسام:</span> ${catsText}</p>
                         </div>
                         <div class="flex flex-col gap-1.5 ml-2">
-                            <button onclick="editSupplier('${sup.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 w-8 h-8 rounded-lg flex items-center justify-center"><i class="fa-solid fa-pen"></i></button>
-                            <button onclick="deleteSupplier('${sup.id}')" class="text-red-500 hover:text-red-700 bg-rose-50 w-8 h-8 rounded-lg flex items-center justify-center"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="editSupplier('${sup.id}')" class="text-blue-500 hover:text-blue-700 bg-blue-50 w-8 h-8 rounded-lg flex items-center justify-center transition" title="تعديل تخصص المورد"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteSupplier('${sup.id}')" class="text-red-500 hover:text-red-700 bg-rose-50 w-8 h-8 rounded-lg flex items-center justify-center transition" title="حذف المورد نهائياً"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 `;
@@ -597,17 +679,21 @@
             document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square ml-1.5"></i>تعديل بيانات: ' + sup.name;
             document.getElementById('newSupName').value = sup.name;
             document.getElementById('newSupPhone').value = sup.phone;
+            
             document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = sup.conditions && sup.conditions.includes(cb.value));
             document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = sup.brands && sup.brands.includes(cb.value));
             document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = sup.categories && sup.categories.includes(cb.value));
             
             const btn = document.getElementById('addSupBtn');
-            btn.innerHTML = 'تحديث البيانات'; 
+            btn.innerHTML = 'تحديث المورد سحابياً'; 
             btn.className = "flex-1 bg-emerald-600 text-white py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-700 shadow-md";
             document.getElementById('supplierFormContainer').scrollTop = 0;
         };
 
-        window.cancelEdit = function() { editingSupId = null; document.getElementById('supplierFormContainer').classList.add('hidden'); };
+        window.cancelEdit = function() { 
+            editingSupId = null; 
+            document.getElementById('supplierFormContainer').classList.add('hidden'); 
+        };
 
         window.addSupplierCloud = async function() {
             const name = document.getElementById('newSupName').value.trim();
@@ -616,7 +702,9 @@
             const brands = Array.from(document.querySelectorAll('.brand-cb:checked')).map(cb => cb.value);
             const categories = Array.from(document.querySelectorAll('.cat-cb:checked')).map(cb => cb.value);
 
-            if(!name || !phone) return;
+            if(!name || !phone) { alert("يرجى إدخال الاسم ورقم الواتساب!"); return; }
+            if(conditions.length === 0 || brands.length === 0 || categories.length === 0) { alert("يرجى فحص واختيار التخصصات بالكامل للمورد!"); return; }
+
             if(editingSupId) {
                 suppliersDB = suppliersDB.map(s => s.id === editingSupId ? { ...s, name, phone, conditions, brands, categories } : s);
             } else {
@@ -625,11 +713,11 @@
             try {
                 await setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB });
                 cancelEdit(); renderSuppliersModalList(); renderOrders(window.currentOrders);
-            } catch (e) { alert("خطأ في الحفظ"); }
+            } catch (e) { alert("خطأ في الحفظ السحابي"); }
         };
 
         window.deleteSupplier = async function(id) {
-            if(confirm("حذف المورد؟")) {
+            if(confirm("هل أنت متأكد من حذف المورد نهائياً؟")) {
                 suppliersDB = suppliersDB.filter(s => s.id !== id);
                 await setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB });
                 renderSuppliersModalList(); renderOrders(window.currentOrders);
