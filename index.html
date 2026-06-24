@@ -14,36 +14,123 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .checkbox-label { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.8rem; color: #334155; cursor: pointer; padding: 0.25rem 0; }
         .checkbox-label input { width: 1.1rem; height: 1.1rem; accent-color: #4f46e5; cursor: pointer; margin-top: 0.1rem; }
+        details > summary { list-style: none; outline: none; }
+        details > summary::-webkit-details-marker { display: none; }
         .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
     </style>
 </head>
 <body class="text-slate-800 pb-10">
-
     <nav class="glass-effect shadow-sm border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-2xl font-black text-indigo-700 tracking-tight" id="mainTitle"><i class="fa-solid fa-gears ml-2 text-indigo-500"></i>شركة دياريكو</h1>
-            <button id="adminLoginBtn" onclick="switchTab('admin')" class="text-sm font-bold text-slate-600 bg-slate-100/80 px-4 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-700 transition"><i class="fa-solid fa-user-shield ml-1"></i>التاجر</button>
+            <h1 class="text-2xl font-black text-indigo-700 tracking-tight" id="mainTitle"><i class="fa-solid fa-gears ml-2 text-indigo-500"></i>عالم التروس</h1>
+            <button id="adminLoginBtn" onclick="switchTab('admin')" class="text-sm font-bold text-slate-600 bg-slate-100/80 px-4 py-2 rounded-xl hover:bg-indigo-50 hover:text-indigo-700 transition duration-300"><i class="fa-solid fa-user-shield ml-1"></i>التاجر</button>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto p-4 md:p-6 mt-4">
-        <section id="customer-view" class="block">
-            <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8">
-                <h2 class="text-2xl font-black text-center mb-6">طلب تسعيرة قطع</h2>
-                <form id="orderForm" class="space-y-4">
+        <section id="customer-view" class="block animate-fade-in">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-6 md:p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-2">طلب تسعيرة قطع</h2>
+                    <p class="text-slate-500 text-sm">أدخل بيانات سيارتك للحصول على أفضل وأسرع تسعيرة من السوق</p>
+                </div>
+                <form id="orderForm" class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" id="custName" required class="w-full px-4 py-3 rounded-2xl border" placeholder="اسم العميل">
-                        <input type="tel" id="custPhone" required class="w-full px-4 py-3 rounded-2xl border" placeholder="رقم الجوال (05xxxxxxxx)">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">اسم العميل</label>
+                            <input type="text" id="custName" required class="w-full px-4 py-3 rounded-2xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" placeholder="الاسم الكريم...">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">رقم الواتساب</label>
+                            <input type="tel" id="custPhone" required class="w-full px-4 py-3 rounded-2xl border border-slate-300 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-left" dir="ltr" placeholder="05xxxxxxxx">
+                        </div>
                     </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black">إرسال الطلب</button>
+                    
+                    <div class="p-5 bg-slate-50 border border-slate-200 rounded-3xl space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">صناعة السيارة</label>
+                                <select id="carOrigin" required class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer">
+                                    <option value="" disabled selected>اختر المنشأ...</option>
+                                    <option value="ياباني">ياباني 🇯🇵</option><option value="أمريكي">أمريكي 🇺🇸</option>
+                                    <option value="كوري">كوري 🇰🇷</option><option value="صيني">صيني 🇨🇳</option>
+                                    <option value="أوروبي">أوروبي 🇪🇺</option><option value="أخرى">أخرى 🌍</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">ماركة السيارة</label>
+                                <select id="carBrandSpecific" required disabled class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all disabled:bg-slate-200 disabled:cursor-not-allowed cursor-pointer">
+                                    <option value="" disabled selected>اختر الصناعة أولاً...</option>
+                                </select>
+                                <input type="text" id="customCarBrand" class="hidden w-full px-4 py-3 rounded-2xl border border-indigo-300 bg-indigo-50 mt-2 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="اكتب اسم الماركة هنا...">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">اسم السيارة / الفئة</label>
+                                <input type="text" id="carModel" required class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="مثال: كامري، تاهو...">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">الموديل (السنة)</label>
+                                <select id="carYear" required class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer">
+                                    <option value="" disabled selected>سنة الصنع...</option>
+                                    <script>for(let y=2028; y>=1990; y--) document.write(`<option value="${y}">${y}</option>`);</script>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">حالة القطع المطلوبة</label>
+                            <select id="partCondition" required class="w-full px-4 py-3 rounded-2xl border border-amber-300 bg-amber-50 text-amber-900 focus:ring-2 focus:ring-amber-500 outline-none transition-all font-bold cursor-pointer">
+                                <option value="" disabled selected>اختر الحالة...</option>
+                                <option value="جديد">قطع جديدة (وكالة أو تجاري)</option>
+                                <option value="مستعمل">قطع مستعملة (تشليح)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">القسم</label>
+                            <select id="partCategory" required class="w-full px-4 py-3 rounded-2xl border border-indigo-300 bg-indigo-50 text-indigo-900 focus:ring-2 focus:ring-indigo-500 outline-none transition-all font-bold cursor-pointer">
+                                <option value="" disabled selected>نوع القطع...</option>
+                                <option value="ميكانيكا ومحركات">ميكانيكا ومحركات</option>
+                                <option value="جيربوكس وناقل حركة">جيربوكس وناقل حركة</option>
+                                <option value="نظام التعليق والمقصات">نظام التعليق (عكوس، مساعدات، جلود)</option>
+                                <option value="كهرباء وإلكترونيات">كهرباء وإلكترونيات</option>
+                                <option value="بودي وهيكل خارجي">بودي وهيكل خارجي</option>
+                                <option value="زجاج ومرايا">زجاج ومرايا</option>
+                                <option value="زيوت وفلاتر">زيوت وفلاتر</option>
+                                <option value="زينة وإكسسوارات">زينة وإكسسوارات</option>
+                                <option value="أخرى">أخرى (كتابة يدوي)</option>
+                            </select>
+                            <input type="text" id="customPartCategory" class="hidden w-full px-4 py-3 rounded-2xl border border-indigo-300 bg-white mt-2 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="اكتب نوع القطعة هنا...">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">رقم الهيكل (الشاصيه)</label>
+                            <input type="text" id="carVin" class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all uppercase text-left font-mono placeholder-slate-400" dir="ltr" placeholder="اختياري (يفضل لتأكيد القطعة)">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">إرفاق صورة (اختياري)</label>
+                            <input type="file" id="carImage" accept="image/*" class="w-full px-3 py-2 text-sm rounded-2xl border border-slate-300 outline-none file:mr-2 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 transition-all cursor-pointer">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">القطع المطلوبة بالتفصيل</label>
+                        <textarea id="carParts" required rows="3" class="w-full px-4 py-3 rounded-2xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none transition-all resize-none" placeholder="اكتب اسماء القطع، مثال: فحمات أمامية، فلتر هواء..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-800 text-white font-black text-lg py-4 rounded-2xl shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:scale-[1.01] active:scale-95 transition-all mt-6"><i class="fa-solid fa-paper-plane ml-2"></i>إرسال الطلب الآن</button>
                 </form>
+                <div id="successMsg" class="hidden mt-6 p-5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-2xl text-center font-bold animate-pulse">
+                    <i class="fa-solid fa-circle-check text-4xl mb-3 block"></i>تم إرسال طلبك بنجاح! سنتواصل معك قريباً.
+                </div>
             </div>
-        </section>
-
-        <section id="admin-view" class="hidden">
-           ```
-
-**أخبرني عندما تكون جاهزاً لاستلام الدفعة الثانية** التي تحتوي على الدوال البرمجية (JavaScript) المسؤولة عن الحذف، وتعديل نافذة الموردين، ومنطق التعامل مع الأرقام السعودية.<!-- قسم تسجيل الموردين -->
+        </section><!-- قسم تسجيل الموردين -->
         <section id="supplier-reg-view" class="hidden">
             <div class="bg-white rounded-3xl shadow-xl shadow-emerald-100/50 border border-emerald-100 p-6 md:p-8">
                 <div class="text-center mb-8">
@@ -61,12 +148,11 @@
                             <input type="text" id="regSupName" required class="w-full px-4 py-3 rounded-2xl border border-slate-300 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 transition-all" placeholder="مثال: تشليح القمة">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">رقم الجوال (للواتساب)</label>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5 ml-1">رقم الواتساب لاستقبال الطلبات</label>
                             <input type="tel" id="regSupPhone" required class="w-full px-4 py-3 rounded-2xl border border-slate-300 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 transition-all text-left font-mono" dir="ltr" placeholder="05xxxxxxxx">
                         </div>
                     </div>
 
-                    <!-- نفس الخيارات الخاصة بالموردين السابقة تماماً لم أحذف منها شيئاً -->
                     <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
                         <span class="block text-sm font-bold text-amber-800 mb-3 border-b border-amber-200 pb-2">حالة القطع التي تبيعها:</span>
                         <div class="grid grid-cols-2 gap-3">
@@ -155,7 +241,7 @@
                             <label class="checkbox-label font-bold"><input type="checkbox" value="زينة وإكسسوارات" class="reg-cat-cb">زينة وإكسسوارات</label>
                             <label class="checkbox-label font-bold"><input type="checkbox" value="أخرى" class="reg-cat-cb">أقسام أخرى</label>
                         </div>
-                         <input type="text" id="regCustomCategoriesInput" class="w-full px-3 py-2 mt-2 border rounded text-xs outline-none" placeholder="اكتب الأقسام الاخرى (إن وجدت)">
+                        <input type="text" id="regCustomCategoriesInput" class="w-full px-3 py-2 mt-2 border rounded text-xs outline-none" placeholder="اكتب الأقسام الاخرى (إن وجدت)">
                     </div>
 
                     <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-black text-lg py-4 rounded-2xl shadow-lg shadow-emerald-200 hover:shadow-emerald-300 transition-all mt-4"><i class="fa-solid fa-paper-plane ml-2"></i>تقديم طلب الانضمام</button>
@@ -166,7 +252,7 @@
             </div>
         </section>
 
-        <!-- لوحة التحكم الحية -->
+        <!-- قسم لوحة التحكم -->
         <section id="admin-view" class="hidden">
             <div class="flex flex-col gap-3 mb-6 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="flex justify-between items-center border-b pb-3">
@@ -185,15 +271,15 @@
                 <button onclick="openWaSettingsModal()" class="bg-slate-100 text-slate-700 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-200 transition w-full"><i class="fa-solid fa-gear ml-1"></i>إعدادات التوجيه والواتساب</button>
             </div>
             
-            <h2 class="text-lg font-bold text-slate-800 mb-3 flex items-center"><span class="w-3 h-3 rounded-full bg-red-500 animate-pulse ml-2"></span>الطلبات الحية</h2>
+            <h2 class="text-lg font-bold text-slate-800 mb-3 flex items-center"><span class="w-3 h-3 rounded-full bg-red-500 animate-pulse ml-2"></span>الطلبات الحية (بالفرز الذكي)</h2>
             <div id="ordersContainer" class="space-y-4"></div>
         </section>
     </main>
 
     <footer class="max-w-4xl mx-auto px-4 mt-8">
         <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 text-center">
-            <h3 class="text-xl font-black text-indigo-700 mb-2"><i class="fa-solid fa-gears ml-2"></i>شركة دياريكو</h3>
-            <p class="text-sm text-slate-500 mb-4 font-medium">متخصصون في تأمين قطع الغيار بأعلى معايير الجودة.</p>
+            <h3 class="text-xl font-black text-indigo-700 mb-2"><i class="fa-solid fa-gears ml-2"></i>شركة عالم التروس</h3>
+            <p class="text-sm text-slate-500 mb-4 font-medium">متخصصون في صيانة الجيربوكس وتأمين قطع الغيار بأعلى معايير الجودة.</p>
             <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-sm font-bold text-slate-700">
                 <div class="bg-slate-50 px-5 py-2.5 rounded-xl border border-slate-100 flex items-center gap-2 shadow-sm">
                     <i class="fa-solid fa-phone text-emerald-500"></i>
@@ -205,12 +291,12 @@
                 </div>
             </div>
             <div class="mt-5 pt-4 border-t border-slate-100 text-[11px] text-slate-400 font-bold">
-                &copy; 2026 شركة دياريكو. جميع الحقوق محفوظة.
+                &copy; 2026 شركة عالم التروس للصيانة. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>
 
-    <!-- النوافذ المنبثقة (Modals) -->
+    <!-- النوافذ المنبثقة -->
     <div id="pendingModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-3xl p-5 max-w-lg w-full shadow-2xl max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
@@ -245,7 +331,7 @@
         </div>
     </div>
 
-    <!-- تم توسيع نافذة الموردين إلى max-w-4xl بناءً على طلبك -->
+    <!-- تم توسعة هذه النافذة لتصبح max-w-4xl بدلاً من max-w-2xl -->
     <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-2 sm:p-4">
         <div class="bg-white rounded-3xl p-5 max-w-4xl w-full shadow-2xl max-h-[95vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
@@ -266,7 +352,7 @@
                         <input type="text" id="newSupName" placeholder="مثال: تشليح القمة" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">رقم الجوال</label>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">رقم الواتساب</label>
                         <input type="tel" id="newSupPhone" placeholder="05xxxxxxxx" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-sm outline-none focus:border-indigo-500 text-left font-mono" dir="ltr">
                     </div>
                 </div>
@@ -283,8 +369,7 @@
                     <span class="block text-xs font-bold text-indigo-900 mb-2">تخصص السيارات (الماركات):</span>
                     <div class="max-h-48 overflow-y-auto bg-white p-3 rounded-xl border border-indigo-100 shadow-sm">
                         <label class="checkbox-label mb-2 pb-1 border-b text-indigo-700 font-bold bg-indigo-50 p-1 rounded"><input type="checkbox" value="شامل الكل" class="brand-cb">جميع السيارات (شامل)</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-x-2 gap-y-0.5 text-[11px]">
-                            <!-- نفس القائمة بدون تغيير -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-2 gap-y-0.5 text-[11px]">
                             <label class="checkbox-label font-bold text-indigo-600"><input type="checkbox" value="شامل ياباني" class="brand-cb">شامل ياباني</label>
                             <label class="checkbox-label"><input type="checkbox" value="تويوتا" class="brand-cb">تويوتا</label>
                             <label class="checkbox-label"><input type="checkbox" value="لكزس" class="brand-cb">لكزس</label>
@@ -298,7 +383,7 @@
                             <label class="checkbox-label"><input type="checkbox" value="إيسوزو" class="brand-cb">إيسوزو</label>
                             <label class="checkbox-label"><input type="checkbox" value="دايهاتسو" class="brand-cb">دايهاتسو</label>
                             
-                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-4"><input type="checkbox" value="شامل أمريكي" class="brand-cb">شامل أمريكي</label>
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-3"><input type="checkbox" value="شامل أمريكي" class="brand-cb">شامل أمريكي</label>
                             <label class="checkbox-label"><input type="checkbox" value="فورد" class="brand-cb">فورد</label>
                             <label class="checkbox-label"><input type="checkbox" value="شفروليه" class="brand-cb">شفروليه</label>
                             <label class="checkbox-label"><input type="checkbox" value="جي ام سي" class="brand-cb">جي ام سي</label>
@@ -310,12 +395,12 @@
                             <label class="checkbox-label"><input type="checkbox" value="هامر" class="brand-cb">هامر</label>
                             <label class="checkbox-label"><input type="checkbox" value="تيسلا" class="brand-cb">تيسلا</label>
 
-                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-4"><input type="checkbox" value="شامل كوري" class="brand-cb">شامل كوري</label>
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-3"><input type="checkbox" value="شامل كوري" class="brand-cb">شامل كوري</label>
                             <label class="checkbox-label"><input type="checkbox" value="هيونداي" class="brand-cb">هيونداي</label>
                             <label class="checkbox-label"><input type="checkbox" value="كيا" class="brand-cb">كيا</label>
                             <label class="checkbox-label"><input type="checkbox" value="جينيسيس" class="brand-cb">جينيسيس</label>
                             
-                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-4"><input type="checkbox" value="شامل صيني" class="brand-cb">شامل صيني</label>
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-3"><input type="checkbox" value="شامل صيني" class="brand-cb">شامل صيني</label>
                             <label class="checkbox-label"><input type="checkbox" value="شانجان" class="brand-cb">شانجان</label>
                             <label class="checkbox-label"><input type="checkbox" value="جيلي" class="brand-cb">جيلي</label>
                             <label class="checkbox-label"><input type="checkbox" value="إم جي" class="brand-cb">إم جي (MG)</label>
@@ -327,7 +412,7 @@
                             <label class="checkbox-label"><input type="checkbox" value="إكسيد" class="brand-cb">إكسيد</label>
                             <label class="checkbox-label"><input type="checkbox" value="جي أيه سي" class="brand-cb">GAC</label>
 
-                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-4"><input type="checkbox" value="شامل أوروبي" class="brand-cb">شامل أوروبي</label>
+                            <label class="checkbox-label font-bold text-indigo-600 mt-1 border-t pt-1 col-span-1 sm:col-span-3"><input type="checkbox" value="شامل أوروبي" class="brand-cb">شامل أوروبي</label>
                             <label class="checkbox-label"><input type="checkbox" value="مرسيدس" class="brand-cb">مرسيدس</label>
                             <label class="checkbox-label"><input type="checkbox" value="بي إم دبليو" class="brand-cb">بي إم دبليو</label>
                             <label class="checkbox-label"><input type="checkbox" value="أودي" class="brand-cb">أودي</label>
@@ -379,20 +464,7 @@
             <img id="modalImg" src="" class="w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain mx-auto">
             <p class="text-white/80 text-center mt-4 text-sm font-bold bg-black/50 py-2 rounded-full w-max mx-auto px-6">اضغط في أي مكان للإغلاق</p>
         </div>
-    </div>
-
-    <section id="brands-section" style="text-align: center; margin: 20px;">
-        <h3 style="color: #333;">تصفح قطع غيار حسب الماركة:</h3>
-        <ul style="list-style: none; padding: 0;">
-            <li style="display: inline; margin: 0 10px;"><a href="toyota.html">تويوتا</a></li>
-            <li style="display: inline; margin: 0 10px;"><a href="hyundai.html">هيونداي</a></li>
-            <li style="display: inline; margin: 0 10px;"><a href="kia.html">كيا</a></li>
-            <li style="display: inline; margin: 0 10px;"><a href="nissan.html">نيسان</a></li>
-            <li style="display: inline; margin: 0 10px;"><a href="ford.html">فورد</a></li>
-        </ul>
-    </section>
-
-    <script type="module">
+    </div><script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -427,14 +499,16 @@
             "أخرى": []
         };
 
-        // دالة جديدة لمعالجة أرقام الجوال السعودية (تحول 05 إلى 9665 تلقائياً)
-        function formatSaudiPhone(phone) {
-            let p = phone.replace(/\D/g, ''); // إزالة أي شيء غير الأرقام
-            if (p.startsWith('00966')) return p.substring(2);
-            if (p.startsWith('05')) return '966' + p.substring(1);
-            if (p.startsWith('5')) return '966' + p;
-            return p; // إذا لم يطابق الشروط، يتركه كما هو
-        }
+        // دالة ذكية لتنسيق الرقم السعودي (تقبل 05 وتحولها لـ 9665)
+        window.formatSaudiPhone = function(phone) {
+            let p = phone.replace(/[^0-9]/g, '');
+            if (p.startsWith('05')) {
+                return '966' + p.substring(1);
+            } else if (p.startsWith('5')) {
+                return '966' + p;
+            }
+            return p;
+        };
 
         window.copySupplierRegLink = function(btn) {
             let link = window.location.href.split('?')[0]; 
@@ -478,7 +552,7 @@
             }
         });
 
-        document.getElementById('carOrigin')?.addEventListener('change', function() {
+        document.getElementById('carOrigin').addEventListener('change', function() {
             const origin = this.value; const brandSelect = document.getElementById('carBrandSpecific');
             const customInput = document.getElementById('customCarBrand');
             brandSelect.innerHTML = '<option value="" disabled selected>اختر الماركة</option>';
@@ -491,20 +565,21 @@
             } else { brandSelect.disabled = true; }
         });
 
-        document.getElementById('carBrandSpecific')?.addEventListener('change', function() {
+        document.getElementById('carBrandSpecific').addEventListener('change', function() {
             const customInput = document.getElementById('customCarBrand');
             if (this.value === 'أخرى') { customInput.classList.remove('hidden'); customInput.setAttribute('required', 'true'); } 
             else { customInput.classList.add('hidden'); customInput.removeAttribute('required'); customInput.value = ''; }
         });
 
-        document.getElementById('partCategory')?.addEventListener('change', function() {
+        document.getElementById('partCategory').addEventListener('change', function() {
             const customInput = document.getElementById('customPartCategory');
             if (this.value === 'أخرى') { customInput.classList.remove('hidden'); customInput.setAttribute('required', 'true'); } 
             else { customInput.classList.add('hidden'); customInput.removeAttribute('required'); customInput.value = ''; }
         });
 
         window.getWhatsAppLink = function(phone, text, type) {
-            let t = text ? encodeURIComponent(text) : ''; let p = formatSaudiPhone(phone); 
+            let t = text ? encodeURIComponent(text) : ''; 
+            let p = window.formatSaudiPhone(phone); // استخدام التنسيق الجديد
             if (type === 'wa_web') return `https://web.whatsapp.com/send?phone=${p}&text=${t}`;
             if (type === 'wa_app') return `whatsapp://send?phone=${p}&text=${t}`;
             if (type === 'android_normal') return `intent://send?phone=${p}&text=${t}#Intent;package=com.whatsapp;scheme=whatsapp;end;`;
@@ -567,7 +642,10 @@
             document.getElementById('supplierFormContainer').classList.remove('hidden');
             document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square ml-1.5"></i>تعديل بيانات: ' + sup.name;
             document.getElementById('newSupName').value = sup.name;
-            document.getElementById('newSupPhone').value = sup.phone.replace('966', '0'); // لتسهيل العرض برقم يبدأ ب 05
+            // إظهار الرقم بدون الـ 966 لتسهيل التعديل
+            let showPhone = sup.phone;
+            if(showPhone.startsWith('9665')) showPhone = '05' + showPhone.substring(4);
+            document.getElementById('newSupPhone').value = showPhone;
             
             document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = sup.conditions && sup.conditions.includes(cb.value));
             document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = sup.brands && sup.brands.includes(cb.value));
@@ -582,16 +660,16 @@
             document.getElementById('supplierFormContainer').scrollTop = 0;
         };
 
-        // دالة الحذف الجديدة 
-        window.deleteSupplier = async function(id) {
-            if(confirm("⚠️ هل أنت متأكد من حذف هذا المورد نهائياً من قاعدة البيانات؟")) {
+        // إصلاح وتفعيل دالة الحذف
+        window.deleteSupplier = async function(id) { 
+            if(confirm("هل أنت متأكد من حذف هذا المورد نهائياً من السحابة؟")) {
                 suppliersDB = suppliersDB.filter(s => s.id !== id);
                 try {
                     await setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB });
-                    renderSuppliersModalList(); 
-                    renderOrders(window.currentOrders);
-                } catch (e) {
-                    alert("حدث خطأ أثناء الحذف");
+                    renderSuppliersModalList();
+                    if(window.currentOrders) renderOrders(window.currentOrders);
+                } catch(e) {
+                    alert("حدث خطأ أثناء الحذف!");
                 }
             }
         };
@@ -603,9 +681,7 @@
 
         window.addSupplierCloud = async function() {
             const name = document.getElementById('newSupName').value.trim();
-            // تطبيق دالة تحويل الرقم
-            const phone = formatSaudiPhone(document.getElementById('newSupPhone').value);
-            
+            const phone = window.formatSaudiPhone(document.getElementById('newSupPhone').value); // استخدام التنسيق الجديد
             const conditions = Array.from(document.querySelectorAll('.cond-cb:checked')).map(cb => cb.value);
             const brands = Array.from(document.querySelectorAll('.brand-cb:checked')).map(cb => cb.value);
             const categories = Array.from(document.querySelectorAll('.cat-cb:checked')).map(cb => cb.value);
@@ -615,7 +691,7 @@
             const customCats = document.getElementById('customCategoriesInput')?.value.trim();
             if(customCats) categories.push(...customCats.split(',').map(c=>c.trim()).filter(c=>c));
 
-            if(!name || !phone || phone.length < 9) { alert("الرجاء إدخال الاسم ورقم جوال صحيح."); return; }
+            if(!name || !phone) { alert("الرجاء إدخال الاسم والرقم."); return; }
             if(conditions.length === 0 || brands.length === 0 || categories.length === 0) { alert("الرجاء تحديد التخصصات (حالة، ماركة، قسم) ليتمكن النظام من إرسال الطلبات له."); return; }
 
             const btn = document.getElementById('addSupBtn'); const origBtn = btn.innerHTML; btn.innerHTML = 'جاري الحفظ...'; btn.disabled = true;
@@ -632,14 +708,12 @@
             finally { btn.innerHTML = origBtn; btn.disabled = false; }
         };
 
-        document.getElementById('supplierRegForm')?.addEventListener('submit', async function(e) {
+        document.getElementById('supplierRegForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]'); const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...'; btn.disabled = true;
 
             const name = document.getElementById('regSupName').value.trim();
-            // تطبيق دالة تحويل الرقم
-            const phone = formatSaudiPhone(document.getElementById('regSupPhone').value);
-            
+            const phone = window.formatSaudiPhone(document.getElementById('regSupPhone').value);
             const conditions = Array.from(document.querySelectorAll('.reg-cond-cb:checked')).map(c=>c.value);
             const brands = Array.from(document.querySelectorAll('.reg-brand-cb:checked')).map(c=>c.value);
             const categories = Array.from(document.querySelectorAll('.reg-cat-cb:checked')).map(c=>c.value);
@@ -743,7 +817,7 @@
             });
         }
 
-        document.getElementById('orderForm')?.addEventListener('submit', async function(e) {
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]'); const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الطلب...'; btn.disabled = true;
             try {
@@ -758,11 +832,9 @@
                 let finalCategory = document.getElementById('partCategory').value;
                 if (finalCategory === 'أخرى') finalCategory = document.getElementById('customPartCategory').value || 'أخرى';
 
-                // تطبيق دالة تحويل الرقم
-                const formattedPhone = formatSaudiPhone(document.getElementById('custPhone').value);
-
                 await addDoc(collection(db, "orders"), {
-                    customerName: document.getElementById('custName').value, phone: formattedPhone,
+                    customerName: document.getElementById('custName').value, 
+                    phone: window.formatSaudiPhone(document.getElementById('custPhone').value),
                     brandGroup: document.getElementById('carOrigin').value, brand: finalBrand, model: document.getElementById('carModel').value,
                     year: document.getElementById('carYear').value, partCondition: document.getElementById('partCondition').value,
                     partCategory: finalCategory, vin: document.getElementById('carVin').value || 'لم يُدخل', parts: document.getElementById('carParts').value,
@@ -801,30 +873,74 @@
             });
         };
 
+        // دالة عرض الطلبات مع نظام الفرز الذكي الجديد
         function renderOrders(orders) {
             const container = document.getElementById('ordersContainer'); container.innerHTML = '';
             if (orders.length === 0) { container.innerHTML = '<div class="bg-white border border-slate-200 rounded-3xl p-10 text-center shadow-sm"><i class="fa-solid fa-box-open text-5xl text-slate-300 mb-4 block"></i><p class="text-slate-500 font-bold">لا توجد طلبات حية حالياً</p></div>'; return; }
 
             orders.forEach(order => {
-                const matchedSuppliers = suppliersDB.filter(sup => {
+                // الفرز الذكي والتنقيط (Scoring)
+                const scoredSuppliers = [];
+                suppliersDB.forEach(sup => {
+                    let score = 0;
+                    
+                    // 1. فحص الحالة (شرط أساسي)
                     const matchCondition = sup.conditions && (sup.conditions.includes('شامل') || sup.conditions.includes(order.partCondition));
-                    const matchBrand = sup.brands && (sup.brands.includes('شامل الكل') || sup.brands.includes('شامل ' + order.brandGroup) || sup.brands.includes(order.brand) || (sup.brands.includes('أخرى') && !carBrandsData[order.brandGroup]?.includes(order.brand)));
-                    const matchCategory = sup.categories && (sup.categories.includes('شامل') || sup.categories.includes(order.partCategory) || (sup.categories.includes('أخرى') && !['ميكانيكا ومحركات', 'جيربوكس وناقل حركة', 'نظام التعليق والمقصات', 'كهرباء وإلكترونيات', 'بودي وهيكل خارجي', 'زجاج ومرايا', 'زيوت وفلاتر', 'زينة وإكسسوارات'].includes(order.partCategory)));
-                    return matchCondition && matchBrand && matchCategory;
+                    if (!matchCondition) return; // تخطي إذا الحالة غير متطابقة أبداً
+
+                    // 2. فحص الماركة (إعطاء نقاط)
+                    let brandScore = 0;
+                    if (sup.brands && sup.brands.includes(order.brand)) { brandScore = 10; } // تطابق دقيق
+                    else if (sup.brands && sup.brands.includes('شامل ' + order.brandGroup)) { brandScore = 10; } // تطابق الفئة (أمريكي، ياباني..)
+                    else if (sup.brands && sup.brands.includes('شامل الكل')) { brandScore = 5; } // شامل
+                    else if (sup.brands && sup.brands.includes('أخرى') && !carBrandsData[order.brandGroup]?.includes(order.brand)) { brandScore = 5; }
+                    
+                    if (brandScore === 0) return; // تخطي إذا الماركة غير متطابقة أبداً
+
+                    // 3. فحص القسم (إعطاء نقاط)
+                    let catScore = 0;
+                    if (sup.categories && sup.categories.includes(order.partCategory)) { catScore = 10; } // تطابق دقيق
+                    else if (sup.categories && sup.categories.includes('شامل')) { catScore = 5; } // شامل
+                    else if (sup.categories && sup.categories.includes('أخرى') && !['ميكانيكا ومحركات', 'جيربوكس وناقل حركة', 'نظام التعليق والمقصات', 'كهرباء وإلكترونيات', 'بودي وهيكل خارجي', 'زجاج ومرايا', 'زيوت وفلاتر', 'زينة وإكسسوارات'].includes(order.partCategory)) { catScore = 5; }
+
+                    if (catScore === 0) return; // تخطي إذا القسم غير متطابق أبداً
+
+                    score = brandScore + catScore;
+                    scoredSuppliers.push({ ...sup, score: score });
                 });
+
+                // ترتيب الموردين من الأعلى نقاطاً إلى الأقل
+                scoredSuppliers.sort((a, b) => b.score - a.score);
 
                 let msg = `*طلب تسعير*\n🚗 ${order.brand} ${order.model} (${order.year})\n💎 الحالة: ${order.partCondition}\n🗂️ النوع: ${order.partCategory}\n🔢 الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
                 if (order.imageData) msg += `\n*(صورة القطعة مرفقة)*`;
                 
                 let imgHtml = order.imageData ? `<div class="mt-3 mb-2 relative inline-block"><img src="${order.imageData}" onclick="viewImage('${order.imageData}')" class="w-20 h-20 object-cover rounded-xl border-2 border-slate-200 shadow-sm cursor-pointer hover:opacity-80 transition"><span class="absolute -top-2 -right-2 bg-indigo-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">صورة</span></div>` : "";
 
-                let btnHtml = '<div class="flex flex-wrap gap-1.5 mt-4">';
-                if(matchedSuppliers.length > 0) {
-                    matchedSuppliers.forEach(sup => {
+                let btnHtml = '<div class="flex flex-wrap gap-2 mt-4">';
+                if(scoredSuppliers.length > 0) {
+                    scoredSuppliers.forEach(sup => {
                         let link = getWhatsAppLink(sup.phone, msg, waSettings.supplierApp);
-                        btnHtml += `<a href="${link}" target="_blank" class="bg-emerald-50 text-emerald-700 border border-emerald-100 text-xs font-bold px-3 py-2 rounded-xl hover:bg-emerald-500 hover:text-white transition shadow-sm"><i class="fa-brands fa-whatsapp ml-1"></i>${sup.name}</a>`;
+                        let btnClass = "";
+                        let badgeHtml = "";
+                        
+                        // تصميم الزر بناءً على النقاط
+                        if (sup.score >= 20) {
+                            btnClass = "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-500 hover:text-white";
+                            badgeHtml = '<span class="absolute -top-2 -right-2 bg-emerald-500 text-white text-[9px] px-1.5 py-0.5 rounded-full shadow-sm">مثالي</span>';
+                        } else if (sup.score >= 15) {
+                            btnClass = "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-500 hover:text-white";
+                            badgeHtml = '<span class="absolute -top-2 -right-2 bg-blue-500 text-white text-[9px] px-1.5 py-0.5 rounded-full shadow-sm">جيد</span>';
+                        } else {
+                            btnClass = "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-600 hover:text-white";
+                            badgeHtml = '<span class="absolute -top-2 -right-2 bg-slate-400 text-white text-[9px] px-1.5 py-0.5 rounded-full shadow-sm">شامل</span>';
+                        }
+
+                        btnHtml += `<a href="${link}" target="_blank" class="relative ${btnClass} border text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm flex items-center pr-4">${badgeHtml}<i class="fa-brands fa-whatsapp ml-1 text-lg"></i>${sup.name}</a>`;
                     });
-                } else { btnHtml += `<div class="w-full bg-rose-50 text-rose-600 text-xs font-bold p-2 rounded-lg text-center border border-rose-100">لا يوجد مورد يطابق تفاصيل هذا الطلب بالكامل.</div>`; }
+                } else { 
+                    btnHtml += `<div class="w-full bg-rose-50 text-rose-600 text-xs font-bold p-2 rounded-lg text-center border border-rose-100">لا يوجد مورد يطابق تفاصيل هذا الطلب بالكامل.</div>`; 
+                }
                 
                 let encMsg = encodeURIComponent(msg);
                 btnHtml += `<div class="w-full flex gap-2 mt-2 pt-3 border-t border-slate-100">
@@ -871,4 +987,14 @@
         }
     </script>
 </body>
+<section id="brands-section" style="text-align: center; margin: 20px;">
+    <h3 style="color: #333;">تصفح قطع غيار حسب الماركة:</h3>
+    <ul style="list-style: none; padding: 0;">
+        <li style="display: inline; margin: 0 10px;"><a href="toyota.html">تويوتا</a></li>
+        <li style="display: inline; margin: 0 10px;"><a href="hyundai.html">هيونداي</a></li>
+        <li style="display: inline; margin: 0 10px;"><a href="kia.html">كيا</a></li>
+        <li style="display: inline; margin: 0 10px;"><a href="nissan.html">نيسان</a></li>
+        <li style="display: inline; margin: 0 10px;"><a href="ford.html">فورد</a></li>
+    </ul>
+</section>
 </html>
