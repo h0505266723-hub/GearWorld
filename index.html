@@ -84,10 +84,11 @@
 
             <div class="flex items-center gap-2">
                 <!-- زر انضم كشريك -->
-                <button onclick="switchTab('partner')" class="text-xs font-extrabold text-brand-300 bg-brand-500/10 border border-brand-500/30 px-3 md:px-4 py-2.5 rounded-2xl hover:bg-brand-500 hover:text-white transition duration-300 shadow-md flex items-center gap-1.5">
-                    <i class="fa-solid fa-handshake-angle"></i>
-                    <span class="hidden sm:inline">انضم كشريك</span>
-                </button>
+               <!-- زر انضم كشريك (البارز والجديد) -->
+<button onclick="switchTab('partner')" class="text-sm md:text-base font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/40 px-4 md:px-5 py-2.5 rounded-2xl hover:bg-emerald-500 hover:text-white transition duration-300 shadow-lg shadow-emerald-500/20 flex items-center gap-2 animate-pulse hover:animate-none">
+    <span class="text-xl md:text-2xl">🤝</span>
+    <span>انضم كشريك لحراج القطع</span>
+</button>
                 <!-- زر لوحة التاجر -->
                 <button id="adminLoginBtn" onclick="switchTab('admin')" class="text-xs font-extrabold text-slate-300 bg-slate-800/80 border border-slate-700/80 px-3 md:px-4 py-2.5 rounded-2xl hover:bg-brand-500 hover:text-white hover:border-brand-500 transition duration-300 shadow-md flex items-center gap-1.5">
                     <i class="fa-solid fa-user-shield text-brand-500"></i>
