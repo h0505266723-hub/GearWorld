@@ -1,0 +1,21 @@
+{
+    "frames":  {
+                   "customer2":  "./assets/frames/customer_2.jpg",
+                   "scene4":  "./assets/frames/scene4_warehouse_aftermarket.jpg",
+                   "customer1":  "./assets/frames/customer_1.jpg",
+                   "scene3":  "./assets/frames/scene3_warehouse_oem.jpg",
+                   "scene2":  "./assets/frames/scene2_robot_salvage.jpg",
+                   "customer3":  "./assets/frames/customer_3.jpg",
+                   "scene1":  "./assets/frames/scene1_bmw_exploded.jpg",
+                   "scene5":  "./assets/frames/scene5_loading_van.jpg"
+               },
+    "generatedAt":  "2026-10-29T23:25:28.6412974+03:00",
+    "hasVideoSequences":  false,
+    "sequences":  {
+
+                  },
+    "resolution":  {
+                       "height":  720,
+                       "width":  1280
+                   }
+}
