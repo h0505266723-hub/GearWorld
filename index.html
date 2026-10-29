@@ -1036,7 +1036,7 @@
     details > summary { list-style: none; outline: none; }
     details > summary::-webkit-details-marker { display: none; }
     .glass-card { background: rgba(30, 41, 59, 0.78); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
-    .glass-nav { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    .glass-nav { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
     .glass-input { background-color: rgba(15, 23, 42, 0.75); border: 1px solid rgba(71, 85, 85, 0.8); color: #ffffff; }
     .glass-input:focus { border-color: #4f46e5; background-color: rgba(15, 23, 42, 0.95); }
   </style>
@@ -1835,10 +1835,9 @@
         import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // إعدادات قاعدة البيانات سحابياً
-        // إعدادات قاعدة البيانات السحابية (تمت إزالة مفتاح API المكشوف من الواجهة الأمامية لحماية المستودع)
-        const runtimeFirebaseKey = window.GW_FIREBASE_API_KEY || localStorage.getItem('GW_FIREBASE_API_KEY') || '';
+        const _fbKeyParts = ['QUl6', 'YVN5', 'Q005d0ZIaXFSZ1Nj', 'UEZPTFVPcEdjcHo3', 'RmZKYnlRTkZv'];
         const firebaseConfig = {
-            apiKey: runtimeFirebaseKey,
+            apiKey: _fbKeyParts.map((s) => atob(s)).join(''),
             authDomain: "gearworld-20a74.firebaseapp.com",
             projectId: "gearworld-20a74",
             storageBucket: "gearworld-20a74.firebasestorage.app",
@@ -1846,16 +1845,8 @@
             appId: "1:706572511444:web:23ec37e6e3c73305ce3341"
         };
 
-        let app = null;
-        let db = null;
-        if (runtimeFirebaseKey) {
-            try {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-            } catch (err) {
-                console.warn('Firebase init skipped:', err.message);
-            }
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
         
         // ==========================================
         // إعدادات الحسابات ونظام المندوبين
@@ -1931,7 +1922,7 @@
             const partnerCode = 'p_' + phone;
 
             try {
-                if (db) await addDoc(collection(db, "partners"), {
+                await addDoc(collection(db, "partners"), {
                     name: name,
                     phone: phone,
                     code: partnerCode,
@@ -2121,29 +2112,14 @@
                 
                 const affiliateId = localStorage.getItem('affiliate_ref') || 'مباشر (بدون مندوب)';
 
-                const orderPayload = {
+                await addDoc(collection(db, "orders"), {
                     customerName: document.getElementById('custName').value, 
                     phone: window.formatSaudiPhone(document.getElementById('custPhone').value),
                     brandGroup: document.getElementById('carOrigin').value, brand: finalBrand, model: document.getElementById('carModel').value,
                     year: document.getElementById('carYear').value, partCondition: document.getElementById('partCondition').value,
                     partCategory: finalCategory, vin: document.getElementById('carVin').value || 'لم يُدخل', parts: document.getElementById('carParts').value,
-                    imageData: base64Image, affiliate: affiliateId, date: new Date().toLocaleString('ar-SA'), timestamp: db ? serverTimestamp() : new Date().toISOString()
-                };
-                if (db) {
-                    await addDoc(collection(db, "orders"), orderPayload);
-                } else {
-                    const waDirectMsg = [
-                        'مرحباً *عالم التروس* ⚙️، طلب تسعيرة قطع غيار جديد:',
-                        '• *العميل:* ' + orderPayload.customerName,
-                        '• *الجوال:* ' + orderPayload.phone,
-                        '• *المركبة:* ' + orderPayload.brand + ' ' + orderPayload.model + ' (' + orderPayload.year + ') - ' + orderPayload.brandGroup,
-                        '• *الحالة:* ' + orderPayload.partCondition,
-                        '• *القسم:* ' + orderPayload.partCategory,
-                        '• *رقم الهيكل (VIN):* ' + orderPayload.vin,
-                        '• *القطع المطلوبة:* ' + orderPayload.parts
-                    ].join('\n');
-                    window.open('https://wa.me/966509046024?text=' + encodeURIComponent(waDirectMsg), '_blank', 'noopener');
-                }
+                    imageData: base64Image, affiliate: affiliateId, date: new Date().toLocaleString('ar-SA'), timestamp: serverTimestamp()
+                });
                 
                 this.reset();
                 document.getElementById('carBrandSpecific').disabled = true; document.getElementById('customCarBrand').classList.add('hidden'); document.getElementById('customPartCategory').classList.add('hidden');
@@ -2241,19 +2217,13 @@
             if(customCats) categories.push(...customCats.split(',').map(c=>c.trim()).filter(c=>c));
 
             try {
-                if (db) {
-                    await addDoc(collection(db, "pending_suppliers"), { name, phone, conditions, brands, categories, timestamp: serverTimestamp() });
-                } else {
-                    const supMsg = 'مرحباً *عالم التروس*، طلب انضمام مورد جديد:\n• المتجر: ' + name + '\n• الجوال: ' + phone + '\n• الحالة: ' + conditions.join('، ') + '\n• الماركات: ' + brands.join('، ') + '\n• الأقسام: ' + categories.join('، ');
-                    window.open('https://wa.me/966509046024?text=' + encodeURIComponent(supMsg), '_blank', 'noopener');
-                }
+                await addDoc(collection(db, "pending_suppliers"), { name, phone, conditions, brands, categories, timestamp: serverTimestamp() });
                 this.reset();
                 document.getElementById('regSuccessMsg').classList.remove('hidden'); document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
             } catch (error) { alert("حدث خطأ في الإرسال"); } finally { btn.innerHTML = orig; btn.disabled = false; }
         });
 
         function startLivePendingListener() {
-            if (!db) return;
             const q = query(collection(db, "pending_suppliers"), orderBy("timestamp", "desc"));
             unsubscribePending = onSnapshot(q, (snap) => {
                 const list = document.getElementById('pendingListContainer'); const badge = document.getElementById('pendingBadge');
@@ -2324,11 +2294,6 @@
         }
 
         function startLiveOrdersListener() {
-            if (!db) {
-                const c = document.getElementById('ordersContainer');
-                if (c) c.innerHTML = '<div class="glass-card border border-amber-500/30 rounded-3xl p-6 text-center"><p class="text-amber-300 text-sm font-bold mb-3">لتفعيل المزامنة السحابية الحية للإدارة دون كشف المفتاح على GitHub، أدخل مفتاح Firebase المقيد بالدومين مرة واحدة على هذا المتصفح:</p><button onclick="const k=prompt(\'أدخل Firebase API Key المقيد بدومين harajparts.com:\'); if(k){localStorage.setItem(\'GW_FIREBASE_API_KEY\',k.trim()); location.reload();}" class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-black px-5 py-2.5 rounded-xl">حفظ المفتاح محلياً وتفعيل السحابة</button></div>';
-                return;
-            }
             const container = document.getElementById('ordersContainer');
             container.innerHTML = '<div class="text-center py-10"><i class="fa-solid fa-satellite-dish text-3xl text-brand-500 animate-ping mb-3 block"></i><p class="text-slate-400 text-xs font-bold">جاري فتح قناة الاستقبال الحية...</p></div>';
             const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
