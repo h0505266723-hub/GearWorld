@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>عالم التروس | قطع غيار السيارات بالذكاء الاصطناعي - شركة دياريكو</title>
-  <meta name="description" content="عالم التروس (شركة دياريكو) — المنصة الذكية لفحص وتوريد قطع غيار السيارات بالذكاء الاصطناعي: تشليح وكالة مفحوص ومضمون، أصلي وكالة (OEM)، وتجاري بديل معتمد بأسرع توصيل لباب المنزل." />
-  <meta name="keywords" content="عالم التروس, حراج القطع, harajparts, شركة دياريكو, قطع غيار السيارات, تشليح مضمون, قطع غيار BMW, تويوتا, هيونداي, فورد, نيسان, كيا, أصلي وكالة OEM, تجاري معتمد" />
+  <title>عالم التروس | مطابقة وتوريد قطع غيار السيارات برقم الهيكل (VIN) - شركة دياريكو</title>
+  <meta name="description" content="عالم التروس (شركة دياريكو) — منصة مطابقة وتوريد قطع غيار السيارات برقم الهيكل (VIN): قطع وكالة أصلية (OEM)، قطع تشليح مفحوصة ومضمونة، وبدائل تجارية معتمدة بشحن سريع لكافة المدن." />
+  <meta name="keywords" content="عالم التروس, حراج القطع, harajparts, شركة دياريكو, قطع غيار السيارات, مطابقة رقم الهيكل VIN, تشليح مضمون, أصلي وكالة OEM, بديل تجاري معتمد" />
   <link rel="canonical" href="https://harajparts.com/" />
 
   <!-- Open Graph / Social Sharing Tags -->
@@ -13,14 +13,14 @@
   <meta property="og:locale" content="ar_SA" />
   <meta property="og:url" content="https://harajparts.com/" />
   <meta property="og:site_name" content="عالم التروس | شركة دياريكو" />
-  <meta property="og:title" content="عالم التروس | قطع غيار السيارات بالذكاء الاصطناعي" />
-  <meta property="og:description" content="نفكك المستحيل.. لنصل إلى قطعتك بدقة الذكاء الاصطناعي. قارن واطلب فوراً بين التشليح المضمون، الأصلي وكالة OEM، والتجاري المعتمد." />
+  <meta property="og:title" content="عالم التروس | مطابقة وتوريد قطع غيار السيارات برقم الهيكل (VIN)" />
+  <meta property="og:description" content="تحديد دقيق لقطعتك عبر مطابقة رقم الهيكل (VIN) مع الكتالوجات الهندسية المعتمدة — قارن واطلب بين الأصلي وكالة (OEM)، التشليح المضمون، والتجاري المعتمد." />
   <meta property="og:image" content="https://harajparts.com/assets/frames/scene1_bmw_exploded.jpg" />
 
   <!-- Twitter Card Tags -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="عالم التروس | قطع غيار السيارات بالذكاء الاصطناعي" />
-  <meta name="twitter:description" content="فحص وتوريد قطع غيار السيارات بالذكاء الاصطناعي — تشليح مضمون، أصلي وكالة OEM، وتجاري معتمد." />
+  <meta name="twitter:title" content="عالم التروس | مطابقة وتوريد قطع غيار السيارات برقم الهيكل (VIN)" />
+  <meta name="twitter:description" content="مطابقة هندسية لقطع غيار السيارات برقم الشاصي (VIN) — أصلي وكالة OEM، تشليح مفحوص ومضمون، وبديل تجاري معتمد." />
   <meta name="twitter:image" content="https://harajparts.com/assets/frames/scene1_bmw_exploded.jpg" />
 
   <link rel="preload" as="image" href="./assets/frames/scene1_bmw_exploded.jpg" fetchpriority="high" />
@@ -378,11 +378,11 @@
     }
 
     .hud-metric-val {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-family: var(--font-ar);
+      font-size: 0.78rem;
+      font-weight: 800;
       color: #f8fafc;
-      direction: ltr;
+      direction: rtl;
       display: inline-block;
     }
 
@@ -901,107 +901,178 @@
       }
     }
 
-    @media (max-width: 820px) {
+    @media (max-width: 768px) {
       .top-header {
-        flex-wrap: wrap;
-        padding: 8px 12px;
+        flex-wrap: nowrap;
+        padding: 7px 12px;
         gap: 8px;
+        height: 46px;
+        background: rgba(5, 8, 15, 0.78);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
       }
       .stage-nav-pills {
-        order: 3;
-        width: 100%;
-        justify-content: space-between;
-        overflow-x: auto;
+        display: none !important;
       }
       .brand-title {
-        font-size: 0.98rem;
+        font-size: 0.95rem;
       }
       .brand-sub {
         display: none;
       }
       .skip-order-btn {
-        font-size: 0.78rem;
-        padding: 7px 12px;
+        font-size: 0.75rem;
+        padding: 6px 12px;
       }
-      .story-card {
-        right: 16px;
-        left: 16px;
-        width: auto;
-        top: auto;
-        bottom: 66px;
-        padding: 18px 20px;
-        border-radius: 16px;
+      .canvas-vignette {
+        background:
+          linear-gradient(180deg, rgba(5, 8, 15, 0.38) 0%, transparent 16%, transparent 66%, rgba(5, 8, 15, 0.72) 100%);
       }
-      .story-headline {
-        font-size: 1.28rem;
-      }
-      .story-desc {
-        font-size: 0.86rem;
-        line-height: 1.58;
-        margin-bottom: 12px;
+
+      /* 1. Ultra-thin single-line transparent HUD bar (<= 32px) & hidden reticle on mobile */
+      .hud-reticle {
+        display: none !important;
       }
       .hud-telemetry-box {
-        top: 98px;
+        top: 52px;
         bottom: auto;
-        left: 14px;
-        right: 14px;
+        left: 12px;
+        right: 12px;
         width: auto;
-        padding: 10px 12px;
+        height: 28px;
+        max-height: 32px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: rgba(10, 15, 25, 0.52);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border: 1px solid rgba(0, 212, 255, 0.24);
+        display: flex;
+        align-items: center;
+        box-shadow: none;
       }
-      .hud-metrics {
+      .hud-header-row {
+        width: 100%;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      .hud-status-label {
+        font-size: 0.72rem;
+        gap: 6px;
+      }
+      .hud-mode-code {
+        font-size: 0.64rem;
+      }
+      .hud-metrics,
+      .hud-progress-wrap {
+        display: none !important;
+      }
+
+      /* 2. Compact translucent bottom story card (<= 26-30% height, >65% clear scene visibility) */
+      .story-card {
+        right: 12px;
+        left: 12px;
+        width: auto;
+        top: auto;
+        bottom: 12px;
+        max-height: 28vh;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(10, 15, 25, 0.65);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.42);
+      }
+      .story-badge {
+        font-size: 0.68rem;
+        padding: 3px 10px;
         margin-bottom: 6px;
       }
-      .hud-reticle {
-        left: 50%;
-        top: 42%;
-        width: 136px;
-        height: 136px;
+      .story-headline {
+        font-size: 1.05rem;
+        line-height: 1.32;
+        margin-bottom: 5px;
+      }
+      .story-desc {
+        font-size: 0.78rem;
+        line-height: 1.44;
+        margin-bottom: 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .story-tags {
+        gap: 5px;
+      }
+      .story-tag {
+        font-size: 0.66rem;
+        padding: 2px 8px;
+      }
+
+      /* 3. Mobile swipe-up scroll cue positioned cleanly without crowding bottom card */
+      .mouse-wheel-icon {
+        display: none !important;
       }
       .scroll-hint {
-        bottom: 14px;
+        bottom: 206px;
         right: 50%;
         transform: translateX(50%);
         white-space: nowrap;
+        font-size: 0.73rem;
+        padding: 5px 13px;
+        background: rgba(10, 15, 25, 0.62);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
       }
 
-      /* Mobile: 3 Harmonious Cards inside Sticky Viewport */
+      /* Stage 05 Mobile: 3 Compact Comparison Cards inside Sticky Viewport */
       .split-delivery-overlay {
         grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, 1fr);
+        grid-template-rows: repeat(3, minmax(0, 1fr));
         gap: 8px;
-        padding: 96px 12px 12px;
+        padding: 54px 12px 12px;
       }
       .customer-col {
         border-left: none;
         border-radius: 14px;
         border: 1px solid rgba(255, 255, 255, 0.16);
-        padding: 10px 12px;
+        padding: 8px 10px;
         min-height: 0;
       }
       .customer-content {
-        padding: 10px 12px;
-        background: rgba(8, 15, 29, 0.84);
+        padding: 9px 12px;
+        border-radius: 12px;
+        background: rgba(10, 15, 25, 0.74);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
       }
       .tier-ribbon {
-        font-size: 0.68rem;
+        font-size: 0.66rem;
         margin-bottom: 3px;
-        padding: 2px 9px;
+        padding: 2px 8px;
       }
       .customer-title {
-        font-size: 0.96rem;
+        font-size: 0.94rem;
         margin-bottom: 2px;
       }
       .customer-desc {
-        font-size: 0.75rem;
-        line-height: 1.4;
+        font-size: 0.73rem;
+        line-height: 1.36;
         margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
       .customer-meta {
         display: none;
       }
       .choose-tier-btn {
         padding: 6px 10px;
-        font-size: 0.78rem;
+        font-size: 0.76rem;
+        border-radius: 8px;
       }
       .form-grid,
       .tier-selector-grid {
@@ -1054,11 +1125,11 @@
     </a>
 
     <nav class="stage-nav-pills" aria-label="مراحل القصة">
-      <button type="button" class="stage-pill active" data-stage-btn="1" data-target-progress="0.02">01 التفكيك الذكي</button>
+      <button type="button" class="stage-pill active" data-stage-btn="1" data-target-progress="0.02">01 المطابقة الرقمية</button>
       <button type="button" class="stage-pill" data-stage-btn="2" data-target-progress="0.26">02 التشليح المضمون</button>
       <button type="button" class="stage-pill" data-stage-btn="3" data-target-progress="0.48">03 الأصلي OEM</button>
       <button type="button" class="stage-pill" data-stage-btn="4" data-target-progress="0.66">04 التجاري المعتمد</button>
-      <button type="button" class="stage-pill" data-stage-btn="5" data-target-progress="0.90">05 التوصيل للعملاء</button>
+      <button type="button" class="stage-pill" data-stage-btn="5" data-target-progress="0.90">05 مقارنة الخيارات</button>
     </nav>
 
     <a href="#order-section" id="skip-to-order-btn" class="skip-order-btn">
@@ -1068,7 +1139,7 @@
   </header>
 
   <!-- 600VH BULLETPROOF SCROLLYTELLING TRACK -->
-  <section id="scrolly-track" aria-label="رحلة القطعة بالذكاء الاصطناعي">
+  <section id="scrolly-track" aria-label="رحلة مطابقة وتوريد القطعة">
     <div id="sticky-viewport">
       <!-- Layer 1: Fullscreen Photorealistic Canvas -->
       <canvas id="scrolly-canvas"></canvas>
@@ -1077,28 +1148,28 @@
       <div class="canvas-vignette"></div>
       <div class="scanline-grid"></div>
 
-      <!-- Layer 4: AI Technical Inspection HUD -->
+      <!-- Layer 4: Engineering Catalog & Inspection HUD -->
       <div id="ai-tech-hud" class="ai-tech-hud">
         <div id="hud-reticle" class="hud-reticle">
-          <span id="hud-reticle-tag" class="hud-reticle-tag">AI LIDAR // FULL CHASSIS SCAN</span>
+          <span id="hud-reticle-tag" class="hud-reticle-tag">VIN CATALOG // OEM PART MATCH</span>
         </div>
 
         <div class="hud-telemetry-box">
           <div class="hud-header-row">
             <span class="hud-status-label">
               <span class="hud-live-dot"></span>
-              <span id="hud-stage-status">مسح هيكلي ثلاثي الأبعاد نشط</span>
+              <span id="hud-stage-status">مطابقة الكتالوج الهندسي</span>
             </span>
-            <span id="hud-mode-code" class="hud-mode-code">STAGE 01/05</span>
+            <span id="hud-mode-code" class="hud-mode-code">01 / 05</span>
           </div>
           <div class="hud-metrics">
             <div class="hud-metric-item">
-              <span class="hud-metric-label">دقة المطابقة (VIN)</span>
-              <span id="hud-accuracy" class="hud-metric-val">99.94%</span>
+              <span class="hud-metric-label">الدقة والمعيار</span>
+              <span id="hud-accuracy" class="hud-metric-val">مطابقة 100% برقم الشاصي</span>
             </div>
             <div class="hud-metric-item">
-              <span class="hud-metric-label">حالة الفحص</span>
-              <span id="hud-part-state" class="hud-metric-val">3D EXPLODED</span>
+              <span class="hud-metric-label">التصنيف</span>
+              <span id="hud-part-state" class="hud-metric-val">تحديد رقم القطعة OEM</span>
             </div>
           </div>
           <div class="hud-progress-wrap">
@@ -1111,71 +1182,71 @@
       <div class="stage-cards-layer">
         <!-- Stage 01 Card (0% -> 20%) -->
         <article id="stage-card-1" class="story-card" data-stage-card="1">
-          <div class="story-badge">المرحلة 01 • المسح الهيكلي بالذكاء الاصطناعي</div>
-          <h1 id="story-headline" class="story-headline">نفكك المستحيل.. لنصل إلى قطعتك بدقة الذكاء الاصطناعي</h1>
+          <div class="story-badge">المرحلة 01 • المطابقة الرقمية برقم الهيكل (VIN)</div>
+          <h1 id="story-headline" class="story-headline">تحديد دقيق لقطعتك عبر مطابقة رقم الهيكل (VIN)</h1>
           <p class="story-desc">
-            مسح ثلاثي الأبعاد يحلل أدق تفاصيل سيارة BMW المعلقة في الهواء ليحدد القطعة المطلوبة برقم الهيكل (VIN) دون أي هامش خطأ.
+            قراءة فورية لبيانات المركبة ومطابقتها مع الكتالوجات الهندسية المعتمدة لتحديد رقم القطعة المطابق لموديل سيارتك دون أي خطأ قبل التوريد.
           </p>
           <div class="story-tags">
-            <span class="story-tag">تحليل رقم الشاصي VIN</span>
-            <span class="story-tag">فحص ليزري 8K</span>
-            <span class="story-tag">3 مسارات توريد ذكية</span>
+            <span class="story-tag">مطابقة رقم الشاصي VIN</span>
+            <span class="story-tag">تحديد رقم القطعة OEM</span>
+            <span class="story-tag">3 مسارات توريد</span>
           </div>
         </article>
 
         <!-- Stage 02 Card (20% -> 40%) -->
         <article id="stage-card-2" class="story-card" data-stage-card="2">
-          <div class="story-badge">المرحلة 02 • قسم التشليح / المستعمل المضمون</div>
-          <h2 class="story-headline">تقريب ذكي والتقاط فوري لقطعة التشليح المضمونة</h2>
+          <div class="story-badge">المرحلة 02 • قطع التشليح المفحوصة والمضمونة</div>
+          <h2 class="story-headline">قطع أصلية مستعملة مفحوصة بعناية وبسعر اقتصادي</h2>
           <p class="story-desc">
-            تقترب الكاميرا من ناقل الحركة وسط السيارة بينما يلتقطه الروبوت الصناعي بعد اجتياز فحص التروس بالذكاء الاصطناعي ويغلفه بحزمة ذكية مختومة.
+            فرز واختبار القطع المستخرجة من مركبات سليمة للتأكد من كفاءتها الميكانيكية والكهربائية وجاهزيتها للتركيب المباشر مع الضمان.
           </p>
           <div class="story-tags">
-            <span class="story-tag">تشليح مفحوص AI</span>
-            <span class="story-tag">توفير حتى 55%</span>
-            <span class="story-tag">ضمان استبدال فوري</span>
+            <span class="story-tag">أصلي مستعمل (تشليح)</span>
+            <span class="story-tag">فحص فني شامل</span>
+            <span class="story-tag">ضمان التشغيل</span>
           </div>
         </article>
 
         <!-- Stage 03 Card (40% -> 60%) -->
         <article id="stage-card-3" class="story-card accent-amber" data-stage-card="3">
-          <div class="story-badge">المرحلة 03 • قسم الأصلي - وكالة (OEM)</div>
-          <h2 class="story-headline">من مستودع الوكالة الذكي.. قطعتك الأصلية المختومة</h2>
+          <div class="story-badge">المرحلة 03 • قطع الغيار الأصلية (OEM)</div>
+          <h2 class="story-headline">قطع وكالة أصلية (OEM) بتغليف المصنع الرسمي</h2>
           <p class="story-desc">
-            ينتقل الروبوت إلى المستودع عالي التقنية ليسحب صندوق القطعة الأصلية (OEM) الجديدة المختومة مباشرة من الرف الذكي بمطابقة 100%.
+            تأمين القطع الأصلية الجديدة مباشرة من مستودعات الوكلاء والموزعين المعتمدين لضمان أعلى عمر افتراضي وأداء مطابق لمعايير المصنع.
           </p>
           <div class="story-tags">
-            <span class="story-tag">أصلي وكالة OEM</span>
-            <span class="story-tag">ختم المصنع الأصلي</span>
-            <span class="story-tag">مطابقة VIN كاملة</span>
+            <span class="story-tag">أصلي وكالة 100%</span>
+            <span class="story-tag">تغليف المصنع</span>
+            <span class="story-tag">اعتمادية قصوى</span>
           </div>
         </article>
 
         <!-- Stage 04 Card (60% -> 72%) -->
         <article id="stage-card-4" class="story-card accent-emerald" data-stage-card="4">
-          <div class="story-badge">المرحلة 04 • قسم التجاري البديل بجودة معتمدة</div>
-          <h2 class="story-headline">البديل التجاري المعتمد.. جودة هندسية وسعر منافس</h2>
+          <div class="story-badge">المرحلة 04 • البدائل التجارية المعتمدة</div>
+          <h2 class="story-headline">بدائل تجارية عالية الجودة من مصانع عالمية معتمدة</h2>
           <p class="story-desc">
-            في القسم الآلي المخصص للبدائل المعتمدة، يسحب الروبوت القطعة التجارية المختبرة بمعايير الجودة العالمية لتمنحك أفضل قيمة مقابل السعر.
+            خيارات اقتصادية جديدة من شركات تصنيع معتمدة عالمياً، تمنحك توازناً عملياً بين السعر المناسب والجودة الموثوقة للاستخدام اليومي.
           </p>
           <div class="story-tags">
-            <span class="story-tag">تجاري بديل معتمد</span>
-            <span class="story-tag">معايير ISO / TÜV</span>
-            <span class="story-tag">قيمة اقتصادية مثالية</span>
+            <span class="story-tag">بديل تجاري معتمد</span>
+            <span class="story-tag">تكلفة اقتصادية</span>
+            <span class="story-tag">متوفر للشحن الفوري</span>
           </div>
         </article>
 
         <!-- Stage 05 Pre-Split Van Loading Card (72% -> 80%) -->
         <article id="stage-card-van" class="story-card" data-stage-card="5-van">
-          <div class="story-badge">المرحلة 05 • الشحن الذاتي بالذكاء الاصطناعي</div>
-          <h2 class="story-headline">تحميل الخيارات الثلاثة في مركبة التوصيل الذاتية</h2>
+          <div class="story-badge">المرحلة 05 • التجهيز والشحن المباشر</div>
+          <h2 class="story-headline">تجهيز مسارات التوريد الثلاثة وشحنها لموقع العميل</h2>
           <p class="story-desc">
-            يودع الروبوت الصناديق الثلاثة (تشليح، أصلي، تجاري) داخل مركبة التوصيل ذاتية القيادة لتنطلق فوراً إلى أبواب العملاء الثلاثة.
+            تغليف القطع المعتمدة بعناية وتجهيزها للشحن السريع والمباشر إلى باب العميل أو مركز الصيانة في كافة مدن المملكة.
           </p>
           <div class="story-tags">
-            <span class="story-tag">أسطول ذاتي القيادة</span>
-            <span class="story-tag">تتبع لحظي</span>
-            <span class="story-tag">أسرع توصيل لباب المنزل</span>
+            <span class="story-tag">تغليف آمن ومحكم</span>
+            <span class="story-tag">شحن لكافة المدن</span>
+            <span class="story-tag">مقارنة الخيارات الثلاثة</span>
           </div>
         </article>
       </div>
@@ -1183,67 +1254,67 @@
       <!-- Scroll Cue -->
       <div id="scroll-hint" class="scroll-hint">
         <span class="mouse-wheel-icon"></span>
-        <span>مرّر بعجلة الماوس لمتابعة رحلة القطعة</span>
+        <span id="scroll-hint-text">اسحب للأعلى لمتابعة رحلة القطعة</span>
       </div>
 
-      <!-- Layer 6: Stage 05 Climax (80% -> 100%) 3-Column Split Screen Over Canvas -->
-      <div id="split-delivery-overlay" class="split-delivery-overlay" aria-label="وصول الطلبات للعملاء الثلاثة">
-        <!-- Customer 1: Salvage -->
-        <article class="customer-col" data-tier="تشليح مضمون (فحص ذكاء اصطناعي)">
-          <img class="customer-bg" src="./assets/frames/customer_1.jpg" loading="lazy" alt="عميل يستلم قطعة تشليح مضمونة عند باب منزله" />
-          <div class="customer-shade"></div>
-          <div class="customer-content">
-            <span class="tier-ribbon tier-salvage">العميل الأول • تشليح مضمون AI</span>
-            <h3 class="customer-title">تشليح وكالة مفحوص ومضمون</h3>
-            <p class="customer-desc">
-              استلم العميل الأول قطعة BMW أصلية مستعملة مفحوصة بالليزر والذكاء الاصطناعي بتوفير يصل إلى 55% مع ضمان استبدال.
-            </p>
-            <div class="customer-meta">
-              <span>⚡ توصيل سريع لباب المنزل</span>
-              <span>✔ اجتاز 18 نقطة فحص</span>
-            </div>
-            <button type="button" class="choose-tier-btn" data-select-tier="تشليح مضمون (فحص AI)">
-              اطلب فئة التشليح المضمون عبر واتساب
-            </button>
-          </div>
-        </article>
-
-        <!-- Customer 2: Original OEM -->
+      <!-- Layer 6: Stage 05 Climax (80% -> 100%) 3-Column Comparison Split Screen Over Canvas -->
+      <div id="split-delivery-overlay" class="split-delivery-overlay" aria-label="مقارنة الخيارات الثلاثة">
+        <!-- Option 1: Genuine OEM -->
         <article class="customer-col" data-tier="أصلي وكالة (OEM)">
-          <img class="customer-bg" src="./assets/frames/customer_2.jpg" loading="lazy" alt="عميل يستلم قطعة أصلية وكالة OEM عند باب منزله" />
+          <img class="customer-bg" src="./assets/frames/customer_2.jpg" loading="lazy" alt="قطع غيار أصلية وكالة OEM بتغليف المصنع الرسمي" />
           <div class="customer-shade"></div>
           <div class="customer-content">
-            <span class="tier-ribbon tier-oem">العميل الثاني • أصلي وكالة OEM</span>
-            <h3 class="customer-title">أصلي وكالة مختوم (OEM)</h3>
+            <span class="tier-ribbon tier-oem">الخيار الأول • الأصلي وكالة (OEM)</span>
+            <h3 class="customer-title">قطع وكالة أصلية (OEM)</h3>
             <p class="customer-desc">
-              استلم العميل الثاني صندوق القطعة الأصلية الجديدة المختومة من مخزون الوكالة بمطابقة 100% لرقم الشاصي (VIN).
+              قطع جديدة بتغليف المصنع الرسمي من الوكلاء والموزعين المعتمدين بمطابقة 100% لرقم الهيكل (VIN) وأعلى عمر افتراضي.
             </p>
             <div class="customer-meta">
-              <span>⚡ شحن ذكي مباشر</span>
-              <span>✔ ضمان المصنع الأصلي</span>
+              <span>⚡ شحن مباشر وسريع</span>
+              <span>✔ مواصفات المصنع OEM</span>
             </div>
             <button type="button" class="choose-tier-btn" data-select-tier="أصلي وكالة (OEM)">
-              اطلب القطعة الأصلية OEM عبر واتساب
+              اختر فئة الأصلي وكالة (OEM) للطلب
             </button>
           </div>
         </article>
 
-        <!-- Customer 3: Certified Aftermarket -->
-        <article class="customer-col" data-tier="تجاري بديل معتمد">
-          <img class="customer-bg" src="./assets/frames/customer_3.jpg" loading="lazy" alt="عميل يستلم قطعة تجارية معتمدة عند باب منزله" />
+        <!-- Option 2: Inspected Salvage -->
+        <article class="customer-col" data-tier="تشليح مضمون (أصلي مستعمل مفحوص)">
+          <img class="customer-bg" src="./assets/frames/customer_1.jpg" loading="lazy" alt="قطع تشليح أصلية مستعملة مفحوصة ومضمونة" />
           <div class="customer-shade"></div>
           <div class="customer-content">
-            <span class="tier-ribbon tier-aftermarket">العميل الثالث • تجاري معتمد</span>
-            <h3 class="customer-title">تجاري بديل بجودة معتمدة</h3>
+            <span class="tier-ribbon tier-salvage">الخيار الثاني • التشليح المضمون</span>
+            <h3 class="customer-title">أصلي مستعمل مفحوص ومضمون</h3>
             <p class="customer-desc">
-              استلم العميل الثالث القطعة التجارية البديلة المعتمدة هندسياً بأعلى معايير الأداء وأفضل قيمة اقتصادية في السوق.
+              قطع وكالة مستخرجة من مركبات سليمة ومفحوصة فنياً للتأكد من كفاءتها الميكانيكية والكهربائية بسعر اقتصادي مع ضمان التشغيل.
             </p>
             <div class="customer-meta">
-              <span>⚡ تغليف ذكي آمن</span>
-              <span>✔ شهادة جودة ISO/TÜV</span>
+              <span>⚡ جاهزة للتركيب المباشر</span>
+              <span>✔ فحص فني وضمان تشغيل</span>
             </div>
-            <button type="button" class="choose-tier-btn" data-select-tier="تجاري بديل بجودة معتمدة">
-              اطلب البديل التجاري المعتمد عبر واتساب
+            <button type="button" class="choose-tier-btn" data-select-tier="تشليح مضمون (أصلي مستعمل مفحوص)">
+              اختر فئة التشليح المضمون للطلب
+            </button>
+          </div>
+        </article>
+
+        <!-- Option 3: Certified Aftermarket -->
+        <article class="customer-col" data-tier="بديل تجاري معتمد">
+          <img class="customer-bg" src="./assets/frames/customer_3.jpg" loading="lazy" alt="بدائل تجارية عالية الجودة من مصانع عالمية معتمدة" />
+          <div class="customer-shade"></div>
+          <div class="customer-content">
+            <span class="tier-ribbon tier-aftermarket">الخيار الثالث • التجاري المعتمد</span>
+            <h3 class="customer-title">بديل تجاري بجودة معتمدة</h3>
+            <p class="customer-desc">
+              قطع جديدة من مصانع عالمية معتمدة تمنحك توازناً عملياً بين السعر الاقتصادي والجودة الموثوقة للاستخدام اليومي.
+            </p>
+            <div class="customer-meta">
+              <span>⚡ متوفر للشحن الفوري</span>
+              <span>✔ مصانع عالمية معتمدة</span>
+            </div>
+            <button type="button" class="choose-tier-btn" data-select-tier="بديل تجاري معتمد">
+              اختر فئة التجاري المعتمد للطلب
             </button>
           </div>
         </article>
@@ -2502,35 +2573,35 @@
           min: 0.0,
           max: 0.2,
           accent: '#00d4ff',
-          status: 'مسح هيكلي ثلاثي الأبعاد نشط',
-          code: 'STAGE 01/05',
-          accuracy: '99.94%',
-          partState: '3D EXPLODED',
-          reticleText: 'AI LIDAR // FULL CHASSIS SCAN',
-          reticleScale: 1.05,
+          status: 'مطابقة الكتالوج الهندسي',
+          code: '01 / 05',
+          accuracy: 'مطابقة 100% برقم الشاصي',
+          partState: 'تحديد رقم القطعة OEM',
+          reticleText: 'VIN CATALOG // OEM PART MATCH',
+          reticleScale: 1.02,
           pillIndex: 0
         },
         {
           min: 0.2,
           max: 0.4,
           accent: '#00d4ff',
-          status: 'فحص التروس والتغليف الذكي',
-          code: 'STAGE 02/05',
-          accuracy: '98.80%',
-          partState: 'SALVAGE A+',
-          reticleText: 'LOCKED // ZF-8HP SALVAGE UNIT',
-          reticleScale: 0.82,
+          status: 'فحص الاعتمادية والجودة',
+          code: '02 / 05',
+          accuracy: 'فحص فني شامل',
+          partState: 'أصلي مستعمل مضمون',
+          reticleText: 'INSPECTED // TESTED OEM SALVAGE',
+          reticleScale: 0.86,
           pillIndex: 1
         },
         {
           min: 0.4,
           max: 0.6,
           accent: '#f59e0b',
-          status: 'سحب مخزون الوكالة الأصلي',
-          code: 'STAGE 03/05',
-          accuracy: '100.0%',
-          partState: 'GENUINE OEM',
-          reticleText: 'VERIFIED // BMW OEM SERIAL',
+          status: 'توثيق المصدر الأصلي',
+          code: '03 / 05',
+          accuracy: 'أصلي وكالة 100%',
+          partState: 'مواصفات المصنع OEM',
+          reticleText: 'GENUINE // FACTORY SEALED OEM',
           reticleScale: 0.9,
           pillIndex: 2
         },
@@ -2538,11 +2609,11 @@
           min: 0.6,
           max: 0.72,
           accent: '#10b981',
-          status: 'مطابقة البديل التجاري المعتمد',
-          code: 'STAGE 04/05',
-          accuracy: '99.70%',
-          partState: 'CERTIFIED ALT',
-          reticleText: 'APPROVED // ISO-9001 AFTERMARKET',
+          status: 'مطابقة معايير الجودة',
+          code: '04 / 05',
+          accuracy: 'مصانع عالمية معتمدة',
+          partState: 'بديل تجاري معتمد',
+          reticleText: 'CERTIFIED // GLOBAL AFTERMARKET',
           reticleScale: 0.88,
           pillIndex: 3
         },
@@ -2550,11 +2621,11 @@
           min: 0.72,
           max: 1.01,
           accent: '#38bdf8',
-          status: 'الشحن الذاتي والتسليم للعملاء',
-          code: 'STAGE 05/05',
-          accuracy: 'DISPATCHED',
-          partState: '3 ORDERS LIVE',
-          reticleText: 'AUTONOMOUS VAN // 3 TIERS LOADED',
+          status: 'مقارنة الخيارات والتجهيز للشحن',
+          code: '05 / 05',
+          accuracy: 'شحن مباشر لكافة المدن',
+          partState: '3 خيارات معتمدة',
+          reticleText: 'DISPATCH // 3 SUPPLY OPTIONS',
           reticleScale: 0.95,
           pillIndex: 4
         }
@@ -2587,7 +2658,7 @@
         mouseY: 0,
         targetMouseX: 0,
         targetMouseY: 0,
-        isMobileLayout: window.innerWidth <= 820,
+        isMobileLayout: window.innerWidth <= 768,
         needsRender: true
       };
 
@@ -2676,7 +2747,13 @@
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const w = window.innerWidth;
         const h = window.innerHeight;
-        state.isMobileLayout = w <= 820;
+        state.isMobileLayout = w <= 768;
+        const hintTextEl = document.getElementById('scroll-hint-text');
+        if (hintTextEl) {
+          hintTextEl.textContent = state.isMobileLayout
+            ? 'اسحب للأعلى لمتابعة رحلة القطعة'
+            : 'مرّر للأسفل لمتابعة رحلة القطعة';
+        }
         canvas.width = Math.floor(w * dpr);
         canvas.height = Math.floor(h * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -2838,7 +2915,10 @@
         state.needsRender = true;
 
         hudProgressBar.style.width = `${Math.max(4, Math.round(p * 100))}%`;
-        scrollHint.style.opacity = p > 0.06 ? '0' : '1';
+        const hideHint = p > 0.03;
+        scrollHint.style.opacity = hideHint ? '0' : '1';
+        scrollHint.style.pointerEvents = 'none';
+        scrollHint.style.visibility = hideHint ? 'hidden' : 'visible';
 
         updateStackedCards(p);
         updateSplitScreen(p);
