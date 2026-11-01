@@ -1349,7 +1349,7 @@
             </div>
 
             <div class="flex items-center gap-2 flex-wrap">
-                <a href="https://wa.me/966509046024" target="_blank" rel="noopener" class="text-xs md:text-sm font-black text-white bg-green-600/90 hover:bg-green-500 px-3.5 py-2.5 rounded-2xl transition shadow-lg flex items-center gap-1.5">
+                <a id="header-quick-wa-link" href="https://wa.me/966509046024" target="_blank" rel="noopener" class="text-xs md:text-sm font-black text-white bg-green-600/90 hover:bg-green-500 px-3.5 py-2.5 rounded-2xl transition shadow-lg flex items-center gap-1.5">
                     <i class="fa-brands fa-whatsapp text-base"></i>
                     <span>واتساب السريع</span>
                 </a>
@@ -1480,12 +1480,22 @@
 
         <section id="partner-view" class="hidden animate-fade-in">
             <div class="glass-card rounded-3xl shadow-2xl p-6 md:p-8 border border-brand-500/20">
-                <div class="text-center mb-8 space-y-2">
+                <div class="text-center mb-6 space-y-2">
                     <div class="inline-flex items-center justify-center bg-brand-500/20 text-brand-400 w-20 h-20 rounded-3xl mb-2 shadow-inner border border-brand-500/30">
                         <i class="fa-solid fa-handshake-angle text-4xl"></i>
                     </div>
                     <h2 class="text-3xl font-black text-white">انضم كشريك مسوق</h2>
                     <p class="text-slate-300 text-sm font-medium max-w-lg mx-auto">اربح معنا! شارك منصة حراج القطع مع أصدقائك أو عملائك واحصل على 5% أرباح عن كل عملية شراء مؤكدة.</p>
+                </div>
+
+                <div class="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-inner">
+                    <div class="text-center sm:text-right">
+                        <p class="text-xs md:text-sm font-black text-amber-300">هل لديك حساب شريك مسوق مسجل مسبقاً؟</p>
+                        <p class="text-[11px] text-slate-400 font-medium">ادخل بكلمة مرورك الخاصة لمتابعة عملائك وعمليات الشراء المكتملة لحظياً</p>
+                    </div>
+                    <button type="button" onclick="openPartnerPortalLogin()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs md:text-sm px-5 py-3 rounded-2xl transition shadow-lg shadow-amber-500/20 shrink-0 flex items-center justify-center gap-2">
+                        <span>🔐 دخول الشريك لمتابعة العملاء والأرباح</span>
+                    </button>
                 </div>
 
                 <div class="bg-slate-900/60 p-5 rounded-3xl border border-slate-700/80 mb-8 space-y-3 text-xs md:text-sm text-slate-300 leading-relaxed shadow-inner">
@@ -1508,6 +1518,11 @@
                             </div>
                         </div>
 
+                        <div>
+                            <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">كلمة المرور الخاصة بك (للدخول ومتابعة مبيعاتك وأرباحك)</label>
+                            <input type="password" id="partnerPassword" required minlength="4" autocomplete="new-password" class="w-full px-4 py-3.5 rounded-2xl glass-input outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500 transition-all text-sm font-medium placeholder-slate-500" placeholder="اختر كلمة مرور سرية لحسابك (4 خانات على الأقل)...">
+                        </div>
+
                         <div class="flex items-center gap-2 pt-2 bg-brand-500/10 p-4 rounded-2xl border border-brand-500/20">
                             <input type="checkbox" id="agreeTerms" required class="w-5 h-5 accent-brand-500 rounded cursor-pointer">
                             <label for="agreeTerms" class="text-xs md:text-sm text-slate-200 cursor-pointer font-bold leading-relaxed">أقر بأنني قرأت وقبلت كافة شروط وأحكام اتفاقية الشراكة مع منصة عالم التروس.</label>
@@ -1528,11 +1543,16 @@
                     
                     <div class="flex flex-col md:flex-row items-center gap-3 bg-slate-900/80 p-2 md:p-2.5 rounded-2xl border border-emerald-500/40 shadow-inner max-w-lg mx-auto mb-5">
                         <input type="text" id="generatedRefLink" readonly class="w-full bg-transparent border-none outline-none text-sm md:text-base font-mono text-emerald-300 px-3 py-2 select-all text-center md:text-left" dir="ltr">
-                        <button onclick="copyGeneratedPartnerLink(this)" class="w-full md:w-auto bg-emerald-500 text-white text-sm font-bold px-5 py-3 rounded-xl hover:bg-emerald-600 transition flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                        <button type="button" onclick="copyGeneratedPartnerLink(this)" class="w-full md:w-auto bg-emerald-500 text-white text-sm font-bold px-5 py-3 rounded-xl hover:bg-emerald-600 transition flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
                             <i class="fa-regular fa-copy ml-2"></i>نسخ الرابط
                         </button>
                     </div>
-                    <button onclick="resetPartnerForm()" class="text-xs text-slate-400 hover:text-white underline font-medium transition">تسجيل شريك آخر</button>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-4">
+                        <button type="button" onclick="openPartnerPortalLogin()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs md:text-sm px-6 py-3 rounded-2xl transition shadow-lg shadow-amber-500/20">
+                            🔐 دخول الشريك لمتابعة العملاء والأرباح
+                        </button>
+                        <button type="button" onclick="resetPartnerForm()" class="text-xs text-slate-400 hover:text-white underline font-medium transition px-3 py-2">تسجيل شريك آخر</button>
+                    </div>
                 </div>
 
             </div>
@@ -1674,6 +1694,31 @@
                         <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
                     </button>
                 </div>
+
+                <!-- بطاقات إحصائيات بوابة الشريك المسوق الخاصة (تظهر للمندوب فقط) -->
+                <div id="affiliateStatsCards" class="hidden grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                    <div class="bg-slate-900/90 border border-sky-500/30 rounded-2xl p-4 flex items-center justify-between shadow-inner">
+                        <div>
+                            <p class="text-[11px] md:text-xs font-bold text-slate-400 mb-1">👥 إجمالي العملاء القادمين عبر رابطك</p>
+                            <p id="affStatTotalCount" class="text-2xl md:text-3xl font-black text-sky-400 font-mono">0</p>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-xl">👥</div>
+                    </div>
+                    <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 flex items-center justify-between shadow-inner">
+                        <div>
+                            <p class="text-[11px] md:text-xs font-bold text-slate-400 mb-1">⏳ طلبات قيد التسعير والمتابعة</p>
+                            <p id="affStatPendingCount" class="text-2xl md:text-3xl font-black text-amber-400 font-mono">0</p>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-xl">⏳</div>
+                    </div>
+                    <div class="bg-slate-900/90 border border-emerald-500/40 rounded-2xl p-4 flex items-center justify-between shadow-inner">
+                        <div>
+                            <p class="text-[11px] md:text-xs font-bold text-slate-400 mb-1">✅ عمليات الشراء المكتملة المستحقة للبونص</p>
+                            <p id="affStatCompletedCount" class="text-2xl md:text-3xl font-black text-emerald-400 font-mono">0</p>
+                        </div>
+                        <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-xl">✅</div>
+                    </div>
+                </div>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="adminButtonsContainer">
                     <button id="btn-pending" onclick="openPendingModal()" class="relative bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 py-3.5 rounded-2xl text-xs md:text-sm font-bold hover:bg-emerald-500 hover:text-white transition shadow-sm">
@@ -1686,12 +1731,12 @@
                     <button id="btn-invite" onclick="copySupplierRegLink(this)" class="bg-sky-500/10 border border-sky-500/30 text-sky-400 py-3.5 rounded-2xl text-xs md:text-sm font-bold hover:bg-sky-500 hover:text-white transition shadow-sm">
                         <i class="fa-solid fa-link block mb-1 text-xl"></i>رابط دعوة مورد
                     </button>
-                    <button id="btn-affiliate" onclick="copyAffiliateLink(this)" class="hidden bg-amber-500/10 border border-amber-500/30 text-amber-400 py-3.5 rounded-2xl text-xs md:text-sm font-bold hover:bg-amber-500 hover:text-white transition shadow-sm">
-                        <i class="fa-solid fa-bullhorn block mb-1 text-xl"></i>نسخ رابط التسويق
+                    <button id="btn-affiliate" onclick="copyAffiliateLink(this)" class="hidden col-span-2 md:col-span-4 bg-amber-500/15 border border-amber-500/40 text-amber-300 py-3.5 rounded-2xl text-xs md:text-sm font-black hover:bg-amber-500 hover:text-slate-950 transition shadow-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bullhorn text-lg"></i>نسخ رابط التسويق الخاص بك ومشاركته مع العملاء
                     </button>
                 </div>
-                <button id="btn-settings" onclick="openWaSettingsModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 py-3 rounded-2xl text-xs font-bold transition w-full flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-gear"></i>إعدادات التوجيه والواتساب
+                <button id="btn-settings" onclick="openWaSettingsModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 py-3.5 rounded-2xl text-xs md:text-sm font-black transition w-full flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-sliders text-brand-400"></i>مركز إعدادات الموقع والمنظومة الشامل
                 </button>
             </div>
             
@@ -1710,11 +1755,12 @@
                 <i class="fa-solid fa-gears text-brand-500"></i> شركة عالم التروس
             </h3>
             <p class="text-xs text-slate-400 mb-4 font-medium">متخصصون في صيانة الجيربوكس وناقل الحركة وتأمين قطع الغيار بأعلى معايير الجودة.</p>
-            <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-xs font-bold text-slate-300">
+            <div class="flex flex-col md:flex-row flex-wrap justify-center items-center gap-3 text-xs font-bold text-slate-300">
                 <div class="bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
                     <i class="fa-solid fa-phone text-emerald-400"></i>
-                    <a href="https://wa.me/966509046024" target="_blank" rel="noopener" dir="ltr" class="hover:text-emerald-400 transition">+966 50 904 6024</a>
+                    <a id="footer-wa-link" href="https://wa.me/966509046024" target="_blank" rel="noopener" dir="ltr" class="hover:text-emerald-400 transition">+966 50 904 6024</a>
                 </div>
+                <div id="footer-support-numbers" class="contents"></div>
                 <div class="bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
                     <i class="fa-solid fa-location-dot text-rose-400"></i>
                     <span>8343 راشد الوليدي، 3051، الرياض، المملكة العربية السعودية</span>
@@ -1741,46 +1787,208 @@
         </div>
     </div>
 
-    <!-- مودال إعدادات الواتساب -->
-    <div id="waSettingsModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fade-in">
-        <div class="glass-card rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-slate-700/80">
-            <div class="flex justify-between items-center mb-5 border-b border-slate-800 pb-3">
-                <h3 class="font-bold text-lg text-white flex items-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-emerald-400"></i> إعدادات التوجيه
-                </h3>
-                <button onclick="closeWaSettingsModal()" class="text-slate-400 hover:text-white bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center transition border border-slate-700">
+    <!-- مركز إعدادات الموقع والمنظومة الشامل (للمدير فقط) -->
+    <div id="waSettingsModal" class="fixed inset-0 z-[105] hidden flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-2 sm:p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-4 sm:p-6 max-w-4xl w-full shadow-2xl max-h-[93vh] flex flex-col border border-slate-700/80">
+            <!-- رأس النافذة -->
+            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3 shrink-0">
+                <div>
+                    <h3 class="font-black text-base sm:text-xl text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-brand-400"></i> مركز إعدادات الموقع والمنظومة الشامل
+                    </h3>
+                    <p class="text-[11px] text-slate-400 font-bold mt-0.5">متصل سحابياً بـ Firestore ومسارات البوت الخلفية (/api/admin/full-settings)</p>
+                </div>
+                <button type="button" onclick="closeWaSettingsModal()" class="text-slate-400 hover:text-white bg-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition border border-slate-700 shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="space-y-4">
-                <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
-                    <label class="block text-xs font-bold text-brand-300 mb-2">عند مراسلة العميل افتح عبر:</label>
-                    <select id="custWaType" class="w-full px-3 py-2.5 rounded-xl glass-input outline-none text-xs cursor-pointer">
-                        <option value="default" class="bg-slate-900 text-white">تلقائي (حسب الجهاز)</option>
-                        <option value="wa_web" class="bg-slate-900 text-white">واتساب ويب (متصفح الكمبيوتر)</option>
-                        <option value="wa_app" class="bg-slate-900 text-white">تطبيق الواتساب (تطبيق الكمبيوتر)</option>
-                        <option value="android_normal" class="bg-slate-900 text-white">واتساب العادي (أندرويد)</option>
-                        <option value="android_business" class="bg-slate-900 text-white">واتساب أعمال (أندرويد)</option>
-                    </select>
-                </div>
-                <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
-                    <label class="block text-xs font-bold text-emerald-400 mb-2">عند مراسلة المورد افتح عبر:</label>
-                    <select id="supWaType" class="w-full px-3 py-2.5 rounded-xl glass-input outline-none text-xs cursor-pointer">
-                        <option value="default" class="bg-slate-900 text-white">تلقائي (حسب الجهاز)</option>
-                        <option value="wa_web" class="bg-slate-900 text-white">واتساب ويب (متصفح الكمبيوتر)</option>
-                        <option value="wa_app" class="bg-slate-900 text-white">تطبيق الواتساب (تطبيق الكمبيوتر)</option>
-                        <option value="android_normal" class="bg-slate-900 text-white">واتساب العادي (أندرويد)</option>
-                        <option value="android_business" class="bg-slate-900 text-white">واتساب أعمال (أندرويد)</option>
-                    </select>
-                </div>
-                <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
-                    <label class="block text-xs font-bold text-amber-400 mb-2">رقم واتساب مسؤول اللوجستيات والشحن (اختياري):</label>
-                    <input type="tel" id="logisticsOfficerPhoneInput" dir="ltr" placeholder="05xxxxxxxx (اتركه فارغاً لعدم الإرسال)" class="w-full px-3 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
-                </div>
+
+            <!-- شريط التبويبات الـ 6 -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-4 shrink-0" id="settingsTabsNav">
+                <button type="button" data-settings-tab-btn="contact" onclick="switchSettingsTab('contact')" class="settings-tab-btn bg-brand-500 text-white border border-brand-500/60 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-black transition shadow-sm flex items-center justify-center gap-1">
+                    <span>📞</span><span>التواصل والتوجيه</span>
+                </button>
+                <button type="button" data-settings-tab-btn="logistics" onclick="switchSettingsTab('logistics')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>🚚</span><span>مسؤولو اللوجستيات</span>
+                </button>
+                <button type="button" data-settings-tab-btn="couriers" onclick="switchSettingsTab('couriers')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>🛵</span><span>مندوبو القطع</span>
+                </button>
+                <button type="button" data-settings-tab-btn="shipping" onclick="switchSettingsTab('shipping')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>📦</span><span>شركات الشحن</span>
+                </button>
+                <button type="button" data-settings-tab-btn="security" onclick="switchSettingsTab('security')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>🔐</span><span>كلمة مرور التاجر</span>
+                </button>
+                <button type="button" data-settings-tab-btn="affiliates" onclick="switchSettingsTab('affiliates')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>🤝</span><span>إدارة المسوقين</span>
+                </button>
             </div>
-            <button onclick="saveWaSettings()" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded-2xl mt-6 transition shadow-lg shadow-brand-500/20">
-                حفظ التغييرات
-            </button>
+
+            <!-- محتوى التبويبات القابل للتمرير -->
+            <div class="overflow-y-auto flex-1 pr-1 space-y-4">
+
+                <!-- (أ) تبويب أرقام التواصل والتوجيه -->
+                <div id="settings-panel-contact" data-settings-panel="contact" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
+                            <label class="block text-xs font-bold text-brand-300 mb-2">عند مراسلة العميل افتح عبر:</label>
+                            <select id="custWaType" class="w-full px-3 py-2.5 rounded-xl glass-input outline-none text-xs cursor-pointer">
+                                <option value="default" class="bg-slate-900 text-white">تلقائي (حسب الجهاز)</option>
+                                <option value="wa_web" class="bg-slate-900 text-white">واتساب ويب (متصفح الكمبيوتر)</option>
+                                <option value="wa_app" class="bg-slate-900 text-white">تطبيق الواتساب (تطبيق الكمبيوتر)</option>
+                                <option value="android_normal" class="bg-slate-900 text-white">واتساب العادي (أندرويد)</option>
+                                <option value="android_business" class="bg-slate-900 text-white">واتساب أعمال (أندرويد)</option>
+                            </select>
+                        </div>
+                        <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
+                            <label class="block text-xs font-bold text-emerald-400 mb-2">عند مراسلة المورد افتح عبر:</label>
+                            <select id="supWaType" class="w-full px-3 py-2.5 rounded-xl glass-input outline-none text-xs cursor-pointer">
+                                <option value="default" class="bg-slate-900 text-white">تلقائي (حسب الجهاز)</option>
+                                <option value="wa_web" class="bg-slate-900 text-white">واتساب ويب (متصفح الكمبيوتر)</option>
+                                <option value="wa_app" class="bg-slate-900 text-white">تطبيق الواتساب (تطبيق الكمبيوتر)</option>
+                                <option value="android_normal" class="bg-slate-900 text-white">واتساب العادي (أندرويد)</option>
+                                <option value="android_business" class="bg-slate-900 text-white">واتساب أعمال (أندرويد)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/30 space-y-3">
+                        <label class="block text-xs sm:text-sm font-black text-emerald-400">
+                            <i class="fa-brands fa-whatsapp ml-1"></i> رقم واتساب التواصل الرسمي مع العملاء في الموقع:
+                        </label>
+                        <input type="tel" id="officialCustomerWaInput" dir="ltr" placeholder="966509046024 أو 05xxxxxxxx" class="w-full px-4 py-3 rounded-xl glass-input outline-none text-sm font-mono text-left">
+                        <p class="text-[11px] text-slate-400">يتحدث تلقائياً عند الحفظ في متغير <code class="text-cyan-300">WHATSAPP_NUMBER</code> وكافة أزرار واتساب في الهيدر والعرض التفاعلي والفوتر.</p>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 space-y-3">
+                        <label class="block text-xs sm:text-sm font-bold text-sky-400">
+                            <i class="fa-solid fa-headset ml-1"></i> أرقام دعم وتواصل إضافية للعملاء (اختياري):
+                        </label>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="text" id="newSupportPhoneLabel" placeholder="الوصف (مثال: دعم المبيعات)" class="sm:w-2/5 px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="tel" id="newSupportPhoneInput" dir="ltr" placeholder="05xxxxxxxx" class="flex-1 px-3 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                            <button type="button" onclick="addSupportContactNumber()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shrink-0">+ إضافة رقم دعم</button>
+                        </div>
+                        <div id="supportNumbersListContainer" class="space-y-2 pt-1"></div>
+                    </div>
+                </div>
+
+                <!-- (ب) تبويب مسؤولي اللوجستيات والشحن -->
+                <div id="settings-panel-logistics" data-settings-panel="logistics" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-amber-500/30 space-y-3">
+                        <h4 class="text-xs sm:text-sm font-black text-amber-400">🚚 إضافة مسؤول لوجستيات وشحن جديد</h4>
+                        <p class="text-[11px] text-slate-400">يستقبل مسؤولو اللوجستيات أوامر التجهيز والشحن آلياً من البوت فور اعتماد إيصال دفع العميل.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                            <input type="text" id="newLogOfficerName" placeholder="اسم المسؤول (مثال: مشرف الشحن فهد)" class="sm:col-span-5 px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="tel" id="newLogOfficerPhone" dir="ltr" placeholder="05xxxxxxxx" class="sm:col-span-5 px-3 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                            <button type="button" onclick="addLogisticsOfficerItem()" class="sm:col-span-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-3 py-2.5 rounded-xl text-xs transition">+ إضافة</button>
+                        </div>
+                    </div>
+                    <div id="logisticsOfficersListContainer" class="space-y-2"></div>
+                </div>
+
+                <!-- (ج) تبويب مناديب القطع الميدانيين حسب المنطقة -->
+                <div id="settings-panel-couriers" data-settings-panel="couriers" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/30 space-y-3">
+                        <h4 class="text-xs sm:text-sm font-black text-emerald-400">🛵 إضافة مندوب قطع ميداني حسب المدينة والمنطقة</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2">
+                            <input type="text" id="newFieldCourierName" placeholder="اسم المندوب" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="tel" id="newFieldCourierPhone" dir="ltr" placeholder="05xxxxxxxx" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                            <input type="text" id="newFieldCourierCity" placeholder="المدينة (مثال: الرياض)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="text" id="newFieldCourierRegion" placeholder="المنطقة / الصناعية (مثال: الصناعية القديمة)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <button type="button" onclick="addFieldCourierItem()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-black px-3 py-2.5 rounded-xl text-xs transition">+ إضافة مندوب</button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+                        <div class="flex items-center gap-2 flex-1">
+                            <label class="text-xs font-bold text-slate-300 shrink-0">تصفية حسب المدينة:</label>
+                            <select id="courierCityFilterSelect" onchange="renderFieldCouriersList()" class="px-3 py-2 rounded-xl glass-input outline-none text-xs cursor-pointer flex-1 sm:max-w-[200px]">
+                                <option value="" class="bg-slate-900 text-white">جميع المدن</option>
+                            </select>
+                        </div>
+                        <input type="text" id="courierSearchInput" oninput="renderFieldCouriersList()" placeholder="بحث بالاسم أو الصناعية..." class="px-3 py-2 rounded-xl glass-input outline-none text-xs sm:w-64">
+                    </div>
+                    <div id="fieldCouriersListContainer" class="space-y-2"></div>
+                </div>
+
+                <!-- (د) تبويب شركات الشحن حسب المدن والسرعة التقريبية -->
+                <div id="settings-panel-shipping" data-settings-panel="shipping" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-sky-500/30 space-y-3">
+                        <h4 class="text-xs sm:text-sm font-black text-sky-400">📦 إضافة شركة شحن والمدن المغطاة وسرعة التوصيل</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input type="text" id="newShipCompName" placeholder="اسم الشركة (مثال: سمسا، أرامكس، الزاجل، ريد بوكس)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="text" id="newShipCompSpeed" placeholder="السرعة التقريبية (مثال: 1-2 يوم عمل)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="text" id="newShipCompCities" placeholder="المدن المغطاة مفصولة بفاصلة (أو اكتب: جميع المدن)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs sm:col-span-2">
+                            <input type="text" id="newShipCompNote" placeholder="ملاحظة إضافية (اختياري، مثال: توصيل لباب المنزل أو استلام فرع)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <button type="button" onclick="addShippingCompanyItem()" class="bg-sky-500 hover:bg-sky-600 text-white font-black px-4 py-2.5 rounded-xl text-xs transition">+ إضافة شركة شحن</button>
+                        </div>
+                    </div>
+                    <div id="shippingCompaniesListContainer" class="space-y-2"></div>
+                </div>
+
+                <!-- (هـ) تبويب كلمة المرور الرئيسية لعمليات التاجر -->
+                <div id="settings-panel-security" data-settings-panel="security" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-rose-500/30 space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
+                                <i class="fa-solid fa-shield-halved text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-black text-white">🔐 تغيير كلمة المرور الرئيسية لمدير النظام (Master Admin)</h4>
+                                <p class="text-[11px] text-slate-400 leading-relaxed mt-1">تُشفر كلمة المرور محلياً بخوارزمية <code class="text-rose-300">SHA-256</code> وتُحفظ في السحابة (Firestore) وقاعدة البوت معاً؛ وفور تحديثها تلغى كلمة المرور القديمة فوراً من <code class="text-cyan-300">switchTab('admin')</code>.</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-1.5">كلمة المرور الرئيسية الجديدة</label>
+                                <input type="password" id="newMasterAdminPassInput" autocomplete="new-password" placeholder="أدخل كلمة المرور الجديدة..." class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-1.5">تأكيد كلمة المرور الجديدة</label>
+                                <input type="password" id="confirmMasterAdminPassInput" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور الجديدة..." class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            </div>
+                        </div>
+                        <button type="button" onclick="updateMasterAdminPasswordNow()" class="bg-rose-600 hover:bg-rose-500 text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl transition shadow-lg shadow-rose-600/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-key"></i> تشفير وتحديث كلمة المرور الرئيسية الآن
+                        </button>
+                    </div>
+                </div>
+
+                <!-- (و) تبويب إدارة المسوقين بالعمولة (المندوبين) -->
+                <div id="settings-panel-affiliates" data-settings-panel="affiliates" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-purple-500/30 space-y-3">
+                        <h4 class="text-xs sm:text-sm font-black text-purple-300">🤝 إضافة مندوب تسويق جديد أو تحديث بياناته وكلمة مروره</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                            <input type="text" id="adminAffNameInput" placeholder="اسم المندوب / الشريك" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="tel" id="adminAffPhoneInput" dir="ltr" placeholder="رقم الجوال (05xxxxxxxx)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                            <input type="password" id="adminAffPassInput" autocomplete="new-password" placeholder="كلمة المرور للمندوب" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <button type="button" onclick="adminCreateOrUpdateAffiliate()" class="bg-purple-600 hover:bg-purple-500 text-white font-black px-3 py-2.5 rounded-xl text-xs transition">+ حفظ المندوب</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+                            <input type="text" id="affiliateAdminSearchInput" oninput="renderAdminAffiliatesList()" placeholder="بحث فوري بالاسم أو رقم الجوال أو كود المندوب (p_9665...)..." class="w-full pr-9 pl-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                        </div>
+                        <span id="affiliateAdminCountLabel" class="text-[11px] font-bold text-slate-400 px-2 shrink-0 text-center">0 مندوب</span>
+                    </div>
+
+                    <div id="adminAffiliatesListContainer" class="space-y-2 max-h-[38vh] overflow-y-auto pr-1"></div>
+                </div>
+
+            </div>
+
+            <!-- شريط الحفظ السفلي -->
+            <div class="flex flex-col sm:flex-row gap-2 pt-4 mt-4 border-t border-slate-800 shrink-0">
+                <button type="button" id="saveAllSettingsBtn" onclick="saveWaSettings()" class="flex-1 bg-brand-500 hover:bg-brand-600 text-white font-black py-3.5 rounded-2xl text-xs sm:text-sm transition shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> حفظ ومزامنة كافة الإعدادات سحابياً ومع البوت
+                </button>
+                <button type="button" onclick="closeWaSettingsModal()" class="sm:w-36 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3.5 rounded-2xl text-xs sm:text-sm transition border border-slate-700">
+                    إغلاق
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1903,10 +2111,10 @@
         </div>
     </div>
 
-    <!-- كود الجافاسكريبت و الفايربيز مع نظام المسوقين -->
+    <!-- كود الجافاسكريبت و الفايربيز مع نظام المسوقين ومركز الإعدادات الشامل -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, serverTimestamp, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, setDoc, getDoc, getDocs, serverTimestamp, query, where, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // ==========================================
         // تعقيم المدخلات النصية للحماية من Stored XSS
@@ -1937,9 +2145,10 @@
         const db = getFirestore(app);
         
         // ==========================================
-        // إعدادات الحسابات المشفرة بـ SHA-256 ونظام المندوبين
+        // إعدادات الحسابات المشفرة بـ SHA-256 ونظام المندوبين الديناميكي
         // ==========================================
         const adminPasswordHash = "f3e055913a0b1eb0f07317896f9a1bc466b9a50db85a7f882f3ffde9ffb23aca"; 
+        let activeAdminPasswordHash = adminPasswordHash;
         
         const affiliatesByHash = {
             "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab": "ثائر",
@@ -1957,6 +2166,9 @@
 
         let currentRole = null; 
         let currentAffiliateId = null;
+        let currentAffiliateProfile = null;
+        let currentAffiliateLookupKeys = [];
+        let affiliateBackendCompletedIds = new Set();
 
         let suppliersDB = []; 
         window.currentOrders = []; 
@@ -1967,6 +2179,36 @@
         let waSettings = JSON.parse(localStorage.getItem('waSettings')) || { customerApp: 'default', supplierApp: 'default' };
         const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
         let isFirstLoad = true;
+
+        // حالة مركز الإعدادات الشامل المتزامنة مع Firestore والسيرفر
+        let platformConfigState = {
+            primaryCustomerWa: '966509046024',
+            supportNumbers: [],
+            logisticsOfficers: [],
+            fieldCouriers: [],
+            shippingCompanies: [],
+            affiliateOverrides: {}
+        };
+        let adminAffiliatesCache = [];
+        let allCloudOrdersSnapshotForStats = [];
+
+        // جسر اتصال مرن مع سيرفر البوت (يدعم localhost وربط الجسر المحلي الصامت من الدومين الحي)
+        async function fetchBotBackend(apiPath, options = {}) {
+            const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const targetUrl = isLocalOrigin ? apiPath : `http://localhost:3000${apiPath}`;
+            try {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 5000);
+                try {
+                    const res = await fetch(targetUrl, { ...options, signal: controller.signal });
+                    return res;
+                } finally {
+                    clearTimeout(timer);
+                }
+            } catch (_err) {
+                return null;
+            }
+        }
 
         const carBrandsData = {
             "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوبارو", "سوزوكي", "إيسوزو", "دايهاتسو"],
@@ -2008,28 +2250,219 @@
 
         window.formatSaudiPhone = function(phone) {
             let p = String(phone ?? '').replace(/[^0-9]/g, '');
+            if (p.startsWith('9660') && p.length === 13) { return '966' + p.substring(4); }
             if (p.startsWith('05')) { return '966' + p.substring(1); } 
             else if (p.startsWith('5')) { return '966' + p; }
             return p;
         };
 
+        function formatReadableInternationalPhone(phone) {
+            const norm = window.formatSaudiPhone(phone);
+            if (!norm) return '+966 50 904 6024';
+            if (norm.startsWith('966') && norm.length === 12) {
+                return `+966 ${norm.slice(3, 5)} ${norm.slice(5, 8)} ${norm.slice(8)}`;
+            }
+            return `+${norm}`;
+        }
+
+        // تحديث WHATSAPP_NUMBER وكافة روابط وأزرار واتساب في الصفحة لحظياً
+        window.applyOfficialCustomerWhatsAppNumber = function(primaryRaw, extraSupportList = []) {
+            const cleanPrimary = window.formatSaudiPhone(primaryRaw) || '966509046024';
+            platformConfigState.primaryCustomerWa = cleanPrimary;
+            window.WHATSAPP_NUMBER = cleanPrimary;
+            try {
+                window.dispatchEvent(new CustomEvent('haraj:whatsapp-number-updated', { detail: { phone: cleanPrimary } }));
+            } catch (_evErr) {}
+
+            const tierLink = document.getElementById('tier-instant-wa-link');
+            if (tierLink) {
+                const selectedTier = document.getElementById('selected-tier-name')?.textContent?.trim() || '';
+                tierLink.href = selectedTier
+                    ? `https://wa.me/${cleanPrimary}?text=${encodeURIComponent('مرحباً، أرغب بطلب تسعيرة قطعة غيار - الفئة المختارة: ' + selectedTier)}`
+                    : `https://wa.me/${cleanPrimary}`;
+            }
+
+            const headerQuickLink = document.getElementById('header-quick-wa-link');
+            if (headerQuickLink) {
+                headerQuickLink.href = `https://wa.me/${cleanPrimary}`;
+            }
+
+            const footerWaLink = document.getElementById('footer-wa-link');
+            if (footerWaLink) {
+                footerWaLink.href = `https://wa.me/${cleanPrimary}`;
+                footerWaLink.textContent = formatReadableInternationalPhone(cleanPrimary);
+            }
+
+            const footerSupportContainer = document.getElementById('footer-support-numbers');
+            if (footerSupportContainer) {
+                const validSupport = (Array.isArray(extraSupportList) ? extraSupportList : [])
+                    .map((item) => {
+                        const ph = window.formatSaudiPhone(typeof item === 'object' ? item.phone : item);
+                        const lbl = typeof item === 'object' && item.label ? String(item.label).trim() : 'دعم العملاء';
+                        return ph && ph !== cleanPrimary ? { phone: ph, label: lbl } : null;
+                    })
+                    .filter(Boolean);
+                footerSupportContainer.innerHTML = validSupport.map((s) => `
+                    <div class="bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-sky-400"></i>
+                        <span class="text-slate-400 text-[11px]">${escapeHTML(s.label)}:</span>
+                        <a href="https://wa.me/${escapeHTML(s.phone)}" target="_blank" rel="noopener" dir="ltr" class="hover:text-sky-400 transition">${escapeHTML(formatReadableInternationalPhone(s.phone))}</a>
+                    </div>
+                `).join('');
+            }
+        };
+
+        // مزامنة الإعدادات العامة وهاش المدير من السيرفر و Firestore فور فتح الموقع أو قبل تسجيل الدخول
+        async function syncPlatformConfigFromSources() {
+            // 1) جلب الإعدادات العامة من السيرفر إن كان متصلاً
+            const pubRes = await fetchBotBackend('/api/public/site-config', { method: 'GET' });
+            if (pubRes && pubRes.ok) {
+                try {
+                    const pubJson = await pubRes.json();
+                    if (pubJson.primary_whatsapp_number) {
+                        platformConfigState.primaryCustomerWa = window.formatSaudiPhone(pubJson.primary_whatsapp_number) || platformConfigState.primaryCustomerWa;
+                    }
+                    if (Array.isArray(pubJson.customer_contact_numbers) && pubJson.customer_contact_numbers.length > 1) {
+                        platformConfigState.supportNumbers = pubJson.customer_contact_numbers.slice(1).map((entry) => {
+                            if (typeof entry === 'object' && entry) {
+                                return { label: entry.label || 'دعم العملاء', phone: window.formatSaudiPhone(entry.phone) };
+                            }
+                            return { label: 'دعم العملاء', phone: window.formatSaudiPhone(entry) };
+                        }).filter((x) => x.phone);
+                    }
+                    if (Array.isArray(pubJson.shipping_companies) && pubJson.shipping_companies.length > 0 && platformConfigState.shippingCompanies.length === 0) {
+                        platformConfigState.shippingCompanies = pubJson.shipping_companies;
+                    }
+                } catch (_pubErr) {}
+            }
+
+            // 2) جلب وثيقة platform_config من Firestore (المرجع السحابي الموحد للجوال والكمبيوتر)
+            try {
+                const cfgSnap = await getDoc(doc(db, "settings", "platform_config"));
+                if (cfgSnap.exists()) {
+                    const d = cfgSnap.data() || {};
+                    if (typeof d.masterAdminPasswordHash === 'string' && /^[a-f0-9]{64}$/i.test(d.masterAdminPasswordHash.trim())) {
+                        activeAdminPasswordHash = d.masterAdminPasswordHash.trim().toLowerCase();
+                    }
+                    if (d.primaryCustomerWa) {
+                        platformConfigState.primaryCustomerWa = window.formatSaudiPhone(d.primaryCustomerWa) || platformConfigState.primaryCustomerWa;
+                    }
+                    if (Array.isArray(d.supportNumbers)) {
+                        platformConfigState.supportNumbers = d.supportNumbers
+                            .map((s) => ({
+                                label: typeof s === 'object' && s?.label ? String(s.label).trim() : 'دعم العملاء',
+                                phone: window.formatSaudiPhone(typeof s === 'object' ? s?.phone : s)
+                            }))
+                            .filter((s) => s.phone);
+                    }
+                    if (Array.isArray(d.logisticsOfficersDetails)) {
+                        platformConfigState.logisticsOfficers = d.logisticsOfficersDetails
+                            .map((o) => ({
+                                name: String(o?.name || 'مسؤول لوجستيات').trim(),
+                                phone: window.formatSaudiPhone(o?.phone)
+                            }))
+                            .filter((o) => o.phone);
+                    } else if (Array.isArray(d.logisticsOfficers)) {
+                        platformConfigState.logisticsOfficers = d.logisticsOfficers
+                            .map((o) => typeof o === 'object'
+                                ? { name: String(o?.name || 'مسؤول لوجستيات').trim(), phone: window.formatSaudiPhone(o?.phone) }
+                                : { name: 'مسؤول لوجستيات', phone: window.formatSaudiPhone(o) })
+                            .filter((o) => o.phone);
+                    } else if (typeof d.logisticsOfficerPhone === 'string' && d.logisticsOfficerPhone.trim()) {
+                        platformConfigState.logisticsOfficers = d.logisticsOfficerPhone
+                            .split(/[,;|\n\r]+/)
+                            .map((p) => ({ name: 'مسؤول لوجستيات', phone: window.formatSaudiPhone(p) }))
+                            .filter((o) => o.phone);
+                    }
+                    if (Array.isArray(d.fieldCouriers)) {
+                        platformConfigState.fieldCouriers = d.fieldCouriers
+                            .map((c) => ({
+                                name: String(c?.name || '').trim(),
+                                phone: window.formatSaudiPhone(c?.phone),
+                                city: String(c?.city || '').trim(),
+                                region_area: String(c?.region_area || '').trim()
+                            }))
+                            .filter((c) => c.name && c.phone && c.city);
+                    }
+                    if (Array.isArray(d.shippingCompanies)) {
+                        platformConfigState.shippingCompanies = d.shippingCompanies
+                            .map((sc) => ({
+                                company_name: String(sc?.company_name || sc?.name || '').trim(),
+                                covered_cities: Array.isArray(sc?.covered_cities)
+                                    ? sc.covered_cities.map((ct) => String(ct || '').trim()).filter(Boolean)
+                                    : String(sc?.covered_cities || '').split(/[,،;|]+/).map((ct) => ct.trim()).filter(Boolean),
+                                estimated_speed: String(sc?.estimated_speed || '').trim(),
+                                shipping_cost_note: String(sc?.shipping_cost_note || '').trim()
+                            }))
+                            .filter((sc) => sc.company_name);
+                    }
+                    if (d.affiliateOverrides && typeof d.affiliateOverrides === 'object') {
+                        platformConfigState.affiliateOverrides = d.affiliateOverrides;
+                    }
+                }
+            } catch (_cloudSyncErr) {}
+
+            window.applyOfficialCustomerWhatsAppNumber(
+                platformConfigState.primaryCustomerWa,
+                platformConfigState.supportNumbers
+            );
+        }
+
+        // تحميل الإعدادات العامة فور بدء الصفحة لتحديث WHATSAPP_NUMBER وكافة الأزرار
+        syncPlatformConfigFromSources();
+
+        // ==========================================
+        // تسجيل الشريك المسوق الجديد مع تشفير كلمة المرور بـ SHA-256
+        // ==========================================
         document.getElementById('partnerRegForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('partnerName').value.trim();
             const phone = window.formatSaudiPhone(document.getElementById('partnerPhone').value);
+            const rawPassword = document.getElementById('partnerPassword').value.trim();
+
+            if (!phone || phone.length < 10) {
+                alert("يرجى إدخال رقم جوال صحيح.");
+                return;
+            }
+            if (!rawPassword || rawPassword.length < 4) {
+                alert("يرجى اختيار كلمة مرور خاصة بك لا تقل عن 4 خانات.");
+                return;
+            }
+
             const btn = this.querySelector('button[type="submit"]');
             const origText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري إنشاء الرابط...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري تفعيل الحساب وإنشاء الرابط...';
             btn.disabled = true;
 
             const partnerCode = 'p_' + phone;
 
             try {
-                await addDoc(collection(db, "partners"), {
+                const passwordHash = await hashSHA256(rawPassword);
+                if (passwordHash === activeAdminPasswordHash) {
+                    alert("يرجى اختيار كلمة مرور أخرى مختلفة لحساب الشريك.");
+                    return;
+                }
+
+                // 1) حفظ الشريك مع الهاش المشفر في Firestore (مجموعة partners)
+                await setDoc(doc(db, "partners", partnerCode), {
                     name: name,
                     phone: phone,
                     code: partnerCode,
+                    passwordHash: passwordHash,
+                    isActive: true,
                     timestamp: serverTimestamp()
+                }, { merge: true });
+
+                // 2) مزامنة التسجيل مع مسار السيرفر الخلفي (/api/affiliate/register)
+                await fetchBotBackend('/api/affiliate/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        phone: phone,
+                        code: partnerCode,
+                        password_hash: passwordHash
+                    })
                 });
 
                 let baseUrl = window.location.href.split('?')[0].replace(/#$/, '');
@@ -2045,6 +2478,10 @@
                 btn.disabled = false;
             }
         });
+
+        window.openPartnerPortalLogin = function() {
+            window.switchTab('admin', 'partner');
+        };
 
         window.copyGeneratedPartnerLink = function(btn) {
             const input = document.getElementById('generatedRefLink');
@@ -2068,14 +2505,25 @@
         };
 
         window.copyAffiliateLink = function(btn) {
-            let link = window.location.href.split('?')[0].replace(/#$/, '') + '?ref=' + currentAffiliateId;
+            const refParam = currentAffiliateProfile?.code || currentAffiliateId || '';
+            let link = window.location.href.split('?')[0].replace(/#$/, '') + '?ref=' + encodeURIComponent(refParam);
             navigator.clipboard.writeText(link);
             showCopySuccess(btn);
         };
 
+        window.copySpecificAffiliateLink = function(code, btn) {
+            const link = window.location.href.split('?')[0].replace(/#$/, '') + '?ref=' + encodeURIComponent(code);
+            navigator.clipboard.writeText(link);
+            if (btn) {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ';
+                setTimeout(() => { btn.innerHTML = orig; }, 1800);
+            }
+        };
+
         function showCopySuccess(btn) {
             const originalHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check block mb-1 text-xl"></i>تم النسخ';
+            btn.innerHTML = '<i class="fa-solid fa-check text-lg ml-1"></i>تم النسخ بنجاح';
             btn.classList.add('bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/40');
             setTimeout(() => {
                 btn.innerHTML = originalHtml;
@@ -2119,107 +2567,940 @@
             return `https://wa.me/${p}?text=${t}`; 
         };
 
-        window.openWaSettingsModal = async () => { 
-            document.getElementById('custWaType').value = waSettings.customerApp; 
-            document.getElementById('supWaType').value = waSettings.supplierApp; 
-            const logInput = document.getElementById('logisticsOfficerPhoneInput');
-            if (logInput) {
-                logInput.value = waSettings.logisticsOfficerPhone || '';
-                try {
-                    const cfgSnap = await getDoc(doc(db, "settings", "platform_config"));
-                    if (cfgSnap.exists() && typeof cfgSnap.data().logisticsOfficerPhone === 'string') {
-                        waSettings.logisticsOfficerPhone = cfgSnap.data().logisticsOfficerPhone;
-                        logInput.value = waSettings.logisticsOfficerPhone;
-                    }
-                } catch (_cfgErr) {}
+        // ==========================================
+        // مركز إعدادات الموقع والمنظومة الشامل (للمدير فقط - 6 تبويبات)
+        // ==========================================
+        window.switchSettingsTab = function(tabKey) {
+            document.querySelectorAll('[data-settings-panel]').forEach((panel) => {
+                panel.classList.toggle('hidden', panel.getAttribute('data-settings-panel') !== tabKey);
+            });
+            document.querySelectorAll('[data-settings-tab-btn]').forEach((btn) => {
+                const isActive = btn.getAttribute('data-settings-tab-btn') === tabKey;
+                btn.className = isActive
+                    ? 'settings-tab-btn bg-brand-500 text-white border border-brand-500/60 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-black transition shadow-sm flex items-center justify-center gap-1'
+                    : 'settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1';
+            });
+            if (tabKey === 'affiliates') {
+                loadAdminAffiliatesData();
             }
-            document.getElementById('waSettingsModal').classList.remove('hidden'); 
         };
-        window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
-        window.saveWaSettings = async () => { 
-            const rawLogistics = (document.getElementById('logisticsOfficerPhoneInput')?.value || '').trim();
-            const cleanLogisticsList = rawLogistics
-                ? [...new Set(rawLogistics.split(/[,;|\n\r]+/).map((s) => window.formatSaudiPhone(s.trim())).filter(Boolean))]
-                : [];
-            const cleanLogistics = cleanLogisticsList.join(',');
-            waSettings = {
-                customerApp: document.getElementById('custWaType').value,
-                supplierApp: document.getElementById('supWaType').value,
-                logisticsOfficerPhone: cleanLogistics
-            }; 
-            localStorage.setItem('waSettings', JSON.stringify(waSettings)); 
-            if (currentRole === 'admin') {
+
+        function renderSupportNumbersList() {
+            const container = document.getElementById('supportNumbersListContainer');
+            if (!container) return;
+            if (!platformConfigState.supportNumbers.length) {
+                container.innerHTML = '<p class="text-[11px] text-slate-500 text-center py-2">لا توجد أرقام دعم إضافية مسجلة حالياً.</p>';
+                return;
+            }
+            container.innerHTML = platformConfigState.supportNumbers.map((item, idx) => `
+                <div class="flex items-center justify-between bg-slate-950/80 border border-slate-800 px-3.5 py-2 rounded-xl text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sky-400 font-bold">${escapeHTML(item.label || 'دعم العملاء')}</span>
+                        <span dir="ltr" class="font-mono text-slate-300 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">${escapeHTML(item.phone)}</span>
+                    </div>
+                    <button type="button" onclick="removeSupportContactNumber(${idx})" class="text-rose-400 hover:text-white hover:bg-rose-500 w-7 h-7 rounded-lg flex items-center justify-center transition">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.addSupportContactNumber = function() {
+            if (currentRole !== 'admin') return;
+            const lblInput = document.getElementById('newSupportPhoneLabel');
+            const phInput = document.getElementById('newSupportPhoneInput');
+            const cleanPh = window.formatSaudiPhone(phInput?.value || '');
+            const cleanLbl = (lblInput?.value || '').trim() || 'دعم العملاء';
+            if (!cleanPh || cleanPh.length < 9) {
+                alert('يرجى إدخال رقم دعم صالح.');
+                return;
+            }
+            if (!platformConfigState.supportNumbers.some((s) => s.phone === cleanPh)) {
+                platformConfigState.supportNumbers.push({ label: cleanLbl, phone: cleanPh });
+            }
+            if (lblInput) lblInput.value = '';
+            if (phInput) phInput.value = '';
+            renderSupportNumbersList();
+        };
+
+        window.removeSupportContactNumber = function(idx) {
+            if (currentRole !== 'admin') return;
+            platformConfigState.supportNumbers.splice(idx, 1);
+            renderSupportNumbersList();
+        };
+
+        function renderLogisticsOfficersList() {
+            const container = document.getElementById('logisticsOfficersListContainer');
+            if (!container) return;
+            if (!platformConfigState.logisticsOfficers.length) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 bg-slate-900/50 rounded-2xl border border-dashed border-slate-800">لا يوجد مسؤولو لوجستيات مضافون حالياً.</p>';
+                return;
+            }
+            container.innerHTML = platformConfigState.logisticsOfficers.map((off, idx) => `
+                <div class="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-2xl text-xs">
+                    <div>
+                        <p class="font-black text-white text-sm">${escapeHTML(off.name || 'مسؤول لوجستيات')}</p>
+                        <p dir="ltr" class="font-mono text-amber-400 text-[11px] mt-0.5">${escapeHTML(off.phone)}</p>
+                    </div>
+                    <button type="button" onclick="removeLogisticsOfficerItem(${idx})" class="bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-trash-can"></i> حذف
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.addLogisticsOfficerItem = function() {
+            if (currentRole !== 'admin') return;
+            const nameEl = document.getElementById('newLogOfficerName');
+            const phoneEl = document.getElementById('newLogOfficerPhone');
+            const cleanName = (nameEl?.value || '').trim() || 'مسؤول لوجستيات';
+            const cleanPhone = window.formatSaudiPhone(phoneEl?.value || '');
+            if (!cleanPhone || cleanPhone.length < 9) {
+                alert('يرجى إدخال رقم جوال صحيح لمسؤول اللوجستيات.');
+                return;
+            }
+            const existingIdx = platformConfigState.logisticsOfficers.findIndex((o) => o.phone === cleanPhone);
+            if (existingIdx >= 0) {
+                platformConfigState.logisticsOfficers[existingIdx].name = cleanName;
+            } else {
+                platformConfigState.logisticsOfficers.push({ name: cleanName, phone: cleanPhone });
+            }
+            if (nameEl) nameEl.value = '';
+            if (phoneEl) phoneEl.value = '';
+            renderLogisticsOfficersList();
+        };
+
+        window.removeLogisticsOfficerItem = function(idx) {
+            if (currentRole !== 'admin') return;
+            platformConfigState.logisticsOfficers.splice(idx, 1);
+            renderLogisticsOfficersList();
+        };
+
+        function refreshCourierCityFilterOptions() {
+            const sel = document.getElementById('courierCityFilterSelect');
+            if (!sel) return;
+            const prevVal = sel.value;
+            const cities = [...new Set(platformConfigState.fieldCouriers.map((c) => String(c.city || '').trim()).filter(Boolean))];
+            sel.innerHTML = '<option value="" class="bg-slate-900 text-white">جميع المدن (' + platformConfigState.fieldCouriers.length + ')</option>' +
+                cities.map((ct) => `<option value="${escapeHTML(ct)}" class="bg-slate-900 text-white">${escapeHTML(ct)}</option>`).join('');
+            if (cities.includes(prevVal)) sel.value = prevVal;
+        }
+
+        window.renderFieldCouriersList = function() {
+            const container = document.getElementById('fieldCouriersListContainer');
+            if (!container) return;
+            const cityFilter = (document.getElementById('courierCityFilterSelect')?.value || '').trim();
+            const searchQ = (document.getElementById('courierSearchInput')?.value || '').trim().toLowerCase();
+
+            const indexed = platformConfigState.fieldCouriers
+                .map((c, idx) => ({ ...c, _idx: idx }))
+                .filter((c) => {
+                    if (cityFilter && String(c.city || '').trim() !== cityFilter) return false;
+                    if (searchQ) {
+                        const hay = `${c.name || ''} ${c.phone || ''} ${c.city || ''} ${c.region_area || ''}`.toLowerCase();
+                        if (!hay.includes(searchQ)) return false;
+                    }
+                    return true;
+                });
+
+            if (!indexed.length) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 bg-slate-900/50 rounded-2xl border border-dashed border-slate-800">لا يوجد مندوبو قطع مطابقون للفلتر الحالي.</p>';
+                return;
+            }
+
+            container.innerHTML = indexed.map((c) => `
+                <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-2xl text-xs">
+                    <div class="space-y-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="font-black text-white text-sm">${escapeHTML(c.name)}</span>
+                            <span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-lg font-bold">${escapeHTML(c.city)}</span>
+                            ${c.region_area ? `<span class="bg-slate-800 text-slate-300 border border-slate-700 px-2 py-0.5 rounded-lg">${escapeHTML(c.region_area)}</span>` : ''}
+                        </div>
+                        <p dir="ltr" class="font-mono text-slate-400 text-[11px] text-right">${escapeHTML(c.phone)}</p>
+                    </div>
+                    <button type="button" onclick="removeFieldCourierItem(${c._idx})" class="bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 px-3 py-1.5 rounded-xl font-bold transition">
+                        <i class="fa-solid fa-trash-can"></i> حذف
+                    </button>
+                </div>
+            `).join('');
+        };
+
+        window.addFieldCourierItem = function() {
+            if (currentRole !== 'admin') return;
+            const nameEl = document.getElementById('newFieldCourierName');
+            const phoneEl = document.getElementById('newFieldCourierPhone');
+            const cityEl = document.getElementById('newFieldCourierCity');
+            const regEl = document.getElementById('newFieldCourierRegion');
+
+            const cleanName = (nameEl?.value || '').trim();
+            const cleanPhone = window.formatSaudiPhone(phoneEl?.value || '');
+            const cleanCity = (cityEl?.value || '').trim();
+            const cleanRegion = (regEl?.value || '').trim();
+
+            if (!cleanName || !cleanPhone || cleanPhone.length < 9 || !cleanCity) {
+                alert('يرجى إدخال اسم المندوب الميداني ورقم الجوال والمدينة.');
+                return;
+            }
+
+            const existingIdx = platformConfigState.fieldCouriers.findIndex((c) => c.phone === cleanPhone);
+            const record = { name: cleanName, phone: cleanPhone, city: cleanCity, region_area: cleanRegion };
+            if (existingIdx >= 0) {
+                platformConfigState.fieldCouriers[existingIdx] = record;
+            } else {
+                platformConfigState.fieldCouriers.push(record);
+            }
+
+            if (nameEl) nameEl.value = '';
+            if (phoneEl) phoneEl.value = '';
+            if (cityEl) cityEl.value = '';
+            if (regEl) regEl.value = '';
+            refreshCourierCityFilterOptions();
+            window.renderFieldCouriersList();
+        };
+
+        window.removeFieldCourierItem = function(idx) {
+            if (currentRole !== 'admin') return;
+            platformConfigState.fieldCouriers.splice(idx, 1);
+            refreshCourierCityFilterOptions();
+            window.renderFieldCouriersList();
+        };
+
+        function renderShippingCompaniesList() {
+            const container = document.getElementById('shippingCompaniesListContainer');
+            if (!container) return;
+            if (!platformConfigState.shippingCompanies.length) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 bg-slate-900/50 rounded-2xl border border-dashed border-slate-800">لا توجد شركات شحن مسجلة حالياً.</p>';
+                return;
+            }
+            container.innerHTML = platformConfigState.shippingCompanies.map((sc, idx) => {
+                const citiesList = Array.isArray(sc.covered_cities) ? sc.covered_cities : [];
+                const citiesText = citiesList.length ? citiesList.join('، ') : 'جميع المدن';
+                return `
+                    <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-2xl text-xs">
+                        <div class="space-y-1 flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-black text-white text-sm">${escapeHTML(sc.company_name)}</span>
+                                ${sc.estimated_speed ? `<span class="bg-sky-500/15 text-sky-300 border border-sky-500/30 px-2 py-0.5 rounded-lg font-bold">⚡ ${escapeHTML(sc.estimated_speed)}</span>` : ''}
+                            </div>
+                            <p class="text-[11px] text-slate-300"><span class="text-slate-500 font-bold">المدن المغطاة:</span> ${escapeHTML(citiesText)}</p>
+                            ${sc.shipping_cost_note ? `<p class="text-[11px] text-amber-300/90">${escapeHTML(sc.shipping_cost_note)}</p>` : ''}
+                        </div>
+                        <button type="button" onclick="removeShippingCompanyItem(${idx})" class="bg-rose-500/10 hover:bg-rose-500 text-rose-400 hover:text-white border border-rose-500/30 px-3 py-1.5 rounded-xl font-bold transition shrink-0">
+                            <i class="fa-solid fa-trash-can"></i> حذف
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.addShippingCompanyItem = function() {
+            if (currentRole !== 'admin') return;
+            const nameEl = document.getElementById('newShipCompName');
+            const citiesEl = document.getElementById('newShipCompCities');
+            const speedEl = document.getElementById('newShipCompSpeed');
+            const noteEl = document.getElementById('newShipCompNote');
+
+            const cleanName = (nameEl?.value || '').trim();
+            const rawCities = (citiesEl?.value || '').trim();
+            const cleanSpeed = (speedEl?.value || '').trim() || '1-3 أيام عمل';
+            const cleanNote = (noteEl?.value || '').trim();
+
+            if (!cleanName) {
+                alert('يرجى إدخال اسم شركة الشحن.');
+                return;
+            }
+            const parsedCities = rawCities
+                ? rawCities.split(/[,،;|\n\r]+/).map((c) => c.trim()).filter(Boolean)
+                : ['جميع المدن'];
+
+            const existingIdx = platformConfigState.shippingCompanies.findIndex(
+                (s) => s.company_name.toLowerCase() === cleanName.toLowerCase()
+            );
+            const record = {
+                company_name: cleanName,
+                covered_cities: parsedCities,
+                estimated_speed: cleanSpeed,
+                shipping_cost_note: cleanNote
+            };
+            if (existingIdx >= 0) {
+                platformConfigState.shippingCompanies[existingIdx] = record;
+            } else {
+                platformConfigState.shippingCompanies.push(record);
+            }
+
+            if (nameEl) nameEl.value = '';
+            if (citiesEl) citiesEl.value = '';
+            if (speedEl) speedEl.value = '';
+            if (noteEl) noteEl.value = '';
+            renderShippingCompaniesList();
+        };
+
+        window.removeShippingCompanyItem = function(idx) {
+            if (currentRole !== 'admin') return;
+            platformConfigState.shippingCompanies.splice(idx, 1);
+            renderShippingCompaniesList();
+        };
+
+        // تحديث كلمة المرور الرئيسية لمدير النظام وتشفيرها بـ SHA-256
+        window.updateMasterAdminPasswordNow = async function() {
+            if (currentRole !== 'admin') return;
+            const newPassEl = document.getElementById('newMasterAdminPassInput');
+            const confPassEl = document.getElementById('confirmMasterAdminPassInput');
+            const newPass = (newPassEl?.value || '').trim();
+            const confPass = (confPassEl?.value || '').trim();
+
+            if (!newPass || newPass.length < 4) {
+                alert('يرجى إدخال كلمة مرور رئيسية جديدة لا تقل عن 4 خانات.');
+                return;
+            }
+            if (newPass !== confPass) {
+                alert('كلمتا المرور غير متطابقتين، يرجى التأكد من التطابق.');
+                return;
+            }
+
+            const prevAdminHash = activeAdminPasswordHash;
+            const newHash = await hashSHA256(newPass);
+
+            try {
+                await setDoc(doc(db, "settings", "platform_config"), {
+                    masterAdminPasswordHash: newHash,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+
+                await fetchBotBackend('/api/admin/full-settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Password-Hash': prevAdminHash
+                    },
+                    body: JSON.stringify({
+                        new_master_admin_password_hash: newHash
+                    })
+                });
+
+                activeAdminPasswordHash = newHash;
+                if (newPassEl) newPassEl.value = '';
+                if (confPassEl) confPassEl.value = '';
+                alert('✅ تم تشفير وحفظ كلمة المرور الرئيسية الجديدة بنجاح! تم إبطال كلمة المرور السابقة فوراً.');
+            } catch (_err) {
+                alert('حدث خطأ أثناء حفظ كلمة المرور الجديدة، يرجى المحاولة مجدداً.');
+            }
+        };
+
+        // حساب إحصائيات كل مندوب من الطلبات الحية + السيرفر
+        function computeAffiliateStatsForRecord(aff) {
+            const keys = new Set(
+                [aff.code, aff.phone, aff.phone ? 'p_' + aff.phone : '', aff.name]
+                    .map((k) => String(k || '').trim().toLowerCase())
+                    .filter(Boolean)
+            );
+            const ordersSource = Array.isArray(window.currentOrders) && window.currentOrders.length
+                ? window.currentOrders
+                : allCloudOrdersSnapshotForStats;
+
+            let cloudTotal = 0;
+            let cloudCompleted = 0;
+            ordersSource.forEach((ord) => {
+                const ordAff = String(ord.affiliate || '').trim().toLowerCase();
+                if (ordAff && keys.has(ordAff)) {
+                    cloudTotal += 1;
+                    if (ord.purchaseStatus === 'completed' || ord.status === 'completed') {
+                        cloudCompleted += 1;
+                    }
+                }
+            });
+
+            const backendTotal = Number(aff.backendSummary?.total_orders || 0);
+            const backendCompleted = Number(aff.backendSummary?.completed_orders_count || 0);
+            return {
+                totalCustomers: Math.max(cloudTotal, backendTotal),
+                completedPurchases: Math.max(cloudCompleted, backendCompleted)
+            };
+        }
+
+        async function loadAdminAffiliatesData() {
+            if (currentRole !== 'admin') return;
+            const mergedMap = new Map();
+
+            // 1) المندوبون الافتراضيون + التعديلات السحابية
+            Object.entries(affiliatesByHash).forEach(([hashKey, legacyName]) => {
+                const override = platformConfigState.affiliateOverrides?.[legacyName];
+                mergedMap.set(legacyName, {
+                    code: legacyName,
+                    name: legacyName,
+                    phone: override?.phone || '',
+                    hasPassword: true,
+                    passwordHash: override?.passwordHash || hashKey,
+                    isLegacy: true,
+                    docIds: []
+                });
+            });
+
+            // 2) المندوبون المسجلون في Firestore (partners)
+            try {
+                const partnersSnap = await getDocs(collection(db, "partners"));
+                partnersSnap.forEach((pDoc) => {
+                    const d = pDoc.data() || {};
+                    const cleanPh = window.formatSaudiPhone(d.phone || '');
+                    const key = String(d.code || (cleanPh ? 'p_' + cleanPh : pDoc.id)).trim();
+                    const prev = mergedMap.get(key) || { docIds: [] };
+                    mergedMap.set(key, {
+                        code: key,
+                        name: String(d.name || prev.name || key).trim(),
+                        phone: cleanPh || prev.phone || '',
+                        hasPassword: Boolean(d.passwordHash || prev.hasPassword),
+                        passwordHash: d.passwordHash || prev.passwordHash || '',
+                        docIds: [...new Set([...(prev.docIds || []), pDoc.id])],
+                        backendSummary: prev.backendSummary || null
+                    });
+                });
+            } catch (_pErr) {}
+
+            // 3) المندوبون وإحصائياتهم من السيرفر الخلفي (/api/admin/affiliates)
+            const backRes = await fetchBotBackend('/api/admin/affiliates', {
+                method: 'GET',
+                headers: { 'X-Admin-Password-Hash': activeAdminPasswordHash }
+            });
+            if (backRes && backRes.ok) {
                 try {
+                    const backJson = await backRes.json();
+                    if (Array.isArray(backJson.affiliates)) {
+                        backJson.affiliates.forEach((ba) => {
+                            const cleanPh = window.formatSaudiPhone(ba.phone || '');
+                            const key = String(ba.code || (cleanPh ? 'p_' + cleanPh : ba.name)).trim();
+                            const prev = mergedMap.get(key) || { docIds: [] };
+                            mergedMap.set(key, {
+                                code: key,
+                                name: String(ba.name || prev.name || key).trim(),
+                                phone: cleanPh || prev.phone || '',
+                                hasPassword: true,
+                                passwordHash: prev.passwordHash || '',
+                                docIds: prev.docIds || [],
+                                backendSummary: ba.summary || null
+                            });
+                        });
+                    }
+                } catch (_bJsonErr) {}
+            }
+
+            adminAffiliatesCache = Array.from(mergedMap.values());
+            window.renderAdminAffiliatesList();
+        }
+
+        window.renderAdminAffiliatesList = function() {
+            const container = document.getElementById('adminAffiliatesListContainer');
+            const countLbl = document.getElementById('affiliateAdminCountLabel');
+            if (!container) return;
+
+            const q = (document.getElementById('affiliateAdminSearchInput')?.value || '').trim().toLowerCase();
+            const filtered = adminAffiliatesCache.filter((aff) => {
+                if (!q) return true;
+                const hay = `${aff.name || ''} ${aff.phone || ''} ${aff.code || ''}`.toLowerCase();
+                return hay.includes(q);
+            });
+
+            if (countLbl) {
+                countLbl.textContent = `${filtered.length} من ${adminAffiliatesCache.length} مندوب`;
+            }
+
+            if (!filtered.length) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-6 bg-slate-900/50 rounded-2xl border border-dashed border-slate-800">لا يوجد مسوقون مطابقون لعبارة البحث.</p>';
+                return;
+            }
+
+            const htmlRows = filtered.map((aff) => {
+                const stats = computeAffiliateStatsForRecord(aff);
+                const safeCode = escapeHTML(aff.code);
+                const safeCodeJs = encodeURIComponent(aff.code).replace(/'/g, '%27');
+                const safeName = escapeHTML(aff.name);
+                const safePhone = escapeHTML(aff.phone || '—');
+                const passBadge = aff.hasPassword
+                    ? '<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold px-2 py-0.5 rounded-md">🔐 محمي بكلمة مرور</span>'
+                    : '<span class="bg-rose-500/15 text-rose-300 border border-rose-500/30 text-[10px] font-bold px-2 py-0.5 rounded-md">⚠️ بدون كلمة مرور</span>';
+
+                return `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 px-4 py-3 rounded-2xl text-xs">
+                        <div class="space-y-1.5">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-black text-white text-sm">${safeName}</span>
+                                <span dir="ltr" class="font-mono text-purple-300 bg-purple-500/15 border border-purple-500/30 px-2 py-0.5 rounded-md text-[11px]">${safeCode}</span>
+                                ${passBadge}
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 text-[11px]">
+                                <span dir="ltr" class="font-mono text-slate-400">${safePhone}</span>
+                                <span class="bg-slate-950 text-slate-200 border border-slate-700 px-2.5 py-0.5 rounded-lg font-bold">
+                                    إجمالي العملاء: <strong class="text-sky-400">${stats.totalCustomers}</strong> | عمليات الشراء المكتملة ✅: <strong class="text-emerald-400">${stats.completedPurchases}</strong>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                            <button type="button" onclick="adminChangeAffiliatePassword(decodeURIComponent('${safeCodeJs}'))" class="bg-amber-500/15 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/30 px-3 py-1.5 rounded-xl font-bold transition">
+                                🔑 تعيين/تغيير كلمة المرور
+                            </button>
+                            <button type="button" onclick="copySpecificAffiliateLink(decodeURIComponent('${safeCodeJs}'), this)" class="bg-sky-500/15 hover:bg-sky-500 text-sky-300 hover:text-white border border-sky-500/30 px-3 py-1.5 rounded-xl font-bold transition">
+                                <i class="fa-regular fa-copy"></i> الرابط
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = htmlRows.join('');
+        };
+
+        window.adminCreateOrUpdateAffiliate = async function() {
+            if (currentRole !== 'admin') return;
+            const nameEl = document.getElementById('adminAffNameInput');
+            const phoneEl = document.getElementById('adminAffPhoneInput');
+            const passEl = document.getElementById('adminAffPassInput');
+
+            const cleanName = (nameEl?.value || '').trim();
+            const cleanPhone = window.formatSaudiPhone(phoneEl?.value || '');
+            const rawPass = (passEl?.value || '').trim();
+
+            if (!cleanName || !cleanPhone || cleanPhone.length < 9 || !rawPass || rawPass.length < 4) {
+                alert('يرجى إدخال اسم المندوب ورقم الجوال وكلمة مرور لا تقل عن 4 خانات.');
+                return;
+            }
+
+            const passHash = await hashSHA256(rawPass);
+            if (passHash === activeAdminPasswordHash) {
+                alert('يرجى اختيار كلمة مرور للمندوب تختلف عن كلمة مرور الإدارة الرئيسية.');
+                return;
+            }
+            const code = 'p_' + cleanPhone;
+
+            try {
+                await setDoc(doc(db, "partners", code), {
+                    name: cleanName,
+                    phone: cleanPhone,
+                    code: code,
+                    passwordHash: passHash,
+                    isActive: true,
+                    timestamp: serverTimestamp()
+                }, { merge: true });
+
+                await fetchBotBackend('/api/admin/affiliates', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Password-Hash': activeAdminPasswordHash
+                    },
+                    body: JSON.stringify({
+                        name: cleanName,
+                        phone: cleanPhone,
+                        code: code,
+                        password_hash: passHash,
+                        is_active: true
+                    })
+                });
+
+                if (nameEl) nameEl.value = '';
+                if (phoneEl) phoneEl.value = '';
+                if (passEl) passEl.value = '';
+                await loadAdminAffiliatesData();
+            } catch (_err) {
+                alert('حدث خطأ أثناء حفظ بيانات المندوب.');
+            }
+        };
+
+        window.adminChangeAffiliatePassword = async function(targetCode) {
+            if (currentRole !== 'admin') return;
+            const targetAff = adminAffiliatesCache.find((a) => a.code === targetCode);
+            if (!targetAff) return;
+
+            const newPass = prompt(`🔑 أدخل كلمة المرور الجديدة للمندوب (${targetAff.name}):`);
+            if (newPass === null) return;
+            if (newPass.trim().length < 4) {
+                alert('يجب ألا تقل كلمة المرور عن 4 خانات.');
+                return;
+            }
+
+            const newHash = await hashSHA256(newPass.trim());
+            if (newHash === activeAdminPasswordHash) {
+                alert('يرجى اختيار كلمة مرور للمندوب تختلف عن كلمة مرور الإدارة الرئيسية.');
+                return;
+            }
+
+            try {
+                if (targetAff.isLegacy && !targetAff.code.startsWith('p_')) {
+                    platformConfigState.affiliateOverrides = platformConfigState.affiliateOverrides || {};
+                    platformConfigState.affiliateOverrides[targetAff.code] = {
+                        name: targetAff.name,
+                        phone: targetAff.phone || '',
+                        passwordHash: newHash
+                    };
                     await setDoc(doc(db, "settings", "platform_config"), {
-                        logisticsOfficerPhone: cleanLogistics,
-                        logisticsOfficers: cleanLogisticsList,
+                        affiliateOverrides: platformConfigState.affiliateOverrides,
                         updatedAt: serverTimestamp()
                     }, { merge: true });
-                } catch (_cloudCfgErr) {}
-                try {
-                    await fetch('http://localhost:3000/api/settings/logistics', {
+                } else {
+                    const docId = targetAff.docIds?.[0] || targetAff.code;
+                    await setDoc(doc(db, "partners", docId), {
+                        name: targetAff.name,
+                        phone: targetAff.phone,
+                        code: targetAff.code,
+                        passwordHash: newHash,
+                        isActive: true,
+                        updatedAt: serverTimestamp()
+                    }, { merge: true });
+                }
+
+                if (targetAff.phone) {
+                    await fetchBotBackend('/api/admin/affiliates', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Admin-Password-Hash': activeAdminPasswordHash
+                        },
                         body: JSON.stringify({
-                            logistics_officer_phone: cleanLogistics,
-                            logistics_officers: cleanLogisticsList
+                            code: targetAff.code,
+                            name: targetAff.name,
+                            phone: targetAff.phone,
+                            password_hash: newHash,
+                            is_active: true
                         })
                     });
-                } catch (_localCfgErr) {}
+                }
+
+                alert(`✅ تم تحديث وتشفير كلمة مرور المندوب (${targetAff.name}) بنجاح!`);
+                await loadAdminAffiliatesData();
+            } catch (_err) {
+                alert('تعذر تحديث كلمة مرور المندوب.');
             }
-            closeWaSettingsModal(); 
-            renderOrders(window.currentOrders); 
+        };
+
+        window.openWaSettingsModal = async () => {
+            if (currentRole !== 'admin') {
+                alert('⛔ هذا المركز مخصص للإدارة الرئيسية فقط.');
+                return;
+            }
+
+            await syncPlatformConfigFromSources();
+
+            // جلب أحدث البيانات التفصيلية من السيرفر (/api/admin/full-settings) إن كان متاحاً
+            const adminRes = await fetchBotBackend('/api/admin/full-settings', {
+                method: 'GET',
+                headers: { 'X-Admin-Password-Hash': activeAdminPasswordHash }
+            });
+            if (adminRes && adminRes.ok) {
+                try {
+                    const fullData = await adminRes.json();
+                    if (Array.isArray(fullData.customer_contact_numbers) && fullData.customer_contact_numbers.length > 0) {
+                        const first = fullData.customer_contact_numbers[0];
+                        platformConfigState.primaryCustomerWa = window.formatSaudiPhone(typeof first === 'object' ? first.phone : first) || platformConfigState.primaryCustomerWa;
+                        platformConfigState.supportNumbers = fullData.customer_contact_numbers.slice(1).map((s) => (
+                            typeof s === 'object'
+                                ? { label: s.label || 'دعم العملاء', phone: window.formatSaudiPhone(s.phone) }
+                                : { label: 'دعم العملاء', phone: window.formatSaudiPhone(s) }
+                        )).filter((s) => s.phone);
+                    }
+                    if (Array.isArray(fullData.logistics_officers) && fullData.logistics_officers.length > 0 && platformConfigState.logisticsOfficers.length === 0) {
+                        platformConfigState.logisticsOfficers = fullData.logistics_officers.map((o) => ({
+                            name: o.name || 'مسؤول لوجستيات',
+                            phone: window.formatSaudiPhone(o.phone)
+                        })).filter((o) => o.phone);
+                    }
+                    if (Array.isArray(fullData.field_couriers) && fullData.field_couriers.length > 0 && platformConfigState.fieldCouriers.length === 0) {
+                        platformConfigState.fieldCouriers = fullData.field_couriers.map((c) => ({
+                            name: c.name || '',
+                            phone: window.formatSaudiPhone(c.phone),
+                            city: c.city || '',
+                            region_area: c.region_area || ''
+                        })).filter((c) => c.name && c.phone && c.city);
+                    }
+                    if (Array.isArray(fullData.shipping_companies) && fullData.shipping_companies.length > 0 && platformConfigState.shippingCompanies.length === 0) {
+                        platformConfigState.shippingCompanies = fullData.shipping_companies.map((sc) => ({
+                            company_name: sc.company_name || '',
+                            covered_cities: Array.isArray(sc.covered_cities) ? sc.covered_cities : [],
+                            estimated_speed: sc.estimated_speed || '',
+                            shipping_cost_note: sc.shipping_cost_note || ''
+                        })).filter((sc) => sc.company_name);
+                    }
+                } catch (_admJsonErr) {}
+            }
+
+            document.getElementById('custWaType').value = waSettings.customerApp || 'default';
+            document.getElementById('supWaType').value = waSettings.supplierApp || 'default';
+            const offInput = document.getElementById('officialCustomerWaInput');
+            if (offInput) offInput.value = platformConfigState.primaryCustomerWa || '966509046024';
+
+            renderSupportNumbersList();
+            renderLogisticsOfficersList();
+            refreshCourierCityFilterOptions();
+            window.renderFieldCouriersList();
+            renderShippingCompaniesList();
+            window.switchSettingsTab('contact');
+
+            document.getElementById('waSettingsModal').classList.remove('hidden');
+        };
+
+        window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
+
+        window.saveWaSettings = async () => {
+            if (currentRole !== 'admin') return;
+
+            const saveBtn = document.getElementById('saveAllSettingsBtn');
+            const origSaveText = saveBtn ? saveBtn.innerHTML : '';
+            if (saveBtn) {
+                saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ والمزامنة...';
+                saveBtn.disabled = true;
+            }
+
+            try {
+                const rawOfficialWa = (document.getElementById('officialCustomerWaInput')?.value || '').trim();
+                const cleanPrimaryWa = window.formatSaudiPhone(rawOfficialWa) || '966509046024';
+                platformConfigState.primaryCustomerWa = cleanPrimaryWa;
+
+                // التحقق إن قام المدير بكتابة كلمة مرور جديدة في تبويب الأمان قبل الضغط على حفظ الكل
+                const pendingNewAdminPass = (document.getElementById('newMasterAdminPassInput')?.value || '').trim();
+                const pendingConfAdminPass = (document.getElementById('confirmMasterAdminPassInput')?.value || '').trim();
+                let newAdminHashToApply = null;
+                if (pendingNewAdminPass) {
+                    if (pendingNewAdminPass.length < 4 || pendingNewAdminPass !== pendingConfAdminPass) {
+                        alert('يرجى التأكد من تطابق كلمة المرور الرئيسية الجديدة في تبويب الأمان (4 خانات على الأقل) أو ترك الحقل فارغاً.');
+                        return;
+                    }
+                    newAdminHashToApply = await hashSHA256(pendingNewAdminPass);
+                }
+
+                const cleanLogisticsPhones = [...new Set(platformConfigState.logisticsOfficers.map((o) => window.formatSaudiPhone(o.phone)).filter(Boolean))];
+                const cleanLogisticsCsv = cleanLogisticsPhones.join(',');
+
+                waSettings = {
+                    customerApp: document.getElementById('custWaType').value,
+                    supplierApp: document.getElementById('supWaType').value,
+                    logisticsOfficerPhone: cleanLogisticsCsv
+                };
+                localStorage.setItem('waSettings', JSON.stringify(waSettings));
+
+                // تحديث كافة روابط وأزرار واتساب في الصفحة فوراً
+                window.applyOfficialCustomerWhatsAppNumber(cleanPrimaryWa, platformConfigState.supportNumbers);
+
+                const allContactNumbersPayload = [
+                    { label: 'الرقم الرسمي للمنصة', phone: cleanPrimaryWa },
+                    ...platformConfigState.supportNumbers
+                ];
+
+                const prevAdminHash = activeAdminPasswordHash;
+                const firestorePayload = {
+                    primaryCustomerWa: cleanPrimaryWa,
+                    supportNumbers: platformConfigState.supportNumbers,
+                    logisticsOfficerPhone: cleanLogisticsCsv,
+                    logisticsOfficers: cleanLogisticsPhones,
+                    logisticsOfficersDetails: platformConfigState.logisticsOfficers,
+                    fieldCouriers: platformConfigState.fieldCouriers,
+                    shippingCompanies: platformConfigState.shippingCompanies,
+                    affiliateOverrides: platformConfigState.affiliateOverrides || {},
+                    updatedAt: serverTimestamp()
+                };
+                if (newAdminHashToApply) {
+                    firestorePayload.masterAdminPasswordHash = newAdminHashToApply;
+                }
+
+                // 1) حفظ في Firestore (settings/platform_config)
+                try {
+                    await setDoc(doc(db, "settings", "platform_config"), firestorePayload, { merge: true });
+                } catch (_cloudCfgErr) {}
+
+                // 2) حفظ في السيرفر الخلفي (/api/admin/full-settings)
+                await fetchBotBackend('/api/admin/full-settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Password-Hash': prevAdminHash
+                    },
+                    body: JSON.stringify({
+                        customer_contact_numbers: allContactNumbersPayload,
+                        logistics_officers: platformConfigState.logisticsOfficers,
+                        field_couriers: platformConfigState.fieldCouriers,
+                        shipping_companies: platformConfigState.shippingCompanies,
+                        ...(newAdminHashToApply ? { new_master_admin_password_hash: newAdminHashToApply } : {})
+                    })
+                });
+
+                if (newAdminHashToApply) {
+                    activeAdminPasswordHash = newAdminHashToApply;
+                    const npEl = document.getElementById('newMasterAdminPassInput');
+                    const cpEl = document.getElementById('confirmMasterAdminPassInput');
+                    if (npEl) npEl.value = '';
+                    if (cpEl) cpEl.value = '';
+                }
+
+                closeWaSettingsModal();
+                renderOrders(window.currentOrders);
+            } finally {
+                if (saveBtn) {
+                    saveBtn.innerHTML = origSaveText;
+                    saveBtn.disabled = false;
+                }
+            }
         };
         
-        window.openSuppliersModal = () => { renderSuppliersModalList(); document.getElementById('suppliersModal').classList.remove('hidden'); };
+        window.openSuppliersModal = () => { if (currentRole !== 'admin') return; renderSuppliersModalList(); document.getElementById('suppliersModal').classList.remove('hidden'); };
         window.closeSuppliersModal = () => { document.getElementById('suppliersModal').classList.add('hidden'); cancelEdit(); };
-        window.openPendingModal = () => document.getElementById('pendingModal').classList.remove('hidden');
+        window.openPendingModal = () => { if (currentRole !== 'admin') return; document.getElementById('pendingModal').classList.remove('hidden'); };
         window.closePendingModal = () => document.getElementById('pendingModal').classList.add('hidden');
 
-        window.switchTab = async function(tab) {
+        // التحقق من هوية المندوب من Firestore و overrides والسيرفر وقائمة affiliatesByHash
+        async function authenticateAffiliateByHash(passHash) {
+            // 1) فحص التعديلات السحابية لكلمات مرور المندوبين الافتراضيين
+            const overrides = platformConfigState.affiliateOverrides || {};
+            for (const [legacyCode, ov] of Object.entries(overrides)) {
+                if (ov && ov.passwordHash && ov.passwordHash.toLowerCase() === passHash) {
+                    return {
+                        name: ov.name || legacyCode,
+                        phone: ov.phone || '',
+                        code: legacyCode
+                    };
+                }
+            }
+
+            // 2) فحص مجموعة partners في Firestore
+            try {
+                const pQuery = query(collection(db, "partners"), where("passwordHash", "==", passHash));
+                const pSnap = await getDocs(pQuery);
+                if (!pSnap.empty) {
+                    const pData = pSnap.docs[0].data() || {};
+                    if (pData.isActive !== false) {
+                        const cleanPh = window.formatSaudiPhone(pData.phone || '');
+                        return {
+                            name: String(pData.name || pData.code || 'شريك مسوق').trim(),
+                            phone: cleanPh,
+                            code: String(pData.code || (cleanPh ? 'p_' + cleanPh : pSnap.docs[0].id)).trim()
+                        };
+                    }
+                }
+            } catch (_fsAuthErr) {}
+
+            // 3) فحص القائمة الافتراضية (إذا لم يتم تغيير كلمة مرور المندوب في overrides)
+            const legacyMatchedName = affiliatesByHash[passHash];
+            if (legacyMatchedName && !overrides[legacyMatchedName]?.passwordHash) {
+                return {
+                    name: legacyMatchedName,
+                    phone: '',
+                    code: legacyMatchedName
+                };
+            }
+
+            // 4) فحص مسار السيرفر (/api/affiliate/login)
+            const backLoginRes = await fetchBotBackend('/api/affiliate/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password_hash: passHash })
+            });
+            if (backLoginRes && backLoginRes.ok) {
+                try {
+                    const loginJson = await backLoginRes.json();
+                    if (loginJson.success && loginJson.affiliate) {
+                        return {
+                            name: loginJson.affiliate.name || loginJson.affiliate.code,
+                            phone: window.formatSaudiPhone(loginJson.affiliate.phone || ''),
+                            code: loginJson.affiliate.code
+                        };
+                    }
+                } catch (_bLoginErr) {}
+            }
+
+            return null;
+        }
+
+        window.switchTab = async function(tab, loginMode = 'default') {
             if (tab === 'admin') {
-                const pass = prompt("🔒 إدخال الرقم السري للوحة التحكم:");
+                const promptMsg = loginMode === 'partner'
+                    ? "🔐 دخول الشريك المسوق — أدخل كلمة المرور الخاصة بك لمتابعة العملاء والأرباح:"
+                    : "🔒 إدخال الرقم السري للوحة التحكم:";
+                const pass = prompt(promptMsg);
                 if (pass === null) return;
                 const passHash = await hashSHA256(pass);
 
-                if (passHash === adminPasswordHash) {
+                // تحديث أحدث هاش للمدير من Firestore قبل المقارنة لضمان إبطال أي كلمة مرور قديمة فوراً
+                await syncPlatformConfigFromSources();
+
+                if (passHash === activeAdminPasswordHash) {
                     currentRole = 'admin';
                     currentAffiliateId = null;
+                    currentAffiliateProfile = null;
+                    currentAffiliateLookupKeys = [];
+                    affiliateBackendCompletedIds = new Set();
+
                     document.getElementById('dashboardTitle').innerHTML = 'لوحة تحكم الإدارة الشاملة';
                     document.getElementById('liveOrdersTitle').innerHTML = 'جميع الطلبات الحية في النظام';
                     
+                    document.getElementById('affiliateStatsCards').classList.add('hidden');
                     document.getElementById('btn-pending').classList.remove('hidden');
                     document.getElementById('btn-suppliers').classList.remove('hidden');
                     document.getElementById('btn-invite').classList.remove('hidden');
                     document.getElementById('btn-settings').classList.remove('hidden');
                     document.getElementById('btn-affiliate').classList.add('hidden');
-                    
-                } else if (affiliatesByHash[passHash]) {
+                } else {
+                    const matchedAffiliate = await authenticateAffiliateByHash(passHash);
+                    if (!matchedAffiliate) {
+                        alert("❌ كلمة المرور غير صحيحة!");
+                        return;
+                    }
+
                     currentRole = 'affiliate';
-                    currentAffiliateId = affiliatesByHash[passHash];
-                    document.getElementById('dashboardTitle').innerHTML = `لوحة المندوب: ${escapeHTML(currentAffiliateId)}`;
-                    document.getElementById('liveOrdersTitle').innerHTML = 'طلبات عملائك الخاصة';
+                    currentAffiliateProfile = matchedAffiliate;
+                    currentAffiliateId = matchedAffiliate.code || matchedAffiliate.name;
+                    currentAffiliateLookupKeys = [...new Set(
+                        [
+                            matchedAffiliate.code,
+                            matchedAffiliate.phone ? 'p_' + matchedAffiliate.phone : '',
+                            matchedAffiliate.phone,
+                            matchedAffiliate.name,
+                            'p_' + currentAffiliateId
+                        ].map((k) => String(k || '').trim()).filter(Boolean)
+                    )].slice(0, 10);
+
+                    // مسح أي بيانات موردين من الذاكرة وإغلاق أي نوافذ إدارية لحماية سرية الموردين 100%
+                    suppliersDB = [];
+                    window.orderSuppliers = {};
+                    closeWaSettingsModal();
+                    closeSuppliersModal();
+                    closePendingModal();
+
+                    // جلب أي طلبات مكتملة مسجلة في السيرفر لهذا المندوب
+                    affiliateBackendCompletedIds = new Set();
+                    const myOrdersRes = await fetchBotBackend(
+                        `/api/affiliate/my-orders?code=${encodeURIComponent(currentAffiliateId)}`,
+                        {
+                            method: 'GET',
+                            headers: { 'X-Affiliate-Token': passHash }
+                        }
+                    );
+                    if (myOrdersRes && myOrdersRes.ok) {
+                        try {
+                            const myOrdJson = await myOrdersRes.json();
+                            if (Array.isArray(myOrdJson.orders)) {
+                                myOrdJson.orders.forEach((bo) => {
+                                    if (bo.is_completed_purchase || bo.status === 'completed') {
+                                        affiliateBackendCompletedIds.add(Number(bo.order_id));
+                                    }
+                                });
+                            }
+                        } catch (_myOrdErr) {}
+                    }
+
+                    document.getElementById('dashboardTitle').innerHTML = `بوابة الشريك المسوق: ${escapeHTML(matchedAffiliate.name)}`;
+                    document.getElementById('liveOrdersTitle').innerHTML = 'سجل عملائك القادمين عبر رابطك التسويقي';
                     
+                    document.getElementById('affiliateStatsCards').classList.remove('hidden');
                     document.getElementById('btn-pending').classList.add('hidden');
                     document.getElementById('btn-suppliers').classList.add('hidden');
                     document.getElementById('btn-invite').classList.add('hidden');
                     document.getElementById('btn-settings').classList.add('hidden');
                     document.getElementById('btn-affiliate').classList.remove('hidden');
-                    
-                } else {
-                    alert("❌ كلمة المرور غير صحيحة!"); 
-                    return; 
                 }
 
                 isFirstLoad = true;
-                await loadSuppliersFromCloud();
-                startLiveOrdersListener(); 
-                if(currentRole === 'admin') {
+                if (currentRole === 'admin') {
+                    await loadSuppliersFromCloud();
                     startLivePendingListener();
                 } else if (unsubscribePending) {
                     unsubscribePending();
                     unsubscribePending = null;
                 }
+                startLiveOrdersListener(); 
                 
             } else {
                 if(unsubscribeOrders) { unsubscribeOrders(); unsubscribeOrders = null; }
@@ -2322,6 +3603,7 @@
                         : 'mechanic';
 
                 let backendOrderResult = null;
+                const cleanAffiliateForBackend = affiliateId !== 'مباشر (بدون مندوب)' ? affiliateId : null;
                 try {
                     const apiRes = await fetch('/api/website-order', {
                         method: 'POST',
@@ -2336,6 +3618,7 @@
                             part_name: carPartsVal,
                             part_category: mappedBackendCategory,
                             speed_tier: 'balanced_45m',
+                            affiliate_code: cleanAffiliateForBackend,
                             image_data: base64Image || null
                         })
                     });
@@ -2355,6 +3638,7 @@
                         year: carYearVal, partCondition: partConditionVal,
                         partCategory: finalCategory, vin: carVinVal || 'لم يُدخل', parts: carPartsVal,
                         backendOrderId: backendOrderResult?.order_id || null,
+                        purchaseStatus: 'pending',
                         imageData: base64Image, affiliate: affiliateId, date: new Date().toLocaleString('ar-SA'), timestamp: serverTimestamp()
                     });
                     cloudSaved = true;
@@ -2375,6 +3659,7 @@
         });
 
         window.openAddSupplierManual = function() {
+            if (currentRole !== 'admin') return;
             editingSupId = null;
             document.getElementById('supplierFormContainer').classList.remove('hidden');
             document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> إضافة مورد جديد يدوياً';
@@ -2388,6 +3673,7 @@
         };
 
         window.editSupplier = function(id) {
+            if (currentRole !== 'admin') return;
             const sup = suppliersDB.find(s => s.id === id); if(!sup) return;
             editingSupId = id;
             document.getElementById('supplierFormContainer').classList.remove('hidden');
@@ -2406,6 +3692,7 @@
         window.cancelEdit = function() { editingSupId = null; document.getElementById('supplierFormContainer').classList.add('hidden'); };
 
         window.addSupplierCloud = async function() {
+            if (currentRole !== 'admin') return;
             const name = document.getElementById('newSupName').value.trim();
             const phone = window.formatSaudiPhone(document.getElementById('newSupPhone').value); 
             
@@ -2436,6 +3723,7 @@
         };
 
         window.deleteSupplier = async function(id) { 
+            if (currentRole !== 'admin') return;
             if(confirm("هل أنت متأكد من حذف هذا المورد نهائياً من السحابة؟")) {
                 suppliersDB = suppliersDB.filter(s => s.id !== id);
                 try {
@@ -2471,6 +3759,7 @@
         });
 
         function startLivePendingListener() {
+            if (currentRole !== 'admin') return;
             if (unsubscribePending) {
                 unsubscribePending();
                 unsubscribePending = null;
@@ -2506,6 +3795,7 @@
         }
 
         window.approveSupplier = async function(docId, dataStr) {
+            if (currentRole !== 'admin') return;
             const data = JSON.parse(decodeURIComponent(dataStr));
             suppliersDB.push({ id: Date.now().toString(), name: data.name, phone: data.phone, conditions: data.conditions, brands: data.brands, categories: data.categories });
             try {
@@ -2515,9 +3805,13 @@
             } catch (e) { alert("حدث خطأ أثناء الموافقة"); }
         };
 
-        window.rejectSupplier = async function(docId) { if(confirm("رفض وحذف هذا الطلب؟")) await deleteDoc(doc(db, "pending_suppliers", docId)); };
+        window.rejectSupplier = async function(docId) { if (currentRole !== 'admin') return; if(confirm("رفض وحذف هذا الطلب؟")) await deleteDoc(doc(db, "pending_suppliers", docId)); };
 
         async function loadSuppliersFromCloud() {
+            if (currentRole !== 'admin') {
+                suppliersDB = [];
+                return;
+            }
             try {
                 const docSnap = await getDoc(doc(db, "settings", "suppliers_v7"));
                 if (docSnap.exists() && docSnap.data().list) { suppliersDB = docSnap.data().list; } else { suppliersDB = []; }
@@ -2559,8 +3853,12 @@
             }
 
             const ordersRef = collection(db, "orders");
+            const affiliateKeys = currentAffiliateLookupKeys.length > 0
+                ? currentAffiliateLookupKeys.slice(0, 10)
+                : [currentAffiliateId, "p_" + currentAffiliateId].filter(Boolean);
+
             const q = currentRole === 'affiliate'
-                ? query(ordersRef, where("affiliate", "in", [currentAffiliateId, "p_" + currentAffiliateId]))
+                ? query(ordersRef, where("affiliate", "in", affiliateKeys))
                 : query(ordersRef, orderBy("timestamp", "desc"));
 
             unsubscribeOrders = onSnapshot(q, (snap) => {
@@ -2574,16 +3872,57 @@
                         const tB = b.timestamp?.toMillis ? b.timestamp.toMillis() : (b.timestamp?.seconds ? b.timestamp.seconds * 1000 : 0);
                         return tB - tA;
                     });
+                } else if (currentRole === 'admin') {
+                    allCloudOrdersSnapshotForStats = orders;
+                    const affPanel = document.getElementById('settings-panel-affiliates');
+                    if (affPanel && !affPanel.classList.contains('hidden')) {
+                        window.renderAdminAffiliatesList();
+                    }
                 }
                 if (!isFirstLoad && snap.docChanges().some(c => c.type === "added")) audioAlert.play().catch(e=>{});
                 isFirstLoad = false; window.currentOrders = orders; renderOrders(orders);
             });
         }
 
-        window.deleteOrder = async function(id) { if(confirm("حذف هذا الطلب نهائياً من السحابة؟")) await deleteDoc(doc(db, "orders", id)); };
+        // حماية صارمة: منع الحذف لأي مستخدم غير المدير الرئيسي
+        window.deleteOrder = async function(id) {
+            if (currentRole !== 'admin') return;
+            if (confirm("حذف هذا الطلب نهائياً من السحابة؟")) {
+                await deleteDoc(doc(db, "orders", id));
+            }
+        };
+
+        // تبديل سريع لحالة الشراء من بطاقة الطلب (للمدير فقط) لينعكس فوراً في بوابة الشريك المسوق
+        window.toggleOrderPurchaseStatus = async function(orderId, nextStatus, btn) {
+            if (currentRole !== 'admin') return;
+            const prevHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            }
+            try {
+                const isCompletedNext = nextStatus === 'completed';
+                await setDoc(
+                    doc(db, "orders", orderId),
+                    {
+                        purchaseStatus: isCompletedNext ? 'completed' : 'pending',
+                        status: isCompletedNext ? 'completed' : 'pending_followup',
+                        purchaseUpdatedAt: serverTimestamp()
+                    },
+                    { merge: true }
+                );
+            } catch (_toggleErr) {
+                alert('تعذر تحديث حالة الشراء للطلب سحابياً.');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = prevHtml;
+                }
+            }
+        };
 
         // 💡 نظام هجين (Hybrid Cloud + Local) للتواصل مع البوت لطلب التسعيرة الذكية
         window.requestAIPricing = async function(orderId, btn) {
+            if (currentRole !== 'admin') return;
             const targetBtn = btn || (typeof event !== 'undefined' ? event.currentTarget : null);
             const originalContent = targetBtn ? targetBtn.innerHTML : '';
             if (targetBtn) {
@@ -2633,6 +3972,7 @@
                                 car_brand: order.brand,
                                 car_model: order.model,
                                 car_year: order.year,
+                                affiliate_code: order.affiliate && order.affiliate !== 'مباشر (بدون مندوب)' ? order.affiliate : null,
                                 image_data: order.imageData || null,
                                 suppliers: supplierPhones
                             })
@@ -2659,14 +3999,91 @@
             }
         };
 
-        // فرز وعرض الطلبات
+        function isOrderPurchaseCompleted(order) {
+            if (!order) return false;
+            if (order.purchaseStatus === 'completed' || order.status === 'completed') return true;
+            if (order.backendOrderId && affiliateBackendCompletedIds.has(Number(order.backendOrderId))) return true;
+            return false;
+        }
+
+        function updateAffiliatePortalStatsCards(orders) {
+            const safeList = Array.isArray(orders) ? orders : [];
+            const totalCount = safeList.length;
+            let completedCount = 0;
+            safeList.forEach((o) => {
+                if (isOrderPurchaseCompleted(o)) completedCount += 1;
+            });
+            const pendingCount = Math.max(0, totalCount - completedCount);
+
+            const totalEl = document.getElementById('affStatTotalCount');
+            const pendingEl = document.getElementById('affStatPendingCount');
+            const completedEl = document.getElementById('affStatCompletedCount');
+            if (totalEl) totalEl.textContent = String(totalCount);
+            if (pendingEl) pendingEl.textContent = String(pendingCount);
+            if (completedEl) completedEl.textContent = String(completedCount);
+        }
+
+        // فرز وعرض الطلبات (مع الفصل الصارم بين لوحة المدير وبوابة الشريك المسوق الخاصة)
         function renderOrders(orders) {
             const container = document.getElementById('ordersContainer'); container.innerHTML = '';
+
+            // ==========================================
+            // بوابة الشريك المسوق الخاصة (عزل كامل عن الموردين ومنع حذف الطلبات)
+            // ==========================================
+            if (currentRole === 'affiliate') {
+                updateAffiliatePortalStatsCards(orders);
+                if (!orders || orders.length === 0) {
+                    container.innerHTML = '<div class="glass-card border border-slate-800 rounded-3xl p-8 text-center shadow-sm"><i class="fa-solid fa-bullhorn text-4xl text-amber-500/60 mb-3 block"></i><p class="text-slate-300 text-sm font-bold mb-1">لا توجد طلبات مسجلة عبر رابطك التسويقي حتى الآن</p><p class="text-slate-500 text-xs">انسخ رابط التسويق الخاص بك أعلاه وشاركه مع عملائك لتبدأ متابعة مبيعاتك وأرباحك هنا لحظياً.</p></div>';
+                    return;
+                }
+
+                const affiliateCardsHtml = orders.map((order) => {
+                    const safeCustomerName = escapeHTML(order.customerName || 'عميل عبر الرابط');
+                    const safeBrand = escapeHTML(order.brand || '');
+                    const safeModel = escapeHTML(order.model || '');
+                    const safeYear = escapeHTML(order.year || '');
+                    const safeParts = escapeHTML(order.parts || '');
+                    const safeDate = escapeHTML(order.date || '');
+                    const isCompleted = isOrderPurchaseCompleted(order);
+
+                    const statusBadgeHtml = isCompleted
+                        ? `<span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black px-3.5 py-2 rounded-xl inline-flex items-center gap-1.5 shadow-sm"><span>✅</span><span>تم إتمام الشراء</span></span>`
+                        : `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/40 text-xs font-black px-3.5 py-2 rounded-xl inline-flex items-center gap-1.5 shadow-sm"><span>⏳</span><span>قيد التسعير والمتابعة</span></span>`;
+
+                    const sideAccentClass = isCompleted ? 'bg-emerald-500' : 'bg-amber-500';
+
+                    return `
+                        <div class="glass-card border border-slate-800 rounded-3xl p-5 shadow-xl relative overflow-hidden transition hover:border-slate-700">
+                            <div class="absolute top-0 right-0 w-2 h-full ${sideAccentClass}"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3.5 pr-2">
+                                <div class="space-y-1">
+                                    <p class="text-xs font-bold text-slate-400">👤 العميل: <strong class="text-white text-sm">${safeCustomerName}</strong></p>
+                                    <h3 class="font-black text-lg text-white leading-tight">🚗 ${safeBrand} ${safeModel} <span class="text-sm font-bold text-slate-400">(${safeYear})</span></h3>
+                                    <p class="text-[11px] text-slate-400 font-medium"><i class="fa-regular fa-clock ml-1"></i>${safeDate}</p>
+                                </div>
+                                <div class="shrink-0">
+                                    ${statusBadgeHtml}
+                                </div>
+                            </div>
+                            <div class="bg-slate-950/60 rounded-2xl p-3.5 border border-slate-800 mt-3 mr-2">
+                                <span class="text-[11px] text-slate-400 font-bold block mb-1">🔧 القطعة المطلوبة</span>
+                                <p class="text-sm font-bold text-slate-200">${safeParts}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = affiliateCardsHtml.join('');
+                return;
+            }
+
             if (orders.length === 0) { 
                 container.innerHTML = '<div class="glass-card border border-slate-800 rounded-3xl p-8 text-center shadow-sm"><i class="fa-solid fa-box-open text-4xl text-slate-600 mb-3 block"></i><p class="text-slate-400 text-xs font-bold">لا توجد طلبات حية متوفرة حالياً</p></div>'; 
                 return; 
             }
 
+            // ==========================================
+            // لوحة تحكم الإدارة الرئيسية (مع محرك فرز وتقييم الموردين الذكي الكامل)
+            // ==========================================
             orders.forEach(order => {
                 const scoredSuppliers = [];
                 suppliersDB.forEach(sup => {
@@ -2716,7 +4133,7 @@
                     ? `<div class="mt-3 mb-2 relative inline-block"><img src="${safeImageSrc}" onclick="viewImage(this.src)" class="w-20 h-20 object-cover rounded-xl border border-slate-700 shadow-md cursor-pointer hover:opacity-80 transition"><span class="absolute -top-2 -right-2 bg-brand-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow">صورة</span></div>`
                     : "";
 
-                // زر الذكاء الاصطناعي الجديد يظهر للإدارة فقط
+                // زر الذكاء الاصطناعي يظهر للإدارة فقط
                 let aiBtnHtml = '';
                 if(scoredSuppliers.length > 0 && currentRole === 'admin') {
                     const isAlreadyDispatched = order.botStatus === 'pending_dispatch' || order.botStatus === 'dispatched';
@@ -2752,9 +4169,14 @@
                     affiliateBadge = `<span class="bg-purple-500/10 text-purple-400 text-[10px] font-black px-2 py-0.5 rounded-md border border-purple-500/30"><i class="fa-solid fa-bullhorn ml-1"></i>شريك: ${safeAffiliate}</span>`;
                 }
 
+                const isPurchased = isOrderPurchaseCompleted(order);
+                const purchaseToggleBtnHtml = isPurchased
+                    ? `<button type="button" onclick="toggleOrderPurchaseStatus('${safeOrderId}', 'pending', this)" title="انقر لإرجاع الحالة إلى قيد المتابعة" class="text-[11px] bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-xl font-black transition flex items-center gap-1 shadow-sm">✅ تم الشراء</button>`
+                    : `<button type="button" onclick="toggleOrderPurchaseStatus('${safeOrderId}', 'completed', this)" title="انقر لاعتماد إتمام الشراء وإشعار لوحة المندوب" class="text-[11px] bg-amber-500/15 hover:bg-emerald-500/25 text-amber-300 hover:text-emerald-300 border border-amber-500/35 px-2.5 py-1 rounded-xl font-black transition flex items-center gap-1 shadow-sm">⏳ قيد المتابعة</button>`;
+
                 container.innerHTML += `
                     <div class="glass-card border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden transition hover:border-slate-700">
-                        <div class="absolute top-0 right-0 w-2 h-full bg-brand-500"></div>
+                        <div class="absolute top-0 right-0 w-2 h-full ${isPurchased ? 'bg-emerald-500' : 'bg-brand-500'}"></div>
                         <div class="flex justify-between items-start mb-3 border-b border-slate-800 pb-3">
                             <div class="space-y-1.5 pr-2">
                                 <div class="flex flex-wrap gap-1">
@@ -2766,7 +4188,10 @@
                                 <p class="text-[11px] text-slate-400 font-medium">${safeDate}</p>
                             </div>
                             <div class="text-left flex flex-col items-end gap-2">
-                                <button onclick="deleteOrder('${safeOrderId}')" class="text-rose-400 bg-rose-500/10 w-9 h-9 rounded-full flex justify-center items-center transition border border-rose-500/20"><i class="fa-solid fa-trash-can"></i></button>
+                                <div class="flex items-center gap-1.5">
+                                    ${purchaseToggleBtnHtml}
+                                    <button onclick="deleteOrder('${safeOrderId}')" class="text-rose-400 bg-rose-500/10 hover:bg-rose-500 hover:text-white w-9 h-9 rounded-full flex justify-center items-center transition border border-rose-500/20"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
                                 <div class="text-center mt-1">
                                     <p class="text-xs font-bold text-slate-300 mb-1">${safeCustomerName}</p>
                                     <a href="${custLink}" target="_blank" class="text-xs bg-sky-500/10 text-sky-400 px-3 py-1 rounded-lg font-bold border border-sky-500/20"><i class="fa-brands fa-whatsapp"></i> العميل</a>
@@ -2803,8 +4228,14 @@
 
   <script>
     // =========================================================================
-    // إعداد رقم الواتساب الموحد لجميع أزرار ونماذج الصفحة (عدّل الأرقام هنا فقط):
-    const WHATSAPP_NUMBER = '966509046024';
+    // إعداد رقم الواتساب الموحد لجميع أزرار ونماذج الصفحة (يتحدث ديناميكياً من مركز الإعدادات الشامل):
+    let WHATSAPP_NUMBER = window.WHATSAPP_NUMBER || '966509046024';
+    window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
+    window.addEventListener('haraj:whatsapp-number-updated', function (ev) {
+      if (ev && ev.detail && ev.detail.phone) {
+        WHATSAPP_NUMBER = ev.detail.phone;
+      }
+    });
     // =========================================================================
 
     window.addEventListener('DOMContentLoaded', function () {
@@ -3312,9 +4743,14 @@
             }
             const banner = document.getElementById('selected-tier-banner');
             const bannerText = document.getElementById('selected-tier-name');
+            const tierWaLink = document.getElementById('tier-instant-wa-link');
             if (banner && bannerText) {
               bannerText.textContent = tier;
               banner.classList.remove('hidden');
+            }
+            if (tierWaLink) {
+              const activeWa = window.WHATSAPP_NUMBER || WHATSAPP_NUMBER || '966509046024';
+              tierWaLink.href = 'https://wa.me/' + activeWa + '?text=' + encodeURIComponent('مرحباً، أرغب بطلب تسعيرة قطعة غيار - الفئة المختارة: ' + tier);
             }
             document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
           });
