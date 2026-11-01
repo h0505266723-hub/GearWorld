@@ -2138,7 +2138,10 @@
         window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
         window.saveWaSettings = async () => { 
             const rawLogistics = (document.getElementById('logisticsOfficerPhoneInput')?.value || '').trim();
-            const cleanLogistics = rawLogistics ? window.formatSaudiPhone(rawLogistics) : '';
+            const cleanLogisticsList = rawLogistics
+                ? [...new Set(rawLogistics.split(/[,;|\n\r]+/).map((s) => window.formatSaudiPhone(s.trim())).filter(Boolean))]
+                : [];
+            const cleanLogistics = cleanLogisticsList.join(',');
             waSettings = {
                 customerApp: document.getElementById('custWaType').value,
                 supplierApp: document.getElementById('supWaType').value,
@@ -2149,6 +2152,7 @@
                 try {
                     await setDoc(doc(db, "settings", "platform_config"), {
                         logisticsOfficerPhone: cleanLogistics,
+                        logisticsOfficers: cleanLogisticsList,
                         updatedAt: serverTimestamp()
                     }, { merge: true });
                 } catch (_cloudCfgErr) {}
@@ -2156,7 +2160,10 @@
                     await fetch('http://localhost:3000/api/settings/logistics', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ logistics_officer_phone: cleanLogistics })
+                        body: JSON.stringify({
+                            logistics_officer_phone: cleanLogistics,
+                            logistics_officers: cleanLogisticsList
+                        })
                     });
                 } catch (_localCfgErr) {}
             }
@@ -2232,7 +2239,7 @@
             document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
         };
 
-        // ضغط الصور تلقائياً عبر Canvas (بحد أقصى 1200px وجودة JPEG 0.75) لتقليص الحجم لأقل من 150KB
+        // ضغط الصور تلقائياً عبر Canvas (بحد أقصى 1600px وجودة JPEG 0.85) للحفاظ على حدة ووضوح رقم الهيكل في الاستمارة للذكاء الاصطناعي
         function convertImageToBase64(file) {
             return new Promise((resolve, reject) => {
                 if (!file) {
@@ -2246,7 +2253,7 @@
                     img.onerror = (err) => reject(err);
                     img.onload = () => {
                         try {
-                            const MAX_DIMENSION = 1200;
+                            const MAX_DIMENSION = 1600;
                             let width = img.naturalWidth || img.width;
                             let height = img.naturalHeight || img.height;
 
@@ -2268,7 +2275,7 @@
                             ctx.fillRect(0, 0, canvas.width, canvas.height);
                             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
                             resolve(compressedDataUrl);
                         } catch (canvasErr) {
                             reject(canvasErr);
@@ -2328,7 +2335,8 @@
                             vin_number: carVinVal || null,
                             part_name: carPartsVal,
                             part_category: mappedBackendCategory,
-                            speed_tier: 'balanced_45m'
+                            speed_tier: 'balanced_45m',
+                            image_data: base64Image || null
                         })
                     });
                     if (apiRes.ok) {
@@ -2357,7 +2365,9 @@
                 this.reset();
                 document.getElementById('carBrandSpecific').disabled = true; document.getElementById('customCarBrand').classList.add('hidden'); document.getElementById('customPartCategory').classList.add('hidden');
                 const successEl = document.getElementById('successMsg');
-                if (backendOrderResult?.order_id) {
+                if (backendOrderResult?.unclear_image_warning && backendOrderResult?.message) {
+                    successEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-4xl mb-2 block text-amber-400"></i>${escapeHTML(backendOrderResult.message)}`;
+                } else if (backendOrderResult?.order_id) {
                     successEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>تم استلام طلبك رقم (#${escapeHTML(backendOrderResult.order_id)}) وتوجيهه لبوت واتساب والموردين بنجاح! تفقد رسائل الواتساب الآن.`;
                 }
                 successEl.classList.remove('hidden'); setTimeout(() => successEl.classList.add('hidden'), 7000); document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -2623,6 +2633,7 @@
                                 car_brand: order.brand,
                                 car_model: order.model,
                                 car_year: order.year,
+                                image_data: order.imageData || null,
                                 suppliers: supplierPhones
                             })
                         });
