@@ -1813,7 +1813,7 @@
             </div>
 
             <!-- شريط التبويبات الـ 7 -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mb-4 shrink-0" id="settingsTabsNav">
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2 mb-4 shrink-0" id="settingsTabsNav">
                 <button type="button" data-settings-tab-btn="contact" onclick="switchSettingsTab('contact')" class="settings-tab-btn bg-brand-500 text-white border border-brand-500/60 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-black transition shadow-sm flex items-center justify-center gap-1">
                     <span>📞</span><span>التواصل والتوجيه</span>
                 </button>
@@ -1834,6 +1834,12 @@
                 </button>
                 <button type="button" data-settings-tab-btn="affiliates" onclick="switchSettingsTab('affiliates')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
                     <span>🤝</span><span>إدارة المسوقين</span>
+                </button>
+                <button type="button" data-settings-tab-btn="glossary" onclick="switchSettingsTab('glossary')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>📖</span><span>قاموس المصطلحات</span>
+                </button>
+                <button type="button" data-settings-tab-btn="owner_style" onclick="switchSettingsTab('owner_style')" class="settings-tab-btn bg-slate-900/80 text-slate-300 border border-slate-700/80 hover:border-slate-600 px-2.5 py-2.5 rounded-2xl text-[11px] sm:text-xs font-bold transition flex items-center justify-center gap-1">
+                    <span>🧠</span><span>شروط وردود المالك</span>
                 </button>
             </div>
 
@@ -1988,6 +1994,123 @@
                     </div>
 
                     <div id="adminAffiliatesListContainer" class="space-y-2 max-h-[38vh] overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- (ح) تبويب قاموس المصطلحات (للمدير فقط) -->
+                <div id="settings-panel-glossary" data-settings-panel="glossary" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-amber-500/30 space-y-3">
+                        <h4 id="glFormTitle" class="text-xs sm:text-sm font-black text-amber-300">📖 إضافة مصطلح جديد إلى القاموس</h4>
+                        <input type="hidden" id="glId">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <input type="text" id="glPopular" placeholder="المصطلح الشعبي (مثال: كفرات)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="text" id="glApproved" placeholder="الاسم المعتمد" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="text" id="glFormal" placeholder="بالفصحى" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="text" id="glOem" dir="ltr" placeholder="الإنجليزية OEM" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                            <input type="text" id="glCategory" placeholder="التصنيف" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <input type="text" id="glNotes" placeholder="ملاحظات" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <button type="button" onclick="saveGlossaryEntry()" class="bg-amber-600 hover:bg-amber-500 text-white font-black px-4 py-2.5 rounded-xl text-xs transition">💾 حفظ المصطلح</button>
+                            <button type="button" onclick="glossaryResetForm()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-2.5 rounded-xl text-xs transition">↺ مسح النموذج / إلغاء التعديل</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2 bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+                            <input type="text" id="glSearchInput" oninput="renderGlossaryTable()" placeholder="بحث فوري في كل أعمدة القاموس..." class="w-full pr-9 pl-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                        </div>
+                        <span id="glCountLabel" class="text-[11px] font-bold text-slate-400 px-2 shrink-0 text-center">0 مصطلح</span>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" onclick="exportGlossaryCsv()" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-2.5 rounded-xl text-xs transition">📤 تصدير Excel (CSV)</button>
+                            <label class="bg-sky-700 hover:bg-sky-600 text-white font-bold px-3 py-2.5 rounded-xl text-xs transition cursor-pointer">📥 استيراد CSV
+                                <input type="file" id="glImportFile" accept=".csv,text/csv" class="hidden" onchange="importGlossaryCsv(this)">
+                            </label>
+                            <select id="glImportMode" class="px-2 py-2.5 rounded-xl glass-input outline-none text-[11px]">
+                                <option value="merge">دمج مع الموجود</option>
+                                <option value="replace">استبدال الكل</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p id="glPathNote" class="text-[11px] text-slate-400 leading-relaxed">💡 ملف القاموس على سطح المكتب: —. أي تعديل في ملف الإكسل يُقرأ حياً دون إعادة تشغيل البوت.</p>
+                    <p id="glStatusMsg" class="hidden text-[11px] font-bold"></p>
+
+                    <div class="overflow-auto max-h-[42vh] rounded-2xl border border-slate-800 bg-slate-900/60">
+                        <table class="w-full text-right text-[11px]">
+                            <thead class="bg-slate-800/80 text-slate-300 sticky top-0">
+                                <tr>
+                                    <th class="px-2 py-2 font-black">المصطلح الشعبي</th>
+                                    <th class="px-2 py-2 font-black">الاسم المعتمد</th>
+                                    <th class="px-2 py-2 font-black">بالفصحى</th>
+                                    <th class="px-2 py-2 font-black">الإنجليزية OEM</th>
+                                    <th class="px-2 py-2 font-black">التصنيف</th>
+                                    <th class="px-2 py-2 font-black">ملاحظات</th>
+                                    <th class="px-2 py-2 font-black">إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="glossaryTableBody" onclick="glossaryTableClick(event)"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- (ط) تبويب شروط وردود المالك (للمدير فقط) -->
+                <div id="settings-panel-owner_style" data-settings-panel="owner_style" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-fuchsia-500/30 space-y-3">
+                        <h4 id="osFormTitle" class="text-xs sm:text-sm font-black text-fuchsia-300">🧠 إضافة قاعدة جديدة (شرط/رد للمالك)</h4>
+                        <input type="hidden" id="osId">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400">حالة / سؤال العميل</label>
+                                <textarea id="osTrigger" rows="3" placeholder="مثال: العميل يسأل: كم سعر الدفاع الأمامي؟" class="w-full px-3 py-2.5 rounded-xl glass-input outline-none text-xs"></textarea>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[11px] font-bold text-slate-400">الرد الاحترافي المعتمد من المالك</label>
+                                <textarea id="osReply" rows="3" placeholder="نص الرد كما يريده المالك..." class="w-full px-3 py-2.5 rounded-xl glass-input outline-none text-xs"></textarea>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[11px] font-bold text-slate-400">الشرط الإلزامي أو الملاحظة للنموذج</label>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <textarea id="osCondition" rows="2" placeholder="مثال: لا تذكر السعر قبل التأكد من سنة الصنع ونوع الموتور" class="flex-1 px-3 py-2.5 rounded-xl glass-input outline-none text-xs"></textarea>
+                                <button type="button" id="osDraftBtn" onclick="draftOwnerCondition()" class="sm:w-48 bg-fuchsia-700 hover:bg-fuchsia-600 text-white font-black px-3 py-2.5 rounded-xl text-xs transition">✨ صياغة الشرط بالذكاء الاصطناعي</button>
+                            </div>
+                            <p id="osDraftMsg" class="hidden text-[11px] font-bold"></p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input type="text" id="osCategory" placeholder="التصنيف (مثال: تسعير، توفر، شحن)" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                            <select id="osStatus" class="px-3 py-2.5 rounded-xl glass-input outline-none text-xs">
+                                <option value="approved">✅ معتمدة</option>
+                                <option value="pending_review">🕒 مسودة بانتظار الاعتماد</option>
+                                <option value="rejected">❌ مرفوضة</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <button type="button" onclick="saveOwnerStyleRule()" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-black px-4 py-2.5 rounded-xl text-xs transition">💾 حفظ القاعدة</button>
+                            <button type="button" onclick="ownerStyleResetForm()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-2.5 rounded-xl text-xs transition">↺ مسح النموذج / إلغاء التعديل</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2 bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+                        <div id="osFilterBar" class="flex flex-wrap gap-2">
+                            <button type="button" data-os-filter="approved" onclick="setOwnerStyleFilter('approved')" class="px-3 py-2 rounded-xl text-[11px] font-bold border"></button>
+                            <button type="button" data-os-filter="pending_review" onclick="setOwnerStyleFilter('pending_review')" class="px-3 py-2 rounded-xl text-[11px] font-bold border"></button>
+                            <button type="button" data-os-filter="rejected" onclick="setOwnerStyleFilter('rejected')" class="px-3 py-2 rounded-xl text-[11px] font-bold border"></button>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" onclick="exportOwnerStyleCsv()" class="bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-3 py-2.5 rounded-xl text-xs transition">📤 تصدير Excel (CSV)</button>
+                            <label class="bg-sky-700 hover:bg-sky-600 text-white font-bold px-3 py-2.5 rounded-xl text-xs transition cursor-pointer">📥 استيراد CSV
+                                <input type="file" id="osImportFile" accept=".csv,text/csv" class="hidden" onchange="importOwnerStyleCsv(this)">
+                            </label>
+                            <select id="osImportMode" class="px-2 py-2.5 rounded-xl glass-input outline-none text-[11px]">
+                                <option value="merge">دمج مع الموجود</option>
+                                <option value="replace">استبدال الكل</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p id="osPathNote" class="text-[11px] text-slate-400 leading-relaxed">💡 ملف قواعد المالك على سطح المكتب: —. أي تعديل في ملف الإكسل يُقرأ حياً دون إعادة تشغيل البوت.</p>
+                    <p id="osStatusMsg" class="hidden text-[11px] font-bold"></p>
+
+                    <div id="ownerStyleListContainer" onclick="ownerStyleListClick(event)" class="space-y-2 max-h-[42vh] overflow-y-auto pr-1"></div>
                 </div>
 
                 <!-- (ز) تبويب مفاتيح ومزودات الذكاء الاصطناعي (Multi-Provider & Multi-Key Smart Router) -->
@@ -2301,7 +2424,7 @@
             const targetUrl = isLocalOrigin ? apiPath : `http://localhost:3000${apiPath}`;
             try {
                 const controller = new AbortController();
-                const timer = setTimeout(() => controller.abort(), 5000);
+                const timer = setTimeout(() => controller.abort(), options.timeoutMs || 5000);
                 try {
                     const res = await fetch(targetUrl, { ...options, signal: controller.signal });
                     return res;
@@ -2740,6 +2863,428 @@
             });
             if (tabKey === 'affiliates') {
                 loadAdminAffiliatesData();
+            }
+            if (tabKey === 'glossary') {
+                loadGlossaryData();
+            }
+            if (tabKey === 'owner_style') {
+                loadOwnerStyleData();
+            }
+        };
+
+        // ==========================================
+        // تبويبا (📖 قاموس المصطلحات) و (🧠 شروط وردود المالك) - للمدير فقط
+        // ==========================================
+        const glossaryState = { entries: [], loaded: false, desktopPath: '' };
+        const ownerStyleState = { rules: [], counts: { approved: 0, pending_review: 0, rejected: 0 }, filter: 'approved', loaded: false, desktopPath: '' };
+        const GLOSSARY_RENDER_LIMIT = 300;
+
+        // نداء موحّد لواجهات الإدارة (نفس الجسر fetchBotBackend ونفس ترويسة الإدارة)
+        async function adminBotApi(apiPath, method, body, timeoutMs) {
+            const opts = { method: method || 'GET', headers: { 'X-Admin-Password-Hash': activeAdminPasswordHash }, timeoutMs: timeoutMs || 15000 };
+            if (body !== undefined) {
+                opts.headers['Content-Type'] = 'application/json';
+                opts.body = JSON.stringify(body);
+            }
+            const res = await fetchBotBackend(apiPath, opts);
+            if (!res) return { success: false, error: 'تعذر الاتصال بسيرفر البوت، تأكد من تشغيله ثم أعد المحاولة.' };
+            try {
+                const json = await res.json();
+                if (json && typeof json === 'object') {
+                    if (!res.ok && json.success !== false) json.success = false;
+                    if (!json.success && !json.error) json.error = 'رفض الخادم الطلب (' + res.status + ').';
+                    return json;
+                }
+            } catch (_e) { /* تجاهل - رد غير JSON */ }
+            return { success: false, error: 'استجابة غير متوقعة من الخادم (' + res.status + ').' };
+        }
+
+        function showAdminTabMsg(elId, message, type) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            if (!message) { el.classList.add('hidden'); el.textContent = ''; return; }
+            const color = type === 'error' ? 'text-rose-400' : (type === 'info' ? 'text-sky-300' : 'text-emerald-400');
+            el.className = 'text-[11px] font-bold ' + color;
+            el.textContent = message;
+        }
+
+        async function downloadCsvFromAdminApi(apiPath, msgElId, fallbackName) {
+            showAdminTabMsg(msgElId, '⏳ جارٍ تجهيز ملف التصدير...', 'info');
+            const json = await adminBotApi(apiPath, 'GET');
+            if (!json.success || typeof json.csv_text !== 'string') {
+                showAdminTabMsg(msgElId, '❌ تعذر التصدير: ' + (json.error || 'لا توجد بيانات'), 'error');
+                return;
+            }
+            const blob = new Blob([json.csv_text], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = json.filename || fallbackName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+            showAdminTabMsg(msgElId, '✅ تم تنزيل الملف: ' + (json.filename || fallbackName), 'ok');
+        }
+
+        function readCsvFileInput(inputEl) {
+            return new Promise((resolve) => {
+                const file = inputEl && inputEl.files && inputEl.files[0];
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ''));
+                reader.onerror = () => resolve(null);
+                reader.readAsText(file, 'utf-8');
+            });
+        }
+
+        // ---------- (1) قاموس المصطلحات ----------
+        async function loadGlossaryData() {
+            const json = await adminBotApi('/api/admin/glossary', 'GET');
+            if (!json.success) {
+                showAdminTabMsg('glStatusMsg', '❌ تعذر تحميل القاموس: ' + (json.error || ''), 'error');
+                return;
+            }
+            showAdminTabMsg('glStatusMsg', '');
+            glossaryApplyResponse(json);
+        }
+
+        function glossaryApplyResponse(json) {
+            if (Array.isArray(json.entries)) glossaryState.entries = json.entries;
+            glossaryState.loaded = true;
+            if (json.desktop_path) glossaryState.desktopPath = json.desktop_path;
+            const note = document.getElementById('glPathNote');
+            if (note) {
+                note.textContent = '💡 ملف القاموس على سطح المكتب: ' + (glossaryState.desktopPath || '—') + ' — أي تعديل في ملف الإكسل يُقرأ حياً دون إعادة تشغيل البوت.';
+            }
+            window.renderGlossaryTable();
+        }
+
+        window.renderGlossaryTable = function() {
+            const body = document.getElementById('glossaryTableBody');
+            if (!body) return;
+            const q = ((document.getElementById('glSearchInput') || {}).value || '').trim().toLowerCase();
+            const all = glossaryState.entries;
+            const filtered = q ? all.filter((e) => [e.popular_term, e.approved_name, e.formal_name, e.oem_english, e.category, e.notes].join(' ').toLowerCase().includes(q)) : all;
+            const shown = filtered.slice(0, GLOSSARY_RENDER_LIMIT);
+            const countLbl = document.getElementById('glCountLabel');
+            if (countLbl) countLbl.textContent = filtered.length + ' من ' + all.length + ' مصطلح';
+            if (!shown.length) {
+                body.innerHTML = '<tr><td colspan="7" class="px-2 py-6 text-center text-slate-500">' + (all.length ? 'لا توجد نتائج مطابقة للبحث.' : 'القاموس فارغ، أضف أول مصطلح من النموذج بالأعلى.') + '</td></tr>';
+                return;
+            }
+            const rows = shown.map((e) => {
+                const id = escapeHTML(e.id);
+                return '<tr class="border-t border-slate-800 hover:bg-slate-800/40">'
+                    + '<td class="px-2 py-2 font-bold text-white">' + escapeHTML(e.popular_term) + '</td>'
+                    + '<td class="px-2 py-2 text-amber-200">' + escapeHTML(e.approved_name) + '</td>'
+                    + '<td class="px-2 py-2 text-slate-300">' + escapeHTML(e.formal_name) + '</td>'
+                    + '<td class="px-2 py-2 text-slate-300 font-mono text-left" dir="ltr">' + escapeHTML(e.oem_english) + '</td>'
+                    + '<td class="px-2 py-2 text-slate-400">' + escapeHTML(e.category) + '</td>'
+                    + '<td class="px-2 py-2 text-slate-400">' + escapeHTML(e.notes) + '</td>'
+                    + '<td class="px-2 py-2 whitespace-nowrap">'
+                    + '<button type="button" data-gl-act="edit" data-id="' + id + '" class="bg-slate-700 hover:bg-slate-600 text-white px-2 py-1 rounded-lg font-bold ml-1">✏️ تعديل</button>'
+                    + '<button type="button" data-gl-act="delete" data-id="' + id + '" class="bg-rose-700/80 hover:bg-rose-600 text-white px-2 py-1 rounded-lg font-bold">🗑 حذف</button>'
+                    + '</td></tr>';
+            });
+            if (filtered.length > shown.length) {
+                rows.push('<tr><td colspan="7" class="px-2 py-3 text-center text-slate-500">يتم عرض أول ' + GLOSSARY_RENDER_LIMIT + ' نتيجة فقط، استخدم البحث لتضييق القائمة.</td></tr>');
+            }
+            body.innerHTML = rows.join('');
+        };
+
+        window.glossaryResetForm = function() {
+            ['glId', 'glPopular', 'glApproved', 'glFormal', 'glOem', 'glCategory', 'glNotes'].forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const t = document.getElementById('glFormTitle');
+            if (t) t.textContent = '📖 إضافة مصطلح جديد إلى القاموس';
+        };
+
+        window.glossaryTableClick = async function(ev) {
+            const btn = ev.target.closest('[data-gl-act]');
+            if (!btn) return;
+            const id = btn.getAttribute('data-id');
+            const entry = glossaryState.entries.find((e) => String(e.id) === String(id));
+            if (btn.getAttribute('data-gl-act') === 'edit' && entry) {
+                document.getElementById('glId').value = entry.id || '';
+                document.getElementById('glPopular').value = entry.popular_term || '';
+                document.getElementById('glApproved').value = entry.approved_name || '';
+                document.getElementById('glFormal').value = entry.formal_name || '';
+                document.getElementById('glOem').value = entry.oem_english || '';
+                document.getElementById('glCategory').value = entry.category || '';
+                document.getElementById('glNotes').value = entry.notes || '';
+                document.getElementById('glFormTitle').textContent = '✏️ تعديل المصطلح: ' + (entry.popular_term || '');
+                document.getElementById('glFormTitle').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (btn.getAttribute('data-gl-act') === 'delete') {
+                if (!confirm('هل تريد حذف هذا المصطلح من القاموس نهائياً؟')) return;
+                const json = await adminBotApi('/api/admin/glossary', 'POST', { action: 'delete', id: id });
+                if (json.success) {
+                    showAdminTabMsg('glStatusMsg', '✅ تم حذف المصطلح.', 'ok');
+                    glossaryApplyResponse(json);
+                } else {
+                    showAdminTabMsg('glStatusMsg', '❌ تعذر الحذف: ' + (json.error || ''), 'error');
+                }
+            }
+        };
+
+        window.saveGlossaryEntry = async function() {
+            const val = (id) => (document.getElementById(id).value || '').trim();
+            const entry = {
+                popular_term: val('glPopular'),
+                approved_name: val('glApproved'),
+                formal_name: val('glFormal'),
+                oem_english: val('glOem'),
+                category: val('glCategory'),
+                notes: val('glNotes')
+            };
+            const editId = val('glId');
+            if (editId) entry.id = editId;
+            if (!entry.popular_term || !entry.approved_name) {
+                showAdminTabMsg('glStatusMsg', '⚠️ يرجى إدخال المصطلح الشعبي والاسم المعتمد على الأقل.', 'error');
+                return;
+            }
+            showAdminTabMsg('glStatusMsg', '⏳ جارٍ الحفظ...', 'info');
+            const json = await adminBotApi('/api/admin/glossary', 'POST', { action: 'upsert', entry: entry });
+            if (json.success) {
+                showAdminTabMsg('glStatusMsg', '✅ تم حفظ المصطلح بنجاح.', 'ok');
+                glossaryApplyResponse(json);
+                window.glossaryResetForm();
+            } else {
+                showAdminTabMsg('glStatusMsg', '❌ تعذر الحفظ: ' + (json.error || ''), 'error');
+            }
+        };
+
+        window.exportGlossaryCsv = function() {
+            return downloadCsvFromAdminApi('/api/admin/glossary/export', 'glStatusMsg', 'glossary.csv');
+        };
+
+        window.importGlossaryCsv = async function(inputEl) {
+            const text = await readCsvFileInput(inputEl);
+            if (inputEl) inputEl.value = '';
+            if (text === null || !text.trim()) {
+                showAdminTabMsg('glStatusMsg', '⚠️ تعذر قراءة الملف أو أنه فارغ.', 'error');
+                return;
+            }
+            const mode = document.getElementById('glImportMode').value === 'replace' ? 'replace' : 'merge';
+            if (mode === 'replace' && !confirm('سيتم استبدال كل مصطلحات القاموس الحالية بمحتوى الملف. هل أنت متأكد؟')) return;
+            showAdminTabMsg('glStatusMsg', '⏳ جارٍ استيراد الملف...', 'info');
+            const json = await adminBotApi('/api/admin/glossary', 'POST', { action: 'import_csv', csv_text: text, mode: mode }, 30000);
+            if (json.success) {
+                showAdminTabMsg('glStatusMsg', '✅ تم الاستيراد (' + (mode === 'replace' ? 'استبدال' : 'دمج') + ') — إجمالي المصطلحات الآن: ' + (json.count !== undefined ? json.count : (json.entries || []).length), 'ok');
+                glossaryApplyResponse(json);
+            } else {
+                showAdminTabMsg('glStatusMsg', '❌ تعذر الاستيراد: ' + (json.error || ''), 'error');
+            }
+        };
+
+        // ---------- (2) شروط وردود المالك ----------
+        const OWNER_STYLE_STATUS_META = {
+            approved: { label: '✅ معتمدة', badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40', card: 'border-slate-800 bg-slate-900/60' },
+            pending_review: { label: '🕒 مسودات بانتظار الاعتماد', badge: 'bg-amber-500/15 text-amber-300 border-amber-500/50', card: 'border-amber-500/50 bg-amber-500/10' },
+            rejected: { label: '❌ مرفوضة', badge: 'bg-rose-500/15 text-rose-300 border-rose-500/40', card: 'border-slate-800 bg-slate-900/40 opacity-80' }
+        };
+
+        let ownerStyleFirstLoadDone = false;
+        async function loadOwnerStyleData() {
+            window.renderOwnerStyleList();
+            const json = await adminBotApi('/api/admin/owner-style', 'GET');
+            if (!json.success) {
+                showAdminTabMsg('osStatusMsg', '❌ تعذر تحميل شروط المالك: ' + (json.error || ''), 'error');
+                return;
+            }
+            showAdminTabMsg('osStatusMsg', '');
+            ownerStyleApplyResponse(json);
+            if (!ownerStyleFirstLoadDone) {
+                ownerStyleFirstLoadDone = true;
+                if (ownerStyleState.counts.pending_review > 0) window.setOwnerStyleFilter('pending_review');
+            }
+        }
+
+        function ownerStyleApplyResponse(json) {
+            if (Array.isArray(json.rules)) ownerStyleState.rules = json.rules;
+            if (json.counts) {
+                ownerStyleState.counts = {
+                    approved: Number(json.counts.approved) || 0,
+                    pending_review: Number(json.counts.pending_review) || 0,
+                    rejected: Number(json.counts.rejected) || 0
+                };
+            }
+            ownerStyleState.loaded = true;
+            if (json.desktop_path) ownerStyleState.desktopPath = json.desktop_path;
+            const note = document.getElementById('osPathNote');
+            if (note) {
+                note.textContent = '💡 ملف قواعد المالك على سطح المكتب: ' + (ownerStyleState.desktopPath || '—') + ' — أي تعديل في ملف الإكسل يُقرأ حياً دون إعادة تشغيل البوت.';
+            }
+            window.renderOwnerStyleList();
+        }
+
+        window.setOwnerStyleFilter = function(status) {
+            ownerStyleState.filter = status;
+            window.renderOwnerStyleList();
+        };
+
+        window.renderOwnerStyleList = function() {
+            const container = document.getElementById('ownerStyleListContainer');
+            if (!container) return;
+            const filter = ownerStyleState.filter;
+            document.querySelectorAll('[data-os-filter]').forEach((btn) => {
+                const key = btn.getAttribute('data-os-filter');
+                const meta = OWNER_STYLE_STATUS_META[key];
+                btn.textContent = meta.label + ' (' + (ownerStyleState.counts[key] || 0) + ')';
+                btn.className = 'px-3 py-2 rounded-xl text-[11px] border transition ' + (key === filter ? meta.badge + ' font-black ring-1 ring-white/20' : 'bg-slate-900/80 text-slate-400 border-slate-700/80 font-bold hover:border-slate-600');
+            });
+            const items = ownerStyleState.rules.filter((r) => r.status === filter);
+            if (!items.length) {
+                container.innerHTML = '<p class="text-[11px] text-slate-500 text-center py-6">لا توجد قواعد في هذا القسم حالياً.</p>';
+                return;
+            }
+            container.innerHTML = items.map((r) => {
+                const meta = OWNER_STYLE_STATUS_META[r.status] || OWNER_STYLE_STATUS_META.approved;
+                const id = escapeHTML(r.id);
+                let dateTxt = '';
+                if (r.created_at) {
+                    const d = new Date(r.created_at);
+                    dateTxt = isNaN(d.getTime()) ? String(r.created_at) : d.toLocaleString('ar-SA');
+                }
+                const actions = (r.status === 'pending_review'
+                    ? '<button type="button" data-os-act="approve" data-id="' + id + '" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg font-black">✅ اعتماد كقاعدة دائمة</button>'
+                      + '<button type="button" data-os-act="reject" data-id="' + id + '" class="bg-rose-700 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg font-bold">❌ رفض</button>'
+                    : (r.status === 'rejected'
+                        ? '<button type="button" data-os-act="approve" data-id="' + id + '" class="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold">✅ اعتماد</button>'
+                        : ''))
+                    + '<button type="button" data-os-act="edit" data-id="' + id + '" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg font-bold">✏️ تعديل</button>'
+                    + '<button type="button" data-os-act="delete" data-id="' + id + '" class="bg-slate-800 hover:bg-rose-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg font-bold">🗑 حذف</button>';
+                return '<div class="p-3 rounded-2xl border ' + meta.card + ' space-y-2 text-[11px]">'
+                    + '<div class="flex flex-wrap items-center gap-2">'
+                    + '<span class="px-2 py-0.5 rounded-lg border font-black ' + meta.badge + '">' + meta.label + '</span>'
+                    + (r.category ? '<span class="px-2 py-0.5 rounded-lg bg-slate-800 text-slate-300 font-bold">' + escapeHTML(r.category) + '</span>' : '')
+                    + (r.source ? '<span class="text-slate-500">المصدر: ' + escapeHTML(r.source) + '</span>' : '')
+                    + (dateTxt ? '<span class="text-slate-500">' + escapeHTML(dateTxt) + '</span>' : '')
+                    + '</div>'
+                    + '<p class="text-slate-400 font-bold">🗣 العميل:</p><p class="text-white leading-relaxed whitespace-pre-line">' + escapeHTML(r.customer_trigger) + '</p>'
+                    + '<p class="text-slate-400 font-bold">💬 رد المالك:</p><p class="text-emerald-200 leading-relaxed whitespace-pre-line">' + escapeHTML(r.owner_reply) + '</p>'
+                    + (r.mandatory_condition ? '<p class="text-slate-400 font-bold">📌 الشرط الإلزامي:</p><p class="text-amber-200 leading-relaxed whitespace-pre-line">' + escapeHTML(r.mandatory_condition) + '</p>' : '')
+                    + '<div class="flex flex-wrap gap-2 pt-1">' + actions + '</div>'
+                    + '</div>';
+            }).join('');
+        };
+
+        window.ownerStyleResetForm = function() {
+            ['osId', 'osTrigger', 'osReply', 'osCondition', 'osCategory'].forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.getElementById('osStatus').value = 'approved';
+            document.getElementById('osFormTitle').textContent = '🧠 إضافة قاعدة جديدة (شرط/رد للمالك)';
+            showAdminTabMsg('osDraftMsg', '');
+        };
+
+        window.ownerStyleListClick = async function(ev) {
+            const btn = ev.target.closest('[data-os-act]');
+            if (!btn) return;
+            const act = btn.getAttribute('data-os-act');
+            const id = btn.getAttribute('data-id');
+            const rule = ownerStyleState.rules.find((r) => String(r.id) === String(id));
+            if (act === 'edit' && rule) {
+                document.getElementById('osId').value = rule.id || '';
+                document.getElementById('osTrigger').value = rule.customer_trigger || '';
+                document.getElementById('osReply').value = rule.owner_reply || '';
+                document.getElementById('osCondition').value = rule.mandatory_condition || '';
+                document.getElementById('osCategory').value = rule.category || '';
+                document.getElementById('osStatus').value = rule.status || 'approved';
+                document.getElementById('osFormTitle').textContent = '✏️ تعديل القاعدة';
+                document.getElementById('osFormTitle').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+            if (act === 'delete' && !confirm('هل تريد حذف هذه القاعدة نهائياً؟')) return;
+            if (act !== 'approve' && act !== 'reject' && act !== 'delete') return;
+            const json = await adminBotApi('/api/admin/owner-style', 'POST', { action: act, id: id });
+            if (json.success) {
+                const msg = act === 'approve' ? '✅ تم اعتماد القاعدة كقاعدة دائمة.' : (act === 'reject' ? '✅ تم رفض المسودة.' : '✅ تم حذف القاعدة.');
+                showAdminTabMsg('osStatusMsg', msg, 'ok');
+                ownerStyleApplyResponse(json);
+            } else {
+                showAdminTabMsg('osStatusMsg', '❌ تعذر تنفيذ الإجراء: ' + (json.error || ''), 'error');
+            }
+        };
+
+        window.saveOwnerStyleRule = async function() {
+            const val = (id) => (document.getElementById(id).value || '').trim();
+            const rule = {
+                customer_trigger: val('osTrigger'),
+                owner_reply: val('osReply'),
+                mandatory_condition: val('osCondition'),
+                category: val('osCategory'),
+                status: val('osStatus') || 'approved'
+            };
+            const editId = val('osId');
+            if (editId) rule.id = editId;
+            if (!rule.customer_trigger || !rule.owner_reply) {
+                showAdminTabMsg('osStatusMsg', '⚠️ يرجى إدخال حالة/سؤال العميل ورد المالك على الأقل.', 'error');
+                return;
+            }
+            showAdminTabMsg('osStatusMsg', '⏳ جارٍ الحفظ...', 'info');
+            const json = await adminBotApi('/api/admin/owner-style', 'POST', { action: 'upsert', rule: rule });
+            if (json.success) {
+                showAdminTabMsg('osStatusMsg', '✅ تم حفظ القاعدة بنجاح.', 'ok');
+                ownerStyleApplyResponse(json);
+                window.ownerStyleResetForm();
+            } else {
+                showAdminTabMsg('osStatusMsg', '❌ تعذر الحفظ: ' + (json.error || ''), 'error');
+            }
+        };
+
+        window.draftOwnerCondition = async function() {
+            const trigger = (document.getElementById('osTrigger').value || '').trim();
+            const reply = (document.getElementById('osReply').value || '').trim();
+            if (!trigger || !reply) {
+                showAdminTabMsg('osDraftMsg', '⚠️ اكتب حالة العميل ورد المالك أولاً ليتمكن الذكاء الاصطناعي من صياغة الشرط.', 'error');
+                return;
+            }
+            const btn = document.getElementById('osDraftBtn');
+            const oldLabel = btn.textContent;
+            btn.disabled = true;
+            btn.classList.add('opacity-60', 'cursor-wait');
+            btn.textContent = '⏳ جارٍ الصياغة...';
+            showAdminTabMsg('osDraftMsg', '⏳ الذكاء الاصطناعي يصوغ الشرط، قد يستغرق ذلك بضع ثوانٍ...', 'info');
+            try {
+                const json = await adminBotApi('/api/admin/owner-style/draft', 'POST', { customer_trigger: trigger, owner_reply: reply }, 45000);
+                if (json.success) {
+                    if (json.mandatory_condition) document.getElementById('osCondition').value = json.mandatory_condition;
+                    if (json.category) document.getElementById('osCategory').value = json.category;
+                    showAdminTabMsg('osDraftMsg', json.ai_used === false ? 'ℹ️ تمت الصياغة تلقائياً (بدون ذكاء اصطناعي)، راجع الشرط قبل الحفظ.' : '✅ تمت صياغة الشرط والتصنيف، راجعهما قبل الحفظ.', 'ok');
+                } else {
+                    showAdminTabMsg('osDraftMsg', '❌ تعذرت الصياغة الآلية، يمكنك كتابة الشرط يدوياً. (' + (json.error || 'خطأ غير معروف') + ')', 'error');
+                }
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-60', 'cursor-wait');
+                btn.textContent = oldLabel;
+            }
+        };
+
+        window.exportOwnerStyleCsv = function() {
+            return downloadCsvFromAdminApi('/api/admin/owner-style/export', 'osStatusMsg', 'owner-style.csv');
+        };
+
+        window.importOwnerStyleCsv = async function(inputEl) {
+            const text = await readCsvFileInput(inputEl);
+            if (inputEl) inputEl.value = '';
+            if (text === null || !text.trim()) {
+                showAdminTabMsg('osStatusMsg', '⚠️ تعذر قراءة الملف أو أنه فارغ.', 'error');
+                return;
+            }
+            const mode = document.getElementById('osImportMode').value === 'replace' ? 'replace' : 'merge';
+            if (mode === 'replace' && !confirm('سيتم استبدال كل قواعد المالك الحالية بمحتوى الملف. هل أنت متأكد؟')) return;
+            showAdminTabMsg('osStatusMsg', '⏳ جارٍ استيراد الملف...', 'info');
+            const json = await adminBotApi('/api/admin/owner-style', 'POST', { action: 'import_csv', csv_text: text, mode: mode }, 30000);
+            if (json.success) {
+                showAdminTabMsg('osStatusMsg', '✅ تم الاستيراد (' + (mode === 'replace' ? 'استبدال' : 'دمج') + ') بنجاح.', 'ok');
+                ownerStyleApplyResponse(json);
+            } else {
+                showAdminTabMsg('osStatusMsg', '❌ تعذر الاستيراد: ' + (json.error || ''), 'error');
             }
         };
 
