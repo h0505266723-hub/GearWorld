@@ -1,0 +1,8479 @@
+{
+ "version": "1.0.0",
+ "generated_for": "GearWorld offline VIN decoder + parts autocomplete",
+ "notes": [
+  "فك رقم الشاصي يعمل دون إنترنت: WMI → الماركة، الخانة 10 → السنة، قواعد VDS → الطراز (عند الثقة فقط).",
+  "قواعد الطراز قليلة ومتحفظة؛ عند غياب القاعدة يُعاد الماركة والسنة فقط ويُطلب من العميل اختيار الطراز.",
+  "confidence: high = نمط موثّق وشائع، medium = ترجيح قد يحتاج مراجعة العميل."
+ ],
+ "brands": {
+  "Toyota": {
+   "ar": "تويوتا",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "toyota",
+    "تيوتا"
+   ]
+  },
+  "Lexus": {
+   "ar": "لكزس",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "lexus",
+    "لكسز"
+   ]
+  },
+  "Nissan": {
+   "ar": "نيسان",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "nissan",
+    "نيسن"
+   ]
+  },
+  "Infiniti": {
+   "ar": "إنفينيتي",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "infiniti",
+    "انفنتي",
+    "انفينيتي"
+   ]
+  },
+  "Honda": {
+   "ar": "هوندا",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "honda"
+   ]
+  },
+  "Mazda": {
+   "ar": "مازدا",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "mazda",
+    "مزدا"
+   ]
+  },
+  "Mitsubishi": {
+   "ar": "ميتسوبيشي",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "mitsubishi",
+    "متسوبيشي",
+    "ميتسوبيشى"
+   ]
+  },
+  "Subaru": {
+   "ar": "سوبارو",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "subaru"
+   ]
+  },
+  "Suzuki": {
+   "ar": "سوزوكي",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "suzuki",
+    "سوزوكى"
+   ]
+  },
+  "Isuzu": {
+   "ar": "إيسوزو",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "isuzu",
+    "ايزوزو"
+   ]
+  },
+  "Daihatsu": {
+   "ar": "دايهاتسو",
+   "origin_ar": "ياباني",
+   "aliases": [
+    "daihatsu",
+    "دايهتسو"
+   ]
+  },
+  "Ford": {
+   "ar": "فورد",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "ford"
+   ]
+  },
+  "Chevrolet": {
+   "ar": "شفروليه",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "chevrolet",
+    "chevy",
+    "شيفروليه",
+    "شيفرولية",
+    "شفرولية",
+    "شيفروليت"
+   ]
+  },
+  "GMC": {
+   "ar": "جي ام سي",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "gmc",
+    "جمس",
+    "جي إم سي"
+   ]
+  },
+  "Dodge": {
+   "ar": "دودج",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "dodge",
+    "دودچ"
+   ]
+  },
+  "Chrysler": {
+   "ar": "كرايسلر",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "chrysler",
+    "كرايزلر"
+   ]
+  },
+  "Jeep": {
+   "ar": "جيب",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "jeep"
+   ]
+  },
+  "Cadillac": {
+   "ar": "كاديلاك",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "cadillac",
+    "كاديلاك"
+   ]
+  },
+  "Lincoln": {
+   "ar": "لينكولن",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "lincoln",
+    "لنكولن"
+   ]
+  },
+  "Hummer": {
+   "ar": "هامر",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "hummer"
+   ]
+  },
+  "Tesla": {
+   "ar": "تيسلا",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "tesla"
+   ]
+  },
+  "Ram": {
+   "ar": "رام",
+   "origin_ar": "أمريكي",
+   "aliases": [
+    "ram",
+    "دودج رام"
+   ]
+  },
+  "Hyundai": {
+   "ar": "هيونداي",
+   "origin_ar": "كوري",
+   "aliases": [
+    "hyundai",
+    "هيونداى",
+    "هيوندا",
+    "هيندا"
+   ]
+  },
+  "Kia": {
+   "ar": "كيا",
+   "origin_ar": "كوري",
+   "aliases": [
+    "kia"
+   ]
+  },
+  "Genesis": {
+   "ar": "جينيسيس",
+   "origin_ar": "كوري",
+   "aliases": [
+    "genesis",
+    "جنسس",
+    "جنيسس"
+   ]
+  },
+  "SsangYong": {
+   "ar": "سانج يونج",
+   "origin_ar": "كوري",
+   "aliases": [
+    "ssangyong",
+    "ssang yong",
+    "سانغ يونغ",
+    "سانج يونق"
+   ]
+  },
+  "Changan": {
+   "ar": "شانجان",
+   "origin_ar": "صيني",
+   "aliases": [
+    "changan",
+    "تشانغان",
+    "شانغان",
+    "تشانجان"
+   ]
+  },
+  "Geely": {
+   "ar": "جيلي",
+   "origin_ar": "صيني",
+   "aliases": [
+    "geely",
+    "جيلى"
+   ]
+  },
+  "MG": {
+   "ar": "إم جي",
+   "origin_ar": "صيني",
+   "aliases": [
+    "mg",
+    "ام جي",
+    "ام جى"
+   ]
+  },
+  "Haval": {
+   "ar": "هافال",
+   "origin_ar": "صيني",
+   "aliases": [
+    "haval",
+    "هافل"
+   ]
+  },
+  "Chery": {
+   "ar": "شيري",
+   "origin_ar": "صيني",
+   "aliases": [
+    "chery",
+    "شيرى"
+   ]
+  },
+  "Bestune": {
+   "ar": "بيستون",
+   "origin_ar": "صيني",
+   "aliases": [
+    "bestune",
+    "بيستيون",
+    "بيستن"
+   ]
+  },
+  "BAIC": {
+   "ar": "بايك",
+   "origin_ar": "صيني",
+   "aliases": [
+    "baic",
+    "بايك"
+   ]
+  },
+  "JAC": {
+   "ar": "جاك",
+   "origin_ar": "صيني",
+   "aliases": [
+    "jac"
+   ]
+  },
+  "BYD": {
+   "ar": "بي واي دي",
+   "origin_ar": "صيني",
+   "aliases": [
+    "byd",
+    "بي وي دي"
+   ]
+  },
+  "Great Wall": {
+   "ar": "جريت وال",
+   "origin_ar": "صيني",
+   "aliases": [
+    "great wall",
+    "greatwall",
+    "جريت وول",
+    "غريت وول"
+   ]
+  },
+  "FAW": {
+   "ar": "فاو",
+   "origin_ar": "صيني",
+   "aliases": [
+    "faw"
+   ]
+  },
+  "Exeed": {
+   "ar": "إكسيد",
+   "origin_ar": "صيني",
+   "aliases": [
+    "exeed",
+    "اكسيد"
+   ]
+  },
+  "GAC": {
+   "ar": "جي أيه سي",
+   "origin_ar": "صيني",
+   "aliases": [
+    "gac",
+    "جي اي سي",
+    "جي ايه سي"
+   ]
+  },
+  "Mercedes": {
+   "ar": "مرسيدس",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "mercedes",
+    "mercedes-benz",
+    "mercedes benz",
+    "مرسيدس بنز",
+    "مرسدس",
+    "بنز"
+   ]
+  },
+  "BMW": {
+   "ar": "بي إم دبليو",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "bmw",
+    "بي ام دبليو",
+    "بي ام",
+    "بي إم",
+    "بيام"
+   ]
+  },
+  "Audi": {
+   "ar": "أودي",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "audi",
+    "اودي"
+   ]
+  },
+  "Volkswagen": {
+   "ar": "فولكس فاجن",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "volkswagen",
+    "vw",
+    "فولكس واجن",
+    "فولكس فاغن",
+    "فولكسفاجن"
+   ]
+  },
+  "Porsche": {
+   "ar": "بورش",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "porsche",
+    "بورشه"
+   ]
+  },
+  "Land Rover": {
+   "ar": "لاند روفر",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "land rover",
+    "landrover",
+    "رنج روفر",
+    "لاندروفر",
+    "رينج روفر",
+    "range rover"
+   ]
+  },
+  "Jaguar": {
+   "ar": "جاكوار",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "jaguar",
+    "جاغوار"
+   ]
+  },
+  "Volvo": {
+   "ar": "فولفو",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "volvo"
+   ]
+  },
+  "Renault": {
+   "ar": "رينو",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "renault",
+    "رينولت"
+   ]
+  },
+  "Peugeot": {
+   "ar": "بيجو",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "peugeot",
+    "بيجوت"
+   ]
+  },
+  "Citroen": {
+   "ar": "سيتروين",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "citroen",
+    "citroën",
+    "ستروين"
+   ]
+  },
+  "Fiat": {
+   "ar": "فيات",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "fiat"
+   ]
+  },
+  "Skoda": {
+   "ar": "سكودا",
+   "origin_ar": "أوروبي",
+   "aliases": [
+    "skoda",
+    "شكودا",
+    "اسكودا"
+   ]
+  }
+ },
+ "wmi": {
+  "JTD": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JTM": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high",
+   "note": "سيارات دفع رباعي/SUV (لاندكروزر، راف فور...)"
+  },
+  "JTN": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JT2": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JT3": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JT4": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JTE": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high",
+   "note": "SUV (برادو/4رنر/هايلاندر...)"
+  },
+  "JTF": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high",
+   "note": "فانات وشاحنات خفيفة (هايس...)"
+  },
+  "JTG": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "4T1": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "4T3": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5TD": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5TF": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5YF": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1NX": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2T1": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2T3": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3TM": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3MY": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "medium",
+   "note": "تويوتا المكسيك (مصنّعة على قاعدة مازدا)"
+  },
+  "MR0": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "high",
+   "note": "بيك أب/SUV (هايلكس، فورتشنر...)"
+  },
+  "MR2": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "AHT": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "South Africa",
+   "country_ar": "جنوب أفريقيا",
+   "region": "Africa",
+   "confidence": "medium"
+  },
+  "NMT": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Turkey",
+   "country_ar": "تركيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "SB1": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "United Kingdom",
+   "country_ar": "بريطانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "6T1": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Australia",
+   "country_ar": "أستراليا",
+   "region": "Oceania",
+   "confidence": "high",
+   "note": "كامري المصنّعة في أستراليا (شائعة بالخليج حتى 2017)"
+  },
+  "VNK": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "France",
+   "country_ar": "فرنسا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "MHF": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Indonesia",
+   "country_ar": "إندونيسيا",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "9BR": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Brazil",
+   "country_ar": "البرازيل",
+   "region": "South America",
+   "confidence": "high"
+  },
+  "JTH": {
+   "brand": "Lexus",
+   "brand_ar": "لكزس",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JTJ": {
+   "brand": "Lexus",
+   "brand_ar": "لكزس",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "2T2": {
+   "brand": "Lexus",
+   "brand_ar": "لكزس",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "58A": {
+   "brand": "Lexus",
+   "brand_ar": "لكزس",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "JT8": {
+   "brand": "Lexus",
+   "brand_ar": "لكزس",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "KMH": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "KMF": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "KMC": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "KM8": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "5NP": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5NM": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5NT": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "TMA": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "Czechia",
+   "country_ar": "التشيك",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "NLH": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "Turkey",
+   "country_ar": "تركيا",
+   "region": "Europe",
+   "confidence": "medium"
+  },
+  "MAL": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "India",
+   "country_ar": "الهند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "Z94": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "Russia",
+   "country_ar": "روسيا",
+   "region": "Europe",
+   "confidence": "medium"
+  },
+  "KNA": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "KNB": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "KNC": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "KND": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "5XY": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high",
+   "note": "مصنع جورجيا؛ يصنّع أيضاً سانتافي سبورت هيونداي"
+  },
+  "5XX": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3KP": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "U5Y": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "Slovakia",
+   "country_ar": "سلوفاكيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "KNM": {
+   "brand": "Renault",
+   "brand_ar": "رينو",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "رينو سامسونج (كوريا) وليست كيا"
+  },
+  "KMT": {
+   "brand": "Genesis",
+   "brand_ar": "جينيسيس",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "KMU": {
+   "brand": "Genesis",
+   "brand_ar": "جينيسيس",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "KPA": {
+   "brand": "SsangYong",
+   "brand_ar": "سانج يونج",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "KPT": {
+   "brand": "SsangYong",
+   "brand_ar": "سانج يونج",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "JN1": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JN8": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high",
+   "note": "SUV (باترول، اكس تريل...)"
+  },
+  "JN6": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "1N4": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1N6": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3N1": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3N6": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "5N1": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "VSK": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Spain",
+   "country_ar": "إسبانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "SJN": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "United Kingdom",
+   "country_ar": "بريطانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "MNT": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "MDH": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "India",
+   "country_ar": "الهند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "JNK": {
+   "brand": "Infiniti",
+   "brand_ar": "إنفينيتي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JNR": {
+   "brand": "Infiniti",
+   "brand_ar": "إنفينيتي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "5N3": {
+   "brand": "Infiniti",
+   "brand_ar": "إنفينيتي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3PC": {
+   "brand": "Infiniti",
+   "brand_ar": "إنفينيتي",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "1FA": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1FD": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1FM": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1FT": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1ZV": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2FM": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2FT": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3FA": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3FM": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3FT": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "WF0": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "MAJ": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "India",
+   "country_ar": "الهند",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "NM0": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Turkey",
+   "country_ar": "تركيا",
+   "region": "Europe",
+   "confidence": "medium"
+  },
+  "AFA": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "South Africa",
+   "country_ar": "جنوب أفريقيا",
+   "region": "Africa",
+   "confidence": "medium"
+  },
+  "MNC": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "6FP": {
+   "brand": "Ford",
+   "brand_ar": "فورد",
+   "country": "Australia",
+   "country_ar": "أستراليا",
+   "region": "Oceania",
+   "confidence": "medium"
+  },
+  "5LM": {
+   "brand": "Lincoln",
+   "brand_ar": "لينكولن",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1LN": {
+   "brand": "Lincoln",
+   "brand_ar": "لينكولن",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "3LN": {
+   "brand": "Lincoln",
+   "brand_ar": "لينكولن",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "2LM": {
+   "brand": "Lincoln",
+   "brand_ar": "لينكولن",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "1G1": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1GC": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1GN": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2G1": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2GN": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3G1": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3GN": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3GC": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "KL1": {
+   "brand": "Chevrolet",
+   "brand_ar": "شفروليه",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "1GK": {
+   "brand": "GMC",
+   "brand_ar": "جي ام سي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1GT": {
+   "brand": "GMC",
+   "brand_ar": "جي ام سي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2GK": {
+   "brand": "GMC",
+   "brand_ar": "جي ام سي",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2GT": {
+   "brand": "GMC",
+   "brand_ar": "جي ام سي",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3GK": {
+   "brand": "GMC",
+   "brand_ar": "جي ام سي",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3GT": {
+   "brand": "GMC",
+   "brand_ar": "جي ام سي",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1G6": {
+   "brand": "Cadillac",
+   "brand_ar": "كاديلاك",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1GY": {
+   "brand": "Cadillac",
+   "brand_ar": "كاديلاك",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5GR": {
+   "brand": "Hummer",
+   "brand_ar": "هامر",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "5GT": {
+   "brand": "Hummer",
+   "brand_ar": "هامر",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "JHM": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JHL": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "1HG": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2HG": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2HK": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "19X": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5J6": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5FN": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "SHH": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "United Kingdom",
+   "country_ar": "بريطانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "3HG": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "MRH": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "LHG": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "MAK": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "India",
+   "country_ar": "الهند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "JM1": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JM3": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JM7": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "JMZ": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "3MZ": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "MM8": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "MM7": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "JA3": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JA4": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JA7": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "JMB": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JMY": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "MMB": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "MMC": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "MK2": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "4A3": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "4A4": {
+   "brand": "Mitsubishi",
+   "brand_ar": "ميتسوبيشي",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "JF1": {
+   "brand": "Subaru",
+   "brand_ar": "سوبارو",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JF2": {
+   "brand": "Subaru",
+   "brand_ar": "سوبارو",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "4S3": {
+   "brand": "Subaru",
+   "brand_ar": "سوبارو",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "4S4": {
+   "brand": "Subaru",
+   "brand_ar": "سوبارو",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "JS2": {
+   "brand": "Suzuki",
+   "brand_ar": "سوزوكي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JS3": {
+   "brand": "Suzuki",
+   "brand_ar": "سوزوكي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "TSM": {
+   "brand": "Suzuki",
+   "brand_ar": "سوزوكي",
+   "country": "Hungary",
+   "country_ar": "المجر",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "MA3": {
+   "brand": "Suzuki",
+   "brand_ar": "سوزوكي",
+   "country": "India",
+   "country_ar": "الهند",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "MBH": {
+   "brand": "Suzuki",
+   "brand_ar": "سوزوكي",
+   "country": "India",
+   "country_ar": "الهند",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JAA": {
+   "brand": "Isuzu",
+   "brand_ar": "إيسوزو",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JAL": {
+   "brand": "Isuzu",
+   "brand_ar": "إيسوزو",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "JAC": {
+   "brand": "Isuzu",
+   "brand_ar": "إيسوزو",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "MPA": {
+   "brand": "Isuzu",
+   "brand_ar": "إيسوزو",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "MP1": {
+   "brand": "Isuzu",
+   "brand_ar": "إيسوزو",
+   "country": "Thailand",
+   "country_ar": "تايلاند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "JDA": {
+   "brand": "Daihatsu",
+   "brand_ar": "دايهاتسو",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "MHK": {
+   "brand": "Daihatsu",
+   "brand_ar": "دايهاتسو",
+   "country": "Indonesia",
+   "country_ar": "إندونيسيا",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "1B3": {
+   "brand": "Dodge",
+   "brand_ar": "دودج",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1B7": {
+   "brand": "Dodge",
+   "brand_ar": "دودج",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2B3": {
+   "brand": "Dodge",
+   "brand_ar": "دودج",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2B7": {
+   "brand": "Dodge",
+   "brand_ar": "دودج",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1D3": {
+   "brand": "Dodge",
+   "brand_ar": "دودج",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium",
+   "note": "دودج رام (قبل 2010)"
+  },
+  "1D7": {
+   "brand": "Dodge",
+   "brand_ar": "دودج",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium",
+   "note": "دودج رام (قبل 2010)"
+  },
+  "2D4": {
+   "brand": "Dodge",
+   "brand_ar": "دودج",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "1C3": {
+   "brand": "Chrysler",
+   "brand_ar": "كرايسلر",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "2C4": {
+   "brand": "Chrysler",
+   "brand_ar": "كرايسلر",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "2A4": {
+   "brand": "Chrysler",
+   "brand_ar": "كرايسلر",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "1J4": {
+   "brand": "Jeep",
+   "brand_ar": "جيب",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1J8": {
+   "brand": "Jeep",
+   "brand_ar": "جيب",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1C6": {
+   "brand": "Ram",
+   "brand_ar": "رام",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "3C6": {
+   "brand": "Ram",
+   "brand_ar": "رام",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1C4": {
+   "brand": "Jeep",
+   "brand_ar": "جيب",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium",
+   "ambiguous": true,
+   "note": "مجموعة FCA: قد تكون جيب أو دودج أو كرايسلر"
+  },
+  "3C4": {
+   "brand": "Jeep",
+   "brand_ar": "جيب",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "medium",
+   "ambiguous": true,
+   "note": "مجموعة FCA المكسيك: قد تكون جيب أو دودج"
+  },
+  "2C3": {
+   "brand": "Chrysler",
+   "brand_ar": "كرايسلر",
+   "country": "Canada",
+   "country_ar": "كندا",
+   "region": "North America",
+   "confidence": "medium",
+   "ambiguous": true,
+   "note": "كرايسلر كندا: تشارجر/تشالنجر/300"
+  },
+  "5YJ": {
+   "brand": "Tesla",
+   "brand_ar": "تيسلا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "7SA": {
+   "brand": "Tesla",
+   "brand_ar": "تيسلا",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "LRW": {
+   "brand": "Tesla",
+   "brand_ar": "تيسلا",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "LB3": {
+   "brand": "Geely",
+   "brand_ar": "جيلي",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "L6T": {
+   "brand": "Geely",
+   "brand_ar": "جيلي",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "LS5": {
+   "brand": "Changan",
+   "brand_ar": "شانجان",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "LSJ": {
+   "brand": "MG",
+   "brand_ar": "إم جي",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "LGW": {
+   "brand": "Haval",
+   "brand_ar": "هافال",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "مجموعة Great Wall (هافال/تانك/أورا)"
+  },
+  "LVV": {
+   "brand": "Chery",
+   "brand_ar": "شيري",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "LC0": {
+   "brand": "BYD",
+   "brand_ar": "بي واي دي",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "LGX": {
+   "brand": "BYD",
+   "brand_ar": "بي واي دي",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "LJ1": {
+   "brand": "JAC",
+   "brand_ar": "جاك",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "high"
+  },
+  "LFP": {
+   "brand": "FAW",
+   "brand_ar": "فاو",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "LMG": {
+   "brand": "GAC",
+   "brand_ar": "جي أيه سي",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "LNB": {
+   "brand": "BAIC",
+   "brand_ar": "بايك",
+   "country": "China",
+   "country_ar": "الصين",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "WBA": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WBS": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WBY": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WBX": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "5UX": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "5YM": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "4US": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "3MW": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "WDB": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WDC": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WDD": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WDF": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WMX": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "W1K": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "W1N": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "W1V": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "4JG": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "55S": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "medium"
+  },
+  "WAU": {
+   "brand": "Audi",
+   "brand_ar": "أودي",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WA1": {
+   "brand": "Audi",
+   "brand_ar": "أودي",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WUA": {
+   "brand": "Audi",
+   "brand_ar": "أودي",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "medium"
+  },
+  "TRU": {
+   "brand": "Audi",
+   "brand_ar": "أودي",
+   "country": "Hungary",
+   "country_ar": "المجر",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WVW": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WVG": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WV1": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WV2": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "3VW": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "Mexico",
+   "country_ar": "المكسيك",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "1VW": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "USA",
+   "country_ar": "الولايات المتحدة",
+   "region": "North America",
+   "confidence": "high"
+  },
+  "9BW": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "Brazil",
+   "country_ar": "البرازيل",
+   "region": "South America",
+   "confidence": "high"
+  },
+  "AAV": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "South Africa",
+   "country_ar": "جنوب أفريقيا",
+   "region": "Africa",
+   "confidence": "medium"
+  },
+  "WP0": {
+   "brand": "Porsche",
+   "brand_ar": "بورش",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "WP1": {
+   "brand": "Porsche",
+   "brand_ar": "بورش",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "SAL": {
+   "brand": "Land Rover",
+   "brand_ar": "لاند روفر",
+   "country": "United Kingdom",
+   "country_ar": "بريطانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "SAJ": {
+   "brand": "Jaguar",
+   "brand_ar": "جاكوار",
+   "country": "United Kingdom",
+   "country_ar": "بريطانيا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "SAD": {
+   "brand": "Jaguar",
+   "brand_ar": "جاكوار",
+   "country": "United Kingdom",
+   "country_ar": "بريطانيا",
+   "region": "Europe",
+   "confidence": "medium"
+  },
+  "YV1": {
+   "brand": "Volvo",
+   "brand_ar": "فولفو",
+   "country": "Sweden",
+   "country_ar": "السويد",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "YV4": {
+   "brand": "Volvo",
+   "brand_ar": "فولفو",
+   "country": "Sweden",
+   "country_ar": "السويد",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "VF3": {
+   "brand": "Peugeot",
+   "brand_ar": "بيجو",
+   "country": "France",
+   "country_ar": "فرنسا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "VF7": {
+   "brand": "Citroen",
+   "brand_ar": "سيتروين",
+   "country": "France",
+   "country_ar": "فرنسا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "VF1": {
+   "brand": "Renault",
+   "brand_ar": "رينو",
+   "country": "France",
+   "country_ar": "فرنسا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "UU1": {
+   "brand": "Renault",
+   "brand_ar": "رينو",
+   "country": "Romania",
+   "country_ar": "رومانيا",
+   "region": "Europe",
+   "confidence": "medium",
+   "note": "داسيا/رينو رومانيا (دستر/لوجان)"
+  },
+  "MEE": {
+   "brand": "Renault",
+   "brand_ar": "رينو",
+   "country": "India",
+   "country_ar": "الهند",
+   "region": "Asia",
+   "confidence": "medium"
+  },
+  "ZFA": {
+   "brand": "Fiat",
+   "brand_ar": "فيات",
+   "country": "Italy",
+   "country_ar": "إيطاليا",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "TMB": {
+   "brand": "Skoda",
+   "brand_ar": "سكودا",
+   "country": "Czechia",
+   "country_ar": "التشيك",
+   "region": "Europe",
+   "confidence": "high"
+  },
+  "KM": {
+   "brand": "Hyundai",
+   "brand_ar": "هيونداي",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "high",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "KN": {
+   "brand": "Kia",
+   "brand_ar": "كيا",
+   "country": "South Korea",
+   "country_ar": "كوريا الجنوبية",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "JT": {
+   "brand": "Toyota",
+   "brand_ar": "تويوتا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "JN": {
+   "brand": "Nissan",
+   "brand_ar": "نيسان",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "JH": {
+   "brand": "Honda",
+   "brand_ar": "هوندا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "JM": {
+   "brand": "Mazda",
+   "brand_ar": "مازدا",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "JF": {
+   "brand": "Subaru",
+   "brand_ar": "سوبارو",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "JS": {
+   "brand": "Suzuki",
+   "brand_ar": "سوزوكي",
+   "country": "Japan",
+   "country_ar": "اليابان",
+   "region": "Asia",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "WB": {
+   "brand": "BMW",
+   "brand_ar": "بي إم دبليو",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "WD": {
+   "brand": "Mercedes",
+   "brand_ar": "مرسيدس",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "WA": {
+   "brand": "Audi",
+   "brand_ar": "أودي",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "WV": {
+   "brand": "Volkswagen",
+   "brand_ar": "فولكس فاجن",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "WP": {
+   "brand": "Porsche",
+   "brand_ar": "بورش",
+   "country": "Germany",
+   "country_ar": "ألمانيا",
+   "region": "Europe",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  },
+  "YV": {
+   "brand": "Volvo",
+   "brand_ar": "فولفو",
+   "country": "Sweden",
+   "country_ar": "السويد",
+   "region": "Europe",
+   "confidence": "medium",
+   "note": "تغطية جزئية: أول خانتين"
+  }
+ },
+ "region_by_first_char": {
+  "1": "USA",
+  "2": "Canada",
+  "3": "Mexico",
+  "4": "USA",
+  "5": "USA",
+  "6": "Australia",
+  "9": "Brazil",
+  "A": "Africa",
+  "J": "Japan",
+  "K": "South Korea",
+  "L": "China",
+  "M": "India/Thailand/Indonesia",
+  "N": "Turkey",
+  "S": "United Kingdom",
+  "T": "Czechia/Hungary/Slovakia",
+  "V": "France/Spain",
+  "W": "Germany",
+  "X": "Russia",
+  "Y": "Sweden/Finland",
+  "Z": "Italy"
+ },
+ "year_codes": {
+  "position": 10,
+  "codes": {
+   "1": [
+    2001,
+    2031
+   ],
+   "2": [
+    2002,
+    2032
+   ],
+   "3": [
+    2003,
+    2033
+   ],
+   "4": [
+    2004,
+    2034
+   ],
+   "5": [
+    2005,
+    2035
+   ],
+   "6": [
+    2006,
+    2036
+   ],
+   "7": [
+    2007,
+    2037
+   ],
+   "8": [
+    2008,
+    2038
+   ],
+   "9": [
+    2009,
+    2039
+   ],
+   "A": [
+    1980,
+    2010
+   ],
+   "B": [
+    1981,
+    2011
+   ],
+   "C": [
+    1982,
+    2012
+   ],
+   "D": [
+    1983,
+    2013
+   ],
+   "E": [
+    1984,
+    2014
+   ],
+   "F": [
+    1985,
+    2015
+   ],
+   "G": [
+    1986,
+    2016
+   ],
+   "H": [
+    1987,
+    2017
+   ],
+   "J": [
+    1988,
+    2018
+   ],
+   "K": [
+    1989,
+    2019
+   ],
+   "L": [
+    1990,
+    2020
+   ],
+   "M": [
+    1991,
+    2021
+   ],
+   "N": [
+    1992,
+    2022
+   ],
+   "P": [
+    1993,
+    2023
+   ],
+   "R": [
+    1994,
+    2024
+   ],
+   "S": [
+    1995,
+    2025
+   ],
+   "T": [
+    1996,
+    2026
+   ],
+   "V": [
+    1997,
+    2027
+   ],
+   "W": [
+    1998,
+    2028
+   ],
+   "X": [
+    1999,
+    2029
+   ],
+   "Y": [
+    2000,
+    2030
+   ]
+  },
+  "invalid_chars": [
+   "0",
+   "I",
+   "O",
+   "Q",
+   "U",
+   "Z"
+  ],
+  "cycle_years": 30,
+  "selection_rule": "لكل رمز سنتان محتملتان بفارق 30 سنة؛ يُختار الأحدث الذي لا يتجاوز (السنة الحالية + 1).",
+  "north_america_rule": "للمركبات المصنّعة في أمريكا الشمالية (أول خانة 1-5): إذا كانت الخانة السابعة حرفاً فالسنة ≥ 2010، وإذا كانت رقماً فالسنة ≤ 2009 (الدورة الأقدم).",
+  "max_future_years": 1
+ },
+ "checksum": {
+  "position": 9,
+  "weights": [
+   8,
+   7,
+   6,
+   5,
+   4,
+   3,
+   2,
+   10,
+   0,
+   9,
+   8,
+   7,
+   6,
+   5,
+   4,
+   3,
+   2
+  ],
+  "applicable_first_chars": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "note": "رقم التحقق إلزامي لمركبات أمريكا الشمالية فقط؛ فشله في غيرها لا يُعدّ خطأ."
+ },
+ "model_patterns": [
+  {
+   "brand": "Toyota",
+   "model": "Camry",
+   "model_ar": "كامري",
+   "regex": "^JTNB11HK",
+   "confidence": "high",
+   "note": "كامري XV70 (2018 وما بعد) - مصنع اليابان",
+   "min_year": 2018
+  },
+  {
+   "brand": "Toyota",
+   "model": "Camry",
+   "model_ar": "كامري",
+   "regex": "^4T1B(?:F1FK|11HK|E46K)",
+   "confidence": "high",
+   "note": "كامري مصنع أمريكا (XV50/XV70/XV40)"
+  },
+  {
+   "brand": "Toyota",
+   "model": "Camry",
+   "model_ar": "كامري",
+   "regex": "^4T1B(?:61HK|Z1HK|D1FK|K1FK)",
+   "confidence": "medium",
+   "note": "كامري هايبرد/V6 مصنع أمريكا"
+  },
+  {
+   "brand": "Toyota",
+   "model": "Camry",
+   "model_ar": "كامري",
+   "regex": "^4T1[GFS]11AK",
+   "confidence": "medium",
+   "note": "كامري 2020 وما بعد (أمريكا)",
+   "min_year": 2018
+  },
+  {
+   "brand": "Toyota",
+   "model": "Camry",
+   "model_ar": "كامري",
+   "regex": "^6T1B(?:F9FK|E42K|D3FK)",
+   "confidence": "medium",
+   "note": "كامري مصنع أستراليا (شائعة بالخليج)"
+  },
+  {
+   "brand": "Toyota",
+   "model": "Avalon",
+   "model_ar": "افالون",
+   "regex": "^4T1B(?:K1EB|D1EB|K3DB|K36B|[ZA]1FB)",
+   "confidence": "medium",
+   "note": "أفالون مصنع أمريكا"
+  },
+  {
+   "brand": "Toyota",
+   "model": "Corolla",
+   "model_ar": "كورولا",
+   "regex": "^(?:2T1B|1NXB|5YF)",
+   "confidence": "high",
+   "note": "كورولا مصنع أمريكا/كندا"
+  },
+  {
+   "brand": "Toyota",
+   "model": "Land Cruiser",
+   "model_ar": "لاندكروزر",
+   "regex": "^JTMH",
+   "confidence": "medium",
+   "note": "لاندكروزر J200 (مصنع اليابان)"
+  },
+  {
+   "brand": "Toyota",
+   "model": null,
+   "model_ar": null,
+   "candidates": [
+    "برادو",
+    "4رنر",
+    "FJ كروزر"
+   ],
+   "regex": "^JTEB[HU]",
+   "confidence": "medium",
+   "note": "عائلة برادو/4رنر/FJ - يلزم اختيار الطراز"
+  },
+  {
+   "brand": "Toyota",
+   "model": "Yaris",
+   "model_ar": "يارس",
+   "regex": "^VNK",
+   "confidence": "medium",
+   "note": "مصنع فرنسا (يارس/يارس كروس)"
+  },
+  {
+   "brand": "Lexus",
+   "model": "LX",
+   "model_ar": "LX",
+   "regex": "^JTJH[YTM]",
+   "confidence": "medium",
+   "note": "LX470/LX570"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Sonata",
+   "model_ar": "سوناتا",
+   "regex": "^5NPE",
+   "confidence": "high",
+   "note": "سوناتا مصنع ألاباما"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Sonata",
+   "model_ar": "سوناتا",
+   "regex": "^KMHE",
+   "confidence": "medium",
+   "note": "سوناتا مصنع كوريا"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Elantra",
+   "model_ar": "النترا",
+   "regex": "^(?:KMHD|5NPD)",
+   "confidence": "high",
+   "note": "النترا"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Accent",
+   "model_ar": "اكسنت",
+   "regex": "^KMHC[MNT]",
+   "confidence": "medium",
+   "note": "اكسنت"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Tucson",
+   "model_ar": "توسان",
+   "regex": "^KM8J",
+   "confidence": "high",
+   "note": "توسان"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Tucson",
+   "model_ar": "توسان",
+   "regex": "^5NMJ",
+   "confidence": "medium",
+   "note": "توسان مصنع ألاباما"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Santa Fe",
+   "model_ar": "سانتافي",
+   "regex": "^KM8S",
+   "confidence": "medium",
+   "note": "سانتافي"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Santa Fe",
+   "model_ar": "سانتافي",
+   "regex": "^5XYZ",
+   "confidence": "medium",
+   "note": "سانتافي سبورت (مصنع كيا جورجيا)"
+  },
+  {
+   "brand": "Hyundai",
+   "model": "Santa Fe",
+   "model_ar": "سانتافي",
+   "regex": "^5NM[SZ]",
+   "confidence": "medium",
+   "note": "سانتافي مصنع ألاباما"
+  },
+  {
+   "brand": "Kia",
+   "model": "Sportage",
+   "model_ar": "سبورتاج",
+   "regex": "^KNDP",
+   "confidence": "high",
+   "note": "سبورتاج"
+  },
+  {
+   "brand": "Kia",
+   "model": "Cerato",
+   "model_ar": "سيراتو",
+   "regex": "^KNAF",
+   "confidence": "medium",
+   "note": "سيراتو / فورتي"
+  },
+  {
+   "brand": "Kia",
+   "model": "Rio",
+   "model_ar": "ريو",
+   "regex": "^KNAD",
+   "confidence": "medium",
+   "note": "ريو"
+  },
+  {
+   "brand": "Kia",
+   "model": "Optima",
+   "model_ar": "اوبتيما",
+   "regex": "^5XXG",
+   "confidence": "medium",
+   "note": "اوبتيما / K5 (مصنع جورجيا)"
+  },
+  {
+   "brand": "Kia",
+   "model": "Sorento",
+   "model_ar": "سورنتو",
+   "regex": "^5XYP[GHK]",
+   "confidence": "medium",
+   "note": "سورنتو"
+  },
+  {
+   "brand": "Kia",
+   "model": "Telluride",
+   "model_ar": "تيلورايد",
+   "regex": "^5XYP[2-6]",
+   "confidence": "medium",
+   "note": "تيلورايد"
+  },
+  {
+   "brand": "Nissan",
+   "model": "Patrol",
+   "model_ar": "باترول",
+   "regex": "^JN8AY2",
+   "confidence": "high",
+   "note": "باترول Y62 (2010 وما بعد)",
+   "min_year": 2010
+  },
+  {
+   "brand": "Nissan",
+   "model": "Patrol",
+   "model_ar": "باترول",
+   "regex": "^VSKJVWY61",
+   "confidence": "medium",
+   "note": "باترول GR Y61 (مصنع إسبانيا)"
+  },
+  {
+   "brand": "Nissan",
+   "model": "Altima",
+   "model_ar": "التيما",
+   "regex": "^1N4[AB]L",
+   "confidence": "high",
+   "note": "التيما"
+  },
+  {
+   "brand": "Nissan",
+   "model": "Maxima",
+   "model_ar": "ماكسيما",
+   "regex": "^1N4[AB]A",
+   "confidence": "medium",
+   "note": "ماكسيما"
+  },
+  {
+   "brand": "Nissan",
+   "model": "Sentra",
+   "model_ar": "سنترا",
+   "regex": "^3N1AB",
+   "confidence": "high",
+   "note": "سنترا"
+  },
+  {
+   "brand": "Nissan",
+   "model": null,
+   "model_ar": null,
+   "candidates": [
+    "صني",
+    "Versa"
+   ],
+   "regex": "^3N1CN",
+   "confidence": "medium",
+   "note": "صني (فيرسا) - يلزم تأكيد الطراز"
+  },
+  {
+   "brand": "Nissan",
+   "model": "Pathfinder",
+   "model_ar": "باثفايندر",
+   "regex": "^5N1AR",
+   "confidence": "high",
+   "note": "باثفايندر"
+  },
+  {
+   "brand": "Ford",
+   "model": "Explorer",
+   "model_ar": "اكسبلورر",
+   "regex": "^1FM(?:5K|HK|SK)",
+   "confidence": "high",
+   "note": "اكسبلورر"
+  },
+  {
+   "brand": "Ford",
+   "model": "Expedition",
+   "model_ar": "اكسبدشن",
+   "regex": "^1FM(?:JU|JK|FU|PU)",
+   "confidence": "high",
+   "note": "اكسبدشن"
+  },
+  {
+   "brand": "Ford",
+   "model": "F-150",
+   "model_ar": "F-150",
+   "regex": "^1FT(?:FW|EW|MW|PW|FX|EX)",
+   "confidence": "high",
+   "note": "F-150"
+  },
+  {
+   "brand": "Ford",
+   "model": "Taurus",
+   "model_ar": "تورس",
+   "regex": "^1FAHP",
+   "confidence": "high",
+   "note": "تورس"
+  },
+  {
+   "brand": "Ford",
+   "model": "Fusion",
+   "model_ar": "فيوجن",
+   "regex": "^3FA[6H]P",
+   "confidence": "high",
+   "note": "فيوجن"
+  },
+  {
+   "brand": "Ford",
+   "model": "Mustang",
+   "model_ar": "موستنج",
+   "regex": "^(?:1FA6P8|1ZV[BF]P|1ZVFT)",
+   "confidence": "medium",
+   "note": "موستنج"
+  },
+  {
+   "brand": "Ford",
+   "model": "Edge",
+   "model_ar": "ايدج",
+   "regex": "^2FM[DPT]K",
+   "confidence": "high",
+   "note": "ايدج"
+  },
+  {
+   "brand": "Ford",
+   "model": "Escape",
+   "model_ar": "اسكيب",
+   "regex": "^1FM(?:CU|YU)",
+   "confidence": "high",
+   "note": "اسكيب"
+  },
+  {
+   "brand": "Ford",
+   "model": "Flex",
+   "model_ar": "فلكس",
+   "regex": "^2FM[GH]K",
+   "confidence": "medium",
+   "note": "فلكس"
+  },
+  {
+   "brand": "GMC",
+   "model": "Yukon",
+   "model_ar": "يوكن",
+   "regex": "^1GKS",
+   "confidence": "medium",
+   "note": "يوكن / يوكن XL (2015 وما بعد)"
+  },
+  {
+   "brand": "Chevrolet",
+   "model": null,
+   "model_ar": null,
+   "candidates": [
+    "تاهو",
+    "سوبربان"
+   ],
+   "regex": "^1GNS[CK]",
+   "confidence": "medium",
+   "note": "تاهو أو سوبربان (2015 وما بعد) - يلزم الاختيار"
+  },
+  {
+   "brand": "Chevrolet",
+   "model": "Silverado",
+   "model_ar": "سلفرادو",
+   "regex": "^1GC[VRPU]",
+   "confidence": "medium",
+   "note": "سلفرادو"
+  },
+  {
+   "brand": "Chevrolet",
+   "model": "Malibu",
+   "model_ar": "ماليبو",
+   "regex": "^1G1Z[A-Z]5",
+   "confidence": "medium",
+   "note": "ماليبو"
+  },
+  {
+   "brand": "Chevrolet",
+   "model": "Camaro",
+   "model_ar": "كمارو",
+   "regex": "^1G1F[A-Z]",
+   "confidence": "high",
+   "note": "كمارو"
+  },
+  {
+   "brand": "Chevrolet",
+   "model": "Corvette",
+   "model_ar": "كورفيت",
+   "regex": "^1G1Y",
+   "confidence": "high",
+   "note": "كورفيت"
+  },
+  {
+   "brand": "Chevrolet",
+   "model": "Cruze",
+   "model_ar": "كروز",
+   "regex": "^1G1P[A-E]",
+   "confidence": "medium",
+   "note": "كروز"
+  },
+  {
+   "brand": "Cadillac",
+   "model": "Escalade",
+   "model_ar": "اسكاليد",
+   "regex": "^1GYS",
+   "confidence": "medium",
+   "note": "اسكاليد (2015 وما بعد)"
+  },
+  {
+   "brand": "GMC",
+   "model": "Sierra",
+   "model_ar": "سييرا",
+   "regex": "^(?:1GT[RUV]|3GT[PU])",
+   "confidence": "medium",
+   "note": "سييرا"
+  },
+  {
+   "brand": "GMC",
+   "model": "Acadia",
+   "model_ar": "اكاديا",
+   "regex": "^1GKK[NVR]",
+   "confidence": "medium",
+   "note": "اكاديا"
+  },
+  {
+   "brand": "Dodge",
+   "model": "Charger",
+   "model_ar": "تشارجر",
+   "regex": "^2C3CDX",
+   "confidence": "high",
+   "note": "تشارجر"
+  },
+  {
+   "brand": "Dodge",
+   "model": "Challenger",
+   "model_ar": "تشالنجر",
+   "regex": "^2C3CDZ",
+   "confidence": "high",
+   "note": "تشالنجر"
+  },
+  {
+   "brand": "Chrysler",
+   "model": "300C",
+   "model_ar": "300C",
+   "regex": "^2C3CC",
+   "confidence": "high",
+   "note": "كرايسلر 300"
+  },
+  {
+   "brand": "Jeep",
+   "model": "Grand Cherokee",
+   "model_ar": "جراند شيروكي",
+   "regex": "^1C4RJ",
+   "confidence": "high",
+   "note": "جراند شيروكي"
+  },
+  {
+   "brand": "Jeep",
+   "model": "Grand Cherokee",
+   "model_ar": "جراند شيروكي",
+   "regex": "^1J4R",
+   "confidence": "medium",
+   "note": "جراند شيروكي (قبل 2014)"
+  },
+  {
+   "brand": "Jeep",
+   "model": "Grand Cherokee",
+   "model_ar": "جراند شيروكي",
+   "regex": "^1J8G",
+   "confidence": "medium",
+   "note": "جراند شيروكي (قبل 2011)"
+  },
+  {
+   "brand": "Jeep",
+   "model": "Wrangler",
+   "model_ar": "رانجلر",
+   "regex": "^1C4[BH]J",
+   "confidence": "high",
+   "note": "رانجلر"
+  },
+  {
+   "brand": "Dodge",
+   "model": "Durango",
+   "model_ar": "دورانجو",
+   "regex": "^1C4[RS]D",
+   "confidence": "medium",
+   "note": "دورانجو"
+  },
+  {
+   "brand": "Honda",
+   "model": "Accord",
+   "model_ar": "اكورد",
+   "regex": "^1HGC[MPRTV]",
+   "confidence": "high",
+   "note": "اكورد مصنع أمريكا"
+  },
+  {
+   "brand": "Honda",
+   "model": "Civic",
+   "model_ar": "سيفيك",
+   "regex": "^(?:2HGF[ABC]|19XF[ABC]|2HGES)",
+   "confidence": "medium",
+   "note": "سيفيك"
+  },
+  {
+   "brand": "Honda",
+   "model": "CR-V",
+   "model_ar": "CR-V",
+   "regex": "^(?:5J6R|2HKR|JHLR)",
+   "confidence": "medium",
+   "note": "CR-V"
+  },
+  {
+   "brand": "Honda",
+   "model": "Pilot",
+   "model_ar": "بايلوت",
+   "regex": "^5FNY[FG]",
+   "confidence": "medium",
+   "note": "بايلوت"
+  },
+  {
+   "brand": "Mazda",
+   "model": "CX-5",
+   "model_ar": "CX-5",
+   "regex": "^JM3KE",
+   "confidence": "high",
+   "note": "CX-5"
+  },
+  {
+   "brand": "Mazda",
+   "model": "CX-9",
+   "model_ar": "CX-9",
+   "regex": "^JM3T[BC]",
+   "confidence": "medium",
+   "note": "CX-9"
+  },
+  {
+   "brand": "Mazda",
+   "model": "Mazda3",
+   "model_ar": "مازدا 3",
+   "regex": "^JM1B[LM]",
+   "confidence": "medium",
+   "note": "مازدا 3"
+  },
+  {
+   "brand": "Mercedes",
+   "model": "C-Class",
+   "model_ar": "C-Class",
+   "regex": "^WDDGF",
+   "confidence": "medium",
+   "note": "الفئة C (W204)"
+  },
+  {
+   "brand": "Mercedes",
+   "model": "E-Class",
+   "model_ar": "E-Class",
+   "regex": "^WDDHF",
+   "confidence": "medium",
+   "note": "الفئة E (W212)"
+  },
+  {
+   "brand": "Mercedes",
+   "model": "S-Class",
+   "model_ar": "S-Class",
+   "regex": "^WDD(?:NG|UG)",
+   "confidence": "medium",
+   "note": "الفئة S (W221/W222)"
+  }
+ ],
+ "models_by_brand": {
+  "Toyota": [
+   {
+    "ar": "كامري",
+    "en": "Camry"
+   },
+   {
+    "ar": "كورولا",
+    "en": "Corolla"
+   },
+   {
+    "ar": "لاندكروزر",
+    "en": "Land Cruiser"
+   },
+   {
+    "ar": "برادو",
+    "en": "Prado"
+   },
+   {
+    "ar": "هايلكس",
+    "en": "Hilux"
+   },
+   {
+    "ar": "يارس",
+    "en": "Yaris"
+   },
+   {
+    "ar": "افالون",
+    "en": "Avalon"
+   },
+   {
+    "ar": "فورتشنر",
+    "en": "Fortuner"
+   },
+   {
+    "ar": "رافور",
+    "en": "RAV4"
+   },
+   {
+    "ar": "انوفا",
+    "en": "Innova"
+   },
+   {
+    "ar": "هايس",
+    "en": "Hiace"
+   },
+   {
+    "ar": "كوستر",
+    "en": "Coaster"
+   },
+   {
+    "ar": "رش",
+    "en": "Rush"
+   },
+   {
+    "ar": "ريزا",
+    "en": "Raize"
+   },
+   {
+    "ar": "كراون",
+    "en": "Crown"
+   },
+   {
+    "ar": "سيكويا",
+    "en": "Sequoia"
+   },
+   {
+    "ar": "تاكوما",
+    "en": "Tacoma"
+   },
+   {
+    "ar": "تندرا",
+    "en": "Tundra"
+   },
+   {
+    "ar": "هايلاندر",
+    "en": "Highlander"
+   },
+   {
+    "ar": "C-HR",
+    "en": "C-HR"
+   },
+   {
+    "ar": "بريوس",
+    "en": "Prius"
+   },
+   {
+    "ar": "افانزا",
+    "en": "Avanza"
+   },
+   {
+    "ar": "كورولا كروس",
+    "en": "Corolla Cross"
+   },
+   {
+    "ar": "جرانفيا",
+    "en": "Granvia"
+   },
+   {
+    "ar": "سيينا",
+    "en": "Sienna"
+   },
+   {
+    "ar": "4رنر",
+    "en": "4Runner"
+   },
+   {
+    "ar": "FJ كروزر",
+    "en": "FJ Cruiser"
+   },
+   {
+    "ar": "اوريون",
+    "en": "Aurion"
+   },
+   {
+    "ar": "فينزا",
+    "en": "Venza"
+   }
+  ],
+  "Lexus": [
+   {
+    "ar": "LX",
+    "en": "LX"
+   },
+   {
+    "ar": "LS",
+    "en": "LS"
+   },
+   {
+    "ar": "ES",
+    "en": "ES"
+   },
+   {
+    "ar": "RX",
+    "en": "RX"
+   },
+   {
+    "ar": "GX",
+    "en": "GX"
+   },
+   {
+    "ar": "IS",
+    "en": "IS"
+   },
+   {
+    "ar": "GS",
+    "en": "GS"
+   },
+   {
+    "ar": "NX",
+    "en": "NX"
+   },
+   {
+    "ar": "UX",
+    "en": "UX"
+   },
+   {
+    "ar": "LC",
+    "en": "LC"
+   },
+   {
+    "ar": "RC",
+    "en": "RC"
+   },
+   {
+    "ar": "LM",
+    "en": "LM"
+   },
+   {
+    "ar": "CT",
+    "en": "CT"
+   }
+  ],
+  "Nissan": [
+   {
+    "ar": "باترول",
+    "en": "Patrol"
+   },
+   {
+    "ar": "التيما",
+    "en": "Altima"
+   },
+   {
+    "ar": "صني",
+    "en": "Sunny"
+   },
+   {
+    "ar": "ماكسيما",
+    "en": "Maxima"
+   },
+   {
+    "ar": "اكس تريل",
+    "en": "X-Trail"
+   },
+   {
+    "ar": "باثفايندر",
+    "en": "Pathfinder"
+   },
+   {
+    "ar": "نافارا",
+    "en": "Navara"
+   },
+   {
+    "ar": "سنترا",
+    "en": "Sentra"
+   },
+   {
+    "ar": "كيكس",
+    "en": "Kicks"
+   },
+   {
+    "ar": "جوك",
+    "en": "Juke"
+   },
+   {
+    "ar": "قاشقاي",
+    "en": "Qashqai"
+   },
+   {
+    "ar": "ارمادا",
+    "en": "Armada"
+   },
+   {
+    "ar": "مورانو",
+    "en": "Murano"
+   },
+   {
+    "ar": "تيدا",
+    "en": "Tiida"
+   },
+   {
+    "ar": "اورفان",
+    "en": "Urvan"
+   },
+   {
+    "ar": "روج",
+    "en": "Rogue"
+   },
+   {
+    "ar": "تيتان",
+    "en": "Titan"
+   },
+   {
+    "ar": "اكستيرا",
+    "en": "Xterra"
+   },
+   {
+    "ar": "تيرا",
+    "en": "Terra"
+   },
+   {
+    "ar": "باترول سفاري",
+    "en": "Patrol Safari"
+   }
+  ],
+  "Infiniti": [
+   {
+    "ar": "QX80",
+    "en": "QX80"
+   },
+   {
+    "ar": "QX60",
+    "en": "QX60"
+   },
+   {
+    "ar": "QX50",
+    "en": "QX50"
+   },
+   {
+    "ar": "QX70",
+    "en": "QX70"
+   },
+   {
+    "ar": "Q50",
+    "en": "Q50"
+   },
+   {
+    "ar": "Q70",
+    "en": "Q70"
+   },
+   {
+    "ar": "QX56",
+    "en": "QX56"
+   },
+   {
+    "ar": "Q60",
+    "en": "Q60"
+   },
+   {
+    "ar": "FX35",
+    "en": "FX35"
+   },
+   {
+    "ar": "G35",
+    "en": "G35"
+   }
+  ],
+  "Honda": [
+   {
+    "ar": "اكورد",
+    "en": "Accord"
+   },
+   {
+    "ar": "سيفيك",
+    "en": "Civic"
+   },
+   {
+    "ar": "CR-V",
+    "en": "CR-V"
+   },
+   {
+    "ar": "بايلوت",
+    "en": "Pilot"
+   },
+   {
+    "ar": "اوديسي",
+    "en": "Odyssey"
+   },
+   {
+    "ar": "سيتي",
+    "en": "City"
+   },
+   {
+    "ar": "HR-V",
+    "en": "HR-V"
+   },
+   {
+    "ar": "جاز",
+    "en": "Jazz"
+   },
+   {
+    "ar": "ريدجلاين",
+    "en": "Ridgeline"
+   },
+   {
+    "ar": "باسبورت",
+    "en": "Passport"
+   }
+  ],
+  "Mazda": [
+   {
+    "ar": "مازدا 3",
+    "en": "Mazda3"
+   },
+   {
+    "ar": "مازدا 6",
+    "en": "Mazda6"
+   },
+   {
+    "ar": "مازدا 2",
+    "en": "Mazda2"
+   },
+   {
+    "ar": "CX-5",
+    "en": "CX-5"
+   },
+   {
+    "ar": "CX-9",
+    "en": "CX-9"
+   },
+   {
+    "ar": "CX-3",
+    "en": "CX-3"
+   },
+   {
+    "ar": "CX-30",
+    "en": "CX-30"
+   },
+   {
+    "ar": "CX-7",
+    "en": "CX-7"
+   },
+   {
+    "ar": "BT-50",
+    "en": "BT-50"
+   },
+   {
+    "ar": "CX-60",
+    "en": "CX-60"
+   }
+  ],
+  "Mitsubishi": [
+   {
+    "ar": "باجيرو",
+    "en": "Pajero"
+   },
+   {
+    "ar": "لانسر",
+    "en": "Lancer"
+   },
+   {
+    "ar": "اوتلاندر",
+    "en": "Outlander"
+   },
+   {
+    "ar": "L200",
+    "en": "L200"
+   },
+   {
+    "ar": "اتراج",
+    "en": "Attrage"
+   },
+   {
+    "ar": "ميراج",
+    "en": "Mirage"
+   },
+   {
+    "ar": "اكليبس كروس",
+    "en": "Eclipse Cross"
+   },
+   {
+    "ar": "اكسباندر",
+    "en": "Xpander"
+   },
+   {
+    "ar": "مونتيرو",
+    "en": "Montero"
+   },
+   {
+    "ar": "ASX",
+    "en": "ASX"
+   }
+  ],
+  "Subaru": [
+   {
+    "ar": "فورستر",
+    "en": "Forester"
+   },
+   {
+    "ar": "امبريزا",
+    "en": "Impreza"
+   },
+   {
+    "ar": "ليجسي",
+    "en": "Legacy"
+   },
+   {
+    "ar": "اوتباك",
+    "en": "Outback"
+   },
+   {
+    "ar": "XV",
+    "en": "XV"
+   },
+   {
+    "ar": "WRX",
+    "en": "WRX"
+   },
+   {
+    "ar": "BRZ",
+    "en": "BRZ"
+   }
+  ],
+  "Suzuki": [
+   {
+    "ar": "سويفت",
+    "en": "Swift"
+   },
+   {
+    "ar": "ديزاير",
+    "en": "Dzire"
+   },
+   {
+    "ar": "سيليريو",
+    "en": "Celerio"
+   },
+   {
+    "ar": "ارتيجا",
+    "en": "Ertiga"
+   },
+   {
+    "ar": "جمني",
+    "en": "Jimny"
+   },
+   {
+    "ar": "فيتارا",
+    "en": "Vitara"
+   },
+   {
+    "ar": "بالينو",
+    "en": "Baleno"
+   },
+   {
+    "ar": "سياز",
+    "en": "Ciaz"
+   },
+   {
+    "ar": "اس كروس",
+    "en": "S-Cross"
+   },
+   {
+    "ar": "فرونكس",
+    "en": "Fronx"
+   },
+   {
+    "ar": "ابف",
+    "en": "APV"
+   }
+  ],
+  "Isuzu": [
+   {
+    "ar": "دي ماكس",
+    "en": "D-Max"
+   },
+   {
+    "ar": "MU-X",
+    "en": "MU-X"
+   },
+   {
+    "ar": "NPR",
+    "en": "NPR"
+   },
+   {
+    "ar": "NQR",
+    "en": "NQR"
+   },
+   {
+    "ar": "FVR",
+    "en": "FVR"
+   },
+   {
+    "ar": "تروبر",
+    "en": "Trooper"
+   }
+  ],
+  "Daihatsu": [
+   {
+    "ar": "تيريوس",
+    "en": "Terios"
+   },
+   {
+    "ar": "سيريون",
+    "en": "Sirion"
+   },
+   {
+    "ar": "روكي",
+    "en": "Rocky"
+   },
+   {
+    "ar": "جراند ماكس",
+    "en": "Gran Max"
+   },
+   {
+    "ar": "ديهاتسو ميرا",
+    "en": "Mira"
+   }
+  ],
+  "Ford": [
+   {
+    "ar": "تورس",
+    "en": "Taurus"
+   },
+   {
+    "ar": "اكسبلورر",
+    "en": "Explorer"
+   },
+   {
+    "ar": "اكسبدشن",
+    "en": "Expedition"
+   },
+   {
+    "ar": "F-150",
+    "en": "F-150"
+   },
+   {
+    "ar": "فيوجن",
+    "en": "Fusion"
+   },
+   {
+    "ar": "موستنج",
+    "en": "Mustang"
+   },
+   {
+    "ar": "ايدج",
+    "en": "Edge"
+   },
+   {
+    "ar": "اسكيب",
+    "en": "Escape"
+   },
+   {
+    "ar": "رينجر",
+    "en": "Ranger"
+   },
+   {
+    "ar": "فلكس",
+    "en": "Flex"
+   },
+   {
+    "ar": "ايكوسبورت",
+    "en": "EcoSport"
+   },
+   {
+    "ar": "ترانزيت",
+    "en": "Transit"
+   },
+   {
+    "ar": "F-250",
+    "en": "F-250"
+   },
+   {
+    "ar": "برونكو",
+    "en": "Bronco"
+   },
+   {
+    "ar": "فوكس",
+    "en": "Focus"
+   },
+   {
+    "ar": "فيستا",
+    "en": "Fiesta"
+   },
+   {
+    "ar": "كراون فكتوريا",
+    "en": "Crown Victoria"
+   },
+   {
+    "ar": "ايفريست",
+    "en": "Everest"
+   },
+   {
+    "ar": "تيريتوري",
+    "en": "Territory"
+   }
+  ],
+  "Chevrolet": [
+   {
+    "ar": "تاهو",
+    "en": "Tahoe"
+   },
+   {
+    "ar": "سوبربان",
+    "en": "Suburban"
+   },
+   {
+    "ar": "سلفرادو",
+    "en": "Silverado"
+   },
+   {
+    "ar": "ماليبو",
+    "en": "Malibu"
+   },
+   {
+    "ar": "كروز",
+    "en": "Cruze"
+   },
+   {
+    "ar": "كمارو",
+    "en": "Camaro"
+   },
+   {
+    "ar": "كورفيت",
+    "en": "Corvette"
+   },
+   {
+    "ar": "ترافيرس",
+    "en": "Traverse"
+   },
+   {
+    "ar": "ايكوينوكس",
+    "en": "Equinox"
+   },
+   {
+    "ar": "امبالا",
+    "en": "Impala"
+   },
+   {
+    "ar": "كابتيفا",
+    "en": "Captiva"
+   },
+   {
+    "ar": "اوبترا",
+    "en": "Optra"
+   },
+   {
+    "ar": "لومينا",
+    "en": "Lumina"
+   },
+   {
+    "ar": "بليزر",
+    "en": "Blazer"
+   },
+   {
+    "ar": "كولورادو",
+    "en": "Colorado"
+   },
+   {
+    "ar": "سبارك",
+    "en": "Spark"
+   },
+   {
+    "ar": "اكسبريس",
+    "en": "Express"
+   },
+   {
+    "ar": "تراكس",
+    "en": "Trax"
+   },
+   {
+    "ar": "اسبيرا",
+    "en": "Aveo"
+   }
+  ],
+  "GMC": [
+   {
+    "ar": "يوكن",
+    "en": "Yukon"
+   },
+   {
+    "ar": "سييرا",
+    "en": "Sierra"
+   },
+   {
+    "ar": "اكاديا",
+    "en": "Acadia"
+   },
+   {
+    "ar": "تيرين",
+    "en": "Terrain"
+   },
+   {
+    "ar": "سافانا",
+    "en": "Savana"
+   },
+   {
+    "ar": "اينفوي",
+    "en": "Envoy"
+   },
+   {
+    "ar": "يوكن XL",
+    "en": "Yukon XL"
+   },
+   {
+    "ar": "كانيون",
+    "en": "Canyon"
+   }
+  ],
+  "Dodge": [
+   {
+    "ar": "تشارجر",
+    "en": "Charger"
+   },
+   {
+    "ar": "تشالنجر",
+    "en": "Challenger"
+   },
+   {
+    "ar": "دورانجو",
+    "en": "Durango"
+   },
+   {
+    "ar": "كارافان",
+    "en": "Caravan"
+   },
+   {
+    "ar": "نيترو",
+    "en": "Nitro"
+   },
+   {
+    "ar": "جورني",
+    "en": "Journey"
+   },
+   {
+    "ar": "ماجنوم",
+    "en": "Magnum"
+   },
+   {
+    "ar": "رام",
+    "en": "Ram"
+   }
+  ],
+  "Chrysler": [
+   {
+    "ar": "300C",
+    "en": "300C"
+   },
+   {
+    "ar": "300",
+    "en": "300"
+   },
+   {
+    "ar": "بيسيفيكا",
+    "en": "Pacifica"
+   },
+   {
+    "ar": "فوياجر",
+    "en": "Voyager"
+   },
+   {
+    "ar": "سيبرنج",
+    "en": "Sebring"
+   },
+   {
+    "ar": "تاون اند كنتري",
+    "en": "Town & Country"
+   },
+   {
+    "ar": "PT كروزر",
+    "en": "PT Cruiser"
+   }
+  ],
+  "Jeep": [
+   {
+    "ar": "جراند شيروكي",
+    "en": "Grand Cherokee"
+   },
+   {
+    "ar": "رانجلر",
+    "en": "Wrangler"
+   },
+   {
+    "ar": "شيروكي",
+    "en": "Cherokee"
+   },
+   {
+    "ar": "كومباس",
+    "en": "Compass"
+   },
+   {
+    "ar": "رينيجيد",
+    "en": "Renegade"
+   },
+   {
+    "ar": "جلادييتر",
+    "en": "Gladiator"
+   },
+   {
+    "ar": "ليبرتي",
+    "en": "Liberty"
+   },
+   {
+    "ar": "باتريوت",
+    "en": "Patriot"
+   }
+  ],
+  "Cadillac": [
+   {
+    "ar": "اسكاليد",
+    "en": "Escalade"
+   },
+   {
+    "ar": "CTS",
+    "en": "CTS"
+   },
+   {
+    "ar": "ATS",
+    "en": "ATS"
+   },
+   {
+    "ar": "XT5",
+    "en": "XT5"
+   },
+   {
+    "ar": "XT6",
+    "en": "XT6"
+   },
+   {
+    "ar": "SRX",
+    "en": "SRX"
+   },
+   {
+    "ar": "CT6",
+    "en": "CT6"
+   },
+   {
+    "ar": "DTS",
+    "en": "DTS"
+   },
+   {
+    "ar": "STS",
+    "en": "STS"
+   },
+   {
+    "ar": "XTS",
+    "en": "XTS"
+   }
+  ],
+  "Lincoln": [
+   {
+    "ar": "نافيجيتور",
+    "en": "Navigator"
+   },
+   {
+    "ar": "MKZ",
+    "en": "MKZ"
+   },
+   {
+    "ar": "MKX",
+    "en": "MKX"
+   },
+   {
+    "ar": "افياتور",
+    "en": "Aviator"
+   },
+   {
+    "ar": "تاون كار",
+    "en": "Town Car"
+   },
+   {
+    "ar": "كورسير",
+    "en": "Corsair"
+   },
+   {
+    "ar": "MKC",
+    "en": "MKC"
+   },
+   {
+    "ar": "MKS",
+    "en": "MKS"
+   }
+  ],
+  "Hummer": [
+   {
+    "ar": "H2",
+    "en": "H2"
+   },
+   {
+    "ar": "H3",
+    "en": "H3"
+   },
+   {
+    "ar": "H1",
+    "en": "H1"
+   }
+  ],
+  "Tesla": [
+   {
+    "ar": "موديل S",
+    "en": "Model S"
+   },
+   {
+    "ar": "موديل 3",
+    "en": "Model 3"
+   },
+   {
+    "ar": "موديل X",
+    "en": "Model X"
+   },
+   {
+    "ar": "موديل Y",
+    "en": "Model Y"
+   },
+   {
+    "ar": "سايبرتراك",
+    "en": "Cybertruck"
+   }
+  ],
+  "Ram": [
+   {
+    "ar": "رام 1500",
+    "en": "1500"
+   },
+   {
+    "ar": "رام 2500",
+    "en": "2500"
+   },
+   {
+    "ar": "رام 3500",
+    "en": "3500"
+   }
+  ],
+  "Hyundai": [
+   {
+    "ar": "سوناتا",
+    "en": "Sonata"
+   },
+   {
+    "ar": "النترا",
+    "en": "Elantra"
+   },
+   {
+    "ar": "اكسنت",
+    "en": "Accent"
+   },
+   {
+    "ar": "توسان",
+    "en": "Tucson"
+   },
+   {
+    "ar": "سانتافي",
+    "en": "Santa Fe"
+   },
+   {
+    "ar": "كريتا",
+    "en": "Creta"
+   },
+   {
+    "ar": "فينيو",
+    "en": "Venue"
+   },
+   {
+    "ar": "باليسيد",
+    "en": "Palisade"
+   },
+   {
+    "ar": "ازيرا",
+    "en": "Azera"
+   },
+   {
+    "ar": "جراند i10",
+    "en": "Grand i10"
+   },
+   {
+    "ar": "i10",
+    "en": "i10"
+   },
+   {
+    "ar": "i20",
+    "en": "i20"
+   },
+   {
+    "ar": "i30",
+    "en": "i30"
+   },
+   {
+    "ar": "كونا",
+    "en": "Kona"
+   },
+   {
+    "ar": "فيلوستر",
+    "en": "Veloster"
+   },
+   {
+    "ar": "H1",
+    "en": "H1"
+   },
+   {
+    "ar": "ايونيك",
+    "en": "Ioniq"
+   },
+   {
+    "ar": "كاونتي",
+    "en": "County"
+   },
+   {
+    "ar": "ماتريكس",
+    "en": "Matrix"
+   },
+   {
+    "ar": "جنسس",
+    "en": "Genesis"
+   },
+   {
+    "ar": "تيراكان",
+    "en": "Terracan"
+   }
+  ],
+  "Kia": [
+   {
+    "ar": "سيراتو",
+    "en": "Cerato"
+   },
+   {
+    "ar": "سبورتاج",
+    "en": "Sportage"
+   },
+   {
+    "ar": "اوبتيما",
+    "en": "Optima"
+   },
+   {
+    "ar": "K5",
+    "en": "K5"
+   },
+   {
+    "ar": "سورنتو",
+    "en": "Sorento"
+   },
+   {
+    "ar": "ريو",
+    "en": "Rio"
+   },
+   {
+    "ar": "بيكانتو",
+    "en": "Picanto"
+   },
+   {
+    "ar": "كارنفال",
+    "en": "Carnival"
+   },
+   {
+    "ar": "تيلورايد",
+    "en": "Telluride"
+   },
+   {
+    "ar": "سيلتوس",
+    "en": "Seltos"
+   },
+   {
+    "ar": "سول",
+    "en": "Soul"
+   },
+   {
+    "ar": "كادينزا",
+    "en": "Cadenza"
+   },
+   {
+    "ar": "K7",
+    "en": "K7"
+   },
+   {
+    "ar": "K900",
+    "en": "K900"
+   },
+   {
+    "ar": "ستينجر",
+    "en": "Stinger"
+   },
+   {
+    "ar": "نيرو",
+    "en": "Niro"
+   },
+   {
+    "ar": "ستونيك",
+    "en": "Stonic"
+   },
+   {
+    "ar": "بيجاس",
+    "en": "Pegas"
+   },
+   {
+    "ar": "موهافي",
+    "en": "Mohave"
+   },
+   {
+    "ar": "K3",
+    "en": "K3"
+   },
+   {
+    "ar": "سيدونا",
+    "en": "Sedona"
+   },
+   {
+    "ar": "كوريس",
+    "en": "Carens"
+   }
+  ],
+  "Genesis": [
+   {
+    "ar": "G70",
+    "en": "G70"
+   },
+   {
+    "ar": "G80",
+    "en": "G80"
+   },
+   {
+    "ar": "G90",
+    "en": "G90"
+   },
+   {
+    "ar": "GV70",
+    "en": "GV70"
+   },
+   {
+    "ar": "GV80",
+    "en": "GV80"
+   },
+   {
+    "ar": "GV60",
+    "en": "GV60"
+   }
+  ],
+  "SsangYong": [
+   {
+    "ar": "تيفولي",
+    "en": "Tivoli"
+   },
+   {
+    "ar": "ريكستون",
+    "en": "Rexton"
+   },
+   {
+    "ar": "كوراندو",
+    "en": "Korando"
+   },
+   {
+    "ar": "موسو",
+    "en": "Musso"
+   },
+   {
+    "ar": "اكتيون",
+    "en": "Actyon"
+   }
+  ],
+  "Changan": [
+   {
+    "ar": "CS35",
+    "en": "CS35"
+   },
+   {
+    "ar": "CS75",
+    "en": "CS75"
+   },
+   {
+    "ar": "CS95",
+    "en": "CS95"
+   },
+   {
+    "ar": "ايدو",
+    "en": "Eado"
+   },
+   {
+    "ar": "السفين",
+    "en": "Alsvin"
+   },
+   {
+    "ar": "يوني تي",
+    "en": "UNI-T"
+   },
+   {
+    "ar": "يوني كي",
+    "en": "UNI-K"
+   },
+   {
+    "ar": "هنتر",
+    "en": "Hunter"
+   },
+   {
+    "ar": "CS85",
+    "en": "CS85"
+   },
+   {
+    "ar": "يوني في",
+    "en": "UNI-V"
+   }
+  ],
+  "Geely": [
+   {
+    "ar": "امجراند",
+    "en": "Emgrand"
+   },
+   {
+    "ar": "كولراي",
+    "en": "Coolray"
+   },
+   {
+    "ar": "اوكافانجو",
+    "en": "Okavango"
+   },
+   {
+    "ar": "توجيلا",
+    "en": "Tugella"
+   },
+   {
+    "ar": "مونجارو",
+    "en": "Monjaro"
+   },
+   {
+    "ar": "GS",
+    "en": "GS"
+   },
+   {
+    "ar": "اتلس",
+    "en": "Atlas"
+   },
+   {
+    "ar": "بيندراي",
+    "en": "Binray"
+   }
+  ],
+  "MG": [
+   {
+    "ar": "MG5",
+    "en": "MG5"
+   },
+   {
+    "ar": "MG6",
+    "en": "MG6"
+   },
+   {
+    "ar": "ZS",
+    "en": "ZS"
+   },
+   {
+    "ar": "HS",
+    "en": "HS"
+   },
+   {
+    "ar": "RX8",
+    "en": "RX8"
+   },
+   {
+    "ar": "GT",
+    "en": "GT"
+   },
+   {
+    "ar": "MG3",
+    "en": "MG3"
+   },
+   {
+    "ar": "RX5",
+    "en": "RX5"
+   },
+   {
+    "ar": "MG4",
+    "en": "MG4"
+   },
+   {
+    "ar": "MG7",
+    "en": "MG7"
+   }
+  ],
+  "Haval": [
+   {
+    "ar": "H6",
+    "en": "H6"
+   },
+   {
+    "ar": "جوليان",
+    "en": "Jolion"
+   },
+   {
+    "ar": "H9",
+    "en": "H9"
+   },
+   {
+    "ar": "دارجو",
+    "en": "Dargo"
+   },
+   {
+    "ar": "H2",
+    "en": "H2"
+   },
+   {
+    "ar": "H1",
+    "en": "H1"
+   },
+   {
+    "ar": "تانك 300",
+    "en": "Tank 300"
+   }
+  ],
+  "Chery": [
+   {
+    "ar": "تيجو 4",
+    "en": "Tiggo 4"
+   },
+   {
+    "ar": "تيجو 7",
+    "en": "Tiggo 7"
+   },
+   {
+    "ar": "تيجو 8",
+    "en": "Tiggo 8"
+   },
+   {
+    "ar": "اريزو 5",
+    "en": "Arrizo 5"
+   },
+   {
+    "ar": "اريزو 6",
+    "en": "Arrizo 6"
+   },
+   {
+    "ar": "تيجو 2",
+    "en": "Tiggo 2"
+   }
+  ],
+  "Bestune": [
+   {
+    "ar": "T77",
+    "en": "T77"
+   },
+   {
+    "ar": "T99",
+    "en": "T99"
+   },
+   {
+    "ar": "B70",
+    "en": "B70"
+   },
+   {
+    "ar": "T55",
+    "en": "T55"
+   }
+  ],
+  "BAIC": [
+   {
+    "ar": "X7",
+    "en": "X7"
+   },
+   {
+    "ar": "X55",
+    "en": "X55"
+   },
+   {
+    "ar": "BJ40",
+    "en": "BJ40"
+   },
+   {
+    "ar": "D50",
+    "en": "D50"
+   },
+   {
+    "ar": "U5",
+    "en": "U5"
+   }
+  ],
+  "JAC": [
+   {
+    "ar": "S3",
+    "en": "S3"
+   },
+   {
+    "ar": "S4",
+    "en": "S4"
+   },
+   {
+    "ar": "S7",
+    "en": "S7"
+   },
+   {
+    "ar": "T6",
+    "en": "T6"
+   },
+   {
+    "ar": "J7",
+    "en": "J7"
+   },
+   {
+    "ar": "T8",
+    "en": "T8"
+   }
+  ],
+  "BYD": [
+   {
+    "ar": "سونج بلس",
+    "en": "Song Plus"
+   },
+   {
+    "ar": "هان",
+    "en": "Han"
+   },
+   {
+    "ar": "تانج",
+    "en": "Tang"
+   },
+   {
+    "ar": "اتو 3",
+    "en": "Atto 3"
+   },
+   {
+    "ar": "F3",
+    "en": "F3"
+   },
+   {
+    "ar": "سيل",
+    "en": "Seal"
+   },
+   {
+    "ar": "ديستروير 05",
+    "en": "Destroyer 05"
+   },
+   {
+    "ar": "سيجل",
+    "en": "Seagull"
+   }
+  ],
+  "Great Wall": [
+   {
+    "ar": "بور",
+    "en": "Poer"
+   },
+   {
+    "ar": "وينجل",
+    "en": "Wingle"
+   },
+   {
+    "ar": "ساوثو",
+    "en": "Safe"
+   },
+   {
+    "ar": "H5",
+    "en": "H5"
+   }
+  ],
+  "FAW": [
+   {
+    "ar": "T77",
+    "en": "T77"
+   },
+   {
+    "ar": "B30",
+    "en": "B30"
+   },
+   {
+    "ar": "X80",
+    "en": "X80"
+   },
+   {
+    "ar": "بيستون",
+    "en": "Bestune"
+   }
+  ],
+  "Exeed": [
+   {
+    "ar": "TXL",
+    "en": "TXL"
+   },
+   {
+    "ar": "VX",
+    "en": "VX"
+   },
+   {
+    "ar": "LX",
+    "en": "LX"
+   },
+   {
+    "ar": "RX",
+    "en": "RX"
+   }
+  ],
+  "GAC": [
+   {
+    "ar": "GS8",
+    "en": "GS8"
+   },
+   {
+    "ar": "GS3",
+    "en": "GS3"
+   },
+   {
+    "ar": "GS4",
+    "en": "GS4"
+   },
+   {
+    "ar": "GA4",
+    "en": "GA4"
+   },
+   {
+    "ar": "GA8",
+    "en": "GA8"
+   },
+   {
+    "ar": "ايمكو",
+    "en": "Emkoo"
+   },
+   {
+    "ar": "امباو",
+    "en": "Empow"
+   },
+   {
+    "ar": "GN8",
+    "en": "GN8"
+   }
+  ],
+  "Mercedes": [
+   {
+    "ar": "C-Class",
+    "en": "C-Class"
+   },
+   {
+    "ar": "E-Class",
+    "en": "E-Class"
+   },
+   {
+    "ar": "S-Class",
+    "en": "S-Class"
+   },
+   {
+    "ar": "ML",
+    "en": "ML"
+   },
+   {
+    "ar": "GLE",
+    "en": "GLE"
+   },
+   {
+    "ar": "GLC",
+    "en": "GLC"
+   },
+   {
+    "ar": "GLS",
+    "en": "GLS"
+   },
+   {
+    "ar": "G-Class",
+    "en": "G-Class"
+   },
+   {
+    "ar": "A-Class",
+    "en": "A-Class"
+   },
+   {
+    "ar": "CLA",
+    "en": "CLA"
+   },
+   {
+    "ar": "GLA",
+    "en": "GLA"
+   },
+   {
+    "ar": "CLS",
+    "en": "CLS"
+   },
+   {
+    "ar": "سبرنتر",
+    "en": "Sprinter"
+   },
+   {
+    "ar": "فيتو",
+    "en": "Vito"
+   },
+   {
+    "ar": "GLK",
+    "en": "GLK"
+   },
+   {
+    "ar": "GL",
+    "en": "GL"
+   },
+   {
+    "ar": "SLK",
+    "en": "SLK"
+   },
+   {
+    "ar": "CLK",
+    "en": "CLK"
+   },
+   {
+    "ar": "V-Class",
+    "en": "V-Class"
+   }
+  ],
+  "BMW": [
+   {
+    "ar": "الفئة 3",
+    "en": "3 Series"
+   },
+   {
+    "ar": "الفئة 5",
+    "en": "5 Series"
+   },
+   {
+    "ar": "الفئة 7",
+    "en": "7 Series"
+   },
+   {
+    "ar": "الفئة 1",
+    "en": "1 Series"
+   },
+   {
+    "ar": "الفئة 2",
+    "en": "2 Series"
+   },
+   {
+    "ar": "الفئة 4",
+    "en": "4 Series"
+   },
+   {
+    "ar": "الفئة 6",
+    "en": "6 Series"
+   },
+   {
+    "ar": "X1",
+    "en": "X1"
+   },
+   {
+    "ar": "X3",
+    "en": "X3"
+   },
+   {
+    "ar": "X5",
+    "en": "X5"
+   },
+   {
+    "ar": "X6",
+    "en": "X6"
+   },
+   {
+    "ar": "X7",
+    "en": "X7"
+   },
+   {
+    "ar": "X4",
+    "en": "X4"
+   },
+   {
+    "ar": "Z4",
+    "en": "Z4"
+   },
+   {
+    "ar": "i8",
+    "en": "i8"
+   },
+   {
+    "ar": "iX",
+    "en": "iX"
+   }
+  ],
+  "Audi": [
+   {
+    "ar": "A3",
+    "en": "A3"
+   },
+   {
+    "ar": "A4",
+    "en": "A4"
+   },
+   {
+    "ar": "A5",
+    "en": "A5"
+   },
+   {
+    "ar": "A6",
+    "en": "A6"
+   },
+   {
+    "ar": "A7",
+    "en": "A7"
+   },
+   {
+    "ar": "A8",
+    "en": "A8"
+   },
+   {
+    "ar": "Q3",
+    "en": "Q3"
+   },
+   {
+    "ar": "Q5",
+    "en": "Q5"
+   },
+   {
+    "ar": "Q7",
+    "en": "Q7"
+   },
+   {
+    "ar": "Q8",
+    "en": "Q8"
+   },
+   {
+    "ar": "TT",
+    "en": "TT"
+   },
+   {
+    "ar": "R8",
+    "en": "R8"
+   },
+   {
+    "ar": "A1",
+    "en": "A1"
+   }
+  ],
+  "Volkswagen": [
+   {
+    "ar": "جولف",
+    "en": "Golf"
+   },
+   {
+    "ar": "باسات",
+    "en": "Passat"
+   },
+   {
+    "ar": "جيتا",
+    "en": "Jetta"
+   },
+   {
+    "ar": "تيجوان",
+    "en": "Tiguan"
+   },
+   {
+    "ar": "طوارق",
+    "en": "Touareg"
+   },
+   {
+    "ar": "بولو",
+    "en": "Polo"
+   },
+   {
+    "ar": "بيتل",
+    "en": "Beetle"
+   },
+   {
+    "ar": "اتلس",
+    "en": "Atlas"
+   },
+   {
+    "ar": "تي روك",
+    "en": "T-Roc"
+   },
+   {
+    "ar": "كادي",
+    "en": "Caddy"
+   },
+   {
+    "ar": "ترانسبورتر",
+    "en": "Transporter"
+   },
+   {
+    "ar": "شيروكو",
+    "en": "Scirocco"
+   }
+  ],
+  "Porsche": [
+   {
+    "ar": "كايين",
+    "en": "Cayenne"
+   },
+   {
+    "ar": "ماكان",
+    "en": "Macan"
+   },
+   {
+    "ar": "باناميرا",
+    "en": "Panamera"
+   },
+   {
+    "ar": "911",
+    "en": "911"
+   },
+   {
+    "ar": "تايكان",
+    "en": "Taycan"
+   },
+   {
+    "ar": "بوكستر",
+    "en": "Boxster"
+   },
+   {
+    "ar": "كايمان",
+    "en": "Cayman"
+   }
+  ],
+  "Land Rover": [
+   {
+    "ar": "رنج روفر",
+    "en": "Range Rover"
+   },
+   {
+    "ar": "رنج روفر سبورت",
+    "en": "Range Rover Sport"
+   },
+   {
+    "ar": "ديسكفري",
+    "en": "Discovery"
+   },
+   {
+    "ar": "ديفندر",
+    "en": "Defender"
+   },
+   {
+    "ar": "ايفوك",
+    "en": "Evoque"
+   },
+   {
+    "ar": "فيلار",
+    "en": "Velar"
+   },
+   {
+    "ar": "فريلاندر",
+    "en": "Freelander"
+   },
+   {
+    "ar": "ديسكفري سبورت",
+    "en": "Discovery Sport"
+   }
+  ],
+  "Jaguar": [
+   {
+    "ar": "XF",
+    "en": "XF"
+   },
+   {
+    "ar": "XJ",
+    "en": "XJ"
+   },
+   {
+    "ar": "F-Pace",
+    "en": "F-Pace"
+   },
+   {
+    "ar": "E-Pace",
+    "en": "E-Pace"
+   },
+   {
+    "ar": "F-Type",
+    "en": "F-Type"
+   },
+   {
+    "ar": "XE",
+    "en": "XE"
+   },
+   {
+    "ar": "I-Pace",
+    "en": "I-Pace"
+   },
+   {
+    "ar": "S-Type",
+    "en": "S-Type"
+   }
+  ],
+  "Volvo": [
+   {
+    "ar": "XC90",
+    "en": "XC90"
+   },
+   {
+    "ar": "XC60",
+    "en": "XC60"
+   },
+   {
+    "ar": "XC40",
+    "en": "XC40"
+   },
+   {
+    "ar": "S60",
+    "en": "S60"
+   },
+   {
+    "ar": "S90",
+    "en": "S90"
+   },
+   {
+    "ar": "V40",
+    "en": "V40"
+   },
+   {
+    "ar": "S80",
+    "en": "S80"
+   },
+   {
+    "ar": "V60",
+    "en": "V60"
+   }
+  ],
+  "Renault": [
+   {
+    "ar": "دستر",
+    "en": "Duster"
+   },
+   {
+    "ar": "ميجان",
+    "en": "Megane"
+   },
+   {
+    "ar": "لوجان",
+    "en": "Logan"
+   },
+   {
+    "ar": "سيمبول",
+    "en": "Symbol"
+   },
+   {
+    "ar": "كابتشر",
+    "en": "Captur"
+   },
+   {
+    "ar": "كوليوس",
+    "en": "Koleos"
+   },
+   {
+    "ar": "ساندرو",
+    "en": "Sandero"
+   },
+   {
+    "ar": "فلوينس",
+    "en": "Fluence"
+   },
+   {
+    "ar": "تاليسمان",
+    "en": "Talisman"
+   },
+   {
+    "ar": "كليو",
+    "en": "Clio"
+   }
+  ],
+  "Peugeot": [
+   {
+    "ar": "301",
+    "en": "301"
+   },
+   {
+    "ar": "508",
+    "en": "508"
+   },
+   {
+    "ar": "3008",
+    "en": "3008"
+   },
+   {
+    "ar": "5008",
+    "en": "5008"
+   },
+   {
+    "ar": "208",
+    "en": "208"
+   },
+   {
+    "ar": "2008",
+    "en": "2008"
+   },
+   {
+    "ar": "بارتنر",
+    "en": "Partner"
+   },
+   {
+    "ar": "407",
+    "en": "407"
+   },
+   {
+    "ar": "206",
+    "en": "206"
+   }
+  ],
+  "Citroen": [
+   {
+    "ar": "C3",
+    "en": "C3"
+   },
+   {
+    "ar": "C4",
+    "en": "C4"
+   },
+   {
+    "ar": "C5",
+    "en": "C5"
+   },
+   {
+    "ar": "سي اليزيه",
+    "en": "C-Elysee"
+   },
+   {
+    "ar": "بيرلنجو",
+    "en": "Berlingo"
+   },
+   {
+    "ar": "C3 ايركروس",
+    "en": "C3 Aircross"
+   }
+  ],
+  "Fiat": [
+   {
+    "ar": "500",
+    "en": "500"
+   },
+   {
+    "ar": "تيبو",
+    "en": "Tipo"
+   },
+   {
+    "ar": "دوبلو",
+    "en": "Doblo"
+   },
+   {
+    "ar": "بونتو",
+    "en": "Punto"
+   },
+   {
+    "ar": "بالا",
+    "en": "Palio"
+   }
+  ],
+  "Skoda": [
+   {
+    "ar": "اوكتافيا",
+    "en": "Octavia"
+   },
+   {
+    "ar": "سوبيرب",
+    "en": "Superb"
+   },
+   {
+    "ar": "كودياك",
+    "en": "Kodiaq"
+   },
+   {
+    "ar": "فابيا",
+    "en": "Fabia"
+   },
+   {
+    "ar": "رابيد",
+    "en": "Rapid"
+   },
+   {
+    "ar": "كاروك",
+    "en": "Karoq"
+   },
+   {
+    "ar": "كامك",
+    "en": "Kamiq"
+   }
+  ]
+ },
+ "parts": [
+  {
+   "name": "ابو ركب",
+   "synonyms": [
+    "حماية سفلية",
+    "غطاء سفلي",
+    "حماية مكينة",
+    "غطاء حماية المكينة"
+   ],
+   "category": "body",
+   "oem_en": "Under Engine Cover"
+  },
+  {
+   "name": "اتجاهات",
+   "synonyms": [
+    "سهم",
+    "غمازة",
+    "اشارة",
+    "اتجاه",
+    "فلاشر",
+    "غماز",
+    "سهم جانبي"
+   ],
+   "category": "body",
+   "oem_en": "Turn Signal Lamp"
+  },
+  {
+   "name": "اصطب",
+   "synonyms": [],
+   "category": "body",
+   "oem_en": "Tail Lamp / Stop Lamp"
+  },
+  {
+   "name": "باب أمامي",
+   "synonyms": [
+    "باب قدام",
+    "ضلفة امامية",
+    "باب يمين",
+    "باب يسار"
+   ],
+   "category": "body",
+   "oem_en": "Front Door"
+  },
+  {
+   "name": "باب بنزين",
+   "synonyms": [
+    "باب تانكي",
+    "باب خزان",
+    "غطا باب البنزين",
+    "باب خزان الوقود"
+   ],
+   "category": "body",
+   "oem_en": "Fuel Door"
+  },
+  {
+   "name": "باب خلفي",
+   "synonyms": [
+    "ضلفة خلفية",
+    "باب ورا",
+    "باب خلف"
+   ],
+   "category": "body",
+   "oem_en": "Rear Door"
+  },
+  {
+   "name": "باب شنطة",
+   "synonyms": [
+    "ضلفة الشنطة",
+    "غطاء شنطة",
+    "باب صندوق",
+    "باب الشنطة"
+   ],
+   "category": "body",
+   "oem_en": "Trunk Lid / Tailgate"
+  },
+  {
+   "name": "باب كهرباء",
+   "synonyms": [
+    "باب سحب",
+    "باب منزلق",
+    "باب الفان",
+    "باب جانبي"
+   ],
+   "category": "body",
+   "oem_en": "Sliding Door"
+  },
+  {
+   "name": "بالست زينون",
+   "synonyms": [
+    "بلاست زينون",
+    "بالاست",
+    "محول زينون",
+    "ballast",
+    "بلاست"
+   ],
+   "category": "body",
+   "oem_en": "Xenon Ballast"
+  },
+  {
+   "name": "بريز",
+   "synonyms": [
+    "زجاج أمامي",
+    "قزاز قدام",
+    "بريزة",
+    "قزاز امامي",
+    "زجاج الريشة"
+   ],
+   "category": "body",
+   "oem_en": "Front Windshield"
+  },
+  {
+   "name": "بطانة",
+   "synonyms": [],
+   "category": "body",
+   "oem_en": "Door Trim Panel"
+  },
+  {
+   "name": "بطانة رفرف",
+   "synonyms": [
+    "ارغول",
+    "بطانة العجل",
+    "ارغول رفرف",
+    "بطانة جنب"
+   ],
+   "category": "body",
+   "oem_en": "Fender Liner"
+  },
+  {
+   "name": "بطانة سقف",
+   "synonyms": [
+    "فرش سقف",
+    "قماش سقف",
+    "قماشة السقف",
+    "بطانة السقف"
+   ],
+   "category": "body",
+   "oem_en": "Headliner"
+  },
+  {
+   "name": "تنورة صدام",
+   "synonyms": [
+    "تحت الصدام",
+    "سبلتر",
+    "جلدة صدام",
+    "لب صدام",
+    "سكيرت صدام"
+   ],
+   "category": "body",
+   "oem_en": "Front Lip / Valance"
+  },
+  {
+   "name": "جسر صدام",
+   "synonyms": [],
+   "category": "body",
+   "oem_en": "Bumper Reinforcement Beam"
+  },
+  {
+   "name": "جناح خلفي",
+   "synonyms": [
+    "سبويلر خلفي",
+    "سبويلر",
+    "ذيل",
+    "جناح الشنطة"
+   ],
+   "category": "body",
+   "oem_en": "Rear Spoiler"
+  },
+  {
+   "name": "دعاسات",
+   "synonyms": [
+    "سجاد",
+    "دعسات",
+    "ارضية",
+    "دعاسة",
+    "ممسحات ارضية",
+    "فرشة ارضية"
+   ],
+   "category": "body",
+   "oem_en": "Floor Mats"
+  },
+  {
+   "name": "دعامة شنطة",
+   "synonyms": [
+    "مساعد شنطة",
+    "ذراع شنطة",
+    "مساعدات الشنطة",
+    "ريش شنطة",
+    "مساعد الشنطة"
+   ],
+   "category": "body",
+   "oem_en": "Trunk Strut"
+  },
+  {
+   "name": "دعامة صدام",
+   "synonyms": [
+    "حامل صدام",
+    "بركت صدام",
+    "كتف صدام",
+    "براكت صدام",
+    "قاعدة صدام"
+   ],
+   "category": "body",
+   "oem_en": "Bumper Bracket"
+  },
+  {
+   "name": "دعامة كبوت",
+   "synonyms": [
+    "عصا كبوت",
+    "مساعد كبوت",
+    "ذراع كبوت",
+    "امساك الكبوت",
+    "عصاية الكبوت"
+   ],
+   "category": "body",
+   "oem_en": "Hood Strut"
+  },
+  {
+   "name": "ديكور",
+   "synonyms": [],
+   "category": "body",
+   "oem_en": "Exterior Trim Molding"
+  },
+  {
+   "name": "ربع خلفي",
+   "synonyms": [
+    "ربع",
+    "كوارتر",
+    "ربع السيارة",
+    "صاج ربع",
+    "ربع امامي"
+   ],
+   "category": "body",
+   "oem_en": "Quarter Panel"
+  },
+  {
+   "name": "رف سقف",
+   "synonyms": [
+    "باكج",
+    "باكج سقف",
+    "حامل سقف",
+    "رف",
+    "حامل عفش"
+   ],
+   "category": "body",
+   "oem_en": "Roof Rack"
+  },
+  {
+   "name": "رفرف",
+   "synonyms": [
+    "رفارف",
+    "رفرف جنب"
+   ],
+   "category": "body",
+   "oem_en": "Fender"
+  },
+  {
+   "name": "رفرف أمامي",
+   "synonyms": [
+    "رفرف قدام",
+    "رفرف يمين",
+    "رفرف يسار",
+    "رفرف جنب"
+   ],
+   "category": "body",
+   "oem_en": "Front Fender"
+  },
+  {
+   "name": "زجاج باب",
+   "synonyms": [
+    "قزاز باب",
+    "شباك باب",
+    "زجاج شباك",
+    "زجاج الباب",
+    "قزاز الباب"
+   ],
+   "category": "body",
+   "oem_en": "Door Glass"
+  },
+  {
+   "name": "زجاج خلفي",
+   "synonyms": [
+    "قزاز خلفي",
+    "زجاج الشنطة",
+    "بريز خلفي",
+    "قزاز الشنطة"
+   ],
+   "category": "body",
+   "oem_en": "Rear Windshield"
+  },
+  {
+   "name": "زجاج مراية",
+   "synonyms": [
+    "قزاز مراية",
+    "عدسة مراية",
+    "مراية زجاج",
+    "زجاجة المراية"
+   ],
+   "category": "body",
+   "oem_en": "Mirror Glass"
+  },
+  {
+   "name": "ستوب ثالث",
+   "synonyms": [
+    "ستوب علوي",
+    "ستوب سقف",
+    "الضوء الثالث",
+    "ضوء فرامل ثالث",
+    "ستوب شنطة"
+   ],
+   "category": "body",
+   "oem_en": "Third Brake Light"
+  },
+  {
+   "name": "سقف",
+   "synonyms": [
+    "سقف السيارة",
+    "صاج سقف",
+    "سقف كامل",
+    "صاج السقف"
+   ],
+   "category": "body",
+   "oem_en": "Roof Panel"
+  },
+  {
+   "name": "شاسيه",
+   "synonyms": [
+    "شاصي",
+    "صاج شاسيه",
+    "اطار السيارة",
+    "عمود شاسيه"
+   ],
+   "category": "body",
+   "oem_en": "Chassis Frame"
+  },
+  {
+   "name": "شبك",
+   "synonyms": [],
+   "category": "body",
+   "oem_en": "Front Grille"
+  },
+  {
+   "name": "شبك امامي",
+   "synonyms": [
+    "شبك",
+    "شبك رديتر",
+    "شبك مكينة",
+    "شبك الصدام"
+   ],
+   "category": "body",
+   "oem_en": "Front Grille"
+  },
+  {
+   "name": "شمعة",
+   "synonyms": [
+    "شمعات",
+    "شمعة السيارة"
+   ],
+   "category": "body",
+   "oem_en": "Headlamp / Tail Lamp"
+  },
+  {
+   "name": "شمعة أمامية",
+   "synonyms": [
+    "فانوس",
+    "فانوس امامي",
+    "لمبة امامية",
+    "ضوء رئيسي",
+    "لايت أمامي",
+    "شمعات",
+    "شمعة قدام"
+   ],
+   "category": "body",
+   "oem_en": "Headlamp"
+  },
+  {
+   "name": "شمعة خلفية",
+   "synonyms": [
+    "اصطبات",
+    "ستوب",
+    "فانوس خلفي",
+    "ستوبات",
+    "اصطب خلفي",
+    "شمعة ورا"
+   ],
+   "category": "body",
+   "oem_en": "Tail Lamp"
+  },
+  {
+   "name": "شنطة",
+   "synonyms": [],
+   "category": "body",
+   "oem_en": "Trunk Lid"
+  },
+  {
+   "name": "شنطة داخلية",
+   "synonyms": [
+    "قاعدة شنطة",
+    "ارضية الشنطة",
+    "اسفل الشنطة",
+    "صاج الشنطة"
+   ],
+   "category": "body",
+   "oem_en": "Trunk Floor"
+  },
+  {
+   "name": "صدام",
+   "synonyms": [
+    "صدامات",
+    "مصد"
+   ],
+   "category": "body",
+   "oem_en": "Bumper"
+  },
+  {
+   "name": "صدام أمامي",
+   "synonyms": [
+    "صدام قدام",
+    "صدام"
+   ],
+   "category": "body",
+   "oem_en": "Front Bumper"
+  },
+  {
+   "name": "صدام خلفي",
+   "synonyms": [
+    "صدام ورا",
+    "صدام خلف",
+    "صدام الشنطة"
+   ],
+   "category": "body",
+   "oem_en": "Rear Bumper"
+  },
+  {
+   "name": "طبة بنزين",
+   "synonyms": [
+    "سدادة بنزين",
+    "غطاء خزان",
+    "غطا التنك",
+    "غطاء بنزين",
+    "طبة تانكي"
+   ],
+   "category": "body",
+   "oem_en": "Fuel Cap"
+  },
+  {
+   "name": "طبلون",
+   "synonyms": [],
+   "category": "body",
+   "oem_en": "Dashboard"
+  },
+  {
+   "name": "عتبة باب",
+   "synonyms": [
+    "عتبة",
+    "درجة باب",
+    "سكيرت",
+    "سكيرت جانبي",
+    "درجة",
+    "ستيب"
+   ],
+   "category": "body",
+   "oem_en": "Rocker Panel / Side Skirt"
+  },
+  {
+   "name": "غطاء ديكور",
+   "synonyms": [
+    "غطاء صدام",
+    "كفر صدام",
+    "غطاء ماسك",
+    "غطاء ماسك صدام"
+   ],
+   "category": "body",
+   "oem_en": "Bumper Trim Cover"
+  },
+  {
+   "name": "غطاء مراية",
+   "synonyms": [
+    "كفر مراية",
+    "قشرة مراية",
+    "غطا المرايا",
+    "قشرة المراية"
+   ],
+   "category": "body",
+   "oem_en": "Mirror Cover"
+  },
+  {
+   "name": "غطاء مكينة سفلي",
+   "synonyms": [
+    "غطاء بلاستيك مكينة",
+    "غطاء المكينة الداخلي",
+    "غطاء زينة المكينة"
+   ],
+   "category": "body",
+   "oem_en": "Engine Cover"
+  },
+  {
+   "name": "فتحة سقف",
+   "synonyms": [
+    "سن روف",
+    "صنروف",
+    "نافذة سقف",
+    "فتحة السقف",
+    "بانوراما"
+   ],
+   "category": "body",
+   "oem_en": "Sunroof / Panoramic Roof"
+  },
+  {
+   "name": "قزاز",
+   "synonyms": [
+    "زجاج",
+    "زجاج سيارة",
+    "قزاز سيارة"
+   ],
+   "category": "body",
+   "oem_en": "Glass / Windshield"
+  },
+  {
+   "name": "قفل شنطة",
+   "synonyms": [
+    "كلب شنطة",
+    "قفل صندوق",
+    "سوتش شنطة",
+    "قفل الشنطة"
+   ],
+   "category": "body",
+   "oem_en": "Trunk Lock"
+  },
+  {
+   "name": "قفل كبوت",
+   "synonyms": [
+    "كلب كبوت",
+    "قفل غطا المكينة",
+    "قفل الكبوت"
+   ],
+   "category": "body",
+   "oem_en": "Hood Latch"
+  },
+  {
+   "name": "كبوت",
+   "synonyms": [
+    "غطاء مكينة",
+    "غطا المكينة",
+    "كبوت امامي"
+   ],
+   "category": "body",
+   "oem_en": "Hood"
+  },
+  {
+   "name": "كبوت كامل",
+   "synonyms": [
+    "غطاء مكينة",
+    "غطا المكينة",
+    "غطاء المحرك"
+   ],
+   "category": "body",
+   "oem_en": "Hood Panel"
+  },
+  {
+   "name": "كشاف ضباب",
+   "synonyms": [
+    "شمعة ضباب",
+    "ضباب",
+    "لمبة ضباب",
+    "كشافات",
+    "فوجلايت",
+    "كشاف"
+   ],
+   "category": "body",
+   "oem_en": "Fog Lamp"
+  },
+  {
+   "name": "كونسول",
+   "synonyms": [
+    "كونسول وسط",
+    "ارمريست",
+    "تابلو وسط",
+    "مسند وسط"
+   ],
+   "category": "body",
+   "oem_en": "Center Console"
+  },
+  {
+   "name": "لمبة",
+   "synonyms": [
+    "لمبات",
+    "بلب",
+    "لمبة زينون",
+    "زينون",
+    "لمبة LED",
+    "لمبة شمعة"
+   ],
+   "category": "body",
+   "oem_en": "Bulb"
+  },
+  {
+   "name": "مراية",
+   "synonyms": [
+    "مرايا",
+    "مراية جانبية",
+    "مراية جنب",
+    "مراية يمين",
+    "مراية يسار"
+   ],
+   "category": "body",
+   "oem_en": "Side Mirror"
+  },
+  {
+   "name": "مراية داخلية",
+   "synonyms": [
+    "مراية وسط",
+    "مرايا داخلي",
+    "مراية قدام",
+    "مراية السقف"
+   ],
+   "category": "body",
+   "oem_en": "Interior Rearview Mirror"
+  },
+  {
+   "name": "مسند راس",
+   "synonyms": [
+    "مخدة كرسي",
+    "مخدة",
+    "وسادة الراس"
+   ],
+   "category": "body",
+   "oem_en": "Headrest"
+  },
+  {
+   "name": "مصدات",
+   "synonyms": [
+    "مصد",
+    "مصد جانبي",
+    "حماية جنب",
+    "مصدات الابواب"
+   ],
+   "category": "body",
+   "oem_en": "Door Edge / Side Molding"
+  },
+  {
+   "name": "مطاط باب",
+   "synonyms": [
+    "جلدة باب",
+    "لستك باب",
+    "مطاط الابواب",
+    "مطاط حواف",
+    "لستك"
+   ],
+   "category": "body",
+   "oem_en": "Door Weatherstrip"
+  },
+  {
+   "name": "مفصلة باب",
+   "synonyms": [
+    "مفصلات",
+    "مفصلة",
+    "بيبان",
+    "مفصل الباب",
+    "مفصلات الباب"
+   ],
+   "category": "body",
+   "oem_en": "Door Hinge"
+  },
+  {
+   "name": "مقاعد",
+   "synonyms": [
+    "كراسي",
+    "كرسي",
+    "كراسي السيارة",
+    "مقعد",
+    "فرش مقاعد",
+    "كنب"
+   ],
+   "category": "body",
+   "oem_en": "Seat"
+  },
+  {
+   "name": "مقبض باب",
+   "synonyms": [
+    "يد باب",
+    "يدة باب",
+    "هاندل",
+    "مسكة باب",
+    "يد الباب",
+    "مقبض"
+   ],
+   "category": "body",
+   "oem_en": "Door Handle"
+  },
+  {
+   "name": "موتور فتحة سقف",
+   "synonyms": [
+    "ماتور سن روف",
+    "موتور صنروف",
+    "ماتور الفتحة"
+   ],
+   "category": "body",
+   "oem_en": "Sunroof Motor"
+  },
+  {
+   "name": "هوك سحب",
+   "synonyms": [
+    "كلاب سحب",
+    "خطاف",
+    "كلبشة",
+    "هوك",
+    "صنارة",
+    "خطاف سحب"
+   ],
+   "category": "body",
+   "oem_en": "Tow Hook"
+  },
+  {
+   "name": "واقي طين",
+   "synonyms": [
+    "رفرف مطاط",
+    "واقي بوحل",
+    "مدافع طين",
+    "مدافع",
+    "اطراف"
+   ],
+   "category": "body",
+   "oem_en": "Mud Flap / Splash Guard"
+  },
+  {
+   "name": "اقطاب بطارية",
+   "synonyms": [
+    "وصلات بطارية",
+    "رأس بطارية",
+    "جلبة بطارية",
+    "كلبسات بطارية"
+   ],
+   "category": "mechanic",
+   "oem_en": "Battery Terminals"
+  },
+  {
+   "name": "انتركولر",
+   "synonyms": [
+    "انتر كولر",
+    "مبرد هواء",
+    "رديتر تيربو",
+    "رديتر هواء",
+    "رديتر الانتركولر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Intercooler"
+  },
+  {
+   "name": "انتينا",
+   "synonyms": [
+    "هوائي",
+    "انتنا",
+    "انتينة",
+    "هوائي راديو",
+    "انتينا سقف"
+   ],
+   "category": "mechanic",
+   "oem_en": "Antenna"
+  },
+  {
+   "name": "بخاخ ديزل",
+   "synonyms": [
+    "ديزل انجكتر",
+    "بخاخ سولار",
+    "انجكتر ديزل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Diesel Fuel Injector"
+  },
+  {
+   "name": "بخاخات",
+   "synonyms": [
+    "بخاخ",
+    "انجكتر",
+    "انجكترات",
+    "رشاشات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Fuel Injectors"
+  },
+  {
+   "name": "برمجة مفتاح",
+   "synonyms": [
+    "تشفير مفتاح",
+    "برمجة ريموت",
+    "نسخ مفتاح",
+    "تشفير ريموت"
+   ],
+   "category": "mechanic",
+   "oem_en": "Key Programming"
+  },
+  {
+   "name": "بساتم",
+   "synonyms": [
+    "مكابس",
+    "بستم",
+    "بستن",
+    "بسطم"
+   ],
+   "category": "mechanic",
+   "oem_en": "Pistons"
+  },
+  {
+   "name": "بطارية",
+   "synonyms": [
+    "بطارية سيارة",
+    "بطاريات",
+    "بطارية مكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Battery"
+  },
+  {
+   "name": "بكرة دينمو",
+   "synonyms": [
+    "بلي دينمو",
+    "بكرة الدينمو",
+    "فري ويل دينمو",
+    "بكرة فري"
+   ],
+   "category": "mechanic",
+   "oem_en": "Alternator Pulley"
+  },
+  {
+   "name": "بكرة سير",
+   "synonyms": [
+    "بكرة فاضية",
+    "بكرة مجنونة",
+    "بكرة تعليق السير",
+    "ايدلر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Idler Pulley"
+  },
+  {
+   "name": "بلف EGR",
+   "synonyms": [
+    "ايجر",
+    "EGR",
+    "فلف ايجر",
+    "صمام ايجر",
+    "صمام اعادة العادم"
+   ],
+   "category": "mechanic",
+   "oem_en": "EGR Valve"
+  },
+  {
+   "name": "بلوور مكيف",
+   "synonyms": [
+    "موتور مكيف",
+    "بلور",
+    "بلوور",
+    "مروحة كبينة",
+    "موتور بلوور",
+    "دينمو مكيف داخلي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Blower Motor"
+  },
+  {
+   "name": "بلي دبرياج",
+   "synonyms": [
+    "رمان بلي دبرياج",
+    "بلية دبرياج",
+    "بيرنق دبرياج",
+    "بلي الدبرياج"
+   ],
+   "category": "mechanic",
+   "oem_en": "Clutch Release Bearing"
+  },
+  {
+   "name": "بلي كردان",
+   "synonyms": [
+    "بلي وسط",
+    "كرسي كردان",
+    "بلية كردان",
+    "سنتر بيرنق",
+    "كرسي وسط الكردان"
+   ],
+   "category": "mechanic",
+   "oem_en": "Driveshaft Center Support Bearing"
+  },
+  {
+   "name": "بنديكس سلف",
+   "synonyms": [
+    "بندكس",
+    "بندكس سلف",
+    "سلف بنديكس",
+    "بنديكس"
+   ],
+   "category": "mechanic",
+   "oem_en": "Starter Drive (Bendix)"
+  },
+  {
+   "name": "بواجي",
+   "synonyms": [
+    "شمعات",
+    "بوجيهات",
+    "بوجي",
+    "بواجي مكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Spark Plugs"
+  },
+  {
+   "name": "بوري",
+   "synonyms": [
+    "بوق",
+    "هورن",
+    "زمور",
+    "زمارة",
+    "بوري سيارة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Horn"
+  },
+  {
+   "name": "بوستر فرامل",
+   "synonyms": [
+    "هيدروماستر",
+    "دفاية فرامل",
+    "بوستر",
+    "هيدروليك فرامل",
+    "بوستر بريك"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Booster"
+  },
+  {
+   "name": "بوشة",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Suspension Bushing"
+  },
+  {
+   "name": "بوشة مقص",
+   "synonyms": [
+    "بوش مقص",
+    "بوشات مقص",
+    "بوشة المقص"
+   ],
+   "category": "mechanic",
+   "oem_en": "Control Arm Bushing"
+  },
+  {
+   "name": "بيت ثرموستات",
+   "synonyms": [
+    "بيت الثرموستات",
+    "علبة ثرموستات",
+    "غطاء ثرموستات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Thermostat Housing"
+  },
+  {
+   "name": "بيت فلتر زيت",
+   "synonyms": [
+    "قاعدة فلتر زيت",
+    "علبة فلتر الزيت"
+   ],
+   "category": "mechanic",
+   "oem_en": "Oil Filter Housing"
+  },
+  {
+   "name": "بيرنق مكينة",
+   "synonyms": [
+    "بلنجات",
+    "بيرنقات",
+    "بلنجات كرنك",
+    "شفتات",
+    "بلانجات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Engine Bearings"
+  },
+  {
+   "name": "تابلوه عدادات",
+   "synonyms": [
+    "عدادات",
+    "كلستر",
+    "لوحة عدادات",
+    "ساعة عدادات",
+    "بنل عدادات",
+    "كلاستر",
+    "تابلو عدادات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Instrument Cluster"
+  },
+  {
+   "name": "تانكي ماء",
+   "synonyms": [
+    "خزان ماء",
+    "قربة ماء",
+    "تانكي رديتر",
+    "خزان تبريد",
+    "قدر ماء",
+    "تانك مويه"
+   ],
+   "category": "mechanic",
+   "oem_en": "Coolant Reservoir Tank"
+  },
+  {
+   "name": "تيربو",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Turbocharger"
+  },
+  {
+   "name": "ثرموستات",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Thermostat"
+  },
+  {
+   "name": "جسم دباب",
+   "synonyms": [
+    "دبة بنزين",
+    "دباب",
+    "ثروتل",
+    "جسم الخانق",
+    "دباب بنزين",
+    "دباب هوا"
+   ],
+   "category": "mechanic",
+   "oem_en": "Throttle Body"
+  },
+  {
+   "name": "جلدة دركسون",
+   "synonyms": [
+    "جلد علبة دركسون",
+    "بوت دركسون",
+    "جلدة علبة الدركسون"
+   ],
+   "category": "mechanic",
+   "oem_en": "Steering Rack Boot"
+  },
+  {
+   "name": "جلدة عكس",
+   "synonyms": [
+    "جلود عكس",
+    "جلد عكس",
+    "كفر عكس",
+    "بوت عكس",
+    "جلدة العكس"
+   ],
+   "category": "mechanic",
+   "oem_en": "CV Boot"
+  },
+  {
+   "name": "جنزير تايمن",
+   "synonyms": [
+    "جنزير مكينة",
+    "جنزير كاتينة",
+    "سلسلة التوقيت",
+    "جنزير المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Timing Chain"
+  },
+  {
+   "name": "جوان راس",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Cylinder Head Gasket"
+  },
+  {
+   "name": "جوان شكمان",
+   "synonyms": [
+    "جوان عادم",
+    "جوان مانيفولد عادم",
+    "جوان القطة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Exhaust Gasket"
+  },
+  {
+   "name": "جوان غطاء بلوف",
+   "synonyms": [
+    "جوان بلوف",
+    "جوان غطا الصبابات",
+    "جوان ركاب",
+    "جوان الصبابات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Valve Cover Gasket"
+  },
+  {
+   "name": "جوان كارتير",
+   "synonyms": [
+    "جوان حوض زيت",
+    "جوان الكارتير",
+    "جوان كرتير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Oil Pan Gasket"
+  },
+  {
+   "name": "جوان مانيفولد",
+   "synonyms": [
+    "جوان مجمع",
+    "جوان منفولد"
+   ],
+   "category": "mechanic",
+   "oem_en": "Manifold Gasket"
+  },
+  {
+   "name": "حزام امان",
+   "synonyms": [
+    "حزام",
+    "حزام مقعد",
+    "احزمة",
+    "ربطة امان",
+    "حزام الامان"
+   ],
+   "category": "mechanic",
+   "oem_en": "Seat Belt"
+  },
+  {
+   "name": "حساس اكسجين",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Oxygen (O2) Sensor"
+  },
+  {
+   "name": "حساس باب",
+   "synonyms": [
+    "سوتش باب",
+    "حساس فتح الباب",
+    "لمبة الباب"
+   ],
+   "category": "mechanic",
+   "oem_en": "Door Ajar Switch"
+  },
+  {
+   "name": "حساس حرارة",
+   "synonyms": [
+    "حساس حرارة ماء",
+    "حساس ماء",
+    "ترمستور",
+    "حساس الحرارة",
+    "حساس مويه",
+    "حساس تبريد"
+   ],
+   "category": "mechanic",
+   "oem_en": "Coolant Temperature Sensor"
+  },
+  {
+   "name": "حساس دباب",
+   "synonyms": [
+    "حساس ثروتل",
+    "TPS",
+    "حساس الدباب",
+    "حساس موضع الدباب"
+   ],
+   "category": "mechanic",
+   "oem_en": "Throttle Position Sensor"
+  },
+  {
+   "name": "حساس ركن",
+   "synonyms": [
+    "حساسات ركن",
+    "حساس باركنق",
+    "حساسات رجوع",
+    "سنسر خلفي",
+    "حساس رجوع",
+    "سنسر ركن"
+   ],
+   "category": "mechanic",
+   "oem_en": "Parking Sensor"
+  },
+  {
+   "name": "حساس زاوية دركسون",
+   "synonyms": [
+    "حساس الدركسون",
+    "حساس الزاوية",
+    "حساس الستيرنق"
+   ],
+   "category": "mechanic",
+   "oem_en": "Steering Angle Sensor"
+  },
+  {
+   "name": "حساس سرعة قير",
+   "synonyms": [
+    "حساس القير",
+    "حساس جير",
+    "حساس سرعة الجير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Transmission Speed Sensor"
+  },
+  {
+   "name": "حساس ضغط زيت",
+   "synonyms": [
+    "حساس زيت",
+    "سويتش زيت",
+    "حساس الزيت",
+    "بلف زيت لمبة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Oil Pressure Sensor / Switch"
+  },
+  {
+   "name": "حساس ضغط كفرات",
+   "synonyms": [
+    "حساس ضغط الهواء كفر",
+    "حساس TPMS",
+    "حساس هوا كفر",
+    "حساس الكفرات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Tire Pressure Sensor (TPMS)"
+  },
+  {
+   "name": "حساس ضغط مانيفولد",
+   "synonyms": [
+    "MAP",
+    "حساس ماب",
+    "حساس ضغط الهواء",
+    "حساس مجمع السحب"
+   ],
+   "category": "mechanic",
+   "oem_en": "MAP Sensor"
+  },
+  {
+   "name": "حساس طرق",
+   "synonyms": [
+    "حساس دق",
+    "نوك سنسر",
+    "حساس الدق",
+    "حساس الطرق"
+   ],
+   "category": "mechanic",
+   "oem_en": "Knock Sensor"
+  },
+  {
+   "name": "حساس كام",
+   "synonyms": [
+    "حساس عمود الكامات",
+    "حساس الكام",
+    "حساس كامات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Camshaft Position Sensor"
+  },
+  {
+   "name": "حساس كرنك",
+   "synonyms": [
+    "حساس عمود المرفق",
+    "حساس دورات",
+    "حساس سرعة المحرك",
+    "حساس الكرنك"
+   ],
+   "category": "mechanic",
+   "oem_en": "Crankshaft Position Sensor"
+  },
+  {
+   "name": "حساس مطر",
+   "synonyms": [
+    "حساس امطار",
+    "حساس مويه زجاج"
+   ],
+   "category": "mechanic",
+   "oem_en": "Rain Sensor"
+  },
+  {
+   "name": "حساس هواء",
+   "synonyms": [
+    "ماف",
+    "حساس MAF",
+    "حساس تدفق هواء",
+    "حساس الهوا",
+    "فلوميتر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Mass Air Flow Sensor"
+  },
+  {
+   "name": "حساس ABS",
+   "synonyms": [
+    "حساس طارة",
+    "حساس سرعة عجل",
+    "حساس عجلة",
+    "حساس الأبس",
+    "حساس ابس",
+    "حساس سرعة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wheel Speed Sensor"
+  },
+  {
+   "name": "حوض زيت",
+   "synonyms": [
+    "كارتير",
+    "قاعدة زيت",
+    "كرتير",
+    "اويل بان",
+    "قاعدة المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Oil Pan"
+  },
+  {
+   "name": "خرطوم تيربو",
+   "synonyms": [
+    "هوز تيربو",
+    "خرطوم انتركولر",
+    "هوز انتركولر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Turbo Hose"
+  },
+  {
+   "name": "خرطوم دركسون",
+   "synonyms": [
+    "هوز دركسون",
+    "انبوب دركسون",
+    "خرطوم الهيدروليك",
+    "هوز باور"
+   ],
+   "category": "mechanic",
+   "oem_en": "Power Steering Hose"
+  },
+  {
+   "name": "خرطوم رديتر",
+   "synonyms": [
+    "خراطيم ماء",
+    "هوز رديتر",
+    "هوزات",
+    "خرطوم تبريد"
+   ],
+   "category": "mechanic",
+   "oem_en": "Radiator Hose"
+  },
+  {
+   "name": "خرطوم فرامل",
+   "synonyms": [
+    "هوز فرامل",
+    "خراطيم فرامل",
+    "انبوب فرامل",
+    "هوز بريك"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Hose"
+  },
+  {
+   "name": "خرطوم مكيف",
+   "synonyms": [
+    "انبوب مكيف",
+    "ماسورة مكيف",
+    "هوز مكيف",
+    "خرطوم تكييف"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Hose / Line"
+  },
+  {
+   "name": "خرطوم هواء",
+   "synonyms": [
+    "خرطوم فلتر هواء",
+    "هوز هواء",
+    "ماسورة هواء",
+    "خرطوم سحب الهواء"
+   ],
+   "category": "mechanic",
+   "oem_en": "Air Intake Hose"
+  },
+  {
+   "name": "خزان بنزين",
+   "synonyms": [
+    "تانكي بنزين",
+    "تنك بنزين",
+    "خزان الوقود",
+    "تانكي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Fuel Tank"
+  },
+  {
+   "name": "دبرياج",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Clutch Kit"
+  },
+  {
+   "name": "دفرنس",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Differential"
+  },
+  {
+   "name": "ديسكات",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Brake Discs / Rotors"
+  },
+  {
+   "name": "ديسكات قير",
+   "synonyms": [
+    "دسكات القير",
+    "صحون قير",
+    "كلتشات",
+    "كلتشات القير",
+    "صحون القير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Transmission Clutch Pack"
+  },
+  {
+   "name": "دينمو",
+   "synonyms": [
+    "دينامو",
+    "مولد",
+    "الترنيتر",
+    "دينمو شحن"
+   ],
+   "category": "mechanic",
+   "oem_en": "Alternator"
+  },
+  {
+   "name": "دينمو مروحة رديتر",
+   "synonyms": [
+    "موتور مروحة",
+    "ماتور مروحة",
+    "مروحة كهرباء"
+   ],
+   "category": "mechanic",
+   "oem_en": "Radiator Fan Motor"
+  },
+  {
+   "name": "ذراع دركسون",
+   "synonyms": [
+    "دراع دركسون",
+    "تاي رود",
+    "عصا دركسون",
+    "تعليقة دركسون",
+    "ذراع التوجيه"
+   ],
+   "category": "mechanic",
+   "oem_en": "Inner Tie Rod"
+  },
+  {
+   "name": "ذراع مساحة",
+   "synonyms": [
+    "يد ماسحة",
+    "ذراع الماسحة",
+    "دراع مساحة",
+    "يد المساحة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wiper Arm"
+  },
+  {
+   "name": "راس دركسون",
+   "synonyms": [
+    "رود اند",
+    "تاي رود اند",
+    "بلية دركسون",
+    "راس التي رود"
+   ],
+   "category": "mechanic",
+   "oem_en": "Tie Rod End"
+  },
+  {
+   "name": "راس عكس",
+   "synonyms": [
+    "رؤوس عكس",
+    "راس العكس",
+    "جوينت عكس",
+    "سنتر عكس"
+   ],
+   "category": "mechanic",
+   "oem_en": "CV Joint"
+  },
+  {
+   "name": "راس مقص",
+   "synonyms": [
+    "مفصل كروي",
+    "بلية",
+    "بول جوينت",
+    "بلي مقص",
+    "جوينت",
+    "بلية مقص"
+   ],
+   "category": "mechanic",
+   "oem_en": "Ball Joint"
+  },
+  {
+   "name": "راس مكينة",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Cylinder Head"
+  },
+  {
+   "name": "رافع زجاج",
+   "synonyms": [
+    "ريجولاتور",
+    "رفاع شباك",
+    "مكينة شباك",
+    "رافعة زجاج",
+    "رافع شباك",
+    "رفاعة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Window Regulator"
+  },
+  {
+   "name": "رديتر ماء",
+   "synonyms": [
+    "رديتر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Radiator"
+  },
+  {
+   "name": "رمان بلي",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Wheel Bearing"
+  },
+  {
+   "name": "ريجولاتر دينمو",
+   "synonyms": [
+    "ريكتيفاير",
+    "منظم دينمو",
+    "فيوز دينمو",
+    "ريكتفاير",
+    "منظم الدينمو"
+   ],
+   "category": "mechanic",
+   "oem_en": "Alternator Regulator"
+  },
+  {
+   "name": "ريش",
+   "synonyms": [
+    "ريشة",
+    "بلاطة",
+    "ريش خلفية",
+    "بلاطات",
+    "ريشة خلفية"
+   ],
+   "category": "mechanic",
+   "oem_en": "Leaf Spring"
+  },
+  {
+   "name": "ريش مساحات",
+   "synonyms": [
+    "مساحات",
+    "مساحة",
+    "ماسحات",
+    "شفرات مساحات",
+    "ريشة مساحة",
+    "ريش المساحة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wiper Blades"
+  },
+  {
+   "name": "ريليه",
+   "synonyms": [
+    "ريلاي",
+    "رلاي",
+    "ريلايه",
+    "ريلي",
+    "ريلاي فيوز"
+   ],
+   "category": "mechanic",
+   "oem_en": "Relay"
+  },
+  {
+   "name": "زيت دركسون",
+   "synonyms": [
+    "زيت هيدروليك",
+    "زيت باور",
+    "زيت الدركسون"
+   ],
+   "category": "mechanic",
+   "oem_en": "Power Steering Fluid"
+  },
+  {
+   "name": "زيت دفرنس",
+   "synonyms": [
+    "زيت دبل",
+    "زيت الدفرنس",
+    "زيت تروس",
+    "زيت الدبل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Differential Gear Oil"
+  },
+  {
+   "name": "زيت فرامل",
+   "synonyms": [
+    "سائل فرامل",
+    "زيت بريك",
+    "بريك فلويد",
+    "زيت الفرامل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Fluid"
+  },
+  {
+   "name": "زيت قير",
+   "synonyms": [
+    "زيت جير",
+    "زيت جيربوكس",
+    "ATF",
+    "زيت اوتوماتيك",
+    "زيت القير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Automatic Transmission Fluid (ATF)"
+  },
+  {
+   "name": "زيت مكينة",
+   "synonyms": [
+    "زيت محرك",
+    "زيت موتور",
+    "زيت",
+    "زيت المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Engine Oil"
+  },
+  {
+   "name": "ستارة ايرباق",
+   "synonyms": [
+    "ستارة هوائية",
+    "ايرباق ستارة",
+    "اير باق سقف"
+   ],
+   "category": "mechanic",
+   "oem_en": "Curtain Airbag"
+  },
+  {
+   "name": "سكة بخاخات",
+   "synonyms": [
+    "ريل بنزين",
+    "فيول ريل",
+    "سكة بنزين",
+    "سكة الوقود"
+   ],
+   "category": "mechanic",
+   "oem_en": "Fuel Rail"
+  },
+  {
+   "name": "سلف",
+   "synonyms": [
+    "مارش",
+    "موتور سلف",
+    "سلف تشغيل",
+    "ستارتر",
+    "استارتر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Starter Motor"
+  },
+  {
+   "name": "سلك بطارية",
+   "synonyms": [
+    "كيبل بطارية",
+    "اسلاك بطارية",
+    "سلك سلف",
+    "وصلة بطارية"
+   ],
+   "category": "mechanic",
+   "oem_en": "Battery Cable"
+  },
+  {
+   "name": "سلك بواجي",
+   "synonyms": [
+    "اسلاك بواجي",
+    "وايرات بواجي",
+    "اسلاك الشمعات",
+    "وايرات الشمعة",
+    "اسلاك الكويل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Spark Plug Wires"
+  },
+  {
+   "name": "سلك هاند بريك",
+   "synonyms": [
+    "كيبل فرامل يد",
+    "سلك فرامل",
+    "كيبل هاند",
+    "سلك الهاندبريك",
+    "هاند بريك",
+    "سلك فرامل يد"
+   ],
+   "category": "mechanic",
+   "oem_en": "Parking Brake Cable"
+  },
+  {
+   "name": "سماعات",
+   "synonyms": [
+    "سماعة",
+    "سبيكر",
+    "سبيكرات",
+    "سماعات باب",
+    "سماعات السيارة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Speaker"
+  },
+  {
+   "name": "سوتش اتجاهات",
+   "synonyms": [
+    "سوتش غماز",
+    "ذراع اتجاهات",
+    "مفتاح اتجاهات",
+    "سويتش غماز",
+    "ذراع الغماز"
+   ],
+   "category": "mechanic",
+   "oem_en": "Turn Signal Switch"
+  },
+  {
+   "name": "سوتش انارة",
+   "synonyms": [
+    "سوتش اضاءة",
+    "سويتش لمبات",
+    "مفتاح اضاءة",
+    "مفتاح انارة",
+    "كونترول انارة",
+    "مفتاح الانارة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Headlight / Combination Switch"
+  },
+  {
+   "name": "سوتش فرامل",
+   "synonyms": [
+    "حساس ستوب",
+    "سويتش ستوب",
+    "سوتش ستوب",
+    "مفتاح فرامل",
+    "سويتش فرامل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Light Switch"
+  },
+  {
+   "name": "سوتش مساحات",
+   "synonyms": [
+    "ذراع مساحات",
+    "سوتش المساحة",
+    "مفتاح مساحات",
+    "سويتش مساحات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wiper Switch"
+  },
+  {
+   "name": "سولينويد سلف",
+   "synonyms": [
+    "ريلاي سلف",
+    "اوتوماتيك سلف",
+    "أتوماتيك السلف",
+    "اتوماتيك سلف",
+    "مغناطيس سلف"
+   ],
+   "category": "mechanic",
+   "oem_en": "Starter Solenoid"
+  },
+  {
+   "name": "سولينويد قير",
+   "synonyms": [
+    "سولينويدات القير",
+    "بلف قير",
+    "سولينويد جير",
+    "صمام القير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Transmission Solenoid"
+  },
+  {
+   "name": "سولينويد VVT",
+   "synonyms": [
+    "صمام VVT",
+    "فلف vvt",
+    "سولينويد تايمن",
+    "صمام التحكم بالتايمن",
+    "فيفتي",
+    "صمام التحكم بالزيت"
+   ],
+   "category": "mechanic",
+   "oem_en": "VVT Oil Control Valve"
+  },
+  {
+   "name": "سير تايمن",
+   "synonyms": [
+    "سير التوقيت",
+    "سير تايمنق",
+    "تايمن بيلت",
+    "سير الكاتينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Timing Belt"
+  },
+  {
+   "name": "سير دينمو",
+   "synonyms": [
+    "سير مروحة",
+    "سير مكيف",
+    "سير الدينمو",
+    "سير الدرايف",
+    "سير المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Serpentine / Drive Belt"
+  },
+  {
+   "name": "سيل بلوف",
+   "synonyms": [
+    "سيل صباب",
+    "كفرات صباب",
+    "سيلات صبابات",
+    "سيل الصمام"
+   ],
+   "category": "mechanic",
+   "oem_en": "Valve Stem Seals"
+  },
+  {
+   "name": "سيل دفرنس",
+   "synonyms": [
+    "سيلات دفرنس",
+    "سيل كردان",
+    "سيل بنيون",
+    "سيل الدبل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Differential Pinion Seal"
+  },
+  {
+   "name": "سيل كرنك",
+   "synonyms": [
+    "سيل مقدمة",
+    "سيل خلفي",
+    "سيل عمود كرنك",
+    "سيل مكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Crankshaft Seal"
+  },
+  {
+   "name": "شاشة",
+   "synonyms": [
+    "شاشة وسط",
+    "شاشة نافي",
+    "شاشة الراديو",
+    "شاشة سيارة",
+    "راديو",
+    "ستريو",
+    "مسجل",
+    "شاشة اندرويد"
+   ],
+   "category": "mechanic",
+   "oem_en": "Head Unit / Infotainment Screen"
+  },
+  {
+   "name": "شداد سير",
+   "synonyms": [
+    "بكرة شد",
+    "تنشنر",
+    "بلي شد",
+    "تنسيونر",
+    "بكرة سير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Belt Tensioner"
+  },
+  {
+   "name": "شريحة قير",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "TCM Lead Frame"
+  },
+  {
+   "name": "شكمان",
+   "synonyms": [
+    "كاتم",
+    "عادم",
+    "كاتم صوت",
+    "مفلر",
+    "شكمان خلفي",
+    "شكمان وسط"
+   ],
+   "category": "mechanic",
+   "oem_en": "Muffler / Exhaust Pipe"
+  },
+  {
+   "name": "شنابر",
+   "synonyms": [
+    "شنبر",
+    "رينجات",
+    "حلقات بستم",
+    "رنقات",
+    "رنجات المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Piston Rings"
+  },
+  {
+   "name": "شوز فرامل",
+   "synonyms": [
+    "سفايف",
+    "شوز",
+    "تيل طنابير",
+    "فرامل طنبور",
+    "تيل خلفي طنبور"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Shoes"
+  },
+  {
+   "name": "صبابات",
+   "synonyms": [
+    "بلوف",
+    "صمامات",
+    "سوبابات",
+    "صباب",
+    "بلف مكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Engine Valves"
+  },
+  {
+   "name": "صليب كردان",
+   "synonyms": [
+    "صلبان",
+    "صليب",
+    "صلبان كردان",
+    "كروس",
+    "صليب الكردان"
+   ],
+   "category": "mechanic",
+   "oem_en": "Universal Joint"
+  },
+  {
+   "name": "صمام تمدد",
+   "synonyms": [
+    "اكسباشن فالف",
+    "بلف مكيف",
+    "فلف تمدد",
+    "بلف تمدد"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Expansion Valve"
+  },
+  {
+   "name": "ضفيرة كهرباء",
+   "synonyms": [
+    "ضفيرة",
+    "وايرات",
+    "ضفيرة المكينة",
+    "سلوك",
+    "ضفيرة السيارة",
+    "اسلاك"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wiring Harness"
+  },
+  {
+   "name": "طرمبة بنزين",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Fuel Pump"
+  },
+  {
+   "name": "طرمبة دبرياج",
+   "synonyms": [
+    "ماستر دبرياج",
+    "طرمبة الدبرياج",
+    "ماستر كلتش",
+    "سلندر دبرياج",
+    "سلندر كلتش"
+   ],
+   "category": "mechanic",
+   "oem_en": "Clutch Master / Slave Cylinder"
+  },
+  {
+   "name": "طرمبة دركسون",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Power Steering Pump"
+  },
+  {
+   "name": "طرمبة ديزل",
+   "synonyms": [
+    "طرمبة سولار",
+    "بمب ديزل",
+    "طرمبة وقود ديزل",
+    "طرمبة الديزل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Diesel Injection Pump"
+  },
+  {
+   "name": "طرمبة رش زجاج",
+   "synonyms": [
+    "طرمبة مويه مساحات",
+    "طرمبة ماء زجاج",
+    "موتور رش",
+    "طرمبة رش",
+    "طرمبة الماسحة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Windshield Washer Pump"
+  },
+  {
+   "name": "طرمبة زيت",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Oil Pump"
+  },
+  {
+   "name": "طرمبة فرامل",
+   "synonyms": [
+    "ماستر فرامل",
+    "ماستر",
+    "طرمبة الفرامل",
+    "ماستر بريك"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Master Cylinder"
+  },
+  {
+   "name": "طرمبة ماء",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Water Pump"
+  },
+  {
+   "name": "طرمبة ماء مساعدة",
+   "synonyms": [
+    "طرمبة ماء كهرباء",
+    "طرمبة تبريد كهربائية",
+    "طرمبة مويه اضافية"
+   ],
+   "category": "mechanic",
+   "oem_en": "Auxiliary Water Pump"
+  },
+  {
+   "name": "طرمبة ABS",
+   "synonyms": [
+    "بلوك ABS",
+    "مخ ABS",
+    "وحدة ABS",
+    "هيدروليك ABS",
+    "مضخة ابس"
+   ],
+   "category": "mechanic",
+   "oem_en": "ABS Pump / Hydraulic Unit"
+  },
+  {
+   "name": "طقم تايمن",
+   "synonyms": [
+    "عدة تايمن",
+    "طقم سير تايمن",
+    "طقم تايمنق",
+    "عدة سير التوقيت"
+   ],
+   "category": "mechanic",
+   "oem_en": "Timing Belt Kit"
+  },
+  {
+   "name": "طقم تصليح سلف",
+   "synonyms": [
+    "فحمات سلف",
+    "بوشة سلف",
+    "قطع سلف",
+    "فحمات دينمو"
+   ],
+   "category": "mechanic",
+   "oem_en": "Starter Motor Repair Kit"
+  },
+  {
+   "name": "طقم جنزير",
+   "synonyms": [
+    "طقم جنزير تايمن",
+    "عدة جنزير",
+    "طقم سلسلة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Timing Chain Kit"
+  },
+  {
+   "name": "طقم جوانات",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Engine Gasket Set"
+  },
+  {
+   "name": "طقم صيانة",
+   "synonyms": [
+    "صيانة دورية",
+    "طقم زيت وفلاتر",
+    "صيانة",
+    "طقم فلاتر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Maintenance Kit"
+  },
+  {
+   "name": "طنابير",
+   "synonyms": [
+    "طنبور",
+    "طنبورة",
+    "طنابير خلفية",
+    "درم",
+    "طنبور فرامل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Drum"
+  },
+  {
+   "name": "طنجرة قير",
+   "synonyms": [
+    "تندورد جير",
+    "تنجر جير",
+    "تانجر جير",
+    "تنجر قير",
+    "طنجرة جير",
+    "بطيخة القير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Torque Converter"
+  },
+  {
+   "name": "عكس",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "CV Axle / Drive Axle"
+  },
+  {
+   "name": "علبة دركسون",
+   "synonyms": [
+    "جير دركسون"
+   ],
+   "category": "mechanic",
+   "oem_en": "Steering Rack / Gearbox"
+  },
+  {
+   "name": "علبة فيوزات",
+   "synonyms": [
+    "صندوق فيوزات",
+    "فيوز بوكس",
+    "بيت فيوزات",
+    "علبه فيوز",
+    "علبة الفيوزات",
+    "بوكس فيوز"
+   ],
+   "category": "mechanic",
+   "oem_en": "Fuse Box / Junction Block"
+  },
+  {
+   "name": "عمود توازن",
+   "synonyms": [
+    "ستابلايزر",
+    "ستبلايزر",
+    "عمود الميزان",
+    "بار ثبات",
+    "بار توازن",
+    "ستابلايزر امامي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Sway Bar / Stabilizer Bar"
+  },
+  {
+   "name": "عمود دركسون",
+   "synonyms": [
+    "عمود الدركسون",
+    "شفت دركسون",
+    "وصلة عمود دركسون",
+    "عمود التوجيه"
+   ],
+   "category": "mechanic",
+   "oem_en": "Steering Column Shaft"
+  },
+  {
+   "name": "عمود كامات",
+   "synonyms": [
+    "كام",
+    "كامشافت",
+    "عمود الكامات",
+    "كامة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Camshaft"
+  },
+  {
+   "name": "عمود كردان",
+   "synonyms": [
+    "كردان",
+    "عمود نقل",
+    "عمود الدفرنس",
+    "شفت امامي",
+    "شفت خلفي",
+    "كردان خلفي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Drive Shaft / Propeller Shaft"
+  },
+  {
+   "name": "عمود كرنك",
+   "synonyms": [
+    "كرنك",
+    "كرانك",
+    "عمود المرفق",
+    "كرنك المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Crankshaft"
+  },
+  {
+   "name": "عوامة بنزين",
+   "synonyms": [
+    "حساس بنزين",
+    "عوامة",
+    "فلوت",
+    "مؤشر بنزين",
+    "حساس خزان",
+    "عوامة التانكي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Fuel Level Sender"
+  },
+  {
+   "name": "غطاء بلوف",
+   "synonyms": [
+    "غطا صبابات",
+    "غطاء الصمامات",
+    "غطا بلوف",
+    "غطاء ركاب",
+    "غطاء صبابات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Valve Cover"
+  },
+  {
+   "name": "غطاء رديتر",
+   "synonyms": [
+    "راس رديتر",
+    "طبة رديتر",
+    "غطا الرديتر",
+    "سدادة رديتر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Radiator Cap"
+  },
+  {
+   "name": "فحمات",
+   "synonyms": [
+    "تيل فرامل",
+    "تيل",
+    "فحمات امامية",
+    "فحمات خلفية",
+    "تيل امامي",
+    "تيل خلفي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Pads"
+  },
+  {
+   "name": "فريون",
+   "synonyms": [
+    "غاز مكيف",
+    "تعبئة فريون",
+    "غاز تكييف",
+    "غاز المكيف"
+   ],
+   "category": "mechanic",
+   "oem_en": "Refrigerant R134a"
+  },
+  {
+   "name": "فلايويل",
+   "synonyms": [
+    "دولاب مكينة",
+    "دولاب الحدافة",
+    "طارة مكينة",
+    "فلاي ويل",
+    "دولاب حدافة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Flywheel"
+  },
+  {
+   "name": "فلتر بنزين",
+   "synonyms": [
+    "فلتر وقود",
+    "فلتر البنزين",
+    "فلتر طرمبة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Fuel Filter"
+  },
+  {
+   "name": "فلتر ديزل",
+   "synonyms": [
+    "فلتر سولار",
+    "فلتر الديزل",
+    "فلتر ديزل مياه"
+   ],
+   "category": "mechanic",
+   "oem_en": "Diesel Fuel Filter"
+  },
+  {
+   "name": "فلتر زيت",
+   "synonyms": [
+    "فلتر مكينة",
+    "فلتر الزيت",
+    "فلتر محرك"
+   ],
+   "category": "mechanic",
+   "oem_en": "Oil Filter"
+  },
+  {
+   "name": "فلتر قير",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Transmission Filter"
+  },
+  {
+   "name": "فلتر مكيف",
+   "synonyms": [
+    "فلتر تكييف",
+    "فلتر كبينة",
+    "فلتر غبار",
+    "فلتر المكيف",
+    "فلتر مكيف داخلي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Cabin Air Filter"
+  },
+  {
+   "name": "فلتر هواء",
+   "synonyms": [
+    "فلتر هوا",
+    "فلتر الهواء",
+    "فلتر هوا مكينة",
+    "علبة هوا"
+   ],
+   "category": "mechanic",
+   "oem_en": "Engine Air Filter"
+  },
+  {
+   "name": "فيوزات",
+   "synonyms": [
+    "فيوز",
+    "فيوزات سيارة",
+    "فيوز صغير",
+    "فيوز كبير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Fuse"
+  },
+  {
+   "name": "قاعدة جير",
+   "synonyms": [
+    "كرسي جير",
+    "كراسي القير",
+    "قواعد القير",
+    "كرسي القير",
+    "قاعدة القير"
+   ],
+   "category": "mechanic",
+   "oem_en": "Transmission Mount"
+  },
+  {
+   "name": "قاعدة عجل",
+   "synonyms": [
+    "هب",
+    "صرة",
+    "صرة عجل",
+    "هوب",
+    "مركز العجل",
+    "قاعدة الكفر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wheel Hub Assembly"
+  },
+  {
+   "name": "قطة عادم",
+   "synonyms": [
+    "قطة",
+    "كاتلك",
+    "كتلايزر",
+    "كتلست",
+    "محول حفاز",
+    "قطة الشكمان",
+    "كاتلايزر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Catalytic Converter"
+  },
+  {
+   "name": "قفل باب",
+   "synonyms": [
+    "سوتش باب",
+    "قفل مركزي",
+    "كلب باب",
+    "ماتور قفل باب",
+    "قفل الباب",
+    "كلب الباب"
+   ],
+   "category": "mechanic",
+   "oem_en": "Door Lock Actuator"
+  },
+  {
+   "name": "كاليبر",
+   "synonyms": [
+    "مقبض فرامل",
+    "كلبر",
+    "كالبر",
+    "ماسك فرامل",
+    "كلاب فرامل",
+    "كلبر امامي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Brake Caliper"
+  },
+  {
+   "name": "كاميرا خلفية",
+   "synonyms": [
+    "كاميرا ريوس",
+    "كاميرا الرجوع",
+    "كاميرا",
+    "كاميرة",
+    "كاميرا رجوع"
+   ],
+   "category": "mechanic",
+   "oem_en": "Rear View Camera"
+  },
+  {
+   "name": "كراسي مكينة",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Engine Mounts"
+  },
+  {
+   "name": "كرسي مساعد",
+   "synonyms": [
+    "قاعدة مساعد",
+    "كرسي المساعد",
+    "طاسة مساعد",
+    "بيرنق مساعد",
+    "كراسي المساعدات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Strut Mount"
+  },
+  {
+   "name": "كرونة دفرنس",
+   "synonyms": [
+    "كرونة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Crown Wheel & Pinion (Ring and Pinion)"
+  },
+  {
+   "name": "كلتش كمبروسر",
+   "synonyms": [
+    "مغناطيس كمبروسر",
+    "دائرة كمبروسر",
+    "كلتش المكيف",
+    "مغناطيس المكيف"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Compressor Clutch"
+  },
+  {
+   "name": "كمبروسر مكيف",
+   "synonyms": [
+    "كمبروسر"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Compressor"
+  },
+  {
+   "name": "كمبروسر هواء",
+   "synonyms": [
+    "كمبروسر تعليق",
+    "كمبروسر الهوا",
+    "مضخة تعليق هوائي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Air Suspension Compressor"
+  },
+  {
+   "name": "كمبيوتر القير",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "TCM (Transmission Control Module)"
+  },
+  {
+   "name": "كمبيوتر ايرباق",
+   "synonyms": [
+    "مخ الاكياس",
+    "اير باق كمبيوتر",
+    "SRS",
+    "كمبيوتر الاكياس",
+    "مخ الايرباق"
+   ],
+   "category": "mechanic",
+   "oem_en": "Airbag Control Module (SRS)"
+  },
+  {
+   "name": "كمبيوتر بودي",
+   "synonyms": [
+    "BCM",
+    "كمبيوتر الجسم",
+    "بودي كنترول",
+    "مخ البودي",
+    "كمبيوتر البودي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Body Control Module (BCM)"
+  },
+  {
+   "name": "كمبيوتر تعليق",
+   "synonyms": [
+    "مخ التعليق الهوائي",
+    "كمبيوتر المساعدات",
+    "مخ المساعدات",
+    "كمبيوتر الهوا"
+   ],
+   "category": "mechanic",
+   "oem_en": "Air Suspension Control Module"
+  },
+  {
+   "name": "كمبيوتر دبل",
+   "synonyms": [
+    "مخ الدبل",
+    "كمبيوتر علبة النقل",
+    "كمبيوتر الدفع الرباعي",
+    "مخ علبة الدبل"
+   ],
+   "category": "mechanic",
+   "oem_en": "Transfer Case Control Module"
+  },
+  {
+   "name": "كمبيوتر دركسون",
+   "synonyms": [
+    "مخ الدركسون",
+    "كمبيوتر الباور",
+    "EPS",
+    "مخ الدركسون الكهربائي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Electric Power Steering Module"
+  },
+  {
+   "name": "كمبيوتر مكينة",
+   "synonyms": [
+    "ECU",
+    "ايسي يو",
+    "مخ المكينة",
+    "مخ مكينة",
+    "كمبيوتر محرك",
+    "كمبيوتر المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Engine Control Module (ECM)"
+  },
+  {
+   "name": "كمبيوتر ABS",
+   "synonyms": [
+    "مخ الفرامل",
+    "كمبيوتر الفرامل",
+    "مخ ابس"
+   ],
+   "category": "mechanic",
+   "oem_en": "ABS Control Module"
+  },
+  {
+   "name": "كندنسر",
+   "synonyms": [
+    "رديتر مكيف",
+    "مكثف",
+    "مكثف مكيف",
+    "رديتر التكييف",
+    "رديتر كندنسر"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Condenser"
+  },
+  {
+   "name": "كونتاك",
+   "synonyms": [
+    "سوتش تشغيل",
+    "سويتش مفتاح",
+    "سوتش سلف",
+    "سويج",
+    "سوتش مفتاح",
+    "كونتاكت"
+   ],
+   "category": "mechanic",
+   "oem_en": "Ignition Switch"
+  },
+  {
+   "name": "كويل",
+   "synonyms": [
+    "كويل واحد",
+    "بوبينة",
+    "بوبين",
+    "كويل شمعة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Ignition Coil"
+  },
+  {
+   "name": "كويلات",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Ignition Coils"
+  },
+  {
+   "name": "لوحة مكيف",
+   "synonyms": [
+    "كنترول مكيف",
+    "ديجيتال مكيف",
+    "لوحة تحكم مكيف",
+    "بنل مكيف",
+    "كنترول التكييف"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Control Panel"
+  },
+  {
+   "name": "ماء رديتر",
+   "synonyms": [
+    "ماء تبريد",
+    "كولنت",
+    "مضاد تجمد",
+    "مياه رديتر",
+    "انتي فريز"
+   ],
+   "category": "mechanic",
+   "oem_en": "Engine Coolant"
+  },
+  {
+   "name": "مانيفولد سحب",
+   "synonyms": [
+    "مجمع سحب",
+    "منفولد هواء",
+    "مجمع هواء",
+    "مانيفولد هوا",
+    "منفولد سحب"
+   ],
+   "category": "mechanic",
+   "oem_en": "Intake Manifold"
+  },
+  {
+   "name": "مانيفولد عادم",
+   "synonyms": [
+    "مجمع عادم",
+    "منفولد عادم",
+    "مجمع العادم",
+    "منفولد شكمان"
+   ],
+   "category": "mechanic",
+   "oem_en": "Exhaust Manifold"
+  },
+  {
+   "name": "مبخر مكيف",
+   "synonyms": [
+    "ايفابوريتر",
+    "افاب",
+    "مبخر",
+    "ثلاجة مكيف",
+    "مبخر الكبينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Evaporator"
+  },
+  {
+   "name": "مبرد زيت",
+   "synonyms": [
+    "رديتر زيت",
+    "كولر زيت",
+    "بردان زيت",
+    "كولر المكينة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Engine Oil Cooler"
+  },
+  {
+   "name": "مجفف مكيف",
+   "synonyms": [
+    "دراير",
+    "فلتر غاز",
+    "فلتر مكيف غاز",
+    "مجفف غاز",
+    "فلتر دراير"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Receiver Drier"
+  },
+  {
+   "name": "مخ القير",
+   "synonyms": [
+    "فلف بدي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Valve Body"
+  },
+  {
+   "name": "مرن شكمان",
+   "synonyms": [
+    "مرن عادم",
+    "فلكسبل",
+    "مرنة شكمان",
+    "خرطوم شكمان",
+    "فلكس العادم"
+   ],
+   "category": "mechanic",
+   "oem_en": "Exhaust Flex Pipe"
+  },
+  {
+   "name": "مروحة رديتر",
+   "synonyms": [],
+   "category": "mechanic",
+   "oem_en": "Radiator Fan"
+  },
+  {
+   "name": "مروحة مكيف",
+   "synonyms": [
+    "مروحة كندنسر",
+    "مروحة المكيف",
+    "دينمو مروحة",
+    "مروحة امامية"
+   ],
+   "category": "mechanic",
+   "oem_en": "AC Condenser Fan"
+  },
+  {
+   "name": "مساعد هوائي",
+   "synonyms": [
+    "مساعد هواء",
+    "باك هوا",
+    "مساعد تعليق هوائي",
+    "منفاخ",
+    "كيس هواء تعليق"
+   ],
+   "category": "mechanic",
+   "oem_en": "Air Suspension Strut"
+  },
+  {
+   "name": "مساعدات",
+   "synonyms": [
+    "مساعد",
+    "مساعد امامي",
+    "مساعد خلفي",
+    "شوكات",
+    "ماص صدمات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Shock Absorbers"
+  },
+  {
+   "name": "مسامير عجل",
+   "synonyms": [
+    "برغي",
+    "مسمار جنط",
+    "مسامير جنط",
+    "عدة مسامير",
+    "مسامير الكفر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wheel Lug Nuts"
+  },
+  {
+   "name": "مضخة هواء ثانوي",
+   "synonyms": [
+    "طرمبة هواء العادم",
+    "بمب هوا",
+    "طرمبة الهواء الثانوي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Secondary Air Pump"
+  },
+  {
+   "name": "مضخم صوت",
+   "synonyms": [
+    "امبليفاير",
+    "امب",
+    "امبلفاير",
+    "مكبر صوت"
+   ],
+   "category": "mechanic",
+   "oem_en": "Audio Amplifier"
+  },
+  {
+   "name": "مفتاح ريموت",
+   "synonyms": [
+    "ريموت",
+    "مفتاح سيارة",
+    "ريموت مفتاح",
+    "قفل ريموت",
+    "ريموت السيارة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Key Fob / Remote Key"
+  },
+  {
+   "name": "مفتاح زجاج",
+   "synonyms": [
+    "سويتش شباك",
+    "مفتاح الشباك",
+    "سويتش زجاج",
+    "سوتش شباك",
+    "مفتاح الزجاج"
+   ],
+   "category": "mechanic",
+   "oem_en": "Window Switch"
+  },
+  {
+   "name": "مفتاح فتح كبوت",
+   "synonyms": [
+    "سلك كبوت",
+    "كيبل فتح الكبوت",
+    "سلك فتح الكبوت",
+    "يد فتح الكبوت"
+   ],
+   "category": "mechanic",
+   "oem_en": "Hood Release Cable"
+  },
+  {
+   "name": "مفتاح هازرد",
+   "synonyms": [
+    "سوتش طوارئ",
+    "مفتاح الطوارئ",
+    "سويتش هازارد",
+    "زر الطوارئ"
+   ],
+   "category": "mechanic",
+   "oem_en": "Hazard Switch"
+  },
+  {
+   "name": "مقاومة مكيف",
+   "synonyms": [
+    "ريزستنس",
+    "مقاومة بلوور",
+    "مقاومة مروحة المكيف",
+    "ريزيستور"
+   ],
+   "category": "mechanic",
+   "oem_en": "Blower Motor Resistor"
+  },
+  {
+   "name": "مقص",
+   "synonyms": [
+    "مقصات",
+    "مقص امامي",
+    "مقص قدام"
+   ],
+   "category": "mechanic",
+   "oem_en": "Control Arm"
+  },
+  {
+   "name": "مقص سفلي",
+   "synonyms": [
+    "مقص تحت",
+    "مقص اسفل",
+    "مقص امامي سفلي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Lower Control Arm"
+  },
+  {
+   "name": "مقص علوي",
+   "synonyms": [
+    "مقص فوق",
+    "مقص اعلى",
+    "مقص امامي علوي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Upper Control Arm"
+  },
+  {
+   "name": "موتور زجاج",
+   "synonyms": [
+    "مواتير شباك",
+    "موتور شباك",
+    "ماتور زجاج",
+    "موتور الزجاج",
+    "موتور رفع الزجاج"
+   ],
+   "category": "mechanic",
+   "oem_en": "Window Regulator Motor"
+  },
+  {
+   "name": "موتور مساحات",
+   "synonyms": [
+    "ماتور مساحة",
+    "موتور ماسحة",
+    "موتور المساحات",
+    "ماتور مساحات"
+   ],
+   "category": "mechanic",
+   "oem_en": "Wiper Motor"
+  },
+  {
+   "name": "موزع",
+   "synonyms": [
+    "ديستربيوتر",
+    "موزع كهرباء",
+    "ديسترو",
+    "موزع شرر"
+   ],
+   "category": "mechanic",
+   "oem_en": "Distributor"
+  },
+  {
+   "name": "هيتر كور",
+   "synonyms": [
+    "رديتر تدفئة",
+    "رديتر هيتر",
+    "رديتر الدفاية",
+    "رديتر داخلي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Heater Core"
+  },
+  {
+   "name": "وسادة هوائية",
+   "synonyms": [
+    "اير باق",
+    "ايرباق",
+    "وسائد هوائية",
+    "كيس هواء",
+    "airbag",
+    "اكياس هوائية"
+   ],
+   "category": "mechanic",
+   "oem_en": "Airbag"
+  },
+  {
+   "name": "وصلة ستابلايزر",
+   "synonyms": [
+    "ميزان",
+    "مسمار ستابلايزر",
+    "ميزان توازن",
+    "وصلات",
+    "جوينت ستابلايزر",
+    "وصلة ميزان"
+   ],
+   "category": "mechanic",
+   "oem_en": "Sway Bar Link"
+  },
+  {
+   "name": "ولاعة",
+   "synonyms": [
+    "ولاعة سيارة",
+    "فيشة ولاعة",
+    "مخرج 12 فولت",
+    "شاحن سيارة"
+   ],
+   "category": "mechanic",
+   "oem_en": "Cigarette Lighter / Power Outlet"
+  },
+  {
+   "name": "ياي",
+   "synonyms": [
+    "سوست",
+    "نوابض",
+    "سوسته",
+    "زنبرك",
+    "زنبلك",
+    "ياي امامي",
+    "ياي خلفي"
+   ],
+   "category": "mechanic",
+   "oem_en": "Coil Spring"
+  },
+  {
+   "name": "باب كامل مع الاكسسوار",
+   "synonyms": [
+    "باب كامل",
+    "باب مجهز",
+    "باب مع الزجاج"
+   ],
+   "category": "scrap",
+   "oem_en": "Complete Door Assembly"
+  },
+  {
+   "name": "ترس نقل الحركة",
+   "synonyms": [
+    "ترس",
+    "تروس",
+    "اطقم تروس",
+    "طقم تروس القير"
+   ],
+   "category": "scrap",
+   "oem_en": "Transmission Gear Set"
+  },
+  {
+   "name": "جير عادي",
+   "synonyms": [
+    "قير عادي",
+    "جير يدوي",
+    "قير مانيول",
+    "جير ستاندر",
+    "قير يدوي"
+   ],
+   "category": "scrap",
+   "oem_en": "Manual Transmission"
+  },
+  {
+   "name": "جير كامل",
+   "synonyms": [
+    "قير كامل",
+    "علبة تروس",
+    "جيربوكس",
+    "قير",
+    "علبة سرعة",
+    "جير اوتوماتيك",
+    "قير اوتوماتيك"
+   ],
+   "category": "scrap",
+   "oem_en": "Transmission Assembly"
+  },
+  {
+   "name": "دفرنس امامي",
+   "synonyms": [
+    "دبل امامي",
+    "دفرنس قدام",
+    "دفرنس الامامي",
+    "دبل قدام"
+   ],
+   "category": "scrap",
+   "oem_en": "Front Differential"
+  },
+  {
+   "name": "دفرنس خلفي",
+   "synonyms": [
+    "دبل خلفي",
+    "دفرنس ورا",
+    "دفرنس الخلفي",
+    "دبل ورا"
+   ],
+   "category": "scrap",
+   "oem_en": "Rear Differential"
+  },
+  {
+   "name": "سيارة تشليح",
+   "synonyms": [
+    "سيارة مصدومة",
+    "سيارة للتشليح",
+    "تشليح سيارة كاملة"
+   ],
+   "category": "scrap",
+   "oem_en": "Salvage Vehicle"
+  },
+  {
+   "name": "شاسيه كامل",
+   "synonyms": [
+    "هيكل",
+    "هيكل سيارة",
+    "هيكل كامل"
+   ],
+   "category": "scrap",
+   "oem_en": "Complete Chassis"
+  },
+  {
+   "name": "طبلون كامل",
+   "synonyms": [
+    "تابلو كامل",
+    "طبلون كامل مع الاكياس",
+    "تابلوه"
+   ],
+   "category": "scrap",
+   "oem_en": "Dashboard Assembly"
+  },
+  {
+   "name": "علبة نقل حركة",
+   "synonyms": [
+    "علبة الدبل",
+    "دبل",
+    "جير دبل",
+    "ترانسفر",
+    "علبة التوزيع",
+    "علبة نقل",
+    "علبة دبل"
+   ],
+   "category": "scrap",
+   "oem_en": "Transfer Case"
+  },
+  {
+   "name": "كمبروسر مكيف مستعمل",
+   "synonyms": [
+    "كمبروسر تشليح",
+    "كمبروسر مستعمل"
+   ],
+   "category": "scrap",
+   "oem_en": "AC Compressor (Used)"
+  },
+  {
+   "name": "كمبيوتر مستعمل",
+   "synonyms": [
+    "مخ مستعمل",
+    "كمبيوتر تشليح",
+    "مخ تشليح"
+   ],
+   "category": "scrap",
+   "oem_en": "Used ECU"
+  },
+  {
+   "name": "ماكينة كاملة",
+   "synonyms": [
+    "موتور",
+    "مكينة",
+    "محرك",
+    "ماتور",
+    "مكينة كاملة",
+    "موتور كامل"
+   ],
+   "category": "scrap",
+   "oem_en": "Engine Assembly"
+  },
+  {
+   "name": "مقاعد كاملة",
+   "synonyms": [
+    "طقم كراسي",
+    "فرش كامل",
+    "طقم مقاعد",
+    "كراسي كاملة"
+   ],
+   "category": "scrap",
+   "oem_en": "Complete Seat Set"
+  },
+  {
+   "name": "نص سيارة خلفي",
+   "synonyms": [
+    "ربع كامل",
+    "ورا كامل",
+    "خلف كامل",
+    "مؤخرة كاملة"
+   ],
+   "category": "scrap",
+   "oem_en": "Rear Clip Assembly"
+  },
+  {
+   "name": "واجهة امامية كاملة",
+   "synonyms": [
+    "ترين كامل",
+    "نص سيارة",
+    "قدام كامل",
+    "واجهة كاملة",
+    "كلاش قدام"
+   ],
+   "category": "scrap",
+   "oem_en": "Front Clip Assembly"
+  }
+ ]
+}

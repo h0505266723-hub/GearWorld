@@ -1415,7 +1415,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">اسم السيارة / الفئة</label>
-                                <input type="text" id="carModel" required class="w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none transition-all placeholder-slate-500 text-sm font-medium" placeholder="مثال: كامري، تاهو، سوناتا...">
+                                <input type="text" id="carModel" list="carModelList" autocomplete="off" required class="w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none transition-all placeholder-slate-500 text-sm font-medium" placeholder="مثال: كامري، تاهو، سوناتا...">
+                                <datalist id="carModelList"></datalist>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">الموديل (سنة الصنع)</label>
@@ -1456,7 +1457,14 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">رقم الهيكل (الشاصيه / VIN)</label>
-                            <input type="text" id="carVin" class="w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none transition-all uppercase text-left font-mono placeholder-slate-500 text-sm font-medium" dir="ltr" placeholder="اختياري (يفضل لتأكيد تطابق القطعة)">
+                            <div class="flex gap-2 items-stretch">
+                                <input type="text" id="carVin" maxlength="24" autocomplete="off" autocapitalize="characters" spellcheck="false" class="flex-1 min-w-0 w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none transition-all uppercase text-left font-mono placeholder-slate-500 text-sm font-medium" dir="ltr" placeholder="اختياري (يفضل لتأكيد تطابق القطعة)">
+                                <button type="button" id="vinScanBtn" title="مسح الاستمارة أو رقم الشاصي بالكاميرا" class="shrink-0 px-3 rounded-2xl bg-brand-500/20 text-brand-400 hover:bg-brand-500 hover:text-white border border-brand-500/40 transition-all text-xs font-bold flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-wait">
+                                    <span id="vinScanBtnIcon" aria-hidden="true">📷</span><span id="vinScanBtnLabel">مسح بالكاميرا</span>
+                                </button>
+                            </div>
+                            <input type="file" id="vinScanInput" accept="image/*" capture="environment" class="hidden" tabindex="-1" aria-hidden="true">
+                            <div id="vinDecodeBadge" class="hidden mt-2 text-xs font-bold rounded-xl px-3 py-2 border leading-relaxed" role="status" aria-live="polite"></div>
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">إرفاق صورة القطعة / الاستمارة (اختياري)</label>
@@ -1466,7 +1474,10 @@
                     
                     <div>
                         <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">القطع المطلوبة بالتفصيل</label>
-                        <textarea id="carParts" required rows="3" class="w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none transition-all resize-none placeholder-slate-500 text-sm font-medium" placeholder="اكتب أسماء القطع، مثال: طنجرة قير، فحمات أمامية، كلتشات..."></textarea>
+                        <div class="relative">
+                            <textarea id="carParts" required rows="3" autocomplete="off" class="w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none transition-all resize-none placeholder-slate-500 text-sm font-medium" placeholder="اكتب أسماء القطع، مثال: طنجرة قير، فحمات أمامية، كلتشات..."></textarea>
+                            <div id="partSuggestBox" class="hidden absolute z-30 left-0 right-0 mt-1 max-h-60 overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl shadow-black/50" role="listbox" aria-label="اقتراحات أسماء القطع"></div>
+                        </div>
                     </div>
                     
                     <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-black text-lg py-4 rounded-2xl shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:scale-[1.01] active:scale-95 transition-all mt-6 flex items-center justify-center gap-2">
@@ -2447,7 +2458,11 @@
 
         function initUrlParamsAndRouting() {
             const urlParams = new URLSearchParams(window.location.search);
-            
+            const hashRaw = String(window.location.hash || '');
+            const hashQIdx = hashRaw.indexOf('?');
+            const hashParams = hashQIdx >= 0 ? new URLSearchParams(hashRaw.slice(hashQIdx + 1)) : null;
+            const getParam = (key) => urlParams.get(key) || (hashParams ? hashParams.get(key) : null);
+
             if (urlParams.get('view') === 'register') {
                 document.getElementById('customer-view').classList.add('hidden');
                 document.getElementById('admin-view').classList.add('hidden');
@@ -2455,9 +2470,43 @@
                 setTimeout(() => document.getElementById('order-section')?.scrollIntoView({ behavior: 'instant' }), 60);
             }
 
-            const refCode = urlParams.get('ref');
+            const refCode = getParam('ref');
             if (refCode) {
                 localStorage.setItem('affiliate_ref', refCode);
+            }
+
+            const prefillBrand = getParam('brand');
+            const prefillModel = getParam('model');
+            const prefillPart = getParam('part');
+            if (prefillBrand || prefillModel || prefillPart) {
+                setTimeout(() => {
+                    if (prefillBrand) {
+                        const originEl = document.getElementById('carOrigin');
+                        const brandEl = document.getElementById('carBrandSpecific');
+                        if (originEl && brandEl) {
+                            for (const [origKey, brandsArr] of Object.entries(carBrandsData)) {
+                                if (Array.isArray(brandsArr) && brandsArr.includes(prefillBrand)) {
+                                    originEl.value = origKey;
+                                    originEl.dispatchEvent(new Event('change'));
+                                    brandEl.value = prefillBrand;
+                                    brandEl.dispatchEvent(new Event('change'));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (prefillModel) {
+                        const modelEl = document.getElementById('carModel');
+                        if (modelEl && !modelEl.value) modelEl.value = prefillModel;
+                    }
+                    if (prefillPart) {
+                        const partsEl = document.getElementById('carParts');
+                        if (partsEl && !partsEl.value) partsEl.value = prefillPart;
+                    }
+                    if (hashRaw.startsWith('#order')) {
+                        document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 120);
             }
         }
 
@@ -4338,6 +4387,534 @@
             });
         }
 
+        // =====================================================================
+        // 🔎 محرك فك رقم الشاصي (VIN) دون إنترنت + البحث الذكي للقطع (منطق نقي بلا DOM)
+        // يُختبر مباشرة من test_vin_catalog.js عبر استخراج ما بين VIN_DECODER_START/END
+        // =====================================================================
+        /* VIN_DECODER_START */
+        const VinCatalogCore = (function () {
+            const VIN_RE = /^[A-HJ-NPR-Z0-9]{17}$/;
+            const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+            const TRANSLIT = { A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, J: 1, K: 2, L: 3, M: 4, N: 5, P: 7, R: 9, S: 2, T: 3, U: 4, V: 5, W: 6, X: 7, Y: 8, Z: 9 };
+
+            // تطبيع عربي: الألف/الياء/التاء المربوطة/التشكيل/الأرقام الهندية
+            function normalizeArabic(s) {
+                return String(s == null ? '' : s)
+                    .replace(/[٠-٩]/g, (d) => String(AR_DIGITS.indexOf(d)))
+                    .toLowerCase()
+                    .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
+                    .replace(/[أإآٱ]/g, 'ا')
+                    .replace(/ى/g, 'ي')
+                    .replace(/ة/g, 'ه')
+                    .replace(/ؤ/g, 'و')
+                    .replace(/ئ/g, 'ي')
+                    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+            function compactKey(s) { return normalizeArabic(s).replace(/\s+/g, ''); }
+            function tokens(s) {
+                return normalizeArabic(s).split(' ').filter(Boolean).map((t) => (t.length > 3 && t.startsWith('ال') ? t.slice(2) : t));
+            }
+
+            // تنظيف VIN: حروف كبيرة، إزالة المسافات والرموز، I/O/Q → أرقام (لا تُستخدم أبداً في VIN)
+            function cleanVin(raw) {
+                let s = String(raw == null ? '' : raw).replace(/[٠-٩]/g, (d) => String(AR_DIGITS.indexOf(d))).toUpperCase();
+                s = s.replace(/[^A-Z0-9]/g, '');
+                const corrected = [];
+                s = s.replace(/[IOQ]/g, (ch) => { corrected.push(ch); return ch === 'I' ? '1' : '0'; });
+                return { value: s.slice(0, 17), corrected, truncated: s.length > 17 };
+            }
+            // عند اللصق: نبحث أولاً عن رقم هيكل كامل داخل النص (مثل "VIN: JTN...")
+            function extractVin(text) {
+                const up = String(text == null ? '' : text).toUpperCase().replace(/\bVIN\b/g, ' ');
+                const runs = up.match(/[A-Z0-9][A-Z0-9 \-]*[A-Z0-9]/g) || [];
+                for (const run of runs) {
+                    const c = run.replace(/[\s-]+/g, '');
+                    if (VIN_RE.test(c)) return { value: c, corrected: [], truncated: false };
+                }
+                return cleanVin(up);
+            }
+
+            function computeCheckDigit(vin, weights) {
+                let sum = 0;
+                for (let i = 0; i < 17; i++) {
+                    const ch = vin[i];
+                    const v = /\d/.test(ch) ? Number(ch) : TRANSLIT[ch];
+                    if (v === undefined) return null;
+                    sum += v * weights[i];
+                }
+                const r = sum % 11;
+                return r === 10 ? 'X' : String(r);
+            }
+
+            function prepareCatalog(cat) {
+                cat._rules = (cat.model_patterns || []).map((r) => ({ ...r, re: new RegExp(r.regex) }));
+                const lookup = {};
+                Object.keys(cat.brands || {}).forEach((key) => {
+                    const b = cat.brands[key];
+                    [key, b.ar].concat(b.aliases || []).forEach((n) => { lookup[compactKey(n)] = key; });
+                });
+                cat._brandLookup = lookup;
+                cat._partIndex = (cat.parts || []).map((p) => ({
+                    part: p,
+                    names: [p.name].concat(p.synonyms || []).map((raw) => {
+                        const tk = tokens(raw);
+                        return { raw, tokens: tk, norm: tk.join(' ') };
+                    }),
+                }));
+                return cat;
+            }
+
+            function findBrandKey(text, cat) {
+                const k = compactKey(text);
+                return k && cat._brandLookup ? cat._brandLookup[k] || null : null;
+            }
+            // يعيد الاسم العربي القياسي للطراز إن وُجد في القائمة، وإلا النص كما هو
+            function canonicalModel(brandKey, text, cat) {
+                const list = (cat.models_by_brand && cat.models_by_brand[brandKey]) || [];
+                const k = compactKey(text);
+                const hit = list.find((m) => compactKey(m.ar) === k || compactKey(m.en) === k);
+                return hit ? hit.ar : String(text || '').trim();
+            }
+
+            function pickYear(vin, cat, now) {
+                const yc = cat.year_codes || {};
+                const entry = (yc.codes || {})[vin[9]];
+                if (!entry) return { year: null, alternatives: [] };
+                const maxYear = now + (yc.max_future_years == null ? 1 : yc.max_future_years);
+                const isNA = '12345'.indexOf(vin[0]) >= 0;
+                if (isNA && /[A-Z]/.test(vin[9])) {
+                    // أمريكا الشمالية: الخانة 7 حرف ⇒ 2010+، رقم ⇒ الدورة الأقدم
+                    const modern = /[A-Z]/.test(vin[6]);
+                    const y = modern ? entry[1] : entry[0];
+                    return { year: y <= maxYear ? y : null, alternatives: entry.slice() };
+                }
+                const ok = entry.filter((y) => y <= maxYear);
+                return { year: ok.length ? ok[ok.length - 1] : null, alternatives: entry.slice() };
+            }
+
+            function decodeVin(vinRaw, cat, nowYear) {
+                const now = nowYear || new Date().getFullYear();
+                const vin = String(vinRaw == null ? '' : vinRaw).toUpperCase();
+                const out = {
+                    vin, valid_format: VIN_RE.test(vin), brand: null, brand_ar: null, origin_ar: null, country: null, country_ar: null,
+                    region: null, wmi: null, ambiguous_brand: false, brand_candidates: null, confidence: null, year: null, year_alternatives: [],
+                    year_conflict: false, model: null, model_ar: null, model_confidence: null, model_note: null, model_candidates: null,
+                    checksum: { applicable: false, valid: null, expected: null }, flags: [],
+                };
+                if (!/^[A-Z0-9]{17}$/.test(vin)) { out.flags.push('bad_format'); return out; }
+                if (!out.valid_format) out.flags.push('bad_chars');
+
+                const e = (cat.wmi || {})[vin.slice(0, 3)] || (cat.wmi || {})[vin.slice(0, 2)] || null;
+                if (e) {
+                    out.wmi = (cat.wmi[vin.slice(0, 3)] ? vin.slice(0, 3) : vin.slice(0, 2));
+                    out.brand = e.brand; out.brand_ar = e.brand_ar; out.country = e.country; out.country_ar = e.country_ar; out.region = e.region;
+                    out.confidence = e.confidence;
+                    out.origin_ar = (cat.brands[e.brand] || {}).origin_ar || null;
+                    if (e.ambiguous) { out.ambiguous_brand = true; out.brand_candidates = ['جيب', 'دودج', 'كرايسلر']; }
+                } else {
+                    out.flags.push('unknown_wmi');
+                    out.region = (cat.region_by_first_char || {})[vin[0]] || null;
+                }
+
+                const yr = pickYear(vin, cat, now);
+                out.year = yr.year; out.year_alternatives = yr.alternatives;
+                if (!yr.year) out.flags.push('year_invalid');
+
+                const rule = (cat._rules || []).find((r) => r.re.test(vin));
+                if (rule) {
+                    const b = cat.brands[rule.brand];
+                    if (b) {
+                        out.brand = rule.brand; out.brand_ar = b.ar; out.origin_ar = b.origin_ar; out.ambiguous_brand = false; out.brand_candidates = null;
+                    }
+                    out.model_confidence = rule.confidence; out.model_note = rule.note || null;
+                    if (rule.model) { out.model = rule.model; out.model_ar = rule.model_ar; }
+                    else if (rule.candidates) { out.model_candidates = rule.candidates; }
+                    if (rule.min_year && out.year && out.year < rule.min_year) {
+                        const alt = (yr.alternatives || []).find((y) => y >= rule.min_year && y <= now + 1);
+                        if (alt) out.year = alt; else { out.year_conflict = true; out.flags.push('year_conflict'); }
+                    }
+                } else if (out.brand) {
+                    out.flags.push('model_unknown');
+                }
+
+                const ck = cat.checksum || {};
+                out.checksum.applicable = (ck.applicable_first_chars || []).indexOf(vin[0]) >= 0;
+                out.checksum.expected = computeCheckDigit(vin, ck.weights || []);
+                out.checksum.valid = out.checksum.expected !== null && out.checksum.expected === vin[8];
+                if (out.checksum.applicable && !out.checksum.valid) out.flags.push('checksum_mismatch');
+                return out;
+            }
+
+            // بحث الأجزاء: الاسم المعتمد + المرادفات بتطبيع عربي (ترتيب: مطابقة تامة > بادئة > كلمة > احتواء)
+            function searchParts(index, query, limit) {
+                const qt = tokens(query);
+                const q = qt.join(' ');
+                if (!qt.length || q.replace(/\s/g, '').length < 2) return [];
+                const out = [];
+                for (const it of index) {
+                    let best = 0; let via = null;
+                    for (const n of it.names) {
+                        let s = 0;
+                        if (n.norm === q) s = 100;
+                        else if (n.norm.startsWith(q)) s = 85;
+                        else if (qt.every((t) => n.tokens.some((x) => x.startsWith(t)))) s = 70;
+                        else if (q.length >= 3 && n.norm.includes(q)) s = 50;
+                        if (s && n.raw !== it.part.name) s -= 5;
+                        if (s > best) { best = s; via = n; }
+                    }
+                    if (best > 0) out.push({ part: it.part, score: best, via: via && via.raw !== it.part.name ? via.raw : null });
+                }
+                out.sort((a, b) => b.score - a.score || a.part.name.length - b.part.name.length);
+                return out.slice(0, limit || 8);
+            }
+
+            return { VIN_RE, normalizeArabic, compactKey, cleanVin, extractVin, computeCheckDigit, prepareCatalog, findBrandKey, canonicalModel, decodeVin, searchParts };
+        })();
+        /* VIN_DECODER_END */
+
+        // =====================================================================
+        // 🧩 ربط الكتالوج + الماسح الضوئي بنموذج الطلب (تحميل كسول؛ أي فشل لا يكسر النموذج)
+        // =====================================================================
+        (function initVinSmartForm() {
+            const $el = (id) => document.getElementById(id);
+            const vinEl = $el('carVin'), partsEl = $el('carParts'), modelEl = $el('carModel'), yearEl = $el('carYear');
+            const originEl = $el('carOrigin'), brandEl = $el('carBrandSpecific'), customBrandEl = $el('customCarBrand');
+            const badgeEl = $el('vinDecodeBadge'), scanBtn = $el('vinScanBtn'), scanInput = $el('vinScanInput');
+            const sugBox = $el('partSuggestBox'), modelList = $el('carModelList'), formEl = $el('orderForm');
+            if (!vinEl || !partsEl || !modelEl || !originEl || !brandEl) return;
+
+            const CATALOG_URL = 'assets/data/vin_catalog.json';
+            let catalog = null, catalogPromise = null, catalogFailedAt = 0;
+            let autoFilling = false, vinNote = '', scanBusy = false;
+
+            function loadCatalog() {
+                if (catalog) return Promise.resolve(catalog);
+                if (catalogPromise) return catalogPromise;
+                if (catalogFailedAt && Date.now() - catalogFailedAt < 15000) return Promise.resolve(null);
+                catalogPromise = (async () => {
+                    try {
+                        const ctrl = new AbortController();
+                        const timer = setTimeout(() => ctrl.abort(), 10000);
+                        try {
+                            const res = await fetch(CATALOG_URL, { signal: ctrl.signal });
+                            if (!res.ok) throw new Error('HTTP ' + res.status);
+                            catalog = VinCatalogCore.prepareCatalog(await res.json());
+                            return catalog;
+                        } finally { clearTimeout(timer); }
+                    } catch (_err) {
+                        catalogFailedAt = Date.now();
+                        return null;
+                    } finally { catalogPromise = null; }
+                })();
+                return catalogPromise;
+            }
+
+            // ----- الشارة -----
+            const BADGE_KINDS = {
+                ok: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+                warn: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
+                info: 'bg-sky-500/10 text-sky-300 border-sky-500/30',
+            };
+            function showBadge(kind, text, title) {
+                if (!badgeEl) return;
+                badgeEl.className = 'mt-2 text-xs font-bold rounded-xl px-3 py-2 border leading-relaxed ' + (BADGE_KINDS[kind] || BADGE_KINDS.info);
+                badgeEl.textContent = text;
+                if (title) badgeEl.title = title; else badgeEl.removeAttribute('title');
+            }
+            function hideBadge() { if (badgeEl) { badgeEl.className = 'hidden'; badgeEl.textContent = ''; } }
+
+            // ----- تعبئة آمنة: فقط للحقول الفارغة أو التي لم يعدّلها المستخدم يدوياً -----
+            const canFill = (el) => !el.value || el.dataset.userEdited !== '1';
+            function markUserEdit(el, evt) { el.addEventListener(evt, () => { if (!autoFilling) el.dataset.userEdited = '1'; }); }
+            markUserEdit(originEl, 'change'); markUserEdit(brandEl, 'change'); markUserEdit(modelEl, 'input'); markUserEdit(yearEl, 'change');
+
+            function brandKeyFromForm(cat) {
+                const v = brandEl.value === 'أخرى' ? (customBrandEl ? customBrandEl.value : '') : brandEl.value;
+                return v ? VinCatalogCore.findBrandKey(v, cat) : null;
+            }
+            function setBrand(key, cat) {
+                const b = cat.brands[key];
+                if (!b) return false;
+                autoFilling = true;
+                try {
+                    originEl.value = b.origin_ar;
+                    originEl.dispatchEvent(new Event('change'));
+                    const known = (typeof carBrandsData !== 'undefined' && carBrandsData[b.origin_ar]) || [];
+                    if (known.indexOf(b.ar) >= 0) {
+                        brandEl.value = b.ar;
+                        brandEl.dispatchEvent(new Event('change'));
+                    } else {
+                        brandEl.value = 'أخرى';
+                        brandEl.dispatchEvent(new Event('change'));
+                        if (customBrandEl) customBrandEl.value = b.ar;
+                    }
+                } finally { autoFilling = false; }
+                updateModelList();
+                return true;
+            }
+            function setModel(text) {
+                autoFilling = true;
+                try { modelEl.value = text; modelEl.dispatchEvent(new Event('input')); } finally { autoFilling = false; }
+            }
+            function setYear(y) {
+                const opt = Array.from(yearEl.options).find((o) => o.value === String(y));
+                if (!opt) return false;
+                autoFilling = true;
+                try { yearEl.value = String(y); yearEl.dispatchEvent(new Event('change')); } finally { autoFilling = false; }
+                return true;
+            }
+
+            function updateModelList() {
+                if (!modelList) return;
+                if (!catalog) { loadCatalog().then((c) => { if (c) updateModelList(); }); return; }
+                const key = brandKeyFromForm(catalog);
+                const list = (key && catalog.models_by_brand[key]) || [];
+                modelList.innerHTML = '';
+                list.forEach((m) => {
+                    const o = document.createElement('option');
+                    o.value = m.ar;
+                    if (m.en && m.en !== m.ar) o.label = m.en;
+                    modelList.appendChild(o);
+                });
+            }
+            brandEl.addEventListener('change', updateModelList);
+            if (customBrandEl) customBrandEl.addEventListener('input', updateModelList);
+            modelEl.addEventListener('focus', () => { loadCatalog().then((c) => { if (c) updateModelList(); }); });
+
+            // ----- فك الرقم وملء الحقول -----
+            async function applyVinDecode(opts) {
+                const options = opts || {};
+                const vin = vinEl.value;
+                const note = vinNote ? ' ' + vinNote : '';
+                if (!vin) { hideBadge(); return null; }
+                if (vin.length < 17) { showBadge('info', 'أدخلت ' + vin.length + ' من 17 خانة' + note); return null; }
+                const cat = await loadCatalog();
+                if (vinEl.value !== vin) return null;
+                if (!cat) {
+                    showBadge('warn', 'تعذّر تحميل قاعدة التعرف على الرقم حالياً — أكمل بيانات السيارة يدوياً، والإرسال متاح.');
+                    return null;
+                }
+                const d = VinCatalogCore.decodeVin(vin, cat);
+                const prefix = options.fromScan ? '📷 ' : '';
+                const brandKnown = Boolean(d.brand) && !d.ambiguous_brand;
+                const checksumBad = d.flags.indexOf('checksum_mismatch') >= 0;
+                let kind = 'ok';
+                let msg;
+                if (!brandKnown) {
+                    kind = 'warn';
+                    msg = d.ambiguous_brand
+                        ? 'الرقم يعود لمجموعة (' + d.brand_candidates.join(' / ') + ') — اختر الماركة والطراز يدوياً (الإرسال متاح).'
+                        : 'لم نتعرف على الماركة من هذا الرقم — يمكنك تعبئة الحقول يدوياً (الإرسال متاح).';
+                    if (checksumBad) msg += ' تنبيه: رقم التحقق (الخانة 9) لا يطابق، تأكد من كتابة الرقم.';
+                } else {
+                    const yearOk = d.year && !d.year_conflict;
+                    const idText = [d.brand_ar, d.model_ar, yearOk ? String(d.year) : ''].filter(Boolean).join(' ');
+                    msg = prefix + '✓ تم التعرف: ' + idText;
+                    if (!d.model_ar) {
+                        msg += d.model_candidates
+                            ? ' — الطراز المحتمل: ' + d.model_candidates.join(' / ') + '، اختر الطراز يدوياً'
+                            : ' — اختر الطراز يدوياً';
+                    } else if (d.model_confidence === 'medium') {
+                        msg += ' (الطراز مرجّح، تأكد منه)';
+                    }
+                    if (d.year_conflict) msg += ' — تنبيه: سنة الرقم لا تنسجم مع الطراز، راجع السنة.';
+                    if (checksumBad) {
+                        kind = 'warn';
+                        msg += ' — تنبيه: رقم التحقق (الخانة 9) لا يطابق، تأكد من كتابة الرقم (لن نملأ الطراز والسنة تلقائياً).';
+                    }
+                    // الأمان: لا نملأ الطراز/السنة تلقائياً إذا فشل رقم التحقق (قد يكون خطأ كتابة)
+                    if (canFill(originEl) && canFill(brandEl)) setBrand(d.brand, cat);
+                    else {
+                        const cur = brandKeyFromForm(cat);
+                        if (cur && cur !== d.brand) { kind = 'warn'; msg += ' — الماركة المختارة تختلف عن المستنتجة من الرقم (' + d.brand_ar + ').'; }
+                    }
+                    if (!checksumBad) {
+                        if (d.model_ar && canFill(modelEl)) setModel(d.model_ar);
+                        if (yearOk && canFill(yearEl)) setYear(d.year);
+                    }
+                }
+                showBadge(kind, msg + note, d.country_ar ? 'بلد الصنع: ' + d.country_ar + (d.wmi ? ' (WMI ' + d.wmi + ')' : '') : '');
+                return d;
+            }
+
+            function onVinInput(cleaned) {
+                if (cleaned.value !== vinEl.value) vinEl.value = cleaned.value;
+                vinNote = cleaned.corrected.length
+                    ? '(صُحِّح الحرف ' + cleaned.corrected.join('/') + ' إلى رقم لأن I وO وQ لا تُستخدم في أرقام الهياكل)'
+                    : '';
+                loadCatalog();
+                applyVinDecode();
+            }
+            vinEl.addEventListener('input', () => onVinInput(VinCatalogCore.cleanVin(vinEl.value)));
+            vinEl.addEventListener('change', () => onVinInput(VinCatalogCore.cleanVin(vinEl.value)));
+            vinEl.addEventListener('focus', () => { loadCatalog(); });
+            vinEl.addEventListener('paste', (e) => {
+                const cd = e.clipboardData || window.clipboardData;
+                const text = cd ? cd.getData('text') : '';
+                if (!text) return;
+                e.preventDefault();
+                onVinInput(VinCatalogCore.extractVin(text));
+            });
+
+            // ----- إكمال أسماء القطع (القطعة الحالية بين الفواصل) -----
+            const CAT_AR = { mechanic: 'ميكانيكا/كهرباء', body: 'بودي', scrap: 'تشليح' };
+            let sugItems = [], sugIndex = -1, sugSeg = null;
+            function currentSegment() {
+                const v = partsEl.value;
+                const pos = partsEl.selectionStart == null ? v.length : partsEl.selectionStart;
+                const before = v.slice(0, pos);
+                const sep = /[\n,،؛;+]|\sو\s/g;
+                let start = 0, m;
+                while ((m = sep.exec(before))) start = m.index + m[0].length;
+                while (start < pos && /\s/.test(v[start])) start++;
+                return { start, end: pos, text: v.slice(start, pos) };
+            }
+            function hideSuggest() { if (sugBox) { sugBox.classList.add('hidden'); sugBox.innerHTML = ''; } sugItems = []; sugIndex = -1; }
+            function pickSuggestion(i) {
+                const item = sugItems[i];
+                if (!item || !sugSeg) return;
+                const v = partsEl.value;
+                const name = item.part.name;
+                partsEl.value = v.slice(0, sugSeg.start) + name + v.slice(sugSeg.end);
+                const caret = sugSeg.start + name.length;
+                partsEl.setSelectionRange(caret, caret);
+                hideSuggest();
+                partsEl.focus();
+            }
+            function highlightSuggestion() {
+                if (!sugBox) return;
+                Array.from(sugBox.children).forEach((c, i) => {
+                    c.classList.toggle('bg-brand-500/25', i === sugIndex);
+                    c.setAttribute('aria-selected', i === sugIndex ? 'true' : 'false');
+                });
+            }
+            async function renderSuggest() {
+                if (!sugBox) return;
+                const seg = currentSegment();
+                if (seg.text.length < 2) { hideSuggest(); return; }
+                const cat = await loadCatalog();
+                if (!cat) { hideSuggest(); return; }
+                const nowSeg = currentSegment();
+                if (nowSeg.text !== seg.text) return;
+                const res = VinCatalogCore.searchParts(cat._partIndex, seg.text, 8);
+                const exactOnly = res.length === 1 && !res[0].via && VinCatalogCore.normalizeArabic(res[0].part.name) === VinCatalogCore.normalizeArabic(seg.text);
+                if (!res.length || exactOnly) { hideSuggest(); return; }
+                sugItems = res; sugSeg = seg; sugIndex = -1;
+                sugBox.innerHTML = '';
+                res.forEach((r, i) => {
+                    const row = document.createElement('div');
+                    row.className = 'px-4 py-2.5 cursor-pointer hover:bg-brand-500/20 border-b border-slate-800 last:border-b-0 text-right';
+                    row.setAttribute('role', 'option');
+                    const top = document.createElement('div');
+                    top.className = 'flex items-center justify-between gap-2';
+                    const nm = document.createElement('span');
+                    nm.className = 'text-sm font-bold text-white';
+                    nm.textContent = r.part.name;
+                    const ct = document.createElement('span');
+                    ct.className = 'text-[10px] text-slate-400 font-bold shrink-0';
+                    ct.textContent = CAT_AR[r.part.category] || '';
+                    top.appendChild(nm); top.appendChild(ct);
+                    row.appendChild(top);
+                    if (r.via) {
+                        const sub = document.createElement('div');
+                        sub.className = 'text-[11px] text-slate-400 mt-0.5';
+                        sub.textContent = 'يُعرف أيضاً: ' + r.via + ' (الاسم المعتمد: ' + r.part.name + ')';
+                        row.appendChild(sub);
+                    }
+                    row.addEventListener('mousedown', (ev) => { ev.preventDefault(); pickSuggestion(i); });
+                    sugBox.appendChild(row);
+                });
+                sugBox.classList.remove('hidden');
+            }
+            partsEl.addEventListener('focus', () => { loadCatalog(); });
+            partsEl.addEventListener('input', renderSuggest);
+            partsEl.addEventListener('keydown', (e) => {
+                if (!sugItems.length) return;
+                if (e.key === 'ArrowDown') { e.preventDefault(); sugIndex = (sugIndex + 1) % sugItems.length; highlightSuggestion(); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); sugIndex = (sugIndex - 1 + sugItems.length) % sugItems.length; highlightSuggestion(); }
+                else if ((e.key === 'Enter' || e.key === 'Tab') && sugIndex >= 0) { e.preventDefault(); pickSuggestion(sugIndex); }
+                else if (e.key === 'Escape') { hideSuggest(); }
+            });
+            partsEl.addEventListener('blur', () => { setTimeout(hideSuggest, 150); });
+
+            // ----- مسح الاستمارة / رقم الشاصي بالكاميرا (AI Vision) -----
+            function setScanUi(busy) {
+                if (!scanBtn) return;
+                scanBtn.disabled = busy;
+                const icon = $el('vinScanBtnIcon'), label = $el('vinScanBtnLabel');
+                if (icon) icon.innerHTML = busy ? '<i class="fa-solid fa-spinner fa-spin"></i>' : '📷';
+                if (label) label.textContent = busy ? 'جارٍ القراءة...' : 'مسح بالكاميرا';
+            }
+            async function fillFromVision(data, cat) {
+                if (!cat) return;
+                if (!brandEl.value || brandEl.value === '') {
+                    const key = data.car_brand ? VinCatalogCore.findBrandKey(data.car_brand, cat) : null;
+                    if (key && canFill(originEl) && canFill(brandEl)) setBrand(key, cat);
+                }
+                if (!modelEl.value.trim() && data.car_model && canFill(modelEl)) {
+                    const key = brandKeyFromForm(cat);
+                    setModel(key ? VinCatalogCore.canonicalModel(key, data.car_model, cat) : String(data.car_model).trim());
+                }
+                const y = Number(data.car_year);
+                if (!yearEl.value && Number.isInteger(y) && canFill(yearEl)) setYear(y);
+            }
+            async function runVinScan(file) {
+                if (scanBusy) return;
+                scanBusy = true; setScanUi(true);
+                try {
+                    if (!file.type || !file.type.startsWith('image/')) { showBadge('warn', 'الرجاء اختيار ملف صورة صالح فقط.'); return; }
+                    showBadge('info', '⏳ جارٍ قراءة الصورة... قد يستغرق ذلك بضع ثوانٍ');
+                    let dataUrl = '';
+                    try { dataUrl = await convertImageToBase64(file); }
+                    catch (_e) { showBadge('warn', 'تعذّر فتح الصورة، جرّب صورة أخرى أو اكتب الرقم يدوياً.'); return; }
+                    const cat = await loadCatalog();
+                    const res = await fetchBotBackend('/api/vin-scan', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image_data_url: dataUrl, mime_type: 'image/jpeg' }),
+                        timeoutMs: 45000,
+                    });
+                    if (!res) { showBadge('warn', 'تعذّر الاتصال بخدمة المسح الآن. تحقق من الاتصال أو اكتب الرقم يدوياً.'); return; }
+                    let data = null;
+                    try { data = await res.json(); } catch (_e) { data = null; }
+                    if (!data || !data.success || !data.extracted_vin) {
+                        const fallback = res.status === 429
+                            ? 'تجاوزت الحد المسموح من محاولات المسح، حاول بعد قليل أو اكتب الرقم يدوياً.'
+                            : 'الصورة غير واضحة، قرّب الكاميرا أو اكتب الرقم يدوياً';
+                        showBadge('warn', (data && data.message) || fallback);
+                        return;
+                    }
+                    vinNote = '';
+                    vinEl.value = VinCatalogCore.cleanVin(data.extracted_vin).value;
+                    await applyVinDecode({ fromScan: true });
+                    await fillFromVision(data, cat);
+                } catch (_err) {
+                    showBadge('warn', 'حدث خطأ أثناء المسح. اكتب الرقم يدوياً وسيعمل الطلب بشكل طبيعي.');
+                } finally {
+                    scanBusy = false; setScanUi(false);
+                }
+            }
+            if (scanBtn && scanInput) {
+                scanBtn.addEventListener('click', () => { loadCatalog(); scanInput.click(); });
+                scanInput.addEventListener('change', () => {
+                    const f = scanInput.files && scanInput.files[0];
+                    scanInput.value = '';
+                    if (f) runVinScan(f);
+                });
+            }
+
+            if (formEl) {
+                formEl.addEventListener('reset', () => {
+                    [originEl, brandEl, modelEl, yearEl].forEach((el) => { delete el.dataset.userEdited; });
+                    vinNote = '';
+                    hideBadge(); hideSuggest();
+                    if (modelList) modelList.innerHTML = '';
+                });
+            }
+        })();
+
         document.getElementById('orderForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]'); const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الطلب...'; btn.disabled = true;
@@ -5484,11 +6061,15 @@
           })
         );
 
-        if (manifest && manifest.hasVideoSequences && manifest.sequences) {
-          const orderedSeqKeys = Object.keys(manifest.sequences).sort();
+        if (manifest && manifest.hasVideoSequences && (manifest.sequences || manifest.mobileSequences)) {
+          const activeSeqMap =
+            window.innerWidth <= 768 && manifest.mobileSequences && Object.keys(manifest.mobileSequences).length > 0
+              ? manifest.mobileSequences
+              : manifest.sequences || {};
+          const orderedSeqKeys = Object.keys(activeSeqMap).sort();
           const allUrls = [];
           for (const k of orderedSeqKeys) {
-            allUrls.push(...manifest.sequences[k].map(normalizeRelativePath));
+            allUrls.push(...activeSeqMap[k].map(normalizeRelativePath));
           }
           if (allUrls.length > 4) {
             const loadedSeq = await Promise.all(allUrls.map((u) => loadImage(u)));
