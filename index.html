@@ -1461,12 +1461,56 @@
                             <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">رقم الهيكل (الشاصيه / VIN)</label>
                             <div class="flex gap-2 items-stretch">
                                 <input type="text" id="carVin" maxlength="24" autocomplete="off" autocapitalize="characters" spellcheck="false" class="flex-1 min-w-0 w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none transition-all uppercase text-left font-mono placeholder-slate-500 text-sm font-medium" dir="ltr" placeholder="اختياري (يفضل لتأكيد تطابق القطعة)">
-                                <button type="button" id="vinScanBtn" title="مسح الاستمارة أو رقم الشاصي بالكاميرا" class="shrink-0 px-3 rounded-2xl bg-brand-500/20 text-brand-400 hover:bg-brand-500 hover:text-white border border-brand-500/40 transition-all text-xs font-bold flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-wait">
+                                <button type="button" id="vinScanBtn" title="مسح رقم الشاصي من الاستمارة أو الزجاج الأمامي أو ملصق قائم الباب" class="shrink-0 px-3 rounded-2xl bg-brand-500/20 text-brand-400 hover:bg-brand-500 hover:text-white border border-brand-500/40 transition-all text-xs font-bold flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-wait">
                                     <span id="vinScanBtnIcon" aria-hidden="true">📷</span><span id="vinScanBtnLabel">مسح بالكاميرا</span>
                                 </button>
                             </div>
                             <input type="file" id="vinScanInput" accept="image/*" capture="environment" class="hidden" tabindex="-1" aria-hidden="true">
                             <div id="vinDecodeBadge" class="hidden mt-2 text-xs font-bold rounded-xl px-3 py-2 border leading-relaxed" role="status" aria-live="polite"></div>
+                            <div id="vinConfirmCard" class="hidden mt-3 rounded-2xl border border-brand-500/40 bg-slate-900/90 p-4 shadow-xl shadow-black/40 space-y-3 transition-all" role="region" aria-label="تأكيد بيانات المركبة المستخرجة من رقم الهيكل">
+                                <div class="flex items-start justify-between gap-2">
+                                    <p id="vinConfirmSummaryText" class="text-xs md:text-sm font-black text-white leading-relaxed"></p>
+                                    <span id="vinConfirmSourceBadge" class="hidden shrink-0 text-[10px] font-bold px-2.5 py-1 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/30"></span>
+                                </div>
+                                <div id="vinConfirmStatusBanner" class="hidden text-xs font-bold text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 rounded-xl px-3 py-2">
+                                    ✅ تم اعتماد وتثبيت تفاصيل السيارة بنجاح — الحقول متاحة للتعديل إن رغبت بإضافة أي تفصيل.
+                                </div>
+                                <div id="vinConfirmActions" class="flex flex-col sm:flex-row gap-2 pt-1">
+                                    <button type="button" id="vinConfirmYesBtn" class="flex-1 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition-all shadow-md shadow-emerald-600/25 flex items-center justify-center gap-1.5">
+                                        <span>✅ نعم، هذه هي تفاصيل السيارة الصحيحة</span>
+                                    </button>
+                                    <button type="button" id="vinConfirmNoBtn" class="flex-1 px-3.5 py-2.5 rounded-xl bg-orange-600/90 hover:bg-orange-500 text-white font-black text-xs transition-all shadow-md shadow-orange-600/25 flex items-center justify-center gap-1.5">
+                                        <span>❌ لا، هذه ليست تفاصيل السيارة (تعديل يدوي)</span>
+                                    </button>
+                                </div>
+                                <div id="vinQuickEditPanel" class="hidden pt-3 border-t border-slate-700/80 space-y-3">
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <span class="text-xs font-black text-amber-300">🛠️ تعديل سريع (الماركة / الموديل / السنة) أو إعادة التصوير:</span>
+                                        <button type="button" id="vinRescanNowBtn" class="px-3 py-1.5 rounded-xl bg-brand-500/25 hover:bg-brand-500 text-brand-300 hover:text-white border border-brand-500/40 text-[11px] font-black transition-all flex items-center gap-1">
+                                            <span>📸 إعادة تصوير رقم الشاصي فوراً</span>
+                                        </button>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                        <div>
+                                            <label for="vinQuickBrandSelect" class="block text-[11px] font-bold text-slate-300 mb-1">الماركة</label>
+                                            <select id="vinQuickBrandSelect" class="w-full px-3 py-2 rounded-xl glass-input text-xs font-bold focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer"></select>
+                                        </div>
+                                        <div>
+                                            <label for="vinQuickModelSelect" class="block text-[11px] font-bold text-slate-300 mb-1">الموديل / الطراز</label>
+                                            <select id="vinQuickModelSelect" class="w-full px-3 py-2 rounded-xl glass-input text-xs font-bold focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer"></select>
+                                        </div>
+                                        <div>
+                                            <label for="vinQuickYearSelect" class="block text-[11px] font-bold text-slate-300 mb-1">سنة الصنع</label>
+                                            <select id="vinQuickYearSelect" class="w-full px-3 py-2 rounded-xl glass-input text-xs font-bold focus:ring-2 focus:ring-brand-500 outline-none cursor-pointer"></select>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end">
+                                        <button type="button" id="vinQuickApplyBtn" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black transition-all">
+                                            ✔️ اعتماد التعديل والانتقال لكتابة القطعة
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-200 mb-1.5 ml-1">إرفاق صورة القطعة / الاستمارة (اختياري)</label>
@@ -4427,13 +4471,17 @@
                 s = s.replace(/[IOQ]/g, (ch) => { corrected.push(ch); return ch === 'I' ? '1' : '0'; });
                 return { value: s.slice(0, 17), corrected, truncated: s.length > 17 };
             }
-            // عند اللصق: نبحث أولاً عن رقم هيكل كامل داخل النص (مثل "VIN: JTN...")
+            // عند اللصق: نبحث أولاً عن رقم هيكل كامل داخل النص (مثل "VIN: JTN...") مع تصحيح I/O/Q إن وجدت
             function extractVin(text) {
                 const up = String(text == null ? '' : text).toUpperCase().replace(/\bVIN\b/g, ' ');
                 const runs = up.match(/[A-Z0-9][A-Z0-9 \-]*[A-Z0-9]/g) || [];
                 for (const run of runs) {
                     const c = run.replace(/[\s-]+/g, '');
                     if (VIN_RE.test(c)) return { value: c, corrected: [], truncated: false };
+                }
+                for (const run of runs) {
+                    const c = run.replace(/[\s-]+/g, '');
+                    if (c.length === 17 && /^[A-Z0-9]{17}$/.test(c)) return cleanVin(c);
                 }
                 return cleanVin(up);
             }
@@ -4584,12 +4632,25 @@
             const vinEl = $el('carVin'), partsEl = $el('carParts'), modelEl = $el('carModel'), yearEl = $el('carYear');
             const originEl = $el('carOrigin'), brandEl = $el('carBrandSpecific'), customBrandEl = $el('customCarBrand');
             const badgeEl = $el('vinDecodeBadge'), scanBtn = $el('vinScanBtn'), scanInput = $el('vinScanInput');
+            const confirmCardEl = $el('vinConfirmCard'), confirmSummaryEl = $el('vinConfirmSummaryText');
+            const confirmSourceBadgeEl = $el('vinConfirmSourceBadge'), confirmStatusBannerEl = $el('vinConfirmStatusBanner');
+            const confirmYesBtn = $el('vinConfirmYesBtn'), confirmNoBtn = $el('vinConfirmNoBtn');
+            const quickEditPanelEl = $el('vinQuickEditPanel'), rescanNowBtn = $el('vinRescanNowBtn');
+            const quickBrandSelect = $el('vinQuickBrandSelect'), quickModelSelect = $el('vinQuickModelSelect');
+            const quickYearSelect = $el('vinQuickYearSelect'), quickApplyBtn = $el('vinQuickApplyBtn');
             const sugBox = $el('partSuggestBox'), modelList = $el('carModelList'), formEl = $el('orderForm');
             if (!vinEl || !partsEl || !modelEl || !originEl || !brandEl) return;
 
             const CATALOG_URL = 'assets/data/vin_catalog.json';
             let catalog = null, catalogPromise = null, catalogFailedAt = 0;
             let autoFilling = false, vinNote = '', scanBusy = false;
+            let lastDecodedVinObj = null, lastVisionScanData = null;
+
+            const VIN_SOURCE_LABELS = {
+                istimara: '📄 استمارة السيارة',
+                windshield_plate: '🚘 الزجاج الأمامي',
+                door_jamb_sticker: '🏷️ ملصق قائم الباب',
+            };
 
             function loadCatalog() {
                 if (catalog) return Promise.resolve(catalog);
@@ -4627,9 +4688,216 @@
             }
             function hideBadge() { if (badgeEl) { badgeEl.className = 'hidden'; badgeEl.textContent = ''; } }
 
+            function hideConfirmCard() {
+                if (!confirmCardEl) return;
+                confirmCardEl.classList.add('hidden');
+                if (confirmStatusBannerEl) confirmStatusBannerEl.classList.add('hidden');
+                if (quickEditPanelEl) quickEditPanelEl.classList.add('hidden');
+                if (confirmSourceBadgeEl) { confirmSourceBadgeEl.classList.add('hidden'); confirmSourceBadgeEl.textContent = ''; }
+                delete vinEl.dataset.vinConfirmed;
+            }
+
+            function getCurrentVehicleSummaryParts(d, vData) {
+                const formBrand = brandEl.value === 'أخرى'
+                    ? (customBrandEl && customBrandEl.value ? customBrandEl.value.trim() : '')
+                    : (brandEl.value || '').trim();
+                const brandText = formBrand || (d && d.brand_ar) || (vData && vData.car_brand) || 'غير محدد';
+                const modelText = (modelEl.value || '').trim() || (d && d.model_ar) || (vData && vData.car_model) || 'غير محدد';
+                const yearText = (yearEl.value || '').trim() || (d && d.year && !d.year_conflict ? String(d.year) : '') || (vData && vData.car_year ? String(vData.car_year) : '') || 'غير محدد';
+                const vinText = (vinEl.value || '').trim();
+                return { brandText, modelText, yearText, vinText };
+            }
+
+            function updateConfirmSummaryText() {
+                if (!confirmSummaryEl) return;
+                const { brandText, modelText, yearText, vinText } = getCurrentVehicleSummaryParts(lastDecodedVinObj, lastVisionScanData);
+                if (!vinText || vinText.length < 17) return;
+                confirmSummaryEl.textContent =
+                    'تم التعرف على المركبة: ' + brandText + ' ' + modelText + ' — موديل ' + yearText + ' | رقم الهيكل: ' + vinText;
+            }
+
+            function populateQuickEditSelectors(cat) {
+                if (!quickBrandSelect || !quickModelSelect || !quickYearSelect) return;
+                // 1) الماركات
+                quickBrandSelect.innerHTML = '';
+                const placeholderBrand = document.createElement('option');
+                placeholderBrand.value = '';
+                placeholderBrand.textContent = 'اختر الماركة...';
+                placeholderBrand.className = 'bg-slate-900 text-slate-400';
+                quickBrandSelect.appendChild(placeholderBrand);
+
+                if (cat && cat.brands) {
+                    Object.keys(cat.brands).forEach((bKey) => {
+                        const bObj = cat.brands[bKey];
+                        const opt = document.createElement('option');
+                        opt.value = bKey;
+                        opt.textContent = bObj.ar + (bObj.origin_ar ? ' (' + bObj.origin_ar + ')' : '');
+                        opt.className = 'bg-slate-900 text-slate-100';
+                        quickBrandSelect.appendChild(opt);
+                    });
+                }
+                const curBrandKey = cat ? brandKeyFromForm(cat) || (lastDecodedVinObj && lastDecodedVinObj.brand) : null;
+                if (curBrandKey) quickBrandSelect.value = curBrandKey;
+
+                // 2) الموديلات حسب الماركة
+                populateQuickModelSelector(cat, quickBrandSelect.value);
+
+                // 3) السنوات
+                quickYearSelect.innerHTML = '';
+                Array.from(yearEl.options).forEach((yo) => {
+                    const opt = document.createElement('option');
+                    opt.value = yo.value;
+                    opt.textContent = yo.textContent;
+                    opt.disabled = yo.disabled;
+                    opt.className = 'bg-slate-900 text-slate-100';
+                    quickYearSelect.appendChild(opt);
+                });
+                if (yearEl.value) quickYearSelect.value = yearEl.value;
+            }
+
+            function populateQuickModelSelector(cat, brandKey) {
+                if (!quickModelSelect) return;
+                quickModelSelect.innerHTML = '';
+                const firstOpt = document.createElement('option');
+                firstOpt.value = '';
+                firstOpt.textContent = 'اختر الموديل أو اكتب بالأسفل...';
+                firstOpt.className = 'bg-slate-900 text-slate-400';
+                quickModelSelect.appendChild(firstOpt);
+
+                const list = (cat && brandKey && cat.models_by_brand && cat.models_by_brand[brandKey]) || [];
+                const curModel = (modelEl.value || '').trim();
+                let foundCurrent = false;
+                list.forEach((m) => {
+                    const opt = document.createElement('option');
+                    opt.value = m.ar;
+                    opt.textContent = m.en && m.en !== m.ar ? m.ar + ' (' + m.en + ')' : m.ar;
+                    opt.className = 'bg-slate-900 text-slate-100';
+                    if (curModel && (m.ar === curModel || m.en === curModel)) foundCurrent = true;
+                    quickModelSelect.appendChild(opt);
+                });
+                if (curModel && !foundCurrent) {
+                    const customOpt = document.createElement('option');
+                    customOpt.value = curModel;
+                    customOpt.textContent = curModel;
+                    customOpt.className = 'bg-slate-900 text-slate-100';
+                    quickModelSelect.appendChild(customOpt);
+                }
+                if (curModel) quickModelSelect.value = curModel;
+            }
+
+            function showConfirmCard(d, vData, options) {
+                if (!confirmCardEl) return;
+                lastDecodedVinObj = d || lastDecodedVinObj;
+                lastVisionScanData = vData || lastVisionScanData;
+                updateConfirmSummaryText();
+                if (confirmSourceBadgeEl) {
+                    const srcKey = vData && vData.vin_source;
+                    const srcLabel = (srcKey && VIN_SOURCE_LABELS[srcKey]) || (options && options.fromScan ? '📷 مسح ضوئي للشاصي' : '🔎 فك تلقائي للشاصي');
+                    const codeSuffix = vData && vData.chassis_code ? ' • كود: ' + vData.chassis_code : '';
+                    confirmSourceBadgeEl.textContent = srcLabel + codeSuffix;
+                    confirmSourceBadgeEl.classList.remove('hidden');
+                }
+                if (confirmStatusBannerEl) confirmStatusBannerEl.classList.add('hidden');
+                if (quickEditPanelEl) quickEditPanelEl.classList.add('hidden');
+                confirmCardEl.classList.remove('hidden');
+            }
+
+            function focusPartInputField() {
+                if (!partsEl) return;
+                try {
+                    partsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } catch (_e) { /* ignore */ }
+                partsEl.focus();
+                partsEl.classList.add('ring-2', 'ring-emerald-400');
+                setTimeout(() => { partsEl.classList.remove('ring-2', 'ring-emerald-400'); }, 1800);
+            }
+
+            if (confirmYesBtn) {
+                confirmYesBtn.addEventListener('click', () => {
+                    vinEl.dataset.vinConfirmed = '1';
+                    if (quickEditPanelEl) quickEditPanelEl.classList.add('hidden');
+                    if (confirmStatusBannerEl) confirmStatusBannerEl.classList.remove('hidden');
+                    // إبقاء جميع حقول المركبة قابلة للتعديل بحرية تامة
+                    [originEl, brandEl, modelEl, yearEl].forEach((el) => { if (el) el.disabled = false; });
+                    updateConfirmSummaryText();
+                    focusPartInputField();
+                });
+            }
+
+            if (confirmNoBtn) {
+                confirmNoBtn.addEventListener('click', async () => {
+                    vinEl.dataset.vinConfirmed = '0';
+                    if (confirmStatusBannerEl) confirmStatusBannerEl.classList.add('hidden');
+                    const cat = await loadCatalog();
+                    populateQuickEditSelectors(cat);
+                    if (quickEditPanelEl) {
+                        quickEditPanelEl.classList.remove('hidden');
+                        if (quickBrandSelect) quickBrandSelect.focus();
+                    }
+                });
+            }
+
+            if (quickBrandSelect) {
+                quickBrandSelect.addEventListener('change', async () => {
+                    const cat = await loadCatalog();
+                    const bKey = quickBrandSelect.value;
+                    if (cat && bKey) {
+                        setBrand(bKey, cat);
+                        brandEl.dataset.userEdited = '1';
+                        originEl.dataset.userEdited = '1';
+                        populateQuickModelSelector(cat, bKey);
+                    }
+                    updateConfirmSummaryText();
+                });
+            }
+
+            if (quickModelSelect) {
+                quickModelSelect.addEventListener('change', () => {
+                    if (quickModelSelect.value) {
+                        setModel(quickModelSelect.value);
+                        modelEl.dataset.userEdited = '1';
+                    }
+                    updateConfirmSummaryText();
+                });
+            }
+
+            if (quickYearSelect) {
+                quickYearSelect.addEventListener('change', () => {
+                    if (quickYearSelect.value) {
+                        setYear(quickYearSelect.value);
+                        yearEl.dataset.userEdited = '1';
+                    }
+                    updateConfirmSummaryText();
+                });
+            }
+
+            if (quickApplyBtn) {
+                quickApplyBtn.addEventListener('click', () => {
+                    vinEl.dataset.vinConfirmed = '1';
+                    if (quickEditPanelEl) quickEditPanelEl.classList.add('hidden');
+                    if (confirmStatusBannerEl) confirmStatusBannerEl.classList.remove('hidden');
+                    updateConfirmSummaryText();
+                    focusPartInputField();
+                });
+            }
+
+            if (rescanNowBtn && scanInput) {
+                rescanNowBtn.addEventListener('click', () => {
+                    loadCatalog();
+                    scanInput.click();
+                });
+            }
+
             // ----- تعبئة آمنة: فقط للحقول الفارغة أو التي لم يعدّلها المستخدم يدوياً -----
             const canFill = (el) => !el.value || el.dataset.userEdited !== '1';
-            function markUserEdit(el, evt) { el.addEventListener(evt, () => { if (!autoFilling) el.dataset.userEdited = '1'; }); }
+            function markUserEdit(el, evt) {
+                el.addEventListener(evt, () => {
+                    if (!autoFilling) {
+                        el.dataset.userEdited = '1';
+                        updateConfirmSummaryText();
+                    }
+                });
+            }
             markUserEdit(originEl, 'change'); markUserEdit(brandEl, 'change'); markUserEdit(modelEl, 'input'); markUserEdit(yearEl, 'change');
 
             function brandKeyFromForm(cat) {
@@ -4690,8 +4958,12 @@
                 const options = opts || {};
                 const vin = vinEl.value;
                 const note = vinNote ? ' ' + vinNote : '';
-                if (!vin) { hideBadge(); return null; }
-                if (vin.length < 17) { showBadge('info', 'أدخلت ' + vin.length + ' من 17 خانة' + note); return null; }
+                if (!vin) { hideBadge(); hideConfirmCard(); return null; }
+                if (vin.length < 17) {
+                    hideConfirmCard();
+                    showBadge('info', 'أدخلت ' + vin.length + ' من 17 خانة' + note);
+                    return null;
+                }
                 const cat = await loadCatalog();
                 if (vinEl.value !== vin) return null;
                 if (!cat) {
@@ -4727,17 +4999,20 @@
                         msg += ' — تنبيه: رقم التحقق (الخانة 9) لا يطابق، تأكد من كتابة الرقم (لن نملأ الطراز والسنة تلقائياً).';
                     }
                     // الأمان: لا نملأ الطراز/السنة تلقائياً إذا فشل رقم التحقق (قد يكون خطأ كتابة)
-                    if (canFill(originEl) && canFill(brandEl)) setBrand(d.brand, cat);
+                    if (options.forceFill || (canFill(originEl) && canFill(brandEl))) setBrand(d.brand, cat);
                     else {
                         const cur = brandKeyFromForm(cat);
                         if (cur && cur !== d.brand) { kind = 'warn'; msg += ' — الماركة المختارة تختلف عن المستنتجة من الرقم (' + d.brand_ar + ').'; }
                     }
                     if (!checksumBad) {
-                        if (d.model_ar && canFill(modelEl)) setModel(d.model_ar);
-                        if (yearOk && canFill(yearEl)) setYear(d.year);
+                        if (d.model_ar && (options.forceFill || canFill(modelEl))) setModel(d.model_ar);
+                        if (yearOk && (options.forceFill || canFill(yearEl))) setYear(d.year);
                     }
                 }
                 showBadge(kind, msg + note, d.country_ar ? 'بلد الصنع: ' + d.country_ar + (d.wmi ? ' (WMI ' + d.wmi + ')' : '') : '');
+                if (!options.deferConfirmCard) {
+                    showConfirmCard(d, null, { fromScan: Boolean(options.fromScan) });
+                }
                 return d;
             }
 
@@ -4746,6 +5021,7 @@
                 vinNote = cleaned.corrected.length
                     ? '(صُحِّح الحرف ' + cleaned.corrected.join('/') + ' إلى رقم لأن I وO وQ لا تُستخدم في أرقام الهياكل)'
                     : '';
+                lastVisionScanData = null;
                 loadCatalog();
                 applyVinDecode();
             }
@@ -4841,7 +5117,7 @@
             });
             partsEl.addEventListener('blur', () => { setTimeout(hideSuggest, 150); });
 
-            // ----- مسح الاستمارة / رقم الشاصي بالكاميرا (AI Vision) -----
+            // ----- مسح الاستمارة / الزجاج الأمامي / ملصق قائم الباب بالكاميرا (AI Vision) -----
             function setScanUi(busy) {
                 if (!scanBtn) return;
                 scanBtn.disabled = busy;
@@ -4849,25 +5125,25 @@
                 if (icon) icon.innerHTML = busy ? '<i class="fa-solid fa-spinner fa-spin"></i>' : '📷';
                 if (label) label.textContent = busy ? 'جارٍ القراءة...' : 'مسح بالكاميرا';
             }
-            async function fillFromVision(data, cat) {
-                if (!cat) return;
-                if (!brandEl.value || brandEl.value === '') {
+            async function fillFromVision(data, cat, forceFill) {
+                if (!cat || !data) return;
+                if (forceFill || !brandEl.value || brandEl.value === '') {
                     const key = data.car_brand ? VinCatalogCore.findBrandKey(data.car_brand, cat) : null;
-                    if (key && canFill(originEl) && canFill(brandEl)) setBrand(key, cat);
+                    if (key && (forceFill || (canFill(originEl) && canFill(brandEl)))) setBrand(key, cat);
                 }
-                if (!modelEl.value.trim() && data.car_model && canFill(modelEl)) {
+                if ((forceFill || !modelEl.value.trim()) && data.car_model && (forceFill || canFill(modelEl))) {
                     const key = brandKeyFromForm(cat);
                     setModel(key ? VinCatalogCore.canonicalModel(key, data.car_model, cat) : String(data.car_model).trim());
                 }
                 const y = Number(data.car_year);
-                if (!yearEl.value && Number.isInteger(y) && canFill(yearEl)) setYear(y);
+                if ((forceFill || !yearEl.value) && Number.isInteger(y) && (forceFill || canFill(yearEl))) setYear(y);
             }
             async function runVinScan(file) {
                 if (scanBusy) return;
                 scanBusy = true; setScanUi(true);
                 try {
                     if (!file.type || !file.type.startsWith('image/')) { showBadge('warn', 'الرجاء اختيار ملف صورة صالح فقط.'); return; }
-                    showBadge('info', '⏳ جارٍ قراءة الصورة... قد يستغرق ذلك بضع ثوانٍ');
+                    showBadge('info', '⏳ جارٍ قراءة رقم الشاصي وبيانات المركبة بذكاء هندسي...');
                     let dataUrl = '';
                     try { dataUrl = await convertImageToBase64(file); }
                     catch (_e) { showBadge('warn', 'تعذّر فتح الصورة، جرّب صورة أخرى أو اكتب الرقم يدوياً.'); return; }
@@ -4875,7 +5151,11 @@
                     const res = await fetchBotBackend('/api/vin-scan', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image_data_url: dataUrl, mime_type: 'image/jpeg' }),
+                        body: JSON.stringify({
+                            image_data_url: dataUrl,
+                            mime_type: 'image/jpeg',
+                            auto_correct_ioq: true,
+                        }),
                         timeoutMs: 45000,
                     });
                     if (!res) { showBadge('warn', 'تعذّر الاتصال بخدمة المسح الآن. تحقق من الاتصال أو اكتب الرقم يدوياً.'); return; }
@@ -4888,10 +5168,16 @@
                         showBadge('warn', (data && data.message) || fallback);
                         return;
                     }
-                    vinNote = '';
-                    vinEl.value = VinCatalogCore.cleanVin(data.extracted_vin).value;
-                    await applyVinDecode({ fromScan: true });
-                    await fillFromVision(data, cat);
+                    const cleanedScan = VinCatalogCore.cleanVin(data.extracted_vin);
+                    const allCorrected = (data.corrected_chars || []).concat(cleanedScan.corrected || []);
+                    vinNote = allCorrected.length
+                        ? '(صُحِّح الحرف ' + Array.from(new Set(allCorrected)).join('/') + ' تلقائياً لأن I وO وQ لا تُستخدم في الشاصي)'
+                        : '';
+                    [originEl, brandEl, modelEl, yearEl].forEach((el) => { if (el) delete el.dataset.userEdited; });
+                    vinEl.value = cleanedScan.value;
+                    const decoded = await applyVinDecode({ fromScan: true, forceFill: true, deferConfirmCard: true });
+                    await fillFromVision(data, cat, false);
+                    showConfirmCard(decoded, data, { fromScan: true });
                 } catch (_err) {
                     showBadge('warn', 'حدث خطأ أثناء المسح. اكتب الرقم يدوياً وسيعمل الطلب بشكل طبيعي.');
                 } finally {
@@ -4911,7 +5197,9 @@
                 formEl.addEventListener('reset', () => {
                     [originEl, brandEl, modelEl, yearEl].forEach((el) => { delete el.dataset.userEdited; });
                     vinNote = '';
-                    hideBadge(); hideSuggest();
+                    lastDecodedVinObj = null;
+                    lastVisionScanData = null;
+                    hideBadge(); hideConfirmCard(); hideSuggest();
                     if (modelList) modelList.innerHTML = '';
                 });
             }
@@ -4979,27 +5267,83 @@
                 }
 
                 let cloudSaved = false;
+                let cloudMergeNote = '';
                 try {
                     const hasUploadedImage = Boolean(base64Image && base64Image.startsWith('data:image/'));
-                    const createdOrderRef = await addDoc(collection(db, "orders"), {
-                        customerName: custNameVal, 
-                        phone: custPhoneVal,
-                        brandGroup: document.getElementById('carOrigin').value, brand: finalBrand, model: carModelVal,
-                        year: carYearVal, partCondition: partConditionVal,
-                        partCategory: finalCategory, vin: carVinVal || 'لم يُدخل', parts: carPartsVal,
-                        backendOrderId: backendOrderResult?.order_id || null,
-                        purchaseStatus: 'pending',
-                        hasImage: hasUploadedImage,
-                        imageData: "",
-                        affiliate: affiliateId, date: new Date().toLocaleString('ar-SA'), timestamp: serverTimestamp()
+                    const todayArStr = new Date().toLocaleDateString('ar-SA');
+                    const normVinFn = (v) => {
+                        const s = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').replace(/I/g, '1').replace(/[OQ]/g, '0');
+                        return s.length === 17 ? s : '';
+                    };
+                    const splitPartsFn = (str) => String(str || '')
+                        .split(/\s*\|\s*|\r?\n+|(?=\b\d+\s*[.\-)\]]\s+)/)
+                        .map((seg) => String(seg || '').replace(/^\s*(?:\(\d+\)|\d+\s*[.\-)\]:])\s*/, '').trim())
+                        .filter(Boolean);
+                    const formatPartsFn = (arr) => arr.length <= 1 ? (arr[0] || '') : arr.map((p, i) => `${i + 1}. ${p}`).join(' | ');
+
+                    const incomingVinClean = normVinFn(carVinVal);
+                    const activeCloudOrders = Array.isArray(window.currentOrders) ? window.currentOrders : [];
+                    const matchingCloudOrder = activeCloudOrders.find((ord) => {
+                        if (!ord || window.formatSaudiPhone(ord.phone || '') !== custPhoneVal) return false;
+                        if (ord.purchaseStatus && ord.purchaseStatus !== 'pending') return false;
+                        const ordDateStr = ord.date ? String(ord.date).split(',')[0].trim() : '';
+                        if (ordDateStr && todayArStr && !String(ord.date).includes(todayArStr.split('/')[0])) return false;
+                        const ordVinClean = normVinFn(ord.vin);
+                        if (ordVinClean && incomingVinClean && ordVinClean !== incomingVinClean) return false;
+                        if (ordVinClean && incomingVinClean && ordVinClean === incomingVinClean) return true;
+                        return String(ord.brand || '').trim() === String(finalBrand || '').trim() &&
+                               String(ord.model || '').trim() === String(carModelVal || '').trim() &&
+                               String(ord.year || '').trim() === String(carYearVal || '').trim();
                     });
-                    if (hasUploadedImage && createdOrderRef?.id) {
-                        orderImagesMemoryCache.set(createdOrderRef.id, base64Image);
-                        await setDoc(doc(db, "order_images", createdOrderRef.id), {
-                            orderId: createdOrderRef.id,
-                            imageData: base64Image,
-                            createdAt: serverTimestamp()
+
+                    const effectiveBotStatus = backendOrderResult?.success ? 'dispatched' : 'pending_dispatch';
+
+                    if (matchingCloudOrder && matchingCloudOrder.id) {
+                        const existingPartsList = splitPartsFn(matchingCloudOrder.parts);
+                        const incomingPartsList = splitPartsFn(carPartsVal);
+                        const combinedSet = [...existingPartsList];
+                        let addedAnyNewPart = false;
+                        for (const incP of incomingPartsList) {
+                            if (!combinedSet.some((exP) => exP === incP)) {
+                                combinedSet.push(incP);
+                                addedAnyNewPart = true;
+                            }
+                        }
+                        const mergedPartsStr = backendOrderResult?.part_name || formatPartsFn(combinedSet);
+                        await setDoc(doc(db, "orders", matchingCloudOrder.id), {
+                            parts: mergedPartsStr,
+                            vin: carVinVal || matchingCloudOrder.vin || 'لم يُدخل',
+                            backendOrderId: backendOrderResult?.order_id || matchingCloudOrder.backendOrderId || null,
+                            botStatus: effectiveBotStatus,
+                            botRequestedAt: serverTimestamp(),
+                            updatedAt: serverTimestamp()
+                        }, { merge: true });
+                        cloudMergeNote = addedAnyNewPart
+                            ? `تم ضم القطع الجديدة تلقائياً لملف طلب السيارة المفتوح:\n${mergedPartsStr}`
+                            : 'تم دمج الطلب تلقائياً مع طلبك النشط لنفس السيارة لمنع تكرار الإرسال للموردين.';
+                    } else {
+                        const createdOrderRef = await addDoc(collection(db, "orders"), {
+                            customerName: custNameVal, 
+                            phone: custPhoneVal,
+                            brandGroup: document.getElementById('carOrigin').value, brand: finalBrand, model: carModelVal,
+                            year: carYearVal, partCondition: partConditionVal,
+                            partCategory: finalCategory, vin: carVinVal || 'لم يُدخل', parts: backendOrderResult?.part_name || carPartsVal,
+                            backendOrderId: backendOrderResult?.order_id || null,
+                            botStatus: effectiveBotStatus,
+                            botRequestedAt: serverTimestamp(),
+                            purchaseStatus: 'pending',
+                            hasImage: hasUploadedImage,
+                            imageData: "",
+                            affiliate: affiliateId, date: new Date().toLocaleString('ar-SA'), timestamp: serverTimestamp()
                         });
+                        if (hasUploadedImage && createdOrderRef?.id) {
+                            orderImagesMemoryCache.set(createdOrderRef.id, base64Image);
+                            await setDoc(doc(db, "order_images", createdOrderRef.id), {
+                                orderId: createdOrderRef.id,
+                                imageData: base64Image,
+                                createdAt: serverTimestamp()
+                            });
+                        }
                     }
                     cloudSaved = true;
                 } catch (_cloudErr) {
@@ -5011,8 +5355,12 @@
                 const successEl = document.getElementById('successMsg');
                 if (backendOrderResult?.unclear_image_warning && backendOrderResult?.message) {
                     successEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-4xl mb-2 block text-amber-400"></i>${escapeHTML(backendOrderResult.message)}`;
+                } else if (backendOrderResult?.merged && backendOrderResult?.message) {
+                    successEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>${escapeHTML(backendOrderResult.message)}`;
                 } else if (backendOrderResult?.order_id) {
                     successEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>تم استلام طلبك رقم (#${escapeHTML(backendOrderResult.order_id)}) وتوجيهه لبوت واتساب والموردين بنجاح! تفقد رسائل الواتساب الآن.`;
+                } else if (cloudMergeNote) {
+                    successEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>${escapeHTML(cloudMergeNote)}`;
                 }
                 successEl.classList.remove('hidden'); setTimeout(() => successEl.classList.add('hidden'), 7000); document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
             } catch(e) { alert("حدث خطأ أثناء رفع الطلب للسحابة"); } finally { btn.innerHTML = orig; btn.disabled = false; }
