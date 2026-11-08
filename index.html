@@ -1128,11 +1128,11 @@
     </a>
 
     <nav class="stage-nav-pills" aria-label="مراحل القصة">
-      <button type="button" class="stage-pill active" data-stage-btn="1" data-target-progress="0.02">01 المطابقة الرقمية</button>
-      <button type="button" class="stage-pill" data-stage-btn="2" data-target-progress="0.26">02 التشليح المضمون</button>
-      <button type="button" class="stage-pill" data-stage-btn="3" data-target-progress="0.48">03 الأصلي OEM</button>
-      <button type="button" class="stage-pill" data-stage-btn="4" data-target-progress="0.66">04 التجاري المعتمد</button>
-      <button type="button" class="stage-pill" data-stage-btn="5" data-target-progress="0.90">05 مقارنة الخيارات</button>
+      <button type="button" class="stage-pill active" data-stage-btn="1" data-target-progress="0.05">01 المطابقة الرقمية (VIN)</button>
+      <button type="button" class="stage-pill" data-stage-btn="2" data-target-progress="0.35">02 بدي • ميكانيك • كهرباء</button>
+      <button type="button" class="stage-pill" data-stage-btn="3" data-target-progress="0.62">03 الجديد (وكالة وتجاري)</button>
+      <button type="button" class="stage-pill" data-stage-btn="4" data-target-progress="0.83">04 المستخدم المضمون (تشليح)</button>
+      <button type="button" class="stage-pill" data-stage-btn="5" data-target-progress="0.96">05 مقارنة المسارات للطلب</button>
     </nav>
 
     <a href="#order-section" id="skip-to-order-btn" class="skip-order-btn">
@@ -1154,25 +1154,25 @@
       <!-- Layer 4: Engineering Catalog & Inspection HUD -->
       <div id="ai-tech-hud" class="ai-tech-hud">
         <div id="hud-reticle" class="hud-reticle">
-          <span id="hud-reticle-tag" class="hud-reticle-tag">VIN CATALOG // OEM PART MATCH</span>
+          <span id="hud-reticle-tag" class="hud-reticle-tag">FRAMES 001–030 // VIN DIGITAL MATCH</span>
         </div>
 
         <div class="hud-telemetry-box">
           <div class="hud-header-row">
             <span class="hud-status-label">
               <span class="hud-live-dot"></span>
-              <span id="hud-stage-status">مطابقة الكتالوج الهندسي</span>
+              <span id="hud-stage-status">المطابقة الرقمية وبداية التفكيك</span>
             </span>
-            <span id="hud-mode-code" class="hud-mode-code">01 / 05</span>
+            <span id="hud-mode-code" class="hud-mode-code">01 / 04</span>
           </div>
           <div class="hud-metrics">
             <div class="hud-metric-item">
               <span class="hud-metric-label">الدقة والمعيار</span>
-              <span id="hud-accuracy" class="hud-metric-val">مطابقة 100% برقم الشاصي</span>
+              <span id="hud-accuracy" class="hud-metric-val">مطابقة 100% برقم الهيكل (VIN)</span>
             </div>
             <div class="hud-metric-item">
-              <span class="hud-metric-label">التصنيف</span>
-              <span id="hud-part-state" class="hud-metric-val">تحديد رقم القطعة OEM</span>
+              <span class="hud-metric-label">النطاق البصري</span>
+              <span id="hud-part-state" class="hud-metric-val">الإطارات 1–30 • تفكيك المركبة</span>
             </div>
           </div>
           <div class="hud-progress-wrap">
@@ -1181,76 +1181,71 @@
         </div>
       </div>
 
-      <!-- Layer 5: Stacked Absolute Stage Cards (01 to 04 + Van Loading Transition) -->
+      <!-- Layer 5: Stacked Absolute Stage Cards (150-Frame Continuous Story) -->
       <div class="stage-cards-layer">
-        <!-- Stage 01 Card (0% -> 20%) -->
+        <!-- Stage 01 Card: Frames 1-30 (0% -> 20%) -->
         <article id="stage-card-1" class="story-card" data-stage-card="1">
-          <div class="story-badge">المرحلة 01 • المطابقة الرقمية برقم الهيكل (VIN)</div>
-          <h1 id="story-headline" class="story-headline">تحديد دقيق لقطعتك عبر مطابقة رقم الهيكل (VIN)</h1>
+          <div class="story-badge">الإطارات 1–30 • المطابقة الرقمية برقم الهيكل (VIN)</div>
+          <h1 id="story-headline" class="story-headline">المطابقة الرقمية برقم الهيكل (VIN) وبداية تفكيك المركبة</h1>
           <p class="story-desc">
-            قراءة فورية لبيانات المركبة ومطابقتها مع الكتالوجات الهندسية المعتمدة لتحديد رقم القطعة المطابق لموديل سيارتك دون أي خطأ قبل التوريد.
+            قراءة فورية لبيانات المركبة ومطابقتها مع الكتالوجات الهندسية المعتمدة لتحديد رقم القطعة المطابق لموديل سيارتك دون أي خطأ مع بدء التفكيك الهندسي الواقعي.
           </p>
           <div class="story-tags">
-            <span class="story-tag">مطابقة رقم الشاصي VIN</span>
+            <span class="story-tag">مطابقة رقم الهيكل VIN</span>
             <span class="story-tag">تحديد رقم القطعة OEM</span>
-            <span class="story-tag">3 مسارات توريد</span>
+            <span class="story-tag">بداية تفكيك المركبة</span>
           </div>
         </article>
 
-        <!-- Stage 02 Card (20% -> 40%) -->
+        <!-- Stage 02 Card: Frames 31-75 (20% -> 50%) -->
         <article id="stage-card-2" class="story-card" data-stage-card="2">
-          <div class="story-badge">المرحلة 02 • قطع التشليح المفحوصة والمضمونة</div>
-          <h2 class="story-headline">قطع أصلية مستعملة مفحوصة بعناية وبسعر اقتصادي</h2>
+          <div class="story-badge">الإطارات 31–75 • تغطية شاملة للقطاعات الثلاثة</div>
+          <h2 class="story-headline">تغطية شاملة: قطع البدي • قطع الميكانيك • قطع الكهرباء</h2>
           <p class="story-desc">
-            فرز واختبار القطع المستخرجة من مركبات سليمة للتأكد من كفاءتها الميكانيكية والكهربائية وجاهزيتها للتركيب المباشر مع الضمان.
+            تفكيك هندسي متكامل يبرز القطاعات الثلاثة بوضوح: قطع البدي (صدامات، رفارف، كبوت، شمعات)، قطع الميكانيك (قيور، طنجرات، محركات، عضلات)، وقطع الكهرباء (دينمو، سلف، كمبيوترات وشرائح قير).
           </p>
           <div class="story-tags">
-            <span class="story-tag">أصلي مستعمل (تشليح)</span>
-            <span class="story-tag">فحص فني شامل</span>
-            <span class="story-tag">ضمان التشغيل</span>
+            <span class="story-tag">قطع البدي (صدامات • رفارف • شمعات)</span>
+            <span class="story-tag">قطع الميكانيك (قيور • طنجرات • محركات • عضلات)</span>
+            <span class="story-tag">قطع الكهرباء (دينمو • سلف • كمبيوترات وشرائح قير)</span>
           </div>
         </article>
 
-        <!-- Stage 03 Card (40% -> 60%) -->
+        <!-- Stage 03 Card: Frames 76-115 (50% -> 77%) -->
         <article id="stage-card-3" class="story-card accent-amber" data-stage-card="3">
-          <div class="story-badge">المرحلة 03 • قطع الغيار الأصلية (OEM)</div>
-          <h2 class="story-headline">قطع وكالة أصلية (OEM) بتغليف المصنع الرسمي</h2>
+          <div class="story-badge">الإطارات 76–115 • فتح الصندوق — خيارات الجديد</div>
+          <h2 class="story-headline">فتح الصندوق — خيارات الجديد: الأصلي وكالة (OEM) والبديل التجاري المعتمد</h2>
           <p class="story-desc">
-            تأمين القطع الأصلية الجديدة مباشرة من مستودعات الوكلاء والموزعين المعتمدين لضمان أعلى عمر افتراضي وأداء مطابق لمعايير المصنع.
+            حركة كاميرا متصلة نحو طاولة التوريد والفحص لفتح صندوق المصنع الرسمي واستعراض القطع الجديدة: الأصلي وكالة (OEM) بأعلى اعتمادية، والبديل التجاري المعتمد بجودة موثوقة وسعر اقتصادي.
           </p>
           <div class="story-tags">
-            <span class="story-tag">أصلي وكالة 100%</span>
-            <span class="story-tag">تغليف المصنع</span>
-            <span class="story-tag">اعتمادية قصوى</span>
+            <span class="story-tag">أصلي وكالة جديد (OEM)</span>
+            <span class="story-tag">بديل تجاري جديد معتمد</span>
+            <span class="story-tag">فتح الصندوق الرسمي</span>
           </div>
         </article>
 
-        <!-- Stage 04 Card (60% -> 72%) -->
+        <!-- Stage 04 Card: Frames 116-150 (77% -> 91%) -->
         <article id="stage-card-4" class="story-card accent-emerald" data-stage-card="4">
-          <div class="story-badge">المرحلة 04 • البدائل التجارية المعتمدة</div>
-          <h2 class="story-headline">بدائل تجارية عالية الجودة من مصانع عالمية معتمدة</h2>
+          <div class="story-badge">الإطارات 116–150 • المستخدم المضمون ومقارنة المسارات</div>
+          <h2 class="story-headline">خيار المستخدم المضمون (التشليح المفحوص) ومقارنة المسارات الثلاثة</h2>
           <p class="story-desc">
-            خيارات اقتصادية جديدة من شركات تصنيع معتمدة عالمياً، تمنحك توازناً عملياً بين السعر المناسب والجودة الموثوقة للاستخدام اليومي.
+            وضع القطعة الأصلية المستخرجة من المركبة على بساط الفحص الهندسي كخيار مستخدم مضمون (تشليح مفحوص) بجانب الجديد الأصلي والتجاري للمقارنة الشفافة والطلب الفوري.
           </p>
           <div class="story-tags">
-            <span class="story-tag">بديل تجاري معتمد</span>
-            <span class="story-tag">تكلفة اقتصادية</span>
-            <span class="story-tag">متوفر للشحن الفوري</span>
+            <span class="story-tag">المستخدم المضمون (التشليح المفحوص)</span>
+            <span class="story-tag">الأصلي وكالة + التجاري المعتمد</span>
+            <span class="story-tag">مقارنة المسارات الثلاثة للطلب الفوري</span>
           </div>
         </article>
 
-        <!-- Stage 05 Pre-Split Van Loading Card (72% -> 80%) -->
-        <article id="stage-card-van" class="story-card" data-stage-card="5-van">
-          <div class="story-badge">المرحلة 05 • التجهيز والشحن المباشر</div>
-          <h2 class="story-headline">تجهيز مسارات التوريد الثلاثة وشحنها لموقع العميل</h2>
+        <!-- Stage 05 Transition Card (hidden / merged into Stage 04 & Split Comparison) -->
+        <article id="stage-card-van" class="story-card" data-stage-card="5-van" style="display:none;">
+          <div class="story-badge">الإطارات 116–150 • مقارنة المسارات الثلاثة للطلب الفوري</div>
+          <h2 class="story-headline">اختر المسار الأنسب لسيارتك واطلبه فوراً</h2>
           <p class="story-desc">
-            تغليف القطع المعتمدة بعناية وتجهيزها للشحن السريع والمباشر إلى باب العميل أو مركز الصيانة في كافة مدن المملكة.
+            قارن بين الأصلي وكالة (OEM)، المستخدم المضمون (التشليح المفحوص)، والبديل التجاري المعتمد مع شحن مباشر لكافة مدن المملكة.
           </p>
-          <div class="story-tags">
-            <span class="story-tag">تغليف آمن ومحكم</span>
-            <span class="story-tag">شحن لكافة المدن</span>
-            <span class="story-tag">مقارنة الخيارات الثلاثة</span>
-          </div>
         </article>
       </div>
 
@@ -5908,72 +5903,71 @@
       const HUD_STATES = [
         {
           min: 0.0,
-          max: 0.2,
+          max: 0.20,
           accent: '#00d4ff',
-          status: 'مطابقة الكتالوج الهندسي',
-          code: '01 / 05',
-          accuracy: 'مطابقة 100% برقم الشاصي',
-          partState: 'تحديد رقم القطعة OEM',
-          reticleText: 'VIN CATALOG // OEM PART MATCH',
-          reticleScale: 1.02,
+          status: 'المطابقة الرقمية وبداية التفكيك',
+          code: '01 / 04',
+          accuracy: 'مطابقة 100% برقم الهيكل (VIN)',
+          partState: 'الإطارات 1–30 • تفكيك المركبة',
+          reticleText: 'FRAMES 001–030 // VIN DIGITAL MATCH',
+          reticleScale: 1.0,
           pillIndex: 0
         },
         {
-          min: 0.2,
-          max: 0.4,
+          min: 0.20,
+          max: 0.50,
           accent: '#00d4ff',
-          status: 'فحص الاعتمادية والجودة',
-          code: '02 / 05',
-          accuracy: 'فحص فني شامل',
-          partState: 'أصلي مستعمل مضمون',
-          reticleText: 'INSPECTED // TESTED OEM SALVAGE',
-          reticleScale: 0.86,
+          status: 'تغطية شاملة: بدي • ميكانيك • كهرباء',
+          code: '02 / 04',
+          accuracy: 'صدامات ورفارف • قيور ومحركات • دينمو وكمبيوترات',
+          partState: 'الإطارات 31–75 • القطاعات الثلاثة',
+          reticleText: 'FRAMES 031–075 // BODY • MECH • ELEC',
+          reticleScale: 0.92,
           pillIndex: 1
         },
         {
-          min: 0.4,
-          max: 0.6,
+          min: 0.50,
+          max: 0.77,
           accent: '#f59e0b',
-          status: 'توثيق المصدر الأصلي',
-          code: '03 / 05',
-          accuracy: 'أصلي وكالة 100%',
-          partState: 'مواصفات المصنع OEM',
-          reticleText: 'GENUINE // FACTORY SEALED OEM',
-          reticleScale: 0.9,
+          status: 'فتح الصندوق — خيارات الجديد (OEM + تجاري)',
+          code: '03 / 04',
+          accuracy: 'أصلي وكالة OEM + بديل تجاري معتمد',
+          partState: 'الإطارات 76–115 • القطع الجديدة',
+          reticleText: 'FRAMES 076–115 // NEW OEM & AFTERMARKET',
+          reticleScale: 0.90,
           pillIndex: 2
         },
         {
-          min: 0.6,
-          max: 0.72,
+          min: 0.77,
+          max: 0.92,
           accent: '#10b981',
-          status: 'مطابقة معايير الجودة',
-          code: '04 / 05',
-          accuracy: 'مصانع عالمية معتمدة',
-          partState: 'بديل تجاري معتمد',
-          reticleText: 'CERTIFIED // GLOBAL AFTERMARKET',
-          reticleScale: 0.88,
+          status: 'خيار المستخدم المضمون (التشليح المفحوص)',
+          code: '04 / 04',
+          accuracy: 'مفحوص ومضمون + مقارنة الخيارات الثلاثة',
+          partState: 'الإطارات 116–150 • تشليح ومقارنة',
+          reticleText: 'FRAMES 116–150 // INSPECTED USED & COMPARE',
+          reticleScale: 0.94,
           pillIndex: 3
         },
         {
-          min: 0.72,
+          min: 0.92,
           max: 1.01,
           accent: '#38bdf8',
-          status: 'مقارنة الخيارات والتجهيز للشحن',
-          code: '05 / 05',
-          accuracy: 'شحن مباشر لكافة المدن',
-          partState: '3 خيارات معتمدة',
-          reticleText: 'DISPATCH // 3 SUPPLY OPTIONS',
-          reticleScale: 0.95,
+          status: 'مقارنة المسارات الثلاثة للطلب الفوري',
+          code: '04 / 04',
+          accuracy: 'أصلي وكالة • تشليح مضمون • تجاري معتمد',
+          partState: 'الإطارات 116–150 • الطلب المباشر',
+          reticleText: 'COMPARE & ORDER // 3 SUPPLY PATHS',
+          reticleScale: 0.96,
           pillIndex: 4
         }
       ];
 
       const CARD_WINDOWS = [
         { el: document.getElementById('stage-card-1'), in0: -0.1, in1: 0.0, out0: 0.16, out1: 0.20 },
-        { el: document.getElementById('stage-card-2'), in0: 0.19, in1: 0.23, out0: 0.36, out1: 0.40 },
-        { el: document.getElementById('stage-card-3'), in0: 0.39, in1: 0.43, out0: 0.56, out1: 0.60 },
-        { el: document.getElementById('stage-card-4'), in0: 0.59, in1: 0.63, out0: 0.69, out1: 0.72 },
-        { el: document.getElementById('stage-card-van'), in0: 0.71, in1: 0.74, out0: 0.77, out1: 0.80 }
+        { el: document.getElementById('stage-card-2'), in0: 0.20, in1: 0.24, out0: 0.46, out1: 0.50 },
+        { el: document.getElementById('stage-card-3'), in0: 0.50, in1: 0.54, out0: 0.73, out1: 0.77 },
+        { el: document.getElementById('stage-card-4'), in0: 0.77, in1: 0.80, out0: 0.88, out1: 0.91 }
       ];
 
       const DEFAULT_FRAME_PATHS = {
@@ -6151,17 +6145,16 @@
         const py = state.mouseY * 12;
 
         if (hasVideoSequences && videoSequenceFrames.length > 0) {
-          const effectiveP = clamp01(p / 0.82);
+          const effectiveP = clamp01(p);
           const floatIdx = effectiveP * (videoSequenceFrames.length - 1);
           const idxA = Math.floor(floatIdx);
           const idxB = Math.min(videoSequenceFrames.length - 1, idxA + 1);
           const blend = floatIdx - idxA;
 
-          drawCoverImage(videoSequenceFrames[idxA], 1, 1.03, px, py);
+          drawCoverImage(videoSequenceFrames[idxA], 1, 1.02, px, py);
           if (idxB !== idxA && blend > 0.01) {
-            drawCoverImage(videoSequenceFrames[idxB], blend, 1.03, px, py);
+            drawCoverImage(videoSequenceFrames[idxB], blend, 1.02, px, py);
           }
-          drawAiScanSweep(p);
           return;
         }
 
@@ -6193,8 +6186,6 @@
           drawCoverImage(s4, 1, 1.06 + local * 0.07, px, py);
           drawCoverImage(s5, fadeTo5, 1.12 - smoothstep(0.69, 0.9, p) * 0.08, px, py);
         }
-
-        drawAiScanSweep(p);
       }
 
       function updateStackedCards(p) {
@@ -6234,17 +6225,17 @@
       }
 
       function updateSplitScreen(p) {
-        const splitAlpha = smoothstep(0.80, 0.85, p);
+        const splitAlpha = smoothstep(0.91, 0.95, p);
         const isVisible = splitAlpha > 0.005;
 
         splitOverlay.style.opacity = splitAlpha.toFixed(3);
         splitOverlay.style.visibility = isVisible ? 'visible' : 'hidden';
         splitOverlay.style.pointerEvents = splitAlpha > 0.75 ? 'auto' : 'none';
-        splitOverlay.classList.toggle('active', p >= 0.80);
+        splitOverlay.classList.toggle('active', p >= 0.91);
 
         customerCols.forEach((col, i) => {
-          const colStart = 0.80 + i * 0.018;
-          const colProgress = smoothstep(colStart, colStart + 0.06, p);
+          const colStart = 0.91 + i * 0.015;
+          const colProgress = smoothstep(colStart, colStart + 0.045, p);
           const colY = (1 - colProgress) * 30;
           col.style.opacity = colProgress.toFixed(3);
           col.style.transform = `translate3d(0, ${colY.toFixed(1)}px, 0)`;
