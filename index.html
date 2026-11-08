@@ -1025,13 +1025,35 @@
         border: 1px solid rgba(255, 255, 255, 0.16);
         padding: 8px 10px;
         min-height: 0;
+        justify-content: center;
+        align-items: flex-start;
+        background: #080d18;
+      }
+      .customer-bg {
+        width: 54%;
+        height: 100%;
+        left: 0;
+        right: auto;
+        object-fit: cover;
+        object-position: center 38%;
+      }
+      .customer-shade {
+        background: linear-gradient(
+          270deg,
+          rgba(7, 12, 22, 0.96) 0%,
+          rgba(7, 12, 22, 0.86) 44%,
+          rgba(7, 12, 22, 0.12) 72%,
+          rgba(7, 12, 22, 0.05) 100%
+        );
       }
       .customer-content {
-        padding: 9px 12px;
+        width: 55%;
+        margin-left: auto;
+        padding: 8px 10px;
         border-radius: 12px;
-        background: rgba(10, 15, 25, 0.74);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: rgba(10, 15, 25, 0.52);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
       }
       .tier-ribbon {
         font-size: 0.66rem;
