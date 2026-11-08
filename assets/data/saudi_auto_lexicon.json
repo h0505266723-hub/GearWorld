@@ -1,0 +1,1852 @@
+{
+  "meta": {
+    "name": "المعجم السعودي الشامل لقطع غيار السيارات والأحاديث التجارية (Saudi Auto Parts & Market Lexicon)",
+    "version": "2.2.0",
+    "updated_at": "2026-11-08",
+    "description": "قاموس استرشادي غير مدمّر يربط المصطلحات الميكانيكية باللهجة السعودية ومرادفاتها الصوتية بالاسم الهندسي المعتمد والمصطلح الإنجليزي ومصطلح التشاليح، مع قاموس مستقل للأحاديث العابرة وشروط البيع والشراء السعودية حتى تُفهم سياقياً ولا تُصنف خطأً كأسماء قطع.",
+    "total_indexed_terms_and_synonyms": 1058
+  },
+  "domains": {
+    "transmission_torque_differential": {
+      "title_ar": "مصطلحات القير ومحول العزم والدفرنس (الأولوية القصوى)",
+      "priority": 1,
+      "entries": [
+        {
+          "id": "trans_001",
+          "popular_term": "طنجرة قير",
+          "synonyms": [
+            "طنجرة",
+            "طنجره",
+            "طنجرة القير",
+            "بطيخة",
+            "بطيخه",
+            "بطيخة قير",
+            "بطيخة القير",
+            "تندورد جير",
+            "تنجر جير",
+            "تانجر جير",
+            "تنجر قير",
+            "طنجره قير",
+            "طنجرة جير",
+            "بطيخة جير",
+            "محول عزم",
+            "محول العزم"
+          ],
+          "approved_name": "طنجرة قير",
+          "formal_name": "محول العزم الهيدروليكي",
+          "oem_english": "Torque Converter",
+          "supplier_market_term": "طنجرة قير / بطيخة",
+          "category": "mechanic",
+          "notes": "القطعة الهيدروليكية الواصلة بين المحرك والقير الأوتوماتيكي"
+        },
+        {
+          "id": "trans_002",
+          "popular_term": "توربين",
+          "synonyms": [
+            "توربين الطنجرة",
+            "ريش التوربين",
+            "توربينة القير",
+            "مروحة التوربين",
+            "قلب الطنجرة",
+            "ريش طنجرة القير"
+          ],
+          "approved_name": "توربين طنجرة القير",
+          "formal_name": "المروحة الداخلية لمحول العزم",
+          "oem_english": "Turbine",
+          "supplier_market_term": "توربين / ريش التوربين",
+          "category": "mechanic",
+          "notes": "العضو المدار بالزيت داخل طنجرة القير المتصل بعمود دخل القير"
+        },
+        {
+          "id": "trans_003",
+          "popular_term": "بروانة",
+          "synonyms": [
+            "بروانه",
+            "بروانة طنجرة",
+            "بروانة المروحة",
+            "ريش المضخة",
+            "امبلر طنجرة",
+            "مروحة الطنجرة",
+            "بروانة تبريد"
+          ],
+          "approved_name": "بروانة",
+          "formal_name": "المروحة الدافعة / مروحة التبريد أو مضخة الطنجرة",
+          "oem_english": "Impeller / Fan Blade",
+          "supplier_market_term": "بروانة / مروحة",
+          "category": "mechanic",
+          "notes": "تُطلق في الورش السعودية على مضخة الطنجرة الدافعة للزيت أو ريش مروحة التبريد"
+        },
+        {
+          "id": "trans_004",
+          "popular_term": "ستاتر",
+          "synonyms": [
+            "رمان ستاتر",
+            "ستاتر الطنجرة",
+            "العضو الثابت بالطنجرة",
+            "رمان اتجاه واحد",
+            "ون واي كلتش",
+            "ستيتر طنجرة"
+          ],
+          "approved_name": "ستاتر طنجرة القير",
+          "formal_name": "العضو الثابت ورمان اتجاه واحد داخل الطنجرة",
+          "oem_english": "Stator & One-Way Bearing",
+          "supplier_market_term": "ستاتر / رمان ستاتر",
+          "category": "mechanic",
+          "notes": "يوجه تدفق الزيت بين البروانة والتوربين لمضاعفة العزم عند الانطلاق"
+        },
+        {
+          "id": "trans_005",
+          "popular_term": "قفل الكلتش",
+          "synonyms": [
+            "كلتش الطنجرة",
+            "لوك اب كلتش",
+            "قفل طنجرة القير",
+            "فحمة كلتش الطنجرة",
+            "صينية كلتش الطنجرة"
+          ],
+          "approved_name": "كلتش الطنجرة",
+          "formal_name": "كلتش القفل الداخلي لمحول العزم",
+          "oem_english": "Lock-up Clutch",
+          "supplier_market_term": "قفل الكلتش / كلتش الطنجرة",
+          "category": "mechanic",
+          "notes": "يربط الطنجرة ميكانيكياً بالمحرك في السرعات العالية لمنع انزلاق الزيت"
+        },
+        {
+          "id": "trans_006",
+          "popular_term": "مخ القير",
+          "synonyms": [
+            "بودي بلف",
+            "بلف بودي",
+            "فلف بدي",
+            "خريطة القير",
+            "مخ قير",
+            "مخ الجير",
+            "بودي بلف قير",
+            "صمامات القير الهيدروليكية"
+          ],
+          "approved_name": "مخ القير",
+          "formal_name": "جسم الصمامات الهيدروليكي",
+          "oem_english": "Valve Body",
+          "supplier_market_term": "مخ القير / بودي بلف",
+          "category": "mechanic",
+          "notes": "مركز توزيع ضغط الزيت لتبديل نمر القير الأوتوماتيكي"
+        },
+        {
+          "id": "trans_007",
+          "popular_term": "شريحة قير",
+          "synonyms": [
+            "شريحة القير",
+            "كرت القير",
+            "منظم قير",
+            "ميكاترونك",
+            "وحدة الميكاترونك",
+            "شريحه قير"
+          ],
+          "approved_name": "شريحة قير",
+          "formal_name": "وحدة التحكم الإلكترونية بالقير",
+          "oem_english": "TCM / Mechatronic Unit",
+          "supplier_market_term": "شريحة قير / كرت القير",
+          "category": "mechanic",
+          "notes": "الشريحة الإلكترونية المدمجة فوق مخ القير"
+        },
+        {
+          "id": "trans_008",
+          "popular_term": "كمبيوتر القير",
+          "synonyms": [
+            "كمبيوتر قير",
+            "عقل القير",
+            "وحدة تحكم القير",
+            "كنترول قير"
+          ],
+          "approved_name": "كمبيوتر القير",
+          "formal_name": "وحدة التحكم الإلكترونية للقير",
+          "oem_english": "TCM (Transmission Control Module)",
+          "supplier_market_term": "كمبيوتر قير / شريحة قير",
+          "category": "mechanic",
+          "notes": "كمبيوتر التحكم بتعشيق القير"
+        },
+        {
+          "id": "trans_009",
+          "popular_term": "حساسات قير",
+          "synonyms": [
+            "سولينويد",
+            "سولينويد قير",
+            "حساس قير",
+            "بلف كهرباء قير",
+            "صمامات كهرباء القير",
+            "طقم سولينويد",
+            "حساسات مخ القير"
+          ],
+          "approved_name": "حساسات قير",
+          "formal_name": "صمامات التحكم الكهربائية",
+          "oem_english": "Solenoids",
+          "supplier_market_term": "حساسات قير / سولينويد",
+          "category": "mechanic",
+          "notes": "الصمامات الكهرومغناطيسية الراكبة على مخ القير"
+        },
+        {
+          "id": "trans_010",
+          "popular_term": "طرمبة زيت القير",
+          "synonyms": [
+            "طرمبة قير",
+            "طرمبه قير",
+            "مضخة زيت القير",
+            "طرمبة زيت جير",
+            "قلب طرمبة القير"
+          ],
+          "approved_name": "طرمبة زيت القير",
+          "formal_name": "مضخة الزيت لناقل الحركة",
+          "oem_english": "Transmission Oil Pump",
+          "supplier_market_term": "طرمبة زيت القير",
+          "category": "mechanic",
+          "notes": "المضخة الأمامية المسؤولة عن ضغط زيت القير داخل الطنجرة ومخ القير"
+        },
+        {
+          "id": "trans_011",
+          "popular_term": "كرونة",
+          "synonyms": [
+            "كرونه",
+            "كرونة دفرنس",
+            "تكاية دفرنس",
+            "قلب دفرنس",
+            "بطيخة دفرنس",
+            "ترس التاج والبنيون",
+            "تاج وبنيون"
+          ],
+          "approved_name": "كرونة دفرنس",
+          "formal_name": "الترس التفاضلي ومجموعة الدفرنس",
+          "oem_english": "Differential & Ring/Pinion",
+          "supplier_market_term": "كرونة / تكاية دفرنس",
+          "category": "mechanic",
+          "notes": "مجموعة التروس التفاضلية داخل الدفرنس"
+        },
+        {
+          "id": "trans_012",
+          "popular_term": "دفرنس",
+          "synonyms": [
+            "دفرنش",
+            "دفرنس خلفي",
+            "دفرنس امامي",
+            "جرم دفرنس",
+            "دفرنس كامل"
+          ],
+          "approved_name": "دفرنس",
+          "formal_name": "الترس التفاضلي (الدفرنس الكامل)",
+          "oem_english": "Differential",
+          "supplier_market_term": "دفرنس / كرونة",
+          "category": "mechanic",
+          "notes": "محور الدفرنس الكامل الخلفي أو الأمامي"
+        },
+        {
+          "id": "trans_013",
+          "popular_term": "دبل",
+          "synonyms": [
+            "قير دبل",
+            "علبة دبل",
+            "ترانسفير كيس",
+            "دبل قير",
+            "مجموعة الدبل",
+            "جرم الدبل",
+            "فرار دبل"
+          ],
+          "approved_name": "قير دبل",
+          "formal_name": "علبة النقل للدفع الرباعي",
+          "oem_english": "Transfer Case",
+          "supplier_market_term": "دبل / قير دبل",
+          "category": "mechanic",
+          "notes": "علبة توزيع العزم بين المحور الأمامي والخلفي في سيارات الدفع الرباعي"
+        },
+        {
+          "id": "trans_014",
+          "popular_term": "عمود كردان",
+          "synonyms": [
+            "عمود دوران",
+            "عمود دبل",
+            "عمود الشفت",
+            "عمود كردان خلفي",
+            "عمود دبل أمامي"
+          ],
+          "approved_name": "عمود كردان",
+          "formal_name": "عمود نقل الحركة",
+          "oem_english": "Driveshaft",
+          "supplier_market_term": "عمود كردان / عمود دبل",
+          "category": "mechanic",
+          "notes": "عمود نقل الحركة من القير أو الدبل إلى الدفرنس"
+        },
+        {
+          "id": "trans_015",
+          "popular_term": "صليب عمود",
+          "synonyms": [
+            "صليب كردان",
+            "صليب دبل",
+            "شيال عمود الدوران",
+            "سبحة عمود"
+          ],
+          "approved_name": "صليب عمود",
+          "formal_name": "وصلة الصليب وحامل عمود الكردان",
+          "oem_english": "U-Joint & Center Support Bearing",
+          "supplier_market_term": "صليب عمود / شيال عمود",
+          "category": "mechanic",
+          "notes": "المفصل الصليبي الرابط لأطراف عمود الكردان"
+        },
+        {
+          "id": "trans_016",
+          "popular_term": "قير اوتوماتيك",
+          "synonyms": [
+            "قير تماتيك",
+            "قير عادي",
+            "قير سي في تي",
+            "قير CVT",
+            "جربكس",
+            "جيربوكس",
+            "قير كامل"
+          ],
+          "approved_name": "قير كامل",
+          "formal_name": "ناقل الحركة الكامل",
+          "oem_english": "Complete Transmission / Gearbox",
+          "supplier_market_term": "قير كامل",
+          "category": "mechanic",
+          "notes": "صندوق التروس الكامل"
+        },
+        {
+          "id": "trans_017",
+          "popular_term": "كلتشات قير",
+          "synonyms": [
+            "طقم كلتشات قير",
+            "ورق كلتش القير",
+            "صحون كلتش القير",
+            "طقم توضيب قير",
+            "طقم اصلاح قير",
+            "أوفرهول قير"
+          ],
+          "approved_name": "كلتشات قير",
+          "formal_name": "مجموعة أقراص الاحتكاك وطقم إصلاح القير",
+          "oem_english": "Transmission Clutch Pack & Overhaul Kit",
+          "supplier_market_term": "كلتشات قير / طقم توضيب قير",
+          "category": "mechanic",
+          "notes": "أقراص الكلتش والحديد والربلات الخاصة بتوضيب القير"
+        },
+        {
+          "id": "trans_018",
+          "popular_term": "جنزير قير",
+          "synonyms": [
+            "جنزير قير CVT",
+            "حزام قير سي في تي",
+            "سير قير CVT",
+            "بكرة قير CVT",
+            "جنزير الدبل"
+          ],
+          "approved_name": "جنزير قير",
+          "formal_name": "حزام القير المعدني المتغير أو جنزير الدبل",
+          "oem_english": "CVT Push Belt / Transfer Case Chain",
+          "supplier_market_term": "جنزير قير CVT / جنزير دبل",
+          "category": "mechanic",
+          "notes": "الحزام المعدني لناقل الحركة المتغير باستمرار أو سلسلة علبة الدبل"
+        },
+        {
+          "id": "trans_019",
+          "popular_term": "مبرد قير",
+          "synonyms": [
+            "رديتر قير",
+            "مبرد زيت القير",
+            "ليات مبرد القير",
+            "مبرد جير",
+            "بلف حرارة القير"
+          ],
+          "approved_name": "مبرد قير",
+          "formal_name": "مبرد زيت ناقل الحركة",
+          "oem_english": "Transmission Oil Cooler",
+          "supplier_market_term": "مبرد قير",
+          "category": "mechanic",
+          "notes": "مبرد خفض حرارة زيت القير المستقل أو المدمج"
+        },
+        {
+          "id": "trans_020",
+          "popular_term": "فلتر قير",
+          "synonyms": [
+            "فلتر زيت القير",
+            "كارتير قير",
+            "كرتير قير",
+            "طاسة القير",
+            "وجه كارتير قير"
+          ],
+          "approved_name": "فلتر قير",
+          "formal_name": "مرشح زيت علبة السرعة",
+          "oem_english": "Transmission Filter",
+          "supplier_market_term": "فلتر قير / كارتير قير",
+          "category": "mechanic",
+          "notes": "فلتر تنقية زيت القير والغطاء السفلي"
+        },
+        {
+          "id": "trans_021",
+          "popular_term": "دينمو دبل",
+          "synonyms": [
+            "حساس دبل",
+            "ماطور دبل",
+            "مشغل الدبل",
+            "اكتويتر دبل",
+            "موتور الدبل"
+          ],
+          "approved_name": "دينمو دبل",
+          "formal_name": "المحرك الكهربائي لتعشيق الدبل",
+          "oem_english": "Transfer Case Shift Actuator Motor",
+          "supplier_market_term": "دينمو دبل / حساس دبل",
+          "category": "mechanic",
+          "notes": "المشغل الكهربائي لتعشيق الدبل الخفيف والثقيل"
+        },
+        {
+          "id": "trans_022",
+          "popular_term": "دبرياج",
+          "synonyms": [
+            "صحن كلتش",
+            "دسك وصحن وفحمة",
+            "طقم كلتش عادي",
+            "فحمة كلتش",
+            "علبة كلتش علوية",
+            "علبة كلتش سفلية",
+            "واير كلتش"
+          ],
+          "approved_name": "دبرياج",
+          "formal_name": "طقم القابض (الكلتش)",
+          "oem_english": "Clutch Kit",
+          "supplier_market_term": "طقم كلتش دسك وصحن وفحمة",
+          "category": "mechanic",
+          "notes": "طقم القابض للقير العادي أو المزدوج"
+        },
+        {
+          "id": "trans_023",
+          "popular_term": "عصا قير",
+          "synonyms": [
+            "واير قير",
+            "سلك القير",
+            "فرار القير",
+            "مجموعة تعشيق القير",
+            "بلف عصا القير"
+          ],
+          "approved_name": "عصا قير",
+          "formal_name": "مجموعة مقبض وكيبل اختيار سرعات القير",
+          "oem_english": "Gear Shifter Assembly & Shift Cable",
+          "supplier_market_term": "عصا قير / واير قير",
+          "category": "mechanic",
+          "notes": "ذراع التعشيق والواير الواصل إلى القير"
+        },
+        {
+          "id": "trans_024",
+          "popular_term": "صوفة قير",
+          "synonyms": [
+            "صوفة طنجرة",
+            "صوفة القير الأمامية",
+            "صوفة القير الخلفية",
+            "صوفة عكس",
+            "صوفة دفرنس",
+            "صوفة بنيون"
+          ],
+          "approved_name": "صوفة قير",
+          "formal_name": "مانع تسرب الزيت لناقل الحركة أو الدفرنس",
+          "oem_english": "Transmission / Differential Oil Seal",
+          "supplier_market_term": "صوفة قير / صوفة طنجرة / صوفة دفرنس",
+          "category": "mechanic",
+          "notes": "مانع تهريب الزيت بين الطنجرة والقير أو عند خروج العمود والعكوس"
+        },
+        {
+          "id": "trans_025",
+          "popular_term": "حساس سرعة القير",
+          "synonyms": [
+            "حساس دخل القير",
+            "حساس خرج القير",
+            "حساس التوربين",
+            "حساس نمر القير",
+            "حساس كف القير",
+            "سويتش القير"
+          ],
+          "approved_name": "حساس سرعة القير",
+          "formal_name": "حساس سرعة الدخل/الخرج ومفتاح وضع القير",
+          "oem_english": "Input/Output Speed Sensor & Inhibitor Switch",
+          "supplier_market_term": "حساس سرعة القير / كف القير",
+          "category": "mechanic",
+          "notes": "يقيس سرعة دوران التوربين والخرج ويحدد وضع العصا P/R/N/D"
+        }
+      ]
+    },
+    "engine_mechanical_suspension": {
+      "title_ar": "مصطلحات الميكانيكا والمحرك والعضلات",
+      "priority": 2,
+      "entries": [
+        {
+          "id": "mech_001",
+          "popular_term": "ماكينة",
+          "synonyms": [
+            "مكينة",
+            "مكينه",
+            "ماكينه",
+            "محرك كامل",
+            "مكينة مع الرجيع",
+            "مكينة كاملة",
+            "لونق بلوك"
+          ],
+          "approved_name": "مكينة",
+          "formal_name": "المحرك الكامل",
+          "oem_english": "Complete Engine",
+          "supplier_market_term": "مكينة / ماكينة",
+          "category": "mechanic",
+          "notes": "المحرك الكامل للسيارة"
+        },
+        {
+          "id": "mech_001b",
+          "popular_term": "شورت بلوك",
+          "synonyms": [
+            "نصف مكينة",
+            "نص مكينة",
+            "بلوك مكينة",
+            "سلندر مكينة"
+          ],
+          "approved_name": "شورت بلوك",
+          "formal_name": "نصف المحرك السفلي (البلوك والكرنك والبساتم)",
+          "oem_english": "Short Block",
+          "supplier_market_term": "شورت بلوك / نصف مكينة",
+          "category": "mechanic",
+          "notes": "جرم المحرك السفلي بدون الرأس"
+        },
+        {
+          "id": "mech_002",
+          "popular_term": "راس مكينة",
+          "synonyms": [
+            "راس المكينة",
+            "رأس مكينة",
+            "روس مكينة",
+            "راس ماكينة"
+          ],
+          "approved_name": "راس مكينة",
+          "formal_name": "رأس الأسطوانات",
+          "oem_english": "Cylinder Head",
+          "supplier_market_term": "راس مكينة",
+          "category": "mechanic",
+          "notes": "رأس المحرك العلوي شاملاً غرف الاحتراق والصمامات"
+        },
+        {
+          "id": "mech_002b",
+          "popular_term": "جوان راس",
+          "synonyms": [
+            "وجه راس مكينة",
+            "قازقيت راس",
+            "وجه راس"
+          ],
+          "approved_name": "جوان راس",
+          "formal_name": "جوان رأس المحرك",
+          "oem_english": "Cylinder Head Gasket",
+          "supplier_market_term": "وجه راس / جوان راس",
+          "category": "mechanic",
+          "notes": "الوجه العازل بين البلوك وراس المكينة"
+        },
+        {
+          "id": "mech_003",
+          "popular_term": "وجيه مكينة",
+          "synonyms": [
+            "طقم وجيه",
+            "طقم وجيه مكينة",
+            "طقم جوانات",
+            "قازقيت مكينة",
+            "جوانات مكينة",
+            "وجه غطاء بلوف"
+          ],
+          "approved_name": "طقم جوانات",
+          "formal_name": "طقم جوانات المحرك",
+          "oem_english": "Engine Gasket Set / Gaskets",
+          "supplier_market_term": "وجيه مكينة / طقم جوانات",
+          "category": "mechanic",
+          "notes": "طقم الجوانات الكامل لتوضيب المحرك ومنع تهريب الزيت والماء"
+        },
+        {
+          "id": "mech_004",
+          "popular_term": "صدر مكينة",
+          "synonyms": [
+            "غطاء صدر المكينة",
+            "صدر المكينة",
+            "صدر ماكينة",
+            "غطاء جنزير المكينة"
+          ],
+          "approved_name": "صدر مكينة",
+          "formal_name": "غطاء التوقيت الأمامي",
+          "oem_english": "Timing Cover",
+          "supplier_market_term": "صدر مكينة",
+          "category": "mechanic",
+          "notes": "الغطاء المعدني الأمامي الذي يحمي جنزير التوقيت وطرمبة الزيت"
+        },
+        {
+          "id": "mech_005",
+          "popular_term": "جنزير مكينة",
+          "synonyms": [
+            "طقم جنزير",
+            "جنزير صدر",
+            "سير تيمن",
+            "سير التوقيت",
+            "شداد جنزير",
+            "مساطر جنزير"
+          ],
+          "approved_name": "جنزير مكينة",
+          "formal_name": "سلسلة التوقيت",
+          "oem_english": "Timing Chain",
+          "supplier_market_term": "جنزير مكينة / سير تيمن",
+          "category": "mechanic",
+          "notes": "مجموعة ربط توقيت دوران الكرنك مع أعمدة التيمن"
+        },
+        {
+          "id": "mech_006",
+          "popular_term": "حذاف",
+          "synonyms": [
+            "حذاف مكينة",
+            "ترس الحذاف",
+            "صينية الحذاف",
+            "فلاي ويل",
+            "حذاف القير"
+          ],
+          "approved_name": "حذاف",
+          "formal_name": "قرص الحذاف الرابط بين المحرك والطنجرة/الكلتش",
+          "oem_english": "Flywheel / Flexplate",
+          "supplier_market_term": "حذاف",
+          "category": "mechanic",
+          "notes": "القرص المسنن الخلفي الذي يديره السلف وترتبط به طنجرة القير"
+        },
+        {
+          "id": "mech_007",
+          "popular_term": "بكرة كرنك",
+          "synonyms": [
+            "بكرة الكرنك",
+            "بكرة المكينة السفلية",
+            "دامبر الكرنك",
+            "بكرة سير المكينة"
+          ],
+          "approved_name": "بكرة كرنك",
+          "formal_name": "بكرة عمود المرفق وموازن الاهتزاز",
+          "oem_english": "Harmonic Balancer",
+          "supplier_market_term": "بكرة كرنك",
+          "category": "mechanic",
+          "notes": "البكرة الرئيسية الراكبة على مقدمة عمود الكرنك لتدوير سير المكينة"
+        },
+        {
+          "id": "mech_008",
+          "popular_term": "عكس",
+          "synonyms": [
+            "عكوس",
+            "راس عكس",
+            "عكس كامل",
+            "ربلة عكس",
+            "راس عكس خارجي",
+            "راس عكس داخلي"
+          ],
+          "approved_name": "عكس",
+          "formal_name": "عمود الدفع الأمامي",
+          "oem_english": "CV Axle / Joint",
+          "supplier_market_term": "عكس / راس عكس",
+          "category": "mechanic",
+          "notes": "عمود نقل الحركة من القير أو الدفرنس إلى الفلنجة"
+        },
+        {
+          "id": "mech_009",
+          "popular_term": "مقص",
+          "synonyms": [
+            "مقصات",
+            "مقص علوي",
+            "مقص سفلي",
+            "جوزة مقص"
+          ],
+          "approved_name": "مقص",
+          "formal_name": "ذراع التحكم السفلي أو العلوي",
+          "oem_english": "Control Arm",
+          "supplier_market_term": "مقص",
+          "category": "mechanic",
+          "notes": "ذراع نظام التعليق الحامل للكفر"
+        },
+        {
+          "id": "mech_009b",
+          "popular_term": "جلب مقصات",
+          "synonyms": [
+            "بوشة",
+            "جلبة مقص",
+            "ربلات مقصات",
+            "بوشات مقصات"
+          ],
+          "approved_name": "بوشة",
+          "formal_name": "جلب ذراع التعليق المطاطية",
+          "oem_english": "Control Arm Bushings / Suspension Bushing",
+          "supplier_market_term": "جلب مقصات / بوشة",
+          "category": "mechanic",
+          "notes": "الجلب المطاطية الماصة للاهتزاز داخل المقصات"
+        },
+        {
+          "id": "mech_010",
+          "popular_term": "مساعدات",
+          "synonyms": [
+            "مساعد",
+            "مساعد هيدروليك",
+            "منفاخ هيدروليك",
+            "بالون هيدروليك"
+          ],
+          "approved_name": "مساعدات",
+          "formal_name": "ممتصات الصدمات",
+          "oem_english": "Struts / Shock Absorbers",
+          "supplier_market_term": "مساعدات",
+          "category": "mechanic",
+          "notes": "ممتص الصدمات الأمامي أو الخلفي"
+        },
+        {
+          "id": "mech_010b",
+          "popular_term": "يايات",
+          "synonyms": [
+            "ياي",
+            "يايات امامية",
+            "يايات خلفية",
+            "سبرنق مساعد"
+          ],
+          "approved_name": "يايات",
+          "formal_name": "النوابض الحلزونية للتعليق",
+          "oem_english": "Coil Springs",
+          "supplier_market_term": "يايات",
+          "category": "mechanic",
+          "notes": "النوابض الفولاذية الحاملة لوزن السيارة"
+        },
+        {
+          "id": "mech_010c",
+          "popular_term": "كرسي مساعد",
+          "synonyms": [
+            "كراسي مساعدات",
+            "قاعدة مساعد",
+            "رمان كرسي مساعد"
+          ],
+          "approved_name": "كرسي مساعد",
+          "formal_name": "قاعدة تثبيت المساعد العلوية",
+          "oem_english": "Strut Mount",
+          "supplier_market_term": "كرسي مساعد",
+          "category": "mechanic",
+          "notes": "القاعدة العلوية الرابطة بين المساعد وبدي السيارة"
+        },
+        {
+          "id": "mech_011",
+          "popular_term": "فلنجة",
+          "synonyms": [
+            "فلنجه",
+            "فلنجات",
+            "رمان كفر",
+            "رمان بلي",
+            "رمان فلنجة",
+            "صرة كفر"
+          ],
+          "approved_name": "رمان بلي",
+          "formal_name": "صرة العجلة ورولمان العجلة",
+          "oem_english": "Wheel Hub Bearing",
+          "supplier_market_term": "فلنجة / رمان كفر",
+          "category": "mechanic",
+          "notes": "صرة دوران الإطار الحاملة للهوب وحساس ABS"
+        },
+        {
+          "id": "mech_012",
+          "popular_term": "دودة دركسون",
+          "synonyms": [
+            "دودة الدركسون",
+            "علبة دركسون",
+            "جير دركسون",
+            "علبة دركسون تحتانية",
+            "دودة كهرباء",
+            "ذراع دركسون داخلي",
+            "ذراع دركسون خارجي"
+          ],
+          "approved_name": "علبة دركسون",
+          "formal_name": "مجموعة التوجيه (دودة وعلبة الدركسون)",
+          "oem_english": "Steering Rack & Gearbox",
+          "supplier_market_term": "دودة دركسون / علبة دركسون",
+          "category": "mechanic",
+          "notes": "مجموعة توجيه الإطارات الهيدروليكية أو الكهربائية"
+        },
+        {
+          "id": "mech_013",
+          "popular_term": "طرمبة دركسون",
+          "synonyms": [
+            "طرمبه دركسون",
+            "طرمبة باور",
+            "علبة دركسون فوقانية",
+            "مضخة دركسون"
+          ],
+          "approved_name": "طرمبة دركسون",
+          "formal_name": "مضخة الدركسون الهيدروليكية",
+          "oem_english": "Power Steering Pump",
+          "supplier_market_term": "طرمبة دركسون",
+          "category": "mechanic",
+          "notes": "مضخة زيت الباور للدركسون"
+        },
+        {
+          "id": "mech_014",
+          "popular_term": "باكم فرامل",
+          "synonyms": [
+            "باكم الفرامل",
+            "علبة فرامل",
+            "علبة فرامل رئيسية",
+            "ماستر فرامل",
+            "باكم"
+          ],
+          "approved_name": "باكم فرامل",
+          "formal_name": "معزز الفرامل",
+          "oem_english": "Brake Booster",
+          "supplier_market_term": "باكم فرامل",
+          "category": "mechanic",
+          "notes": "وحدة مضاعفة ضغط دعسة الفرامل"
+        },
+        {
+          "id": "mech_015",
+          "popular_term": "كليبر",
+          "synonyms": [
+            "كليبرات",
+            "كليبر فرامل",
+            "بستم كليبر",
+            "طقم اصلاح كليبر"
+          ],
+          "approved_name": "كليبر",
+          "formal_name": "سرج الفرامل",
+          "oem_english": "Brake Caliper",
+          "supplier_market_term": "كليبر فرامل",
+          "category": "mechanic",
+          "notes": "القطعة الماسكة للفحمات فوق الهوب"
+        },
+        {
+          "id": "mech_016",
+          "popular_term": "هوبات",
+          "synonyms": [
+            "هوب",
+            "ديسكات",
+            "هوبات فرامل",
+            "دسكات فرامل"
+          ],
+          "approved_name": "ديسكات",
+          "formal_name": "أقراص الفرامل",
+          "oem_english": "Brake Rotors / Discs",
+          "supplier_market_term": "هوبات / ديسكات",
+          "category": "mechanic",
+          "notes": "أقراص الفرامل المعدنية الدوارة"
+        },
+        {
+          "id": "mech_017",
+          "popular_term": "فحمات",
+          "synonyms": [
+            "قماشات",
+            "اقمشة فرامل",
+            "أقمشة فرامل",
+            "فحمات فرامل",
+            "قماشات جلنط"
+          ],
+          "approved_name": "فحمات",
+          "formal_name": "تيل الفرامل (البطانات والأقمشة)",
+          "oem_english": "Brake Pads / Shoes",
+          "supplier_market_term": "فحمات / قماشات",
+          "category": "mechanic",
+          "notes": "بطانات الاحتكاك الأمامية والخلفية"
+        },
+        {
+          "id": "mech_018",
+          "popular_term": "كرسي مكينة",
+          "synonyms": [
+            "كراسي مكينة",
+            "طقم كراسي مكينة",
+            "شداد مكينة"
+          ],
+          "approved_name": "كراسي مكينة",
+          "formal_name": "قواعد تثبيت المحرك",
+          "oem_english": "Engine Mount",
+          "supplier_market_term": "كرسي مكينة",
+          "category": "mechanic",
+          "notes": "القواعد المطاطية أو الهيدروليكية الحاملة للمحرك"
+        },
+        {
+          "id": "mech_018b",
+          "popular_term": "كرسي قير",
+          "synonyms": [
+            "كراسي قير",
+            "قاعدة قير",
+            "مخدة قير"
+          ],
+          "approved_name": "كرسي قير",
+          "formal_name": "قاعدة تثبيت ناقل الحركة",
+          "oem_english": "Transmission Mount",
+          "supplier_market_term": "كرسي قير",
+          "category": "mechanic",
+          "notes": "القاعدة الحاملة للقير"
+        },
+        {
+          "id": "mech_019",
+          "popular_term": "عمود كرنك",
+          "synonyms": [
+            "كرنك",
+            "سبايك متحركة",
+            "سبايك ثابتة",
+            "بساتم",
+            "شنابر",
+            "ذراع بستم",
+            "عمود تيمن"
+          ],
+          "approved_name": "عمود كرنك",
+          "formal_name": "عمود المرفق والمكابس وعمود الكامات",
+          "oem_english": "Crankshaft, Pistons & Camshaft",
+          "supplier_market_term": "عمود كرنك / بساتم / عمود تيمن",
+          "category": "mechanic",
+          "notes": "القطع الداخلية الأساسية لتوضيب المحرك"
+        },
+        {
+          "id": "mech_020",
+          "popular_term": "طرمبة ماء",
+          "synonyms": [
+            "طرمبه مويه",
+            "طرمبة موية",
+            "مضخة ماء"
+          ],
+          "approved_name": "طرمبة ماء",
+          "formal_name": "مضخة مياه التبريد",
+          "oem_english": "Water Pump",
+          "supplier_market_term": "طرمبة ماء",
+          "category": "mechanic",
+          "notes": "مضخة تدوير سائل التبريد"
+        },
+        {
+          "id": "mech_020b",
+          "popular_term": "ثرموستات",
+          "synonyms": [
+            "بلف حرارة",
+            "كوع حرارة",
+            "كوع ماء"
+          ],
+          "approved_name": "ثرموستات",
+          "formal_name": "منظم حرارة المحرك",
+          "oem_english": "Thermostat",
+          "supplier_market_term": "بلف حرارة / كوع حرارة",
+          "category": "mechanic",
+          "notes": "بلف تنظيم حرارة ماء الرديتر"
+        },
+        {
+          "id": "mech_021",
+          "popular_term": "طرمبة زيت",
+          "synonyms": [
+            "طرمبة زيت مكينة",
+            "مضخة زيت المحرك",
+            "مبرد زيت مكينة"
+          ],
+          "approved_name": "طرمبة زيت",
+          "formal_name": "مضخة الزيت",
+          "oem_english": "Oil Pump",
+          "supplier_market_term": "طرمبة زيت مكينة",
+          "category": "mechanic",
+          "notes": "مضخة تزييت المحرك الداخلية"
+        },
+        {
+          "id": "mech_022",
+          "popular_term": "تيربو",
+          "synonyms": [
+            "شاحن تيربو",
+            "مبرد تيربو",
+            "انتركولر"
+          ],
+          "approved_name": "تيربو",
+          "formal_name": "شاحن توربيني",
+          "oem_english": "Turbocharger",
+          "supplier_market_term": "تيربو",
+          "category": "mechanic",
+          "notes": "الشاحن التوربيني للمحرك"
+        },
+        {
+          "id": "mech_023",
+          "popular_term": "مسمار توازن",
+          "synonyms": [
+            "مسامير توازن",
+            "عمود توازن",
+            "ربلات عمود توازن",
+            "سست",
+            "دبة تلوث",
+            "دبة بيئة",
+            "قزوز"
+          ],
+          "approved_name": "مسمار توازن",
+          "formal_name": "روابط وعمود التوازن ونظام العادم",
+          "oem_english": "Stabilizer Link, Sway Bar & Catalytic Converter",
+          "supplier_market_term": "مسمار توازن / عمود توازن / دبة بيئة",
+          "category": "mechanic",
+          "notes": "روابط التوازن ومكونات العادم"
+        }
+      ]
+    },
+    "electrical_sensors_ac": {
+      "title_ar": "مصطلحات الكهرباء والتكييف",
+      "priority": 3,
+      "entries": [
+        {
+          "id": "elec_001",
+          "popular_term": "ضفيرة",
+          "synonyms": [
+            "ظفيرة",
+            "ظفيرة كاملة",
+            "ضفيرة مكينة",
+            "ظفيرة مكينة",
+            "ضفيرة قير",
+            "ظفيرة طبلون",
+            "ضفيرة حساسات"
+          ],
+          "approved_name": "ضفيرة",
+          "formal_name": "حزمة الأسلاك الكهربائية",
+          "oem_english": "Wiring Harness",
+          "supplier_market_term": "ضفيرة / ظفيرة كاملة",
+          "category": "mechanic",
+          "notes": "شبكة التوصيلات الكهربائية للمحرك أو القير أو الطبلون"
+        },
+        {
+          "id": "elec_002",
+          "popular_term": "سلف",
+          "synonyms": [
+            "دقمة سلف",
+            "سلف مكينة",
+            "مارش",
+            "فحمات سلف"
+          ],
+          "approved_name": "سلف",
+          "formal_name": "بادئ الحركة (محرك بدء التشغيل)",
+          "oem_english": "Starter Motor",
+          "supplier_market_term": "سلف / دقمة سلف",
+          "category": "mechanic",
+          "notes": "المحرك الكهربائي المسؤول عن تدوير المكينة عند التشغيل"
+        },
+        {
+          "id": "elec_003",
+          "popular_term": "دينمو",
+          "synonyms": [
+            "دينمو شحن",
+            "دينمو كهرباء",
+            "مولد كهرباء",
+            "كتاوت دينمو",
+            "بكرة دينمو"
+          ],
+          "approved_name": "دينمو",
+          "formal_name": "المولد الكهربائي",
+          "oem_english": "Alternator",
+          "supplier_market_term": "دينمو",
+          "category": "mechanic",
+          "notes": "مولد شحن البطارية وتغذية كهرباء السيارة"
+        },
+        {
+          "id": "elec_004",
+          "popular_term": "كمبروسر",
+          "synonyms": [
+            "كمبرسر",
+            "كمبروسر مكيف",
+            "ضاغط مكيف",
+            "كلتش كمبروسر",
+            "بلف كمبروسر",
+            "حساس كمبروسر"
+          ],
+          "approved_name": "كمبروسر مكيف",
+          "formal_name": "ضاغط المكيف",
+          "oem_english": "AC Compressor",
+          "supplier_market_term": "كمبروسر مكيف",
+          "category": "mechanic",
+          "notes": "ضاغط منظومة التكييف"
+        },
+        {
+          "id": "elec_005",
+          "popular_term": "ثلاجة مكيف",
+          "synonyms": [
+            "ثلاجه مكيف",
+            "فريزر مكيف",
+            "بلف ثلاجة مكيف",
+            "مروحة مكيف داخلية",
+            "مقاومة مروحة المكيف"
+          ],
+          "approved_name": "ثلاجة مكيف",
+          "formal_name": "المبخر الداخلي للمكيف",
+          "oem_english": "Evaporator",
+          "supplier_market_term": "ثلاجة مكيف",
+          "category": "mechanic",
+          "notes": "ثلاجة التبريد الداخلية تحت الطبلون"
+        },
+        {
+          "id": "elec_006",
+          "popular_term": "رديتر مكيف",
+          "synonyms": [
+            "راديتر مكيف",
+            "سربنتينة مكيف",
+            "مكثف مكيف",
+            "فلتر رديتر المكيف",
+            "ليات مكيف"
+          ],
+          "approved_name": "رديتر مكيف",
+          "formal_name": "المكثف الأمامي للمكيف",
+          "oem_english": "Condenser",
+          "supplier_market_term": "رديتر مكيف",
+          "category": "mechanic",
+          "notes": "رديتر تبريد غاز الفريون في مقدمة السيارة"
+        },
+        {
+          "id": "elec_007",
+          "popular_term": "ثلاجة مكينة",
+          "synonyms": [
+            "ثلاجه مكينه",
+            "مجمع السحب",
+            "ثلاجة المكينة العلوية",
+            "وجه ثلاجة المكينة"
+          ],
+          "approved_name": "ثلاجة مكينة",
+          "formal_name": "مجمع السحب للمحرك",
+          "oem_english": "Intake Manifold",
+          "supplier_market_term": "ثلاجة مكينة",
+          "category": "mechanic",
+          "notes": "مجمع توزيع الهواء الداخل للسلندرات"
+        },
+        {
+          "id": "elec_008",
+          "popular_term": "بوابة هواء",
+          "synonyms": [
+            "ثروتل",
+            "بوابة الثروتل",
+            "دعسة هواء",
+            "لهات الهواء",
+            "منظم الهواء"
+          ],
+          "approved_name": "بوابة هواء",
+          "formal_name": "بوابة خانق الهواء الإلكتروني",
+          "oem_english": "Throttle Body",
+          "supplier_market_term": "بوابة هواء / ثروتل",
+          "category": "mechanic",
+          "notes": "بوابة التحكم بكمية الهواء الداخل للمحرك"
+        },
+        {
+          "id": "elec_009",
+          "popular_term": "كويلات",
+          "synonyms": [
+            "كويل",
+            "طقم كويلات",
+            "اسلاك بواجي"
+          ],
+          "approved_name": "كويلات",
+          "formal_name": "ملفات الإشعال",
+          "oem_english": "Ignition Coils",
+          "supplier_market_term": "كويلات",
+          "category": "mechanic",
+          "notes": "ملفات توليد الشرارة للبواجي"
+        },
+        {
+          "id": "elec_010",
+          "popular_term": "بواجي",
+          "synonyms": [
+            "طقم بواجي",
+            "شمعات احتراق",
+            "بواجي ليزر",
+            "بواجي ايريديوم"
+          ],
+          "approved_name": "بواجي",
+          "formal_name": "شمعات الاحتراق (البواجي)",
+          "oem_english": "Spark Plugs",
+          "supplier_market_term": "بواجي",
+          "category": "mechanic",
+          "notes": "شمعات الإشعال داخل غرف الاحتراق"
+        },
+        {
+          "id": "elec_011",
+          "popular_term": "بخاخات",
+          "synonyms": [
+            "بخاخ",
+            "طقم بخاخات",
+            "مسطرة بخاخات"
+          ],
+          "approved_name": "بخاخات",
+          "formal_name": "بخاخات الوقود",
+          "oem_english": "Fuel Injectors",
+          "supplier_market_term": "بخاخات",
+          "category": "mechanic",
+          "notes": "حاقنات البنزين للمحرك"
+        },
+        {
+          "id": "elec_012",
+          "popular_term": "طرمبة بنزين",
+          "synonyms": [
+            "طرمبه بنزين",
+            "مضخة وقود",
+            "عوامة بنزين",
+            "طرمبة ضغط عالي",
+            "صفاية بنزين"
+          ],
+          "approved_name": "طرمبة بنزين",
+          "formal_name": "مضخة الوقود",
+          "oem_english": "Fuel Pump",
+          "supplier_market_term": "طرمبة بنزين",
+          "category": "mechanic",
+          "notes": "مضخة البنزين داخل التانكي أو مضخة الضغط العالي"
+        },
+        {
+          "id": "elec_013",
+          "popular_term": "حساس كرنك",
+          "synonyms": [
+            "حساس عمود الكرنك",
+            "حساس الكرنك"
+          ],
+          "approved_name": "حساس كرنك",
+          "formal_name": "حساس موضع عمود المرفق",
+          "oem_english": "Crankshaft Position Sensor",
+          "supplier_market_term": "حساس كرنك",
+          "category": "mechanic",
+          "notes": "حساس قراءة سرعة وموضع الكرنك"
+        },
+        {
+          "id": "elec_013b",
+          "popular_term": "حساس تيمن",
+          "synonyms": [
+            "حساس عمود التيمن",
+            "حساس الكامات",
+            "حساس كام شفت"
+          ],
+          "approved_name": "حساس تيمن",
+          "formal_name": "حساس موضع عمود الكامات",
+          "oem_english": "Camshaft Position Sensor",
+          "supplier_market_term": "حساس تيمن",
+          "category": "mechanic",
+          "notes": "حساس قراءة توقيت عمود التيمن"
+        },
+        {
+          "id": "elec_013c",
+          "popular_term": "حساس شكمان",
+          "synonyms": [
+            "حساس اكسجين",
+            "حساس البيئة",
+            "حساس دبة التلوث"
+          ],
+          "approved_name": "حساس اكسجين",
+          "formal_name": "حساس الأكسجين (حساس الشكمان)",
+          "oem_english": "Oxygen (O2) Sensor",
+          "supplier_market_term": "حساس شكمان / حساس أكسجين",
+          "category": "mechanic",
+          "notes": "حساس قياس نسبة الأكسجين في العادم"
+        },
+        {
+          "id": "elec_013d",
+          "popular_term": "حساس هواء",
+          "synonyms": [
+            "حساس MAF",
+            "حساس MAP",
+            "حساس حرارة",
+            "حساس ضغط زيت",
+            "حساس طرق",
+            "حساس ABS"
+          ],
+          "approved_name": "حساس هواء",
+          "formal_name": "حساس تدفق الهواء والحساسات الإلكترونية",
+          "oem_english": "MAF / MAP / ABS Sensor",
+          "supplier_market_term": "حساس هواء / حساس ABS",
+          "category": "mechanic",
+          "notes": "حساسات الهواء والفرامل والمحرك"
+        },
+        {
+          "id": "elec_014",
+          "popular_term": "كمبيوتر مكينة",
+          "synonyms": [
+            "عقل مكينة",
+            "كمبيوتر بودي",
+            "علبة فيوزات",
+            "كتاوت",
+            "شريحة دركسون",
+            "شريحة بوري",
+            "عداد طبلون",
+            "سويتش تشغيل",
+            "بلف تبخير",
+            "حساس كفرات",
+            "حساس صدام",
+            "كاميرا خلفية",
+            "رادار امامي"
+          ],
+          "approved_name": "كمبيوتر مكينة",
+          "formal_name": "وحدة التحكم بالمحرك وعلبة الفيوزات وشريحة الدركسون",
+          "oem_english": "Engine Control Unit (ECU/PCM), Fuse Box & Clock Spring",
+          "supplier_market_term": "كمبيوتر مكينة / علبة فيوزات / شريحة دركسون",
+          "category": "mechanic",
+          "notes": "الوحدات الإلكترونية الرئيسية والحساسات المساعدة"
+        }
+      ]
+    },
+    "body_and_chassis": {
+      "title_ar": "مصطلحات البدي والهيكل",
+      "priority": 4,
+      "entries": [
+        {
+          "id": "body_001",
+          "popular_term": "شمعة",
+          "synonyms": [
+            "شمعات",
+            "شمعة امامية",
+            "نور امامي",
+            "كشاف ضباب",
+            "محول زينون",
+            "شمعة ليد"
+          ],
+          "approved_name": "شمعة",
+          "formal_name": "المصباح الأمامي",
+          "oem_english": "Headlight",
+          "supplier_market_term": "شمعة أمامية",
+          "category": "body",
+          "notes": "الفانوس الأمامي الأيمن أو الأيسر"
+        },
+        {
+          "id": "body_002",
+          "popular_term": "اصطب",
+          "synonyms": [
+            "سطب",
+            "اسطب",
+            "اصطبات",
+            "اسطبات",
+            "اصطب خلفي",
+            "اصطب ركن",
+            "اصطب شنطة"
+          ],
+          "approved_name": "اصطب",
+          "formal_name": "المصباح الخلفي",
+          "oem_english": "Taillight",
+          "supplier_market_term": "اصطب / سطب",
+          "category": "body",
+          "notes": "الفانوس الخلفي للركن أو غطاء الشنطة"
+        },
+        {
+          "id": "body_003",
+          "popular_term": "صدام",
+          "synonyms": [
+            "لحية صدام",
+            "شبك صدام",
+            "قواعد صدام",
+            "كلبسات صدام",
+            "دقن صدام"
+          ],
+          "approved_name": "صدام",
+          "formal_name": "المصد الأمامي أو الخلفي",
+          "oem_english": "Bumper",
+          "supplier_market_term": "صدام",
+          "category": "body",
+          "notes": "غطاء الصدام وملحقاته"
+        },
+        {
+          "id": "body_004",
+          "popular_term": "رفرف",
+          "synonyms": [
+            "رفارف",
+            "صاجة رفرف"
+          ],
+          "approved_name": "رفرف",
+          "formal_name": "الرفرف الجانبي",
+          "oem_english": "Fender",
+          "supplier_market_term": "رفرف",
+          "category": "body",
+          "notes": "الرفرف المعدني الجانبي"
+        },
+        {
+          "id": "body_004b",
+          "popular_term": "بطانة رفرف",
+          "synonyms": [
+            "بطانه رفرف",
+            "بطانات رفارف",
+            "ربلة رفرف داخلية"
+          ],
+          "approved_name": "بطانة رفرف",
+          "formal_name": "بطانة الرفرف البلاستيكية الواقية",
+          "oem_english": "Fender Liner",
+          "supplier_market_term": "بطانة رفرف",
+          "category": "body",
+          "notes": "البطانة الداخلية فوق الكفر"
+        },
+        {
+          "id": "body_005",
+          "popular_term": "كبوت",
+          "synonyms": [
+            "غطاء المكينة",
+            "مفصلات كبوت",
+            "مساعدات كبوت",
+            "قفل كبوت",
+            "عازل كبوت"
+          ],
+          "approved_name": "كبوت",
+          "formal_name": "غطاء المحرك الأمامي",
+          "oem_english": "Hood",
+          "supplier_market_term": "كبوت",
+          "category": "body",
+          "notes": "غطاء المحرك ومفصلاته وقفل الكبوت"
+        },
+        {
+          "id": "body_006",
+          "popular_term": "شنطة",
+          "synonyms": [
+            "باب شنطة",
+            "غطاء شنطة",
+            "باب خلفي",
+            "قفل شنطة",
+            "مساعدات شنطة"
+          ],
+          "approved_name": "شنطة",
+          "formal_name": "غطاء الصندوق الخلفي",
+          "oem_english": "Trunk Lid",
+          "supplier_market_term": "شنطة",
+          "category": "body",
+          "notes": "غطاء الصندوق الخلفي للسيارة"
+        },
+        {
+          "id": "body_007",
+          "popular_term": "جسر صدام",
+          "synonyms": [
+            "جسور صدام",
+            "واجهة امامية",
+            "نظارة واجهة",
+            "كمر امامي",
+            "كمر خلفي",
+            "كمر مكينة"
+          ],
+          "approved_name": "جسر صدام",
+          "formal_name": "عارضة المصد الداخلية والكمر",
+          "oem_english": "Bumper Reinforcement Beam & Subframe",
+          "supplier_market_term": "جسور صدام / جسر صدام",
+          "category": "body",
+          "notes": "الدعامات الهيكلية الحاملة للواجهة والمحرك"
+        },
+        {
+          "id": "body_008",
+          "popular_term": "رديتر",
+          "synonyms": [
+            "رديتر ماء",
+            "راديتر ماء",
+            "راديتر",
+            "قربة ماء",
+            "قربة رديتر",
+            "غطاء رديتر"
+          ],
+          "approved_name": "رديتر ماء",
+          "formal_name": "مبرد المحرك",
+          "oem_english": "Radiator",
+          "supplier_market_term": "رديتر ماء",
+          "category": "mechanic",
+          "notes": "رديتر التبريد الرئيسي للمحرك"
+        },
+        {
+          "id": "body_009",
+          "popular_term": "مروحة رديتر",
+          "synonyms": [
+            "مروحة تبريد",
+            "مراوح تبريد",
+            "هواية مروحة",
+            "كلتش مروحة",
+            "دينمو مروحة"
+          ],
+          "approved_name": "مروحة رديتر",
+          "formal_name": "مروحة تبريد المحرك",
+          "oem_english": "Radiator Fan",
+          "supplier_market_term": "مروحة تبريد / مروحة رديتر",
+          "category": "mechanic",
+          "notes": "مروحة تبريد الرديتر والهواية"
+        },
+        {
+          "id": "body_010",
+          "popular_term": "سمكة تحت الباب",
+          "synonyms": [
+            "سمكة باب",
+            "عتبة باب",
+            "مركب جانبي",
+            "دعاسة جانبية",
+            "مساطر ابواب",
+            "ربلات ابواب",
+            "نسافات"
+          ],
+          "approved_name": "سمكة تحت الباب",
+          "formal_name": "العتبة السفلية والزوائد الجانبية تحت الأبواب",
+          "oem_english": "Rocker Panel / Side Skirt",
+          "supplier_market_term": "سمكة تحت الباب",
+          "category": "body",
+          "notes": "الفيبر أو الصفيح الممتد أسفل الأبواب"
+        },
+        {
+          "id": "body_011",
+          "popular_term": "مراية",
+          "synonyms": [
+            "مراية جانبية",
+            "مرايا",
+            "مراية باب",
+            "قزاز مراية",
+            "فلشر مراية"
+          ],
+          "approved_name": "مراية",
+          "formal_name": "المرآة الجانبية",
+          "oem_english": "Side Mirror",
+          "supplier_market_term": "مراية جانبية",
+          "category": "body",
+          "notes": "المراية الجانبية الكهربائية أو العادية"
+        },
+        {
+          "id": "body_012",
+          "popular_term": "شبك",
+          "synonyms": [
+            "شبك امامي",
+            "شبك واجهة",
+            "نيكل شبك",
+            "علامة شبك"
+          ],
+          "approved_name": "شبك",
+          "formal_name": "الشبك الأمامي",
+          "oem_english": "Front Grille",
+          "supplier_market_term": "شبك",
+          "category": "body",
+          "notes": "شبك الواجهة الأمامية"
+        },
+        {
+          "id": "body_013",
+          "popular_term": "قزاز",
+          "synonyms": [
+            "قزاز امامي",
+            "قزاز خلفي",
+            "زجاج امامي",
+            "زجاج باب",
+            "فتحة سقف",
+            "مكينة قزاز"
+          ],
+          "approved_name": "قزاز",
+          "formal_name": "الزجاج ورافعة الزجاج",
+          "oem_english": "Glass / Windshield",
+          "supplier_market_term": "قزاز",
+          "category": "body",
+          "notes": "الزجاج الأمامي والخلفي وزجاج الأبواب"
+        },
+        {
+          "id": "body_014",
+          "popular_term": "طبلون",
+          "synonyms": [
+            "قشرة طبلون",
+            "ايرباق",
+            "ايرباق دركسون",
+            "حزام امان",
+            "درج طبلون"
+          ],
+          "approved_name": "طبلون",
+          "formal_name": "لوحة العدادات (التابلوه) والوسائد الهوائية",
+          "oem_english": "Dashboard & Airbag",
+          "supplier_market_term": "طبلون",
+          "category": "body",
+          "notes": "الطبلون الأمامي ومنظومة الإيرباق"
+        },
+        {
+          "id": "body_015",
+          "popular_term": "بطانة",
+          "synonyms": [
+            "بطانة باب",
+            "ديكور باب",
+            "قفل باب",
+            "يد باب",
+            "مفصلات باب"
+          ],
+          "approved_name": "بطانة",
+          "formal_name": "بطانة الباب الداخلية",
+          "oem_english": "Door Trim Panel",
+          "supplier_market_term": "بطانة",
+          "category": "body",
+          "notes": "البطانات الداخلية وأقفال ومقابض الأبواب"
+        },
+        {
+          "id": "body_016",
+          "popular_term": "ديكور",
+          "synonyms": [
+            "ديكور مكيف",
+            "ديكور قير",
+            "تكاية وسط",
+            "فرش سقف",
+            "تندة"
+          ],
+          "approved_name": "ديكور",
+          "formal_name": "زينة خارجية وداخلية",
+          "oem_english": "Exterior Trim Molding",
+          "supplier_market_term": "ديكور",
+          "category": "body",
+          "notes": "قطع الديكور الداخلي والخارجي"
+        }
+      ]
+    },
+    "casual_and_market_expressions": {
+      "title_ar": "قاموس الأحاديث العابرة ومصطلحات البيع والشراء السعودية (تُفهم ولا تُعتبر أسماء قطع)",
+      "is_non_part_lexicon": true,
+      "rule_note": "جميع العبارات في هذا القسم هي أوصاف لحالة القطعة أو شروط التعامل أو عبارات محادثة سعودية دارجة؛ يُحظر تماماً تصنيف أي منها كاسم قطعة غيار (part_name)، بل تُفهم دلالتها السياقية (تحديد الفئة أو شرط الرجيع أو الضمان أو نية الاعتماد).",
+      "part_conditions": [
+        {
+          "term": "شد بلد",
+          "synonyms": [
+            "شد بلده",
+            "شد بلدها",
+            "فك وكالة",
+            "اصلي شد بلد",
+            "تشليح شد بلد",
+            "ما انفك",
+            "لم يفك",
+            "على شد بلده"
+          ],
+          "meaning_ar": "قطعة أصلية بحالة المصنع لم يسبق فكها أو توضيبها (تُطلق غالباً على قطع التشليح النظيفة جداً أو الأصلي)",
+          "maps_to_category_hint": "scrap_or_original"
+        },
+        {
+          "term": "أصلي وكالة",
+          "synonyms": [
+            "اصلي وكالة",
+            "أصلي وكاله",
+            "وكالة أصلي",
+            "أصلي عبداللطيف جميل",
+            "أصلي موبس",
+            "أصلي جي ام",
+            "أصلي كرتون وكالة"
+          ],
+          "meaning_ar": "قطعة جديدة أصلية من الوكيل المعتمد",
+          "maps_to_category_hint": "original"
+        },
+        {
+          "term": "تجاري درجة أولى",
+          "synonyms": [
+            "درجة اولى",
+            "درجه اولى",
+            "ياباني درجة أولى",
+            "تايواني درجة أولى",
+            "كوري درجة أولى",
+            "بديل وكالة",
+            "تجاري نظيف"
+          ],
+          "meaning_ar": "قطعة بديلة (Aftermarket) بجودة عالية مطابقة للمواصفات",
+          "maps_to_category_hint": "commercial"
+        },
+        {
+          "term": "تشليح نظيف",
+          "synonyms": [
+            "مستخدم نظيف",
+            "مستعمل نظيف",
+            "تشليح اخو الجديد",
+            "فك تشليح",
+            "مستورد ياباني",
+            "استيراد نظيف"
+          ],
+          "meaning_ar": "قطعة مستعملة مفكوكة من سيارة سليمة بحالة ممتازة",
+          "maps_to_category_hint": "scrap"
+        },
+        {
+          "term": "ممشى قليل",
+          "synonyms": [
+            "ممشاها قليل",
+            "ممشى نظيف",
+            "ماشية قليل",
+            "عداد قليل"
+          ],
+          "meaning_ar": "محرك أو قير مستعمل مقطوع عليه كيلومترات قليلة",
+          "maps_to_category_hint": "scrap"
+        },
+        {
+          "term": "مفحوص على الشرط",
+          "synonyms": [
+            "على الشرط",
+            "ع الشرط",
+            "علشرط",
+            "مشروط",
+            "مضمون على الشرط",
+            "شرط الفحص",
+            "شغال على الشرط"
+          ],
+          "meaning_ar": "قطعة مفحوصة ومضمونة العمل الخالي من العيوب",
+          "maps_to_category_hint": "warranty_condition"
+        },
+        {
+          "term": "مجدد",
+          "synonyms": [
+            "مجددة",
+            "موضب",
+            "موضبة",
+            "مجدد مصنعي",
+            "ريمانوفاكتشر"
+          ],
+          "meaning_ar": "قطعة تم تجديدها وتغيير قطعها الاستهلاكية الداخلية (مثل طنجرة مجددة أو قير مجدد)",
+          "maps_to_category_hint": "scrap"
+        }
+      ],
+      "trading_terms": [
+        {
+          "term": "مع الرجيع",
+          "synonyms": [
+            "شامل الرجيع",
+            "بالرجيع",
+            "تسليم الرجيع",
+            "تأخذون الرجيع",
+            "نأخذ الرجيع",
+            "مع القديم",
+            "بدل القديم"
+          ],
+          "meaning_ar": "السعر مشروط بتسليم القطعة التالفة القديمة (Core Exchange) مثل المكينة أو القير أو الطنجرة",
+          "trade_flag": "with_core_exchange"
+        },
+        {
+          "term": "بدون رجيع",
+          "synonyms": [
+            "من غير رجيع",
+            "بلا رجيع",
+            "الرجيع عندك",
+            "ما نبي الرجيع"
+          ],
+          "meaning_ar": "شراء القطعة دون التزام العميل بتسليم القطعة القديمة التالفة",
+          "trade_flag": "without_core_exchange"
+        },
+        {
+          "term": "ضمان تشغيل",
+          "synonyms": [
+            "ضمان تركيب وتشغيل",
+            "ضمان شهر",
+            "ضمان اسبوعين",
+            "ضمان 15 يوم",
+            "ضمان ثلاثة شهور",
+            "ضمان ستة شهور"
+          ],
+          "meaning_ar": "فترة الضمان الممنوحة للتأكد من سلامة القطعة بعد التركيب والتشغيل",
+          "trade_flag": "warranty_term"
+        },
+        {
+          "term": "يركب بدون توليف",
+          "synonyms": [
+            "بدون توليف",
+            "بدون قص",
+            "يركب دايركت",
+            "مسمار على مسمار",
+            "يركب على طول"
+          ],
+          "meaning_ar": "القطعة مطابقة تماماً للموديل وتركب مباشرة دون تعديل أو ترهيم",
+          "trade_flag": "direct_fit"
+        },
+        {
+          "term": "مطابق على رقم الشاصي",
+          "synonyms": [
+            "على رقم الشاصي",
+            "يطابق الشاصي",
+            "مفحوص على الشاصي",
+            "حسب رقم الهيكل"
+          ],
+          "meaning_ar": "التحقق من تطابق رقم القطعة الهندسي مع رقم هيكل السيارة (VIN)",
+          "trade_flag": "vin_matched"
+        },
+        {
+          "term": "بكم تحسبها لي من الآخر",
+          "synonyms": [
+            "كم من الاخر",
+            "كم آخرها",
+            "كم نهايتها",
+            "راعنا بالسعر",
+            "كم تحسبها لي",
+            "كم السعر النهائي",
+            "عطني من الاخر"
+          ],
+          "meaning_ar": "طلب معرفة السعر النهائي أو التفاوض المعتاد في السوق السعودي",
+          "trade_flag": "price_negotiation"
+        },
+        {
+          "term": "أرسل اللوكيشن",
+          "synonyms": [
+            "ارسل الموقع",
+            "عطني اللوكيشن",
+            "وين موقعكم",
+            "وين مكانكم"
+          ],
+          "meaning_ar": "طلب موقع الاستلام أو عنوان التوصيل",
+          "trade_flag": "location_request"
+        },
+        {
+          "term": "شحن زاجل / سمسا / تيار",
+          "synonyms": [
+            "شحن زاجل",
+            "شحن سمسا",
+            "التيار السريع",
+            "شحن أرامكس",
+            "شحن ريد بوكس",
+            "شحن ناقل",
+            "شحن سبل"
+          ],
+          "meaning_ar": "شركات الشحن البري والسريع المعتمدة بين مدن المملكة",
+          "trade_flag": "shipping_carrier"
+        }
+      ],
+      "conversational_fillers": [
+        {
+          "term": "يا غالي",
+          "synonyms": [
+            "ياغالي",
+            "يالغالي",
+            "يا طويل العمر",
+            "يا الحبيب",
+            "يا شيخ",
+            "يا خوي",
+            "اخوي",
+            "طال عمرك"
+          ],
+          "meaning_ar": "عبارة تودد واحترام سعودية دارجة (تُتجاهل عند استخراج اسم القطعة)"
+        },
+        {
+          "term": "طيب الله يعافيك",
+          "synonyms": [
+            "الله يعافيك",
+            "الله يجزاك خير",
+            "بيض الله وجهك",
+            "رحم الله والديك",
+            "ما قصرت",
+            "لاهنت",
+            "لا هنت",
+            "تسلم"
+          ],
+          "meaning_ar": "عبارة شكر ودعاء سعودية"
+        },
+        {
+          "term": "أبشر",
+          "synonyms": [
+            "ابشر",
+            "أبشر بسعدك",
+            "سم",
+            "على خشمي",
+            "تم طال عمرك",
+            "حاضر"
+          ],
+          "meaning_ar": "عبارة ترحيب وتأكيد تنفيذ الطلب"
+        },
+        {
+          "term": "شوف لي بالله",
+          "synonyms": [
+            "شف لي بالله",
+            "شوف لي",
+            "دور لي بالله",
+            "ابحث لي عن",
+            "شيك لي على",
+            "بالله شوف لي"
+          ],
+          "meaning_ar": "مقدمة طلب البحث عن قطعة غيار (لا تدخل ضمن اسم القطعة)"
+        },
+        {
+          "term": "عندكم ولا تطلبونها",
+          "synonyms": [
+            "متوفرة جاهزة",
+            "موجودة عندكم الان",
+            "عندكم بالمحل",
+            "متى توصل لو طلبتها"
+          ],
+          "meaning_ar": "استفسار عن التوفر الفوري ومدة التوريد"
+        },
+        {
+          "term": "كم حدك فيها",
+          "synonyms": [
+            "بكم هي",
+            "كم سعرها",
+            "على كم",
+            "كم تسوى",
+            "بكم القطعة"
+          ],
+          "meaning_ar": "سؤال دارج عن سعر القطعة"
+        },
+        {
+          "term": "خلاص اعتمد",
+          "synonyms": [
+            "اعتمد",
+            "توكلنا على الله",
+            "تم اعتمد",
+            "خلاص باخذها",
+            "ارسل الحساب",
+            "اعتمد الطلب"
+          ],
+          "meaning_ar": "قرار شراء صريح واعتماد للعرض"
+        }
+      ]
+    }
+  }
+}
