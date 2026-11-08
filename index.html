@@ -6112,12 +6112,29 @@
         const iw = img.naturalWidth || (state.isMobileLayout ? 720 : 1280);
         const ih = img.naturalHeight || (state.isMobileLayout ? 1280 : 720);
 
+        if (state.isMobileLayout) {
+          // On mobile (9:16 vertical stack), fit 100% of horizontal width (720px) and fit above the <=18% bottom card
+          const availH = vh * 0.84;
+          const fitScale = Math.min(vw / iw, (availH / ih) * 1.08);
+          const drawW = iw * fitScale;
+          const drawH = ih * fitScale;
+          const dx = (vw - drawW) * 0.5;
+          const dy = Math.max(4, (availH - drawH) * 0.45);
+
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.drawImage(img, dx, dy, drawW, drawH);
+          ctx.restore();
+          return;
+        }
+
         const baseRatio = Math.max(vw / iw, vh / ih);
         const finalScale = baseRatio * scale;
         const drawW = iw * finalScale;
         const drawH = ih * finalScale;
-        const desktopLeftBias = state.isMobileLayout ? 0 : -Math.round(vw * 0.04);
-        const dx = (vw - drawW) * 0.5 + desktopLeftBias + offsetX;
+        // Anchor left edge with a small 14px margin so left callouts are never cropped on 16:10 screens,
+        // while keeping the car, engine, and 3 boxes to the left of the right-hand .story-card.
+        const dx = drawW > vw ? Math.max(vw - drawW, -14) + offsetX * 0.4 : (vw - drawW) * 0.5 + offsetX;
         const dy = (vh - drawH) * 0.5 + offsetY;
 
         ctx.save();
@@ -6160,9 +6177,9 @@
           const idxB = Math.min(videoSequenceFrames.length - 1, idxA + 1);
           const blend = floatIdx - idxA;
 
-          drawCoverImage(videoSequenceFrames[idxA], 1, 1.02, px, py);
+          drawCoverImage(videoSequenceFrames[idxA], 1, 1.0, px, py);
           if (idxB !== idxA && blend > 0.01) {
-            drawCoverImage(videoSequenceFrames[idxB], blend, 1.02, px, py);
+            drawCoverImage(videoSequenceFrames[idxB], blend, 1.0, px, py);
           }
           return;
         }
