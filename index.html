@@ -5506,6 +5506,64 @@
             }
         }
 
+        const SURGICAL_TAXONOMY_14_MAP = {
+            engines_complete: 'محركات كاملة (مكائن)',
+            transmissions_diffs: 'قيور ودفرنسات كاملة',
+            engine_overhaul: 'قطع توضيب المحرك',
+            transmission_overhaul: 'قطع توضيب القير والطنجرات',
+            shocks_air_suspension: 'المساعدات والهيدروليك',
+            chassis_undercarriage: 'قطع العضلات والتعليق',
+            steering_brakes: 'نظام التوجيه والفرامل',
+            ecus_modules: 'الكمبيوترات والوحدات الإلكترونية',
+            electrical_harness: 'القطع الكهربائية والضفائر',
+            ac_cooling: 'قطع التكييف والتبريد',
+            body_panels: 'الواجهات والبدي والهيكل الخارجي',
+            lighting_glass: 'الإضاءة والمرايا والزجاج',
+            infotainment_clusters: 'المسجلات والشاشات والعدادات',
+            accessories_interior: 'زينة السيارات والمقصورة الداخلية'
+        };
+        const ALL_14_SURGICAL_KEYS = Object.keys(SURGICAL_TAXONOMY_14_MAP);
+
+        function classifyOrderPartToSurgical14(partText, fallbackCategory) {
+            const t = String(partText || '').toLowerCase();
+            if (/كمبيوتر|ecu|tcm|bcm|abs|رادار/.test(t)) return 'ecus_modules';
+            if (/طنجر|بطيخ|مخ قير|بودي بلف|شريح|منظم قير|كلتشات قير|سولينويد|توضيب قير/.test(t)) return 'transmission_overhaul';
+            if (/بستم|بساتم|شنبر|شنابر|سبايك|وجيه|جنزير|طرمبه زيت|طرمبة زيت|راس مكين|رؤوس|توضيب مكين/.test(t)) return 'engine_overhaul';
+            if (/مساعد|هيدروليك|بالون|ياي|يايات|سست/.test(t)) return 'shocks_air_suspension';
+            if (/دوده|دودة|طرمبه دركسون|طرمبة دركسون|فحمات|اقمش|هوب|كليبر|باكم|فرامل/.test(t)) return 'steering_brakes';
+            if (/مقص|عضلات|اذرع|أذرع|جلب|مسمار توازن|مسامير توازن|فلنج|رمان|كرسي مكين|كراسي مكين|كرسي قير|عكس|عكوس|كمر/.test(t)) return 'chassis_undercarriage';
+            if (/كمبروسر|كمبرسر|ثلاجه مكيف|ثلاجة مكيف|رديتر|اديتر|مروحه|مراوح|طرمبه ماء|بلف حرار/.test(t)) return 'ac_cooling';
+            if (/دينمو|سلف|ضفير|ظفير|كويل|بواجي|ثروتل|بوابه هواء|طرمبه بنزين|بخاخ|حساس/.test(t)) return 'electrical_harness';
+            if (/شاشه|شاشة|مسجل|عداد|امبليفاير|سماعات|كاميرا/.test(t)) return 'infotainment_clusters';
+            if (/شمعه|شمعة|شمعات|اصطب|اسطب|فانوس|كشاف|مرايه|مراية|مرايا|زجاج|قزاز|فتحه سقف|بانوراما/.test(t)) return 'lighting_glass';
+            if (/واجهه|واجهة|صدام|دفاع|كبوت|رفرف|رفارف|باب|ابواب|شنطه|شنطة|شبك|جسر|بطان|بدي|بودي/.test(t)) return 'body_panels';
+            if (/مرتبه|مرتبة|مراتب|ديكور|طبلون|دركسون|طاره|ايرباق|إيرباق|جنط|جنوط|زينه|زينة|اكسسوار/.test(t)) return 'accessories_interior';
+            if (/قير|جير|دفرنس|دبل|كرونه|كارونه/.test(t)) return 'transmissions_diffs';
+            if (/ماكين|مكين|محرك|شورت بلوك/.test(t)) return 'engines_complete';
+            if (fallbackCategory === 'بودي وهيكل خارجي') return 'body_panels';
+            if (fallbackCategory === 'زجاج ومرايا') return 'lighting_glass';
+            if (fallbackCategory === 'جيربوكس وناقل حركة') return 'transmissions_diffs';
+            if (fallbackCategory === 'نظام التعليق والمقصات') return 'chassis_undercarriage';
+            if (fallbackCategory === 'كهرباء وإلكترونيات') return 'electrical_harness';
+            if (fallbackCategory === 'زينة وإكسسوارات') return 'accessories_interior';
+            return 'engines_complete';
+        }
+
+        function resolveSupplierTypeBadgeText(data) {
+            const st = String(data?.supplier_type || '').trim();
+            if (data?.supplier_type_label_ar) return data.supplier_type_label_ar;
+            if (st === 'full_car_dismantler') return 'تشليح تفكيك كامل - الحائر';
+            if (st === 'specialized_used_importer') return 'مستورد قطع مستعملة - السلي';
+            if (st === 'new_parts_dealer') return 'جديد أصلي/تجاري';
+            const conds = Array.isArray(data?.conditions) ? data.conditions.join(' ') : '';
+            if (conds.includes('مستعمل') || conds.includes('تشليح')) {
+                return (data?.district && String(data.district).includes('الحائر'))
+                    ? 'تشليح تفكيك كامل - الحائر'
+                    : 'مستورد قطع مستعملة - السلي';
+            }
+            return 'جديد أصلي/تجاري';
+        }
+
         function startLivePendingListener() {
             if (currentRole !== 'admin') return;
             if (unsubscribePending) {
@@ -5523,16 +5581,37 @@
                     if (pendingOptimisticPendingSupOps.has(docSnap.id)) return;
                     const data = docSnap.data();
                     const safeId = escapeHTML(docSnap.id);
-                    const safeName = escapeHTML(data.name);
-                    const safePhone = escapeHTML(data.phone);
+                    const safeName = escapeHTML(data.shop_name || data.name || '');
+                    const safeDistrict = escapeHTML(data.district || 'الرياض');
+                    const safePhone = escapeHTML(data.phone || '');
+                    const safeTypeLabel = escapeHTML(resolveSupplierTypeBadgeText(data));
+                    const brandsArr = Array.isArray(data.brands) ? data.brands : (Array.isArray(data.car_brands) ? data.car_brands : []);
+                    const rawCatsArr = data.supplier_type === 'full_car_dismantler'
+                        ? ALL_14_SURGICAL_KEYS
+                        : (Array.isArray(data.categories) ? data.categories : (Array.isArray(data.fine_categories) ? data.fine_categories : []));
+                    const catsLabelsArr = Array.isArray(data.fine_categories_labels_ar) && data.fine_categories_labels_ar.length > 0
+                        ? data.fine_categories_labels_ar
+                        : rawCatsArr.map(c => SURGICAL_TAXONOMY_14_MAP[c] || c);
+                    const safeBrandsText = escapeHTML(brandsArr.join('، ') || 'غير محدد');
+                    const safeCatsText = escapeHTML(catsLabelsArr.join('، ') || 'جميع الـ 14 فئة');
                     const dataStr = encodeURIComponent(JSON.stringify(data)).replace(/'/g, '%27');
                     pendingCardsHtml.push(`
                         <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border border-slate-700/80 p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
                             <div class="absolute top-0 right-0 w-1 h-full bg-emerald-500"></div>
-                            <p class="font-black text-white text-base mb-1">${safeName}</p>
-                            <p dir="ltr" class="text-[11px] text-slate-400 font-mono mb-3 bg-slate-950/80 inline-block px-2.5 py-1 rounded-lg border border-slate-800">${safePhone}</p>
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <p class="font-black text-white text-base">${safeName}</p>
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">${safeTypeLabel}</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                <span class="text-[11px] text-sky-300 font-bold bg-sky-500/10 px-2 py-0.5 rounded-lg border border-sky-500/20">📍 الحي الصناعي: ${safeDistrict}</span>
+                                <span dir="ltr" class="text-[11px] text-slate-300 font-mono bg-slate-950/80 inline-block px-2.5 py-0.5 rounded-lg border border-slate-800">${safePhone}</span>
+                            </div>
+                            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-2.5 space-y-1 text-[11px] text-slate-300 mb-3">
+                                <p><strong class="text-brand-300">🚗 الماركات المعتمدة:</strong> ${safeBrandsText}</p>
+                                <p><strong class="text-emerald-300">🔧 الفئات الدقيقة (من الـ 14):</strong> ${safeCatsText}</p>
+                            </div>
                             <div class="flex gap-2 mt-3">
-                                <button onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition">موافقة</button>
+                                <button onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition">اعتماد</button>
                                 <button onclick="rejectSupplier('${safeId}')" class="flex-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold py-2 rounded-xl hover:bg-rose-500 transition">رفض</button>
                             </div>
                         </div>
@@ -5557,17 +5636,42 @@
             const cardEl = document.getElementById('pending-sup-card-' + docId) || document.getElementById('pending-sup-card-' + escapeHTML(docId));
             const savedCardHtml = cardEl ? cardEl.outerHTML : '';
 
-            // (أ) قبول وتحديث فوري 0ms في الشاشة قبل انتظار الشبكة
+            // (أ) قبول وتحديث فوري 0ms في الشاشة قبل انتظار الشبكة + توزيع المورد على جميع فرق Team A / Team B
             pendingOptimisticPendingSupOps.add(docId);
             if (cardEl) cardEl.remove();
             refreshPendingBadgeFromDom();
 
-            suppliersDB.push({ id: Date.now().toString(), name: data.name, phone: data.phone, conditions: data.conditions, brands: data.brands, categories: data.categories });
+            const effectiveCategories = data.supplier_type === 'full_car_dismantler'
+                ? [...ALL_14_SURGICAL_KEYS]
+                : (data.fine_categories || data.categories || []);
+
+            suppliersDB.push({
+                id: Date.now().toString(),
+                name: data.shop_name || data.name,
+                phone: data.phone,
+                district: data.district || null,
+                supplier_type: data.supplier_type || 'general',
+                supplier_type_label_ar: resolveSupplierTypeBadgeText(data),
+                conditions: data.conditions || (data.supplier_type === 'new_parts_dealer' ? ['جديد'] : ['مستعمل']),
+                brands: data.brands || data.car_brands || [],
+                categories: effectiveCategories,
+                fine_categories: effectiveCategories
+            });
             renderSuppliersModalList();
             if (window.currentOrders) renderOrders(window.currentOrders);
 
-            // (ب) حفظ التعديلات سحابياً في الخلفية واسترجاع الحالة عند الخطأ فقط
+            // (ب) حفظ التعديلات سحابياً وتوزيع الفرق في السيرفر الخلفي واسترجاع الحالة عند الخطأ فقط
             try {
+                fetchBotBackend('/api/admin/pending-suppliers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: docId, ...data, fine_categories: effectiveCategories })
+                }).then(() => fetchBotBackend('/api/admin/pending-suppliers/' + encodeURIComponent(docId) + '/approve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })).catch(() => {});
+
                 await Promise.all([
                     setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB }),
                     deleteDoc(doc(db, "pending_suppliers", docId))
@@ -6062,29 +6166,45 @@
             // ==========================================
             const cardsHtml = [];
             orders.forEach(order => {
+                const orderSurgicalCat = classifyOrderPartToSurgical14(order.parts, order.partCategory);
+                const orderSurgicalCatAr = SURGICAL_TAXONOMY_14_MAP[orderSurgicalCat] || order.partCategory;
                 const scoredSuppliers = [];
                 suppliersDB.forEach(sup => {
                     const matchCondition = sup.conditions && (sup.conditions.includes('شامل') || sup.conditions.includes(order.partCondition));
                     if (!matchCondition) return; 
 
                     let brandScore = 0;
-                    if (sup.brands && sup.brands.includes(order.brand)) { brandScore = 10; } 
-                    else if (sup.brands && sup.brands.includes('شامل ' + order.brandGroup)) { brandScore = 10; } 
-                    else if (sup.brands && sup.brands.includes('شامل الكل')) { brandScore = 5; } 
-                    else if (sup.brands && sup.brands.includes('أخرى') && !carBrandsData[order.brandGroup]?.includes(order.brand)) { brandScore = 5; }
+                    const supBrands = sup.brands || sup.car_brands || [];
+                    if (supBrands.includes(order.brand)) { brandScore = 10; } 
+                    else if (supBrands.includes('شامل ' + order.brandGroup)) { brandScore = 10; } 
+                    else if (supBrands.includes('شامل الكل')) { brandScore = 5; } 
+                    else if (supBrands.includes('أخرى') && !carBrandsData[order.brandGroup]?.includes(order.brand)) { brandScore = 5; }
                     if (brandScore === 0) return; 
 
                     let catScore = 0;
-                    if (sup.categories && sup.categories.includes(order.partCategory)) { catScore = 10; } 
-                    else if (sup.categories && sup.categories.includes('شامل')) { catScore = 5; } 
-                    else if (sup.categories && sup.categories.includes('أخرى') && !['ميكانيكا ومحركات', 'جيربوكس وناقل حركة', 'نظام التعليق والمقصات', 'كهرباء وإلكترونيات', 'بودي وهيكل خارجي', 'زجاج ومرايا', 'زيوت وفلاتر', 'زينة وإكسسوارات'].includes(order.partCategory)) { catScore = 5; }
+                    const supCats = sup.fine_categories || sup.categories || [];
+                    if (sup.supplier_type === 'full_car_dismantler') {
+                        // تشليح تفكيك كامل (الحائر): معتمد تلقائياً في جميع الـ 14 فئة
+                        catScore = 10;
+                    } else if (sup.supplier_type === 'specialized_used_importer') {
+                        // مستورد قطع مستعملة محددة (السلي): لا يطابق إلا الفئات المحددة له فقط
+                        if (supCats.includes(orderSurgicalCat) || supCats.includes(SURGICAL_TAXONOMY_14_MAP[orderSurgicalCat])) {
+                            catScore = 10;
+                        }
+                    } else if (supCats.includes(orderSurgicalCat) || supCats.includes(SURGICAL_TAXONOMY_14_MAP[orderSurgicalCat]) || supCats.includes(order.partCategory)) {
+                        catScore = 10;
+                    } else if (supCats.includes('شامل')) {
+                        catScore = 5;
+                    } else if (supCats.includes('أخرى') && !['ميكانيكا ومحركات', 'جيربوكس وناقل حركة', 'نظام التعليق والمقصات', 'كهرباء وإلكترونيات', 'بودي وهيكل خارجي', 'زجاج ومرايا', 'زيوت وفلاتر', 'زينة وإكسسوارات'].includes(order.partCategory)) {
+                        catScore = 5;
+                    }
                     if (catScore === 0) return; 
 
                     scoredSuppliers.push({ ...sup, score: brandScore + catScore });
                 });
                 scoredSuppliers.sort((a, b) => b.score - a.score);
 
-                // حفظ أرقام الموردين في الذاكرة بحد أقصى 12 مورداً (3 مجموعات تصعيد: Group A -> Group B -> Group C، كل مجموعة 4 موردين)
+                // حفظ أرقام الموردين في الذاكرة بحد أقصى 12 مورداً (3 مجموعات تصعيد: Team A -> Team B -> Team C، كل مجموعة 4 موردين)
                 const rankedEscalationPool = scoredSuppliers.slice(0, 12);
                 window.orderSuppliers[order.id] = rankedEscalationPool.map(s => s.phone);
 
@@ -6097,12 +6217,13 @@
                 const safeYear = escapeHTML(order.year);
                 const safePartCondition = escapeHTML(order.partCondition);
                 const safePartCategory = escapeHTML(order.partCategory);
+                const safeSurgicalCatAr = escapeHTML(orderSurgicalCatAr);
                 const safeVin = escapeHTML(order.vin);
                 const safeParts = escapeHTML(order.parts);
                 const safeAffiliate = escapeHTML(order.affiliate);
                 const safeDate = escapeHTML(order.date || '');
 
-                let msg = `*طلب تسعير قطع غيار - عالم التروس*\n🚗 المركبة: ${order.brand} ${order.model} (${order.year})\n💎 الحالة: ${order.partCondition}\n🗂️ القسم: ${order.partCategory}\n🔢 رقم الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
+                let msg = `*طلب تسعير قطع غيار - عالم التروس*\n🚗 المركبة: ${order.brand} ${order.model} (${order.year})\n💎 الحالة: ${order.partCondition}\n🗂️ القسم: ${orderSurgicalCatAr}\n🔢 رقم الهيكل: ${order.vin}\n\n*القطع المطلوبة:*\n${order.parts}`;
 
                 const hasValidDataImage = typeof order.imageData === 'string' && order.imageData.trim().startsWith('data:image/');
                 const hasAnyAttachedImage = Boolean(order.hasImage || order.imageDocId || hasValidDataImage);
@@ -6130,9 +6251,9 @@
                 let btnHtml = '';
                 if (rankedEscalationPool.length > 0) {
                     const groupMetaDefs = [
-                        { label: 'Group A', desc: 'الدفعة الأولى المباشرة', badgeCls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
-                        { label: 'Group B', desc: 'التصعيد التلقائي الثاني', badgeCls: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
-                        { label: 'Group C', desc: 'التصعيد التلقائي الثالث', badgeCls: 'bg-sky-500/15 text-sky-300 border-sky-500/30' }
+                        { label: `الفريق A [${safeBrand} — ${safeSurgicalCatAr}]`, desc: 'الدفعة الأولى المباشرة (Team A)', badgeCls: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
+                        { label: `الفريق B [${safeBrand} — ${safeSurgicalCatAr}]`, desc: 'التصعيد التلقائي الثاني (Team B)', badgeCls: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
+                        { label: `الفريق C [${safeBrand} — ${safeSurgicalCatAr}]`, desc: 'التصعيد التلقائي الثالث (Team C)', badgeCls: 'bg-sky-500/15 text-sky-300 border-sky-500/30' }
                     ];
                     const groupBlocksHtml = [];
                     for (let gIdx = 0; gIdx < 3; gIdx += 1) {
