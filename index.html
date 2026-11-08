@@ -274,63 +274,40 @@
     }
 
     .hud-reticle {
-      position: absolute;
-      left: 44%;
-      top: 50%;
-      width: 210px;
-      height: 210px;
-      transform: translate(-50%, -50%);
-      border: 1px dashed rgba(0, 212, 255, 0.45);
-      border-radius: 50%;
-      transition: transform 0.25s ease, border-color 0.25s ease;
-    }
-
-    .hud-reticle::before {
-      content: '';
-      position: absolute;
-      inset: 16px;
-      border-radius: 16px;
-      border: 1.5px solid rgba(0, 212, 255, 0.3);
-    }
-
-    .hud-reticle-tag {
-      position: absolute;
-      bottom: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(4, 12, 24, 0.86);
-      border: 1px solid rgba(0, 212, 255, 0.5);
-      color: var(--cyan);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      padding: 3px 10px;
-      border-radius: 6px;
-      white-space: nowrap;
-      direction: ltr;
+      display: none !important;
     }
 
     .hud-telemetry-box {
       position: absolute;
-      left: 26px;
-      bottom: 28px;
-      width: 310px;
-      background: rgba(6, 13, 26, 0.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 212, 255, 0.32);
-      border-radius: 14px;
-      padding: 14px 16px;
+      right: 3%;
+      left: auto;
+      top: 72px;
+      bottom: auto;
+      width: auto;
+      max-width: 380px;
+      background: rgba(8, 13, 24, 0.42);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(0, 212, 255, 0.22);
+      border-radius: 999px;
+      padding: 6px 14px;
       direction: rtl;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
     }
 
     .hud-header-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      gap: 12px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .hud-metrics,
+    .hud-progress-wrap {
+      display: none !important;
     }
 
     .hud-status-label {
@@ -967,6 +944,9 @@
       .hud-mode-code {
         font-size: 0.64rem;
       }
+      /* 1. Hide secondary HUD overlays on mobile so vertical 3-tier stack is 100% unobstructed */
+      .hud-reticle,
+      .hud-telemetry-box,
       .hud-metrics,
       .hud-progress-wrap {
         display: none !important;
@@ -5989,6 +5969,8 @@
 
       const state = {
         progress: 0,
+        targetFrame: 0,
+        smoothFrame: 0,
         activeHudIndex: -1,
         mouseX: 0,
         mouseY: 0,
@@ -6023,7 +6005,7 @@
         return t * t * (3 - 2 * t);
       }
 
-      const CACHE_BUST_VER = '20s_v2';
+      const CACHE_BUST_VER = '20s_v3';
 
       function normalizeRelativePath(p) {
         if (!p) return p;
@@ -6041,7 +6023,13 @@
         return new Promise((resolve) => {
           const img = new Image();
           img.decoding = 'async';
-          img.onload = () => resolve(img);
+          img.onload = () => {
+            if (typeof img.decode === 'function') {
+              img.decode().catch(() => {}).finally(() => resolve(img));
+            } else {
+              resolve(img);
+            }
+          };
           img.onerror = () => resolve(null);
           img.src = src;
         });
@@ -6084,7 +6072,10 @@
         }
 
         resizeCanvas();
-        applyProgress(computeRawTrackProgress());
+        const initP = computeRawTrackProgress();
+        applyProgress(initP);
+        state.smoothFrame = state.targetFrame;
+        window.__harajScrollyState = { state, videoSequenceFrames };
         renderCanvas();
       }
 
@@ -6128,14 +6119,14 @@
           return;
         }
 
+        // On desktop (> 768px), scale to 95% of cover and shift left so the entire front of the car,
+        // pulled-out engine, and 3 boxes finish completely to the left of the right-hand .story-card.
         const baseRatio = Math.max(vw / iw, vh / ih);
-        const finalScale = baseRatio * scale;
+        const finalScale = baseRatio * scale * 0.95;
         const drawW = iw * finalScale;
         const drawH = ih * finalScale;
-        // Anchor left edge with a small 14px margin so left callouts are never cropped on 16:10 screens,
-        // while keeping the car, engine, and 3 boxes to the left of the right-hand .story-card.
-        const dx = drawW > vw ? Math.max(vw - drawW, -14) + offsetX * 0.4 : (vw - drawW) * 0.5 + offsetX;
-        const dy = (vh - drawH) * 0.5 + offsetY;
+        const dx = Math.max(vw - drawW, -Math.round(vw * 0.03)) + offsetX * 0.35;
+        const dy = (vh - drawH) * 0.5 + offsetY * 0.35;
 
         ctx.save();
         ctx.globalAlpha = alpha;
@@ -6164,21 +6155,21 @@
         const vh = window.innerHeight;
         const p = state.progress;
 
-        ctx.fillStyle = '#05080f';
+        ctx.fillStyle = '#070b13';
         ctx.fillRect(0, 0, vw, vh);
 
         const px = state.mouseX * 18;
         const py = state.mouseY * 12;
 
         if (hasVideoSequences && videoSequenceFrames.length > 0) {
-          const effectiveP = clamp01(p);
-          const floatIdx = effectiveP * (videoSequenceFrames.length - 1);
-          const idxA = Math.floor(floatIdx);
-          const idxB = Math.min(videoSequenceFrames.length - 1, idxA + 1);
-          const blend = floatIdx - idxA;
+          const maxIdx = videoSequenceFrames.length - 1;
+          const sf = Math.max(0, Math.min(maxIdx, state.smoothFrame));
+          const idxA = Math.floor(sf);
+          const idxB = Math.min(maxIdx, Math.ceil(sf));
+          const blend = sf % 1;
 
           drawCoverImage(videoSequenceFrames[idxA], 1, 1.0, px, py);
-          if (idxB !== idxA && blend > 0.01) {
+          if (idxB !== idxA && blend > 0.005) {
             drawCoverImage(videoSequenceFrames[idxB], blend, 1.0, px, py);
           }
           return;
@@ -6272,7 +6263,11 @@
 
       function applyProgress(p) {
         state.progress = p;
+        if (hasVideoSequences && videoSequenceFrames.length > 0) {
+          state.targetFrame = clamp01(p) * (videoSequenceFrames.length - 1);
+        }
         state.needsRender = true;
+        if (typeof wakeCanvasLoopRef === 'function') wakeCanvasLoopRef();
 
         hudProgressBar.style.width = `${Math.max(4, Math.round(p * 100))}%`;
         const hideHint = p > 0.03;
@@ -6367,6 +6362,8 @@
         });
       }
 
+      let wakeCanvasLoopRef = null;
+
       function setupInteractions() {
         state.isAdminTabOpen = Boolean(
           document.getElementById('admin-view') &&
@@ -6385,6 +6382,16 @@
             state.mouseY += dy * 0.08;
             state.needsRender = true;
           }
+          if (hasVideoSequences && videoSequenceFrames.length > 0) {
+            const frameDiff = state.targetFrame - state.smoothFrame;
+            if (Math.abs(frameDiff) > 0.002) {
+              state.smoothFrame += frameDiff * 0.22;
+              state.needsRender = true;
+            } else if (state.smoothFrame !== state.targetFrame) {
+              state.smoothFrame = state.targetFrame;
+              state.needsRender = true;
+            }
+          }
           if (state.needsRender) {
             renderCanvas();
             state.needsRender = false;
@@ -6399,6 +6406,7 @@
             state.rafId = requestAnimationFrame(tick);
           }
         }
+        wakeCanvasLoopRef = wakeCanvasLoop;
 
         // إيقاف رسم #scrolly-canvas فوراً بنسبة 100% طوال فترة فتح تبويب الإدارة، واستئنافه فقط عند العودة لواجهة التصفح
         window.addEventListener('haraj:active-tab-changed', (ev) => {
