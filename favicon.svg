@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="#131C33" />
+      <stop offset="65%" stop-color="#0A0F1D" />
+      <stop offset="100%" stop-color="#060913" />
+    </radialGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="50%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A" />
+      <stop offset="45%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- خلفية كحلية داكنة عالية التباين تملأ المربع والدائرة بالكامل بدون أي زوايا شفافة -->
+  <rect width="512" height="512" fill="url(#bgGrad)" />
+
+  <!-- إطار دائري خارجي يعزز البروز داخل دائرة جوجل 28x28 -->
+  <circle cx="256" cy="256" r="238" fill="none" stroke="#10B981" stroke-width="10" stroke-opacity="0.45" />
+
+  <!-- الترس الهندسي الرئيسي باللون الأخضر الزمردي #10B981 -->
+  <path d="M 220.7 97.9 L 230.2 51.6 L 281.8 51.6 L 291.3 97.9 L 342.8 119.2 L 382.3 93.2 L 418.8 129.7 L 392.8 169.2 L 414.1 220.7 L 460.4 230.2 L 460.4 281.8 L 414.1 291.3 L 392.8 342.8 L 418.8 382.3 L 382.3 418.8 L 342.8 392.8 L 291.3 414.1 L 281.8 460.4 L 230.2 460.4 L 220.7 414.1 L 169.2 392.8 L 129.7 418.8 L 93.2 382.3 L 119.2 342.8 L 97.9 291.3 L 51.6 281.8 L 51.6 230.2 L 97.9 220.7 L 119.2 169.2 L 93.2 129.7 L 129.7 93.2 L 169.2 119.2 Z" fill="url(#emeraldGrad)" stroke="#34D399" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- التجويف الكحلي الداخلي للترس -->
+  <circle cx="256" cy="256" r="126" fill="#0A0F1D" stroke="url(#goldGrad)" stroke-width="10" />
+
+  <!-- درع الحماية الذهبي والزمردي المتداخل في قلب الترس -->
+  <path d="M 256 152 L 336 184 L 336 254 C 336 308 298 346 256 366 C 214 346 176 308 176 254 L 176 184 Z"
+        fill="#0D1528" stroke="url(#goldGrad)" stroke-width="14" stroke-linejoin="round" />
+
+  <!-- حرف G / علامة التوثيق الهندسية البارزة في المركز -->
+  <path d="M 284 222 A 42 42 0 1 0 296 262 L 296 250 L 258 250"
+        fill="none" stroke="#10B981" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="256" cy="256" r="12" fill="url(#goldGrad)" />
+</svg>
