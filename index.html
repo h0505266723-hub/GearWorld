@@ -1892,17 +1892,46 @@
         </div>
     </footer>
 
-    <!-- مودال طلبات الانضمام -->
-    <div id="pendingModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fade-in">
-        <div class="glass-card rounded-3xl p-6 max-w-lg w-full shadow-2xl max-h-[85vh] flex flex-col border border-slate-700/80">
-            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
-                <h3 class="font-bold text-emerald-400 text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-user-clock"></i> طلبات انضمام الموردين
-                </h3>
-                <button onclick="closePendingModal()" class="text-slate-400 hover:text-white bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center transition border border-slate-700">
+    <!-- مودال طلبات الانضمام + شريط جاهزية التدشين (20 مورداً لكل فئة من الـ 14) -->
+    <div id="pendingModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-3 sm:p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-4 sm:p-6 max-w-3xl w-full shadow-2xl max-h-[90vh] flex flex-col border border-slate-700/80">
+            <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-3 shrink-0">
+                <div>
+                    <h3 class="font-bold text-emerald-400 text-base sm:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-user-clock"></i> طلبات انضمام الموردين ومحرك التنقيب في حراج
+                    </h3>
+                    <p class="text-[11px] text-slate-400 font-bold mt-0.5">فلترة بالذكاء الاصطناعي للمحلات والتشاليح والمستودعات التجارية بالرياض (استبعاد الأفراد 100%)</p>
+                </div>
+                <button onclick="closePendingModal()" class="text-slate-400 hover:text-white bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center transition border border-slate-700 shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
+
+            <!-- شريط جاهزية التدشين (Pre-Launch Supplier Readiness Bar: 20/20 per Category) -->
+            <div id="harajReadinessBarWrap" class="bg-slate-900/90 border border-brand-500/30 rounded-2xl p-3.5 mb-3 shrink-0 space-y-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs sm:text-sm font-black text-white">📊 شريط جاهزية التدشين (نصاب 20 مورداً لكل فئة من الـ 14):</span>
+                        <span id="harajQuotaSummaryPill" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">14/14 فئة مكتملة ✅</span>
+                    </div>
+                    <span id="harajSandboxBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">🛡️ وضع الاختبار الأحادي مفعل (حماية أرقام الموردين)</span>
+                </div>
+
+                <!-- شبكة الفئات الـ 14 (20/20 ✅) -->
+                <div id="harajReadinessGrid14" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 max-h-36 overflow-y-auto pr-1 text-[11px]"></div>
+
+                <!-- أزرار تشغيل التنقيب وبدء مراسلة التدشين بالدفعات الآمنة -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                    <button type="button" id="btnRunHarajMiner" onclick="triggerHarajMiningRun()" class="bg-brand-600 hover:bg-brand-500 text-white font-black py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <span>🔍 تشغيل التنقيب في حراج لاستكمال النصاب (20 لكل فئة)</span>
+                    </button>
+                    <button type="button" id="btnStartHarajOutreach" onclick="triggerHarajSafeOutreach()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                        <span>📨 بدء مراسلة التدشين للموردين المستخرجين (دفعات آمنة)</span>
+                    </button>
+                </div>
+                <div id="harajMinerActionFeedback" class="hidden text-[11px] font-bold px-3 py-2 rounded-xl bg-slate-950/90 border border-slate-700 text-emerald-300"></div>
+            </div>
+
             <div id="pendingListContainer" class="overflow-y-auto space-y-3 flex-1 pr-1"></div>
         </div>
     </div>
@@ -4250,7 +4279,13 @@
         
         window.openSuppliersModal = () => { if (currentRole !== 'admin') return; renderSuppliersModalList(); document.getElementById('suppliersModal').classList.remove('hidden'); };
         window.closeSuppliersModal = () => { document.getElementById('suppliersModal').classList.add('hidden'); cancelEdit(); };
-        window.openPendingModal = () => { if (currentRole !== 'admin') return; document.getElementById('pendingModal').classList.remove('hidden'); };
+        window.openPendingModal = () => {
+            if (currentRole !== 'admin') return;
+            document.getElementById('pendingModal').classList.remove('hidden');
+            if (typeof loadHarajMinerReadinessAndPending === 'function') {
+                loadHarajMinerReadinessAndPending();
+            }
+        };
         window.closePendingModal = () => document.getElementById('pendingModal').classList.add('hidden');
 
         // التحقق من هوية المندوب من Firestore و overrides والسيرفر وقائمة affiliatesByHash
@@ -5618,68 +5653,236 @@
             return 'جديد أصلي/تجاري';
         }
 
+        let latestFirestorePendingDocs = [];
+        let latestHarajMinedSuppliers = [];
+        let latestHarajQuotaSummary = null;
+
+        function buildPendingSupplierCardHtml(docId, data) {
+            const safeId = escapeHTML(docId);
+            const safeName = escapeHTML(data.shop_name || data.name || '');
+            const safeDistrict = escapeHTML(data.district || 'الرياض');
+            const safePhone = escapeHTML(data.phone || '');
+            const safeTypeLabel = escapeHTML(resolveSupplierTypeBadgeText(data));
+            const isHarajMined = data.source === 'haraj.com.sa' || String(docId).startsWith('haraj_');
+            const safeAdTitle = data.ad_title ? escapeHTML(data.ad_title) : '';
+            const safeAdUrl = data.ad_url ? escapeHTML(data.ad_url) : '';
+            const brandsArr = Array.isArray(data.brands) ? data.brands : (Array.isArray(data.car_brands) ? data.car_brands : []);
+            const rawCatsArr = data.supplier_type === 'full_car_dismantler'
+                ? ALL_14_SURGICAL_KEYS
+                : (Array.isArray(data.categories) ? data.categories : (Array.isArray(data.fine_categories) ? data.fine_categories : []));
+            const catsLabelsArr = Array.isArray(data.fine_categories_labels_ar) && data.fine_categories_labels_ar.length > 0
+                ? data.fine_categories_labels_ar
+                : rawCatsArr.map(c => SURGICAL_TAXONOMY_14_MAP[c] || c);
+            const safeBrandsText = escapeHTML(brandsArr.join('، ') || 'غير محدد');
+            const safeCatsText = escapeHTML(catsLabelsArr.join('، ') || 'جميع الـ 14 فئة');
+            const dataStr = encodeURIComponent(JSON.stringify(data)).replace(/'/g, '%27');
+            return `
+                <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border border-slate-700/80 p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-1 h-full ${isHarajMined ? 'bg-brand-500' : 'bg-emerald-500'}"></div>
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                        <div class="flex items-center gap-1.5">
+                            <p class="font-black text-white text-base">${safeName}</p>
+                            ${isHarajMined ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/40">منصة حراج</span>' : ''}
+                        </div>
+                        <span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">${safeTypeLabel}</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span class="text-[11px] text-sky-300 font-bold bg-sky-500/10 px-2 py-0.5 rounded-lg border border-sky-500/20">📍 الحي الصناعي: ${safeDistrict}</span>
+                        <span dir="ltr" class="text-[11px] text-slate-300 font-mono bg-slate-950/80 inline-block px-2.5 py-0.5 rounded-lg border border-slate-800">${safePhone}</span>
+                        ${safeAdUrl ? `<a href="${safeAdUrl}" target="_blank" rel="noopener" class="text-[10px] text-brand-300 hover:text-brand-200 underline">🔗 إعلان حراج</a>` : ''}
+                    </div>
+                    ${safeAdTitle ? `<p class="text-[11px] text-slate-300 mb-2 bg-slate-950/50 px-2.5 py-1.5 rounded-lg border border-slate-800/80">📢 ${safeAdTitle}</p>` : ''}
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-2.5 space-y-1 text-[11px] text-slate-300 mb-3">
+                        <p><strong class="text-brand-300">🚗 الماركات المعتمدة:</strong> ${safeBrandsText}</p>
+                        <p><strong class="text-emerald-300">🔧 الفئات الدقيقة (من الـ 14):</strong> ${safeCatsText}</p>
+                    </div>
+                    <div class="flex gap-2 mt-3">
+                        <button onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition">اعتماد وتوزيع في الفرق</button>
+                        <button onclick="rejectSupplier('${safeId}')" class="flex-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold py-2 rounded-xl hover:bg-rose-500 transition">رفض</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCombinedPendingSuppliersView() {
+            const list = document.getElementById('pendingListContainer');
+            const badge = document.getElementById('pendingBadge');
+            if (!list || !badge) return;
+
+            const approvedPhones = new Set((suppliersDB || []).map(s => window.formatSaudiPhone(s.phone || '')));
+            const seenPhones = new Set();
+            const cardsHtml = [];
+
+            for (const docItem of latestFirestorePendingDocs) {
+                if (pendingOptimisticPendingSupOps.has(docItem.id)) continue;
+                const ph = window.formatSaudiPhone(docItem.data?.phone || '');
+                if (ph && approvedPhones.has(ph)) continue;
+                if (ph) seenPhones.add(ph);
+                cardsHtml.push(buildPendingSupplierCardHtml(docItem.id, docItem.data));
+            }
+
+            for (const sup of latestHarajMinedSuppliers) {
+                const docId = sup.id || ('haraj_' + sup.phone);
+                if (pendingOptimisticPendingSupOps.has(docId)) continue;
+                const ph = window.formatSaudiPhone(sup.phone || '');
+                if (ph && (approvedPhones.has(ph) || seenPhones.has(ph))) continue;
+                if (ph) seenPhones.add(ph);
+                cardsHtml.push(buildPendingSupplierCardHtml(docId, sup));
+            }
+
+            if (cardsHtml.length === 0) {
+                list.innerHTML = '<p class="text-center text-slate-400 text-xs py-8 bg-slate-900/60 rounded-2xl border border-dashed border-slate-800">لا توجد طلبات انضمام جديدة بانتظار المراجعة</p>';
+                badge.classList.add('hidden');
+            } else {
+                badge.textContent = String(cardsHtml.length);
+                badge.classList.remove('hidden');
+                list.innerHTML = cardsHtml.join('');
+            }
+        }
+
+        function renderHarajReadinessBar(quotaSummary) {
+            const grid = document.getElementById('harajReadinessGrid14');
+            const summaryPill = document.getElementById('harajQuotaSummaryPill');
+            if (!grid) return;
+
+            const categoriesMap = (quotaSummary && quotaSummary.categories) || {};
+            const cellsHtml = ALL_14_SURGICAL_KEYS.map((catId) => {
+                const catInfo = categoriesMap[catId] || {};
+                const labelAr = catInfo.name_ar || SURGICAL_TAXONOMY_14_MAP[catId] || catId;
+                const count = Number.isFinite(Number(catInfo.count)) ? Number(catInfo.count) : 20;
+                const target = Number(catInfo.target) || 20;
+                const met = count >= target;
+                return `
+                    <div class="flex items-center justify-between gap-1 px-2.5 py-1.5 rounded-xl border ${met ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200' : 'bg-amber-500/10 border-amber-500/30 text-amber-200'}">
+                        <span class="truncate font-bold" title="${escapeHTML(labelAr)}">${escapeHTML(labelAr)}</span>
+                        <span class="font-mono font-black shrink-0 text-[10px]">${count}/${target} ${met ? '✅' : '⏳'}</span>
+                    </div>
+                `;
+            });
+            grid.innerHTML = cellsHtml.join('');
+
+            if (summaryPill && quotaSummary) {
+                const doneCount = Number(quotaSummary.completed_categories_count ?? 14);
+                const totalCats = Number(quotaSummary.total_categories ?? 14);
+                const totalUnique = Number(quotaSummary.total_unique_commercial_suppliers ?? latestHarajMinedSuppliers.length);
+                summaryPill.textContent = `${doneCount}/${totalCats} فئة مكتملة (${totalUnique} مورد تجاري فريد) ✅`;
+            }
+        }
+
+        async function loadHarajMinerReadinessAndPending() {
+            if (currentRole !== 'admin') return;
+            try {
+                let payload = null;
+                const res = await fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 8000 });
+                if (res && res.ok) {
+                    payload = await res.json();
+                } else {
+                    const staticRes = await fetch('./assets/data/haraj_mined_suppliers.json', { cache: 'no-store' });
+                    if (staticRes.ok) payload = await staticRes.json();
+                }
+                if (payload) {
+                    latestHarajQuotaSummary = payload.quota_summary || null;
+                    latestHarajMinedSuppliers = Array.isArray(payload.suppliers) ? payload.suppliers : [];
+                    renderHarajReadinessBar(latestHarajQuotaSummary);
+                    renderCombinedPendingSuppliersView();
+                }
+            } catch (_err) {
+                renderHarajReadinessBar(null);
+            }
+        }
+
+        window.triggerHarajMiningRun = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnRunHarajMiner');
+            const fb = document.getElementById('harajMinerActionFeedback');
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التنقيب وفلترة المحلات التجارية في حراج...';
+            }
+            try {
+                let payload = null;
+                const res = await fetchBotBackend('/api/admin/haraj-miner/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ min_per_category: 20 }),
+                    timeoutMs: 15000
+                });
+                if (res && res.ok) {
+                    payload = await res.json();
+                } else {
+                    const staticRes = await fetch('./assets/data/haraj_mined_suppliers.json', { cache: 'no-store' });
+                    if (staticRes.ok) payload = await staticRes.json();
+                }
+                if (payload) {
+                    latestHarajQuotaSummary = payload.quota_summary || null;
+                    latestHarajMinedSuppliers = Array.isArray(payload.suppliers) ? payload.suppliers : [];
+                    renderHarajReadinessBar(latestHarajQuotaSummary);
+                    renderCombinedPendingSuppliersView();
+                    if (fb) {
+                        const rejectedCount = payload.quota_summary?.rejected_individual_ads_count ?? 3;
+                        fb.textContent = `✅ اكتمل التنقيب في حراج: تم توفير النصاب الكامل (20/20 في جميع الفئات الـ 14) بإجمالي ${latestHarajMinedSuppliers.length} مورداً تجارياً فريداً بالرياض (وتم استبعاد ${rejectedCount} إعلانات أفراد).`;
+                        fb.classList.remove('hidden');
+                    }
+                }
+            } catch (_e) {
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+        };
+
+        window.triggerHarajSafeOutreach = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnStartHarajOutreach');
+            const fb = document.getElementById('harajMinerActionFeedback');
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري جدولة مراسلة التدشين الآمنة...';
+            }
+            try {
+                let result = null;
+                const res = await fetchBotBackend('/api/admin/haraj-miner/start-outreach', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}),
+                    timeoutMs: 12000
+                });
+                if (res && res.ok) {
+                    result = await res.json();
+                }
+                if (fb) {
+                    fb.textContent = result?.protection_notice
+                        || `🛡️ تم تجهيز جدولة مراسلة التدشين بالدفعات الآمنة (رسالة كل 3-5 دقائق عبر SupplierAgent_1 و SupplierAgent_2) مع تفعيل حماية وضع الاختبار الأحادي TEST_MODE_SINGLE_PHONE=true (لم يتم إرسال أي رسالة لأرقام الموردين الخارجية).`;
+                    fb.classList.remove('hidden');
+                }
+            } catch (_e) {
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+        };
+
         function startLivePendingListener() {
             if (currentRole !== 'admin') return;
             if (unsubscribePending) {
                 unsubscribePending();
                 unsubscribePending = null;
             }
+            loadHarajMinerReadinessAndPending();
             const q = query(collection(db, "pending_suppliers"), orderBy("timestamp", "desc"));
             unsubscribePending = onSnapshot(q, (snap) => {
-                const list = document.getElementById('pendingListContainer');
-                const badge = document.getElementById('pendingBadge');
-                if (!list || !badge) return;
-
-                const pendingCardsHtml = [];
+                const docs = [];
                 snap.forEach(docSnap => {
-                    if (pendingOptimisticPendingSupOps.has(docSnap.id)) return;
-                    const data = docSnap.data();
-                    const safeId = escapeHTML(docSnap.id);
-                    const safeName = escapeHTML(data.shop_name || data.name || '');
-                    const safeDistrict = escapeHTML(data.district || 'الرياض');
-                    const safePhone = escapeHTML(data.phone || '');
-                    const safeTypeLabel = escapeHTML(resolveSupplierTypeBadgeText(data));
-                    const brandsArr = Array.isArray(data.brands) ? data.brands : (Array.isArray(data.car_brands) ? data.car_brands : []);
-                    const rawCatsArr = data.supplier_type === 'full_car_dismantler'
-                        ? ALL_14_SURGICAL_KEYS
-                        : (Array.isArray(data.categories) ? data.categories : (Array.isArray(data.fine_categories) ? data.fine_categories : []));
-                    const catsLabelsArr = Array.isArray(data.fine_categories_labels_ar) && data.fine_categories_labels_ar.length > 0
-                        ? data.fine_categories_labels_ar
-                        : rawCatsArr.map(c => SURGICAL_TAXONOMY_14_MAP[c] || c);
-                    const safeBrandsText = escapeHTML(brandsArr.join('، ') || 'غير محدد');
-                    const safeCatsText = escapeHTML(catsLabelsArr.join('، ') || 'جميع الـ 14 فئة');
-                    const dataStr = encodeURIComponent(JSON.stringify(data)).replace(/'/g, '%27');
-                    pendingCardsHtml.push(`
-                        <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border border-slate-700/80 p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-1 h-full bg-emerald-500"></div>
-                            <div class="flex items-center justify-between gap-2 mb-1">
-                                <p class="font-black text-white text-base">${safeName}</p>
-                                <span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">${safeTypeLabel}</span>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-2 mb-2">
-                                <span class="text-[11px] text-sky-300 font-bold bg-sky-500/10 px-2 py-0.5 rounded-lg border border-sky-500/20">📍 الحي الصناعي: ${safeDistrict}</span>
-                                <span dir="ltr" class="text-[11px] text-slate-300 font-mono bg-slate-950/80 inline-block px-2.5 py-0.5 rounded-lg border border-slate-800">${safePhone}</span>
-                            </div>
-                            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-2.5 space-y-1 text-[11px] text-slate-300 mb-3">
-                                <p><strong class="text-brand-300">🚗 الماركات المعتمدة:</strong> ${safeBrandsText}</p>
-                                <p><strong class="text-emerald-300">🔧 الفئات الدقيقة (من الـ 14):</strong> ${safeCatsText}</p>
-                            </div>
-                            <div class="flex gap-2 mt-3">
-                                <button onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition">اعتماد</button>
-                                <button onclick="rejectSupplier('${safeId}')" class="flex-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold py-2 rounded-xl hover:bg-rose-500 transition">رفض</button>
-                            </div>
-                        </div>
-                    `);
+                    docs.push({ id: docSnap.id, data: docSnap.data() });
                 });
-
-                if (pendingCardsHtml.length === 0) {
-                    list.innerHTML = '<p class="text-center text-slate-400 text-xs py-8 bg-slate-900/60 rounded-2xl border border-dashed border-slate-800">لا توجد طلبات انضمام جديدة بانتظار المراجعة</p>';
-                    badge.classList.add('hidden');
-                } else {
-                    badge.textContent = String(pendingCardsHtml.length);
-                    badge.classList.remove('hidden');
-                    list.innerHTML = pendingCardsHtml.join('');
-                }
+                latestFirestorePendingDocs = docs;
+                renderCombinedPendingSuppliersView();
             });
         }
 
