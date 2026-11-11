@@ -2570,8 +2570,21 @@
             try {
                 const controller = new AbortController();
                 const timer = setTimeout(() => controller.abort(), options.timeoutMs || 5000);
+                const mergedHeaders = { ...(options.headers || {}) };
+                if (
+                    currentRole === 'admin' &&
+                    activeAdminPasswordHash &&
+                    !mergedHeaders['X-Admin-Password-Hash'] &&
+                    !mergedHeaders['x-admin-password-hash']
+                ) {
+                    mergedHeaders['X-Admin-Password-Hash'] = activeAdminPasswordHash;
+                }
                 try {
-                    const res = await fetch(targetUrl, { ...options, signal: controller.signal });
+                    const res = await fetch(targetUrl, {
+                        ...options,
+                        headers: mergedHeaders,
+                        signal: controller.signal
+                    });
                     return res;
                 } finally {
                     clearTimeout(timer);
@@ -4347,7 +4360,8 @@
                         return {
                             name: loginJson.affiliate.name || loginJson.affiliate.code,
                             phone: window.formatSaudiPhone(loginJson.affiliate.phone || ''),
-                            code: loginJson.affiliate.code
+                            code: loginJson.affiliate.code,
+                            authToken: loginJson.auth_token || null
                         };
                     }
                 } catch (_bLoginErr) {}
@@ -4417,7 +4431,7 @@
                         `/api/affiliate/my-orders?code=${encodeURIComponent(currentAffiliateId)}`,
                         {
                             method: 'GET',
-                            headers: { 'X-Affiliate-Token': passHash }
+                            headers: { 'X-Affiliate-Token': matchedAffiliate.authToken || passHash }
                         }
                     );
                     if (myOrdersRes && myOrdersRes.ok) {
@@ -5659,6 +5673,7 @@
         }
 
         let latestFirestorePendingDocs = [];
+        let latestBackendPendingSuppliers = [];
         let latestHarajMinedSuppliers = [];
         let latestHarajQuotaSummary = null;
 
@@ -5668,7 +5683,8 @@
             const safeDistrict = escapeHTML(data.district || 'الرياض');
             const safePhone = escapeHTML(data.phone || '');
             const safeTypeLabel = escapeHTML(resolveSupplierTypeBadgeText(data));
-            const isHarajMined = data.source === 'haraj.com.sa' || String(docId).startsWith('haraj_');
+            const isLegacyUpdate = data.onboarding_source === 'legacy_280_update' || Boolean(data.existing_supplier_id);
+            const isHarajMined = !isLegacyUpdate && (data.source === 'haraj.com.sa' || String(docId).startsWith('haraj_'));
             const safeAdTitle = data.ad_title ? escapeHTML(data.ad_title) : '';
             const safeAdUrl = data.ad_url ? escapeHTML(data.ad_url) : '';
             const brandsArr = Array.isArray(data.brands) ? data.brands : (Array.isArray(data.car_brands) ? data.car_brands : []);
@@ -5683,10 +5699,11 @@
             const dataStr = encodeURIComponent(JSON.stringify(data)).replace(/'/g, '%27');
             return `
                 <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border border-slate-700/80 p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-1 h-full ${isHarajMined ? 'bg-brand-500' : 'bg-emerald-500'}"></div>
+                    <div class="absolute top-0 right-0 w-1 h-full ${isLegacyUpdate ? 'bg-purple-500' : (isHarajMined ? 'bg-brand-500' : 'bg-emerald-500')}"></div>
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
                         <div class="flex items-center gap-1.5">
                             <p class="font-black text-white text-base">${safeName}</p>
+                            ${isLegacyUpdate ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40">تحديث مورد مسجل</span>' : ''}
                             ${isHarajMined ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/40">منصة حراج</span>' : ''}
                         </div>
                         <span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">${safeTypeLabel}</span>
@@ -5702,7 +5719,7 @@
                         <p><strong class="text-emerald-300">🔧 الفئات الدقيقة (من الـ 14):</strong> ${safeCatsText}</p>
                     </div>
                     <div class="flex gap-2 mt-3">
-                        <button onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition">اعتماد وتوزيع في الفرق</button>
+                        <button onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition">${isLegacyUpdate ? 'اعتماد التحديث وتوزيع الفرق' : 'اعتماد وتوزيع في الفرق'}</button>
                         <button onclick="rejectSupplier('${safeId}')" class="flex-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold py-2 rounded-xl hover:bg-rose-500 transition">رفض</button>
                     </div>
                 </div>
@@ -5716,21 +5733,37 @@
 
             const approvedPhones = new Set((suppliersDB || []).map(s => window.formatSaudiPhone(s.phone || '')));
             const seenPhones = new Set();
+            const seenDocIds = new Set();
             const cardsHtml = [];
 
             for (const docItem of latestFirestorePendingDocs) {
-                if (pendingOptimisticPendingSupOps.has(docItem.id)) continue;
+                if (pendingOptimisticPendingSupOps.has(docItem.id) || seenDocIds.has(docItem.id)) continue;
+                const isLegacy = docItem.data?.onboarding_source === 'legacy_280_update' || Boolean(docItem.data?.existing_supplier_id);
                 const ph = window.formatSaudiPhone(docItem.data?.phone || '');
-                if (ph && approvedPhones.has(ph)) continue;
+                if (ph && !isLegacy && approvedPhones.has(ph)) continue;
+                seenDocIds.add(docItem.id);
                 if (ph) seenPhones.add(ph);
                 cardsHtml.push(buildPendingSupplierCardHtml(docItem.id, docItem.data));
             }
 
+            for (const item of latestBackendPendingSuppliers) {
+                const docId = String(item.id || ('pending_' + item.phone));
+                if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) continue;
+                const isLegacy = item.onboarding_source === 'legacy_280_update' || Boolean(item.existing_supplier_id);
+                const ph = window.formatSaudiPhone(item.phone || '');
+                if (ph && seenPhones.has(ph)) continue;
+                if (ph && !isLegacy && approvedPhones.has(ph)) continue;
+                seenDocIds.add(docId);
+                if (ph) seenPhones.add(ph);
+                cardsHtml.push(buildPendingSupplierCardHtml(docId, item));
+            }
+
             for (const sup of latestHarajMinedSuppliers) {
                 const docId = sup.id || ('haraj_' + sup.phone);
-                if (pendingOptimisticPendingSupOps.has(docId)) continue;
+                if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) continue;
                 const ph = window.formatSaudiPhone(sup.phone || '');
                 if (ph && (approvedPhones.has(ph) || seenPhones.has(ph))) continue;
+                seenDocIds.add(docId);
                 if (ph) seenPhones.add(ph);
                 cardsHtml.push(buildPendingSupplierCardHtml(docId, sup));
             }
@@ -5777,20 +5810,21 @@
         async function loadHarajMinerReadinessAndPending() {
             if (currentRole !== 'admin') return;
             try {
-                let payload = null;
-                const res = await fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 8000 });
-                if (res && res.ok) {
-                    payload = await res.json();
-                } else {
-                    const staticRes = await fetch('./assets/data/haraj_mined_suppliers.json', { cache: 'no-store' });
-                    if (staticRes.ok) payload = await staticRes.json();
+                const [minerRes, pendingRes] = await Promise.all([
+                    fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 8000 }),
+                    fetchBotBackend('/api/admin/pending-suppliers?status=pending', { method: 'GET', timeoutMs: 8000 })
+                ]);
+                if (pendingRes && pendingRes.ok) {
+                    const pendingJson = await pendingRes.json();
+                    latestBackendPendingSuppliers = Array.isArray(pendingJson.items) ? pendingJson.items : [];
                 }
-                if (payload) {
+                if (minerRes && minerRes.ok) {
+                    const payload = await minerRes.json();
                     latestHarajQuotaSummary = payload.quota_summary || null;
                     latestHarajMinedSuppliers = Array.isArray(payload.suppliers) ? payload.suppliers : [];
                     renderHarajReadinessBar(latestHarajQuotaSummary);
-                    renderCombinedPendingSuppliersView();
                 }
+                renderCombinedPendingSuppliersView();
             } catch (_err) {
                 renderHarajReadinessBar(null);
             }
@@ -5815,9 +5849,6 @@
                 });
                 if (res && res.ok) {
                     payload = await res.json();
-                } else {
-                    const staticRes = await fetch('./assets/data/haraj_mined_suppliers.json', { cache: 'no-store' });
-                    if (staticRes.ok) payload = await staticRes.json();
                 }
                 if (payload) {
                     latestHarajQuotaSummary = payload.quota_summary || null;
@@ -5907,8 +5938,13 @@
                 ? [...ALL_14_SURGICAL_KEYS]
                 : (data.fine_categories || data.categories || []);
 
-            suppliersDB.push({
-                id: Date.now().toString(),
+            const normIncomingPhone = window.formatSaudiPhone(data.phone || '');
+            const existingIdx = suppliersDB.findIndex((s) =>
+                (data.existing_supplier_id && String(s.id) === String(data.existing_supplier_id)) ||
+                (normIncomingPhone && window.formatSaudiPhone(s.phone || '') === normIncomingPhone)
+            );
+            const updatedRecord = {
+                id: existingIdx >= 0 ? suppliersDB[existingIdx].id : Date.now().toString(),
                 name: data.shop_name || data.name,
                 phone: data.phone,
                 district: data.district || null,
@@ -5918,7 +5954,13 @@
                 brands: data.brands || data.car_brands || [],
                 categories: effectiveCategories,
                 fine_categories: effectiveCategories
-            });
+            };
+            if (existingIdx >= 0) {
+                suppliersDB[existingIdx] = { ...suppliersDB[existingIdx], ...updatedRecord };
+            } else {
+                suppliersDB.push(updatedRecord);
+            }
+            latestBackendPendingSuppliers = latestBackendPendingSuppliers.filter((it) => String(it.id) !== String(docId));
             renderSuppliersModalList();
             if (window.currentOrders) renderOrders(window.currentOrders);
 
@@ -5964,10 +6006,15 @@
                 // (أ) إزالة فورية 0ms من نافذة الانتظار
                 pendingOptimisticPendingSupOps.add(docId);
                 if (cardEl) cardEl.remove();
+                latestBackendPendingSuppliers = latestBackendPendingSuppliers.filter((it) => String(it.id) !== String(docId));
                 refreshPendingBadgeFromDom();
 
                 // (ب) تنفيذ الحذف في الخلفية
                 try {
+                    fetchBotBackend('/api/admin/pending-suppliers/' + encodeURIComponent(docId) + '/reject', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    }).catch(() => {});
                     await deleteDoc(doc(db, "pending_suppliers", docId));
                 } catch (_rejErr) {
                     pendingOptimisticPendingSupOps.delete(docId);
@@ -6297,7 +6344,7 @@
                         const resolvedImgData = (order.hasImage || order.imageDocId || order.imageData)
                             ? await resolveOrderImageData(orderId, order)
                             : null;
-                        await fetch('http://localhost:3000/ai-pricing', {
+                        await fetchBotBackend('/ai-pricing', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
