@@ -1937,6 +1937,26 @@
                 <div id="harajMinerActionFeedback" class="hidden text-[11px] font-bold px-3 py-2 rounded-xl bg-slate-950/90 border border-slate-700 text-emerald-300"></div>
             </div>
 
+            <!-- درع التقطير الآمن لحملة الـ 280 مورداً + قائمة واتساب غير مفعل (whatsapp_inactive) -->
+            <div id="verifierDripCampaignBox" class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3.5 mb-3 shrink-0 space-y-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="text-xs sm:text-sm font-black text-amber-300">🛡️ حملة تدقيق الـ 280 مورداً (درع التقطير الآمن 55/يوم):</span>
+                        <span id="verifierDripProgressBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">اليوم: 0 / 55</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <button type="button" id="btnToggleVerifierDripCampaign" onclick="toggleVerifierDripCampaignUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm">
+                            <span>▶️ تشغيل حملة التدقيق الآمنة (55/يوم)</span>
+                        </button>
+                        <button type="button" id="btnFilterWhatsAppInactive" onclick="toggleWhatsAppInactiveListUI()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5">
+                            <span>⚠️ واتساب غير مفعل (<span id="waInactiveBadgeCount">0</span>)</span>
+                        </button>
+                    </div>
+                </div>
+                <p id="verifierDripSummaryLine" class="text-[11px] text-slate-300 font-bold">فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 20–30 دقيقة كل 15 رسالة + فحص فردي للرقم عند حلول دوره فقط.</p>
+                <div id="waInactiveListPanel" class="hidden border-t border-slate-800 pt-2.5 space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+            </div>
+
             <div id="pendingListContainer" class="overflow-y-auto space-y-3 flex-1 pr-1"></div>
         </div>
     </div>
@@ -2273,6 +2293,16 @@
                             </button>
                         </div>
                         <div id="aiProviderStatusBadges" class="flex flex-wrap gap-2 pt-1 text-[11px] font-bold"></div>
+                        <div class="border-t border-slate-800 pt-3 mt-2 flex flex-wrap items-center justify-between gap-2">
+                            <div class="text-[11px] font-bold text-slate-300">
+                                <span>📡 ثنائي نوفمبر 2026: الأساسي <code class="text-emerald-300" id="radarActivePrimaryLabel">gemini-3.8-flash</code> (LOW) + البديل الفوري <code class="text-cyan-300">gemini-3.5-flash-lite</code></span>
+                                <span class="block text-[10px] text-slate-400 mt-0.5">الفحص التلقائي الدوري: كل يوم أحد الساعة 10:00 صباحاً بتوقيت الرياض (لا يُستبدل النموذج الأساسي إلا بموافقة المالك <code class="text-amber-300">#اعتماد_النموذج</code>)</span>
+                            </div>
+                            <button type="button" id="btnAuditModelsAndKeysNow" onclick="triggerModelAndKeysRadarAuditNow()" class="bg-brand-600 hover:bg-brand-500 text-white font-black px-3.5 py-2 rounded-xl text-[11px] transition shadow-sm shrink-0">
+                                📡 فحص النماذج والمفاتيح الآن
+                            </button>
+                        </div>
+                        <div id="modelRadarResultBox" class="hidden text-[11px] font-bold p-3 rounded-xl bg-slate-950/90 border border-slate-700 space-y-2 text-slate-200"></div>
                     </div>
 
                     <div class="bg-slate-900/80 p-4 rounded-2xl border border-brand-500/30 space-y-2.5">
@@ -2280,7 +2310,7 @@
                             🔑 مفاتيح Gemini الإضافية لتدوير الحصة (<code class="text-cyan-300">GEMINI_API_KEYS</code>):
                         </label>
                         <textarea id="aiGeminiKeysInput" rows="2" dir="ltr" placeholder="AIzaSyKey1..., AIzaSyKey2..., AIzaSyKey3... (مفصولة بفاصلة أو كل مفتاح في سطر)" class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left resize-y"></textarea>
-                        <p class="text-[11px] text-slate-400">عند نفاد حصة المفتاح الأول (<code class="text-amber-300">429</code>) على نموذج ذكي مثل <code class="text-emerald-300">gemini-2.5-flash</code>، يجرب المحرك المفتاح الثاني فالثالث على نفس النموذج الذكي أولاً ويعزل فقط الثنائية المستنفدة لمدة 60 دقيقة.</p>
+                        <p class="text-[11px] text-slate-400">عند نفاد حصة المفتاح الأول (<code class="text-amber-300">429</code>) على النموذج الذكي الأساسي <code class="text-emerald-300">gemini-3.8-flash</code>، يجرب المحرك المفتاح المستقل التالي على نفس النموذج أولاً ويعزل فقط الثنائية المستنفدة لمدة 60 دقيقة.</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -2308,7 +2338,7 @@
                             <div class="pt-1">
                                 <label class="block text-[11px] font-bold text-slate-300 mb-1">النموذج المعتمد في OpenRouter (<code class="text-purple-200">OPENROUTER_MODEL</code>):</label>
                                 <select id="aiOpenrouterModelSelect" dir="ltr" class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono cursor-pointer">
-                                    <option value="google/gemini-2.5-flash" class="bg-slate-900 text-white">google/gemini-2.5-flash (افتراضي موصى به)</option>
+                                    <option value="meta-llama/llama-4-maverick" class="bg-slate-900 text-white">meta-llama/llama-4-maverick (افتراضي موصى به)</option>
                                     <option value="openai/gpt-4o-mini" class="bg-slate-900 text-white">openai/gpt-4o-mini</option>
                                     <option value="deepseek/deepseek-chat" class="bg-slate-900 text-white">deepseek/deepseek-chat</option>
                                 </select>
@@ -2571,13 +2601,13 @@
                 const controller = new AbortController();
                 const timer = setTimeout(() => controller.abort(), options.timeoutMs || 5000);
                 const mergedHeaders = { ...(options.headers || {}) };
-                if (
-                    currentRole === 'admin' &&
-                    activeAdminPasswordHash &&
-                    !mergedHeaders['X-Admin-Password-Hash'] &&
-                    !mergedHeaders['x-admin-password-hash']
-                ) {
-                    mergedHeaders['X-Admin-Password-Hash'] = activeAdminPasswordHash;
+                if (currentRole === 'admin' && activeAdminPasswordHash) {
+                    if (!mergedHeaders['X-Admin-Password-Hash'] && !mergedHeaders['x-admin-password-hash']) {
+                        mergedHeaders['X-Admin-Password-Hash'] = activeAdminPasswordHash;
+                    }
+                    if (!mergedHeaders['X-Admin-Token'] && !mergedHeaders['x-admin-token']) {
+                        mergedHeaders['X-Admin-Token'] = activeAdminPasswordHash;
+                    }
                 }
                 try {
                     const res = await fetch(targetUrl, {
@@ -4141,9 +4171,12 @@
             if (aiGroqEl) aiGroqEl.value = loadedAiSettings.groq_api_key || '';
             if (aiOaiEl) aiOaiEl.value = loadedAiSettings.openai_api_key || '';
             if (aiOrEl) aiOrEl.value = loadedAiSettings.openrouter_api_key || '';
-            if (aiOrModEl) aiOrModEl.value = loadedAiSettings.openrouter_model || 'google/gemini-2.5-flash';
+            if (aiOrModEl) aiOrModEl.value = loadedAiSettings.openrouter_model || 'meta-llama/llama-4-maverick';
             if (aiDsEl) aiDsEl.value = loadedAiSettings.deepseek_api_key || '';
             renderAIProviderStatusBadges(loadedAiStatus);
+            if (typeof window.loadModelRadarStatusUI === 'function') {
+                window.loadModelRadarStatusUI();
+            }
 
             renderSupportNumbersList();
             renderLogisticsOfficersList();
@@ -4178,10 +4211,95 @@
                 badge(statusObj.gemini_keys_count > 0, `Gemini (${statusObj.gemini_keys_count || 0} مفاتيح)`),
                 badge(Boolean(statusObj.groq_active), 'Groq (Whisper + Llama 70B)'),
                 badge(Boolean(statusObj.openai_active), 'OpenAI (gpt-4o-mini)'),
-                badge(Boolean(statusObj.openrouter_active), `OpenRouter (${statusObj.openrouter_model || 'gemini-2.5-flash'})`),
+                badge(Boolean(statusObj.openrouter_active), `OpenRouter (${statusObj.openrouter_model || 'llama-4-maverick'})`),
                 badge(Boolean(statusObj.deepseek_active), 'DeepSeek'),
             ].join('');
         }
+
+        function renderModelRadarSummaryUI(radarObj) {
+            const box = document.getElementById('modelRadarResultBox');
+            const primaryLbl = document.getElementById('radarActivePrimaryLabel');
+            if (primaryLbl && (radarObj?.primary_model || radarObj?.activePrimaryModel)) {
+                primaryLbl.textContent = radarObj.primary_model || radarObj.activePrimaryModel;
+            }
+            if (!box || !radarObj) return;
+            const summary = radarObj.summary || radarObj.last_audit_summary || null;
+            const pending = radarObj.pending_candidate || radarObj.pendingCandidate || null;
+            if (!summary && !pending) return;
+
+            box.classList.remove('hidden');
+            const healthyTxt = summary
+                ? `🔑 المفاتيح المستقلة السليمة: <span class="text-emerald-300">${Number(summary.healthy_keys ?? 0)}/${Number(summary.total_keys ?? 8)}</span>`
+                : '';
+            const primaryTxt = `⚡ الأساسي النشط: <code class="text-emerald-300">${escapeHTML(radarObj.primary_model || radarObj.activePrimaryModel || 'gemini-3.8-flash')}</code> | البديل الفوري: <code class="text-cyan-300">${escapeHTML(radarObj.instant_failover_model || radarObj.instantFailoverModel || 'gemini-3.5-flash-lite')}</code>`;
+            let pendingHtml = '';
+            if (pending && pending.model_id) {
+                const safeMod = escapeHTML(pending.model_id);
+                pendingHtml = `
+                    <div class="mt-2 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/40 space-y-1.5">
+                        <div class="text-amber-300">🆕 تم رصد نموذج أحدث: <code>${safeMod}</code> — الدقة السعودية: ${Number(pending.passed_cases || 0)}/${Number(pending.total_cases || 3)} (${Number(pending.accuracy_percent || 0)}%) — السرعة: ${Number(pending.avg_latency_ms || 0)}ms</div>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="applyModelRadarDecisionUI('approve', '${safeMod}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded-lg text-[11px] font-black transition">✅ اعتماد النموذج (#اعتماد_النموذج)</button>
+                            <button type="button" onclick="applyModelRadarDecisionUI('ignore', '${safeMod}')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 px-3 py-1 rounded-lg text-[11px] font-bold transition">⏭️ تجاهل النموذج (#تجاهل_النموذج)</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                pendingHtml = '<div class="text-emerald-400">✅ النموذج الأساسي الحالي هو الأحدث والمعتمد في قائمة Google الحية.</div>';
+            }
+            box.innerHTML = `<div>${primaryTxt}</div>${healthyTxt ? `<div>${healthyTxt}</div>` : ''}${pendingHtml}`;
+        }
+
+        window.loadModelRadarStatusUI = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/model-radar/status', { method: 'GET', timeoutMs: 6000 });
+            if (res && res.ok) {
+                const data = await res.json();
+                renderModelRadarSummaryUI(data);
+            }
+        };
+
+        window.triggerModelAndKeysRadarAuditNow = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnAuditModelsAndKeysNow');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري فحص Google والمفاتيح...';
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/model-radar/audit-now', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}),
+                    timeoutMs: 25000
+                });
+                if (res && res.ok) {
+                    const data = await res.json();
+                    renderModelRadarSummaryUI(data);
+                }
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            }
+        };
+
+        window.applyModelRadarDecisionUI = async function(decision, modelId) {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/model-radar/decision', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ decision, model_id: modelId }),
+                timeoutMs: 8000
+            });
+            if (res && res.ok) {
+                const data = await res.json();
+                if (data.radar_status) renderModelRadarSummaryUI(data.radar_status);
+                if (data.reply) alert(data.reply.replace(/\*/g, ''));
+            }
+        };
 
         window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
 
@@ -4256,7 +4374,7 @@
                     groq_api_key: (document.getElementById('aiGroqKeyInput')?.value || '').trim(),
                     openai_api_key: (document.getElementById('aiOpenaiKeyInput')?.value || '').trim(),
                     openrouter_api_key: (document.getElementById('aiOpenrouterKeyInput')?.value || '').trim(),
-                    openrouter_model: (document.getElementById('aiOpenrouterModelSelect')?.value || 'google/gemini-2.5-flash').trim(),
+                    openrouter_model: (document.getElementById('aiOpenrouterModelSelect')?.value || 'meta-llama/llama-4-maverick').trim(),
                     deepseek_api_key: (document.getElementById('aiDeepseekKeyInput')?.value || '').trim()
                 };
 
@@ -5807,8 +5925,152 @@
             }
         }
 
+        let latestVerifierDripStatus = null;
+        let latestWhatsAppInactiveSuppliers = [];
+
+        function renderVerifierDripAndInactiveUI() {
+            const badgeEl = document.getElementById('verifierDripProgressBadge');
+            const btnToggle = document.getElementById('btnToggleVerifierDripCampaign');
+            const summaryLine = document.getElementById('verifierDripSummaryLine');
+            const countSpan = document.getElementById('waInactiveBadgeCount');
+            const panel = document.getElementById('waInactiveListPanel');
+
+            if (countSpan) countSpan.textContent = String(latestWhatsAppInactiveSuppliers.length || 0);
+
+            if (latestVerifierDripStatus) {
+                const st = latestVerifierDripStatus;
+                const counts = st.counts || {};
+                if (badgeEl) {
+                    badgeEl.textContent = `اليوم: ${Number(st.daily_sent_count || 0)} / ${Number(st.max_daily_outreach || 55)} | المتبقي بالطابور: ${Number(counts.remaining_queue || 0)}`;
+                }
+                if (btnToggle) {
+                    if (st.running) {
+                        btnToggle.className = 'bg-amber-600 hover:bg-amber-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm';
+                        btnToggle.innerHTML = '<span>⏸️ إيقاف حملة التدقيق الآمنة (55/يوم)</span>';
+                    } else {
+                        btnToggle.className = 'bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm';
+                        btnToggle.innerHTML = '<span>▶️ تشغيل حملة التدقيق الآمنة (55/يوم)</span>';
+                    }
+                }
+                if (summaryLine) {
+                    const sandboxHint = st.sandbox_active ? ' | 🛡️ وضع الاختبار الأحادي مفعل' : '';
+                    summaryLine.textContent =
+                        (st.last_action || 'فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 20–30 دقيقة كل 15 رسالة + فحص فردي عند الدور.') +
+                        ` — مرسل بانتظار رد: ${Number(counts.outreach_sent || 0)} | واتساب غير مفعل: ${Number(counts.whatsapp_inactive || 0)} | مراجعة هاتفية: ${Number(counts.needs_phone_call || 0)}${sandboxHint}`;
+                }
+            }
+
+            if (panel) {
+                if (!latestWhatsAppInactiveSuppliers.length) {
+                    panel.innerHTML = '<p class="text-[11px] text-slate-400 text-center py-2">لا توجد حالياً أرقام موردين غير مفعلة على الواتساب.</p>';
+                } else {
+                    panel.innerHTML = latestWhatsAppInactiveSuppliers.map((sup) => {
+                        const sid = Number(sup.id) || 0;
+                        const sName = escapeHTML(sup.name || 'مورد مسجل');
+                        const sPhone = escapeHTML(sup.phone || '');
+                        const sNote = escapeHTML(sup.verification_notes || '⚠️ الواتساب غير مفعل على هذا الرقم — يرجى تعديل الرقم أو حذف المورد');
+                        return `
+                            <div id="wa-inactive-row-${sid}" class="bg-slate-950/90 border border-rose-500/30 rounded-xl p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px]">
+                                <div>
+                                    <div class="font-black text-white">${sName} <span dir="ltr" class="text-rose-300 font-mono mr-1">(${sPhone})</span></div>
+                                    <div class="text-amber-300 mt-0.5">${sNote}</div>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <button type="button" onclick="editAndRecheckInactiveSupplier(${sid}, '${sPhone}')" class="bg-sky-600 hover:bg-sky-500 text-white font-black px-2.5 py-1.5 rounded-lg transition">✏️ تعديل الرقم وإعادة الفحص</button>
+                                    <button type="button" onclick="deleteInactiveSupplierPermanentlyUI(${sid}, '${sPhone}', '${sName}')" class="bg-rose-600 hover:bg-rose-500 text-white font-black px-2.5 py-1.5 rounded-lg transition">🗑️ حذف المورد نهائياً</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        }
+
+        async function loadVerifierDripAndInactiveSuppliers() {
+            if (currentRole !== 'admin') return;
+            try {
+                const res = await fetchBotBackend('/api/admin/supplier-verifier/status', { method: 'GET', timeoutMs: 8000 });
+                if (res && res.ok) {
+                    const data = await res.json();
+                    latestVerifierDripStatus = data;
+                    latestWhatsAppInactiveSuppliers = Array.isArray(data.whatsapp_inactive_items) ? data.whatsapp_inactive_items : [];
+                    renderVerifierDripAndInactiveUI();
+                }
+            } catch (_e) {}
+        }
+
+        window.toggleVerifierDripCampaignUI = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/supplier-verifier/campaign/toggle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({}),
+                timeoutMs: 8000
+            });
+            if (res && res.ok) {
+                latestVerifierDripStatus = await res.json();
+                renderVerifierDripAndInactiveUI();
+            }
+        };
+
+        window.toggleWhatsAppInactiveListUI = function() {
+            const panel = document.getElementById('waInactiveListPanel');
+            if (!panel) return;
+            panel.classList.toggle('hidden');
+            if (!panel.classList.contains('hidden')) {
+                loadVerifierDripAndInactiveSuppliers();
+            }
+        };
+
+        window.editAndRecheckInactiveSupplier = async function(supplierId, currentPhone) {
+            if (currentRole !== 'admin') return;
+            const newPhone = prompt('أدخل رقم جوال الواتساب الصحيح للمورد (مثال: 05XXXXXXXX):', currentPhone || '');
+            if (!newPhone || !newPhone.trim()) return;
+            const res = await fetchBotBackend('/api/admin/supplier-verifier/' + encodeURIComponent(supplierId) + '/update-phone-recheck', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone: newPhone.trim() }),
+                timeoutMs: 12000
+            });
+            if (!res) return;
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+                alert(data.error || 'تعذر تحديث الرقم.');
+                return;
+            }
+            if (data.whatsapp_active) {
+                alert('✅ تم التحقق من تفعيل الواتساب على الرقم الجديد وإعادة المورد إلى طابور التدقيق!');
+            } else {
+                alert('⚠️ الرقم المدخل غير مفعل على الواتساب أيضاً — بقي في قائمة واتساب غير مفعل.');
+            }
+            await loadVerifierDripAndInactiveSuppliers();
+        };
+
+        window.deleteInactiveSupplierPermanentlyUI = async function(supplierId, currentPhone, shopName) {
+            if (currentRole !== 'admin') return;
+            if (!confirm(`تأكيد الحذف النهائي للمورد (${shopName || currentPhone}) من قاعدة البيانات؟`)) return;
+            const res = await fetchBotBackend('/api/admin/supplier-verifier/' + encodeURIComponent(supplierId), {
+                method: 'DELETE',
+                timeoutMs: 10000
+            });
+            if (!res) return;
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || !data.success) {
+                alert(data.error || 'تعذر حذف المورد.');
+                return;
+            }
+            const normDeleted = window.formatSaudiPhone(currentPhone || '');
+            suppliersDB = suppliersDB.filter((s) => String(s.id) !== String(supplierId) && (!normDeleted || window.formatSaudiPhone(s.phone || '') !== normDeleted));
+            try {
+                await setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB });
+            } catch (_e) {}
+            renderSuppliersModalList();
+            await loadVerifierDripAndInactiveSuppliers();
+        };
+
         async function loadHarajMinerReadinessAndPending() {
             if (currentRole !== 'admin') return;
+            loadVerifierDripAndInactiveSuppliers();
             try {
                 const [minerRes, pendingRes] = await Promise.all([
                     fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 8000 }),
