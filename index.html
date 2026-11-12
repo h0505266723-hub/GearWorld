@@ -1417,13 +1417,17 @@
                     <i class="fa-brands fa-whatsapp text-base"></i>
                     <span>واتساب السريع</span>
                 </a>
+                <button type="button" id="headerWaLoginQuickBtn" onclick="openWhatsAppLoginModal()" class="hidden text-xs md:text-sm font-black text-emerald-200 bg-emerald-600/25 border border-emerald-400/50 px-3.5 py-2.5 rounded-2xl hover:bg-emerald-600 hover:text-white transition shadow-lg flex items-center gap-1.5">
+                    <span>📱</span>
+                    <span>تسجيل الدخول / ربط الواتساب (QR &amp; كود الربط)</span>
+                </button>
 <button onclick="switchTab('partner')" class="text-sm md:text-base font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/40 px-4 md:px-5 py-2.5 rounded-2xl hover:bg-emerald-500 hover:text-white transition duration-300 shadow-lg shadow-emerald-500/20 flex items-center gap-2 animate-pulse hover:animate-none">
     <span class="text-xl md:text-2xl">🤝</span>
     <span>انضم كشريك</span>
 </button>
-                <button id="adminLoginBtn" onclick="switchTab('admin')" class="text-xs font-extrabold text-slate-300 bg-slate-800/80 border border-slate-700/80 px-3 md:px-4 py-2.5 rounded-2xl hover:bg-brand-500 hover:text-white hover:border-brand-500 transition duration-300 shadow-md flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-shield text-brand-500"></i>
-                    <span class="hidden sm:inline">الإدارة</span>
+                <button type="button" id="adminLoginBtn" onclick="openAdminDashboardEntry()" class="text-xs md:text-sm font-extrabold text-slate-100 bg-slate-800/90 border border-brand-500/50 px-3.5 md:px-4 py-2.5 rounded-2xl hover:bg-brand-500 hover:text-white hover:border-brand-500 transition duration-300 shadow-md flex items-center gap-1.5">
+                    <span>🔐</span>
+                    <span>دخول المدير</span>
                 </button>
             </div>
         </div>
@@ -1804,14 +1808,29 @@
 
         <section id="admin-view" class="hidden space-y-6 animate-fade-in">
             <div class="glass-card flex flex-col gap-4 p-6 rounded-3xl border border-slate-700/80 shadow-2xl">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-chart-line text-brand-500"></i>
-                        <span id="dashboardTitle">لوحة التحكم</span>
-                    </h2>
-                    <button onclick="switchTab('customer')" class="bg-rose-500/10 border border-rose-500/30 text-rose-400 px-4 py-2 rounded-xl text-xs font-bold hover:bg-rose-500 hover:text-white transition flex items-center gap-1.5 shadow-sm">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
-                    </button>
+                <div class="flex flex-wrap justify-between items-center gap-3 border-b border-slate-800 pb-4">
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-brand-500"></i>
+                            <span id="dashboardTitle">لوحة التحكم</span>
+                        </h2>
+                        <span id="adminColdOutreachBadge" class="hidden text-[11px] font-black px-3 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/40">
+                            🧊 البدء البارد مجمّد لحماية الرقم
+                        </span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" id="adminBarWaLoginBtn" onclick="openWhatsAppLoginModal()" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md">
+                            <span>📱</span>
+                            <span>تسجيل الدخول / ربط الواتساب (QR &amp; كود الربط)</span>
+                        </button>
+                        <button type="button" id="btnExportSuppliersVcf" onclick="downloadSuppliersContactsVcf()" class="hidden bg-indigo-500/20 hover:bg-indigo-500 text-indigo-200 hover:text-white border border-indigo-400/40 px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-sm">
+                            <span>📇</span>
+                            <span>تصدير جهات اتصال الموردين (VCF)</span>
+                        </button>
+                        <button onclick="switchTab('customer')" class="bg-rose-500/10 border border-rose-500/30 text-rose-400 px-4 py-2 rounded-xl text-xs font-bold hover:bg-rose-500 hover:text-white transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
+                        </button>
+                    </div>
                 </div>
 
                 <!-- بطاقات إحصائيات بوابة الشريك المسوق الخاصة (تظهر للمندوب فقط) -->
@@ -1837,6 +1856,31 @@
                         </div>
                         <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-xl">✅</div>
                     </div>
+                </div>
+
+                <!-- قسم الطوارئ العلوي للمدير: محادثات موردين بانتظار الرد (توقفت أثناء التقييد) -->
+                <div id="unansweredSuppliersCatchUpWrap" class="hidden bg-rose-950/35 border border-rose-500/45 rounded-2xl p-4 space-y-3 shadow-xl">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-rose-500/25 pb-2.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-sm sm:text-base font-black text-rose-200 flex items-center gap-1.5">
+                                <span>🚨</span>
+                                <span>محادثات موردين بانتظار الرد (توقفت أثناء التقييد)</span>
+                            </h3>
+                            <span id="unansweredSuppliersCountBadge" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-rose-500 text-white shadow">0</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" id="btnToggleColdOutreachFreeze" onclick="toggleGlobalColdOutreachUI()" class="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 px-3 py-1.5 rounded-xl text-[11px] font-black transition">
+                                🧊 البدء البارد مجمّد (تفعيل يدوي)
+                            </button>
+                            <button type="button" onclick="loadUnansweredSuppliersCatchUp()" class="bg-slate-900 hover:bg-slate-800 text-rose-200 border border-rose-500/40 px-3 py-1.5 rounded-xl text-[11px] font-black transition">
+                                🔄 تحديث القائمة
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-rose-200/90 font-bold leading-relaxed">
+                        💡 يمكنك فتح محادثة المورد فوراً في واتساب مع الرد الذكي الجاهز عبر <code class="text-emerald-300">wa.me</code>، أو إرسال الرد برمجياً عبر البوت فور ربط الجلسة (بفاصل أمان تلقائي 20 ثانية بين كل رد وآخر).
+                    </p>
+                    <div id="unansweredSuppliersListContainer" class="space-y-3 max-h-[420px] overflow-y-auto pr-1"></div>
                 </div>
 
                 <!-- المراقبة الحية للمدير فقط: توزيع الوكلاء التناسبي + محرك الإنقاذ الحي للطلبات المتأخرة -->
@@ -2593,6 +2637,115 @@
         </div>
     </div>
 
+    <!-- نافذة تسجيل الدخول وربط الواتساب الحية (QR & كود الربط من 8 خانات + تبديل آمن للجلسة) -->
+    <div id="whatsappLoginModal" style="z-index: 99998;" class="fixed inset-0 hidden flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-3 sm:p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-5 sm:p-6 max-w-xl w-full shadow-2xl max-h-[93vh] overflow-y-auto border border-emerald-500/40 space-y-4">
+            <div class="flex justify-between items-start gap-3 border-b border-slate-800 pb-3">
+                <div>
+                    <h3 class="font-black text-base sm:text-lg text-emerald-300 flex items-center gap-2">
+                        <span>📱</span>
+                        <span>تسجيل الدخول / ربط الواتساب (QR &amp; كود الربط)</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-400 font-bold mt-1">
+                        اتصال مباشر بالسيرفر المحلي مع قفل الجلسة الدائمة (<code class="text-emerald-300">auth_info_baileys</code>) وتحديث تلقائي كل ثانيتين
+                    </p>
+                </div>
+                <button type="button" onclick="closeWhatsAppLoginModal()" class="text-slate-400 hover:text-white bg-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition border border-slate-700 shrink-0">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- حالة الاتصال اللحظية + رقم الجلسة -->
+            <div id="waModalLiveStatusCard" class="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span id="waModalStatusDot" class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span id="waModalStatusText" class="text-xs sm:text-sm font-black text-white">جاري فحص حالة جلسة الواتساب...</span>
+                </div>
+                <span id="waModalConnectedPhoneBadge" dir="ltr" class="hidden text-xs font-mono font-black px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"></span>
+            </div>
+
+            <!-- تنبيه التقييد / تسجيل الخروج إن وجد -->
+            <div id="waModalRestrictionWarning" class="hidden bg-rose-950/60 border border-rose-500/50 text-rose-200 rounded-2xl p-3.5 text-xs font-bold leading-relaxed"></div>
+
+            <!-- عرض رمز QR الحي -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 text-center space-y-3">
+                <p id="waModalQrHint" class="text-xs text-slate-300 font-bold">
+                    افتح واتساب في جوالك ⬅️ الأجهزة المرتبطة ⬅️ ربط جهاز ⬅️ امسح رمز الـ QR أدناه:
+                </p>
+                <div id="waModalWaitingSpinner" class="py-6 text-xs font-bold text-amber-300">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 block"></i>
+                    <span>بانتظار توليد رمز الـ QR من خادم واتساب...</span>
+                </div>
+                <div id="waModalQrImgWrap" class="hidden inline-flex bg-white p-3.5 rounded-2xl shadow-xl">
+                    <img id="waModalQrImg" alt="WhatsApp Live QR" class="w-60 h-60 object-contain rounded-lg" />
+                </div>
+                <div id="waModalConnectedSuccessBox" class="hidden py-4 px-3 bg-emerald-500/15 border border-emerald-500/40 rounded-2xl text-emerald-300 font-black text-sm">
+                    ✅ الواتساب متصل الآن وجاهز لاستقبال الطلبات والردود! (البدء البارد مجمّد لحماية الرقم)
+                </div>
+            </div>
+
+            <!-- خيار الربط برقم الجوال (Pairing Code من 8 خانات) -->
+            <div id="waModalPairingWrap" class="bg-slate-900/90 border border-sky-500/30 rounded-2xl p-4 space-y-2.5">
+                <label class="block text-xs font-black text-sky-300">🔑 أو الربط برقم الجوال مباشرة (Pairing Code من 8 خانات):</label>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="tel" id="waModalPairingPhoneInput" dir="ltr" value="966509046024" placeholder="9665xxxxxxxx" class="flex-1 px-3.5 py-2.5 rounded-xl glass-input outline-none font-mono text-sm text-center text-white" />
+                    <button type="button" id="btnRequestModalPairingCode" onclick="requestWhatsAppModalPairingCode()" class="bg-sky-600 hover:bg-sky-500 text-white font-black px-4 py-2.5 rounded-xl text-xs transition shadow-md">
+                        🔑 توليد كود الربط (8 خانات)
+                    </button>
+                </div>
+                <div id="waModalPairingCodeDisplay" dir="ltr" class="hidden text-center font-mono text-2xl font-black tracking-[0.25em] text-amber-300 bg-amber-500/15 border border-dashed border-amber-400 rounded-xl py-3 px-4"></div>
+            </div>
+
+            <!-- زر تبديل رقم الواتساب / تسجيل خروج الجلسة الحالية بأمان -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-1">
+                <button type="button" id="btnResetModalWaSession" onclick="resetWhatsAppModalSession()" class="w-full sm:w-auto flex-1 bg-rose-600 hover:bg-rose-500 text-white font-black py-3 px-4 rounded-2xl text-xs transition shadow-lg flex items-center justify-center gap-2">
+                    <span>🔄</span>
+                    <span>تبديل رقم الواتساب / تسجيل خروج الجلسة الحالية</span>
+                </button>
+                <a href="http://localhost:3000/qr" target="_blank" rel="noopener" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 font-bold py-3 px-4 rounded-2xl text-xs text-center transition">
+                    🔗 فتح صفحة /qr المستقلة
+                </a>
+            </div>
+            <div id="waModalFeedbackMsg" class="hidden text-xs font-bold px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-emerald-300 text-center"></div>
+        </div>
+    </div>
+
+    <!-- نافذة تسجيل دخول المدير بأعلى طبقة (z-index: 99999) -->
+    <div id="adminLoginModal" style="z-index: 99999;" class="fixed inset-0 hidden flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-6 max-w-md w-full shadow-2xl border border-brand-500/50 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 id="adminLoginModalTitle" class="font-black text-base sm:text-lg text-white flex items-center gap-2">
+                    <span>🔐</span>
+                    <span>تسجيل دخول الإدارة الشاملة</span>
+                </h3>
+                <button type="button" onclick="cancelAdminLoginModal()" class="text-slate-400 hover:text-white bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center transition border border-slate-700">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="adminLoginModalBanner" class="hidden text-xs font-bold px-3.5 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-200 leading-relaxed"></div>
+            <p id="adminLoginModalSubtitle" class="text-xs text-slate-300 font-bold leading-relaxed">
+                أدخل كلمة مرور المدير (أو كلمة مرور الشريك المسوق) لفتح لوحة التحكم ومزامنة بطاقات قائمة الانتظار الحية مع السيرفر و Firestore:
+            </p>
+            <form id="adminLoginModalForm" onsubmit="submitAdminLoginModal(event)" class="space-y-4">
+                <div class="relative">
+                    <input type="password" id="adminModalPasswordInput" autocomplete="current-password" placeholder="أدخل الرقم السري هنا..." class="w-full px-4 py-3.5 rounded-2xl glass-input focus:ring-2 focus:ring-brand-500 outline-none text-sm font-bold text-white pl-12" />
+                    <button type="button" onclick="toggleAdminModalPassVisibility()" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-sm px-2 py-1">
+                        <i id="adminModalPassEyeIcon" class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                <div id="adminLoginModalError" class="hidden text-xs font-bold text-rose-400 bg-rose-950/50 border border-rose-500/40 rounded-xl px-3 py-2 text-center"></div>
+                <div class="flex gap-2.5">
+                    <button type="submit" id="btnSubmitAdminModalLogin" class="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-black py-3 rounded-2xl text-sm transition shadow-lg">
+                        🔓 تسجيل الدخول الآن
+                    </button>
+                    <button type="button" onclick="cancelAdminLoginModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-bold px-4 py-3 rounded-2xl text-xs transition">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- كود الجافاسكريبت و الفايربيز مع نظام المسوقين ومركز الإعدادات الشامل -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -2699,8 +2852,12 @@
         let allCloudOrdersSnapshotForStats = [];
         let activeAdminSessionToken = null;
         let lastAdmin401PromptAt = 0;
+        let adminLoginModalResolver = null;
+        let waLoginModalPollTimer = null;
+        let unansweredSuppliersCache = [];
+        let globalColdOutreachPausedState = true;
 
-        function handleAdminUnauthorized401(apiPath = '') {
+        function clearStoredAdminAuthTokens() {
             activeAdminSessionToken = null;
             try {
                 localStorage.removeItem('adminToken');
@@ -2710,21 +2867,634 @@
                 sessionStorage.removeItem('adminPasswordHash');
                 sessionStorage.removeItem('haraj_admin_token');
             } catch (_stErr) {}
+        }
+
+        function persistAdminAuthTokens(token, passHash) {
+            try {
+                if (token) {
+                    localStorage.setItem('haraj_admin_token', token);
+                    localStorage.setItem('adminToken', token);
+                    sessionStorage.setItem('haraj_admin_token', token);
+                    sessionStorage.setItem('adminToken', token);
+                }
+                if (passHash) {
+                    localStorage.setItem('adminPasswordHash', passHash);
+                    sessionStorage.setItem('adminPasswordHash', passHash);
+                }
+            } catch (_pErr) {}
+        }
+
+        function getStoredAdminCandidateToken() {
+            try {
+                return (
+                    activeAdminSessionToken ||
+                    localStorage.getItem('haraj_admin_token') ||
+                    localStorage.getItem('adminToken') ||
+                    sessionStorage.getItem('haraj_admin_token') ||
+                    sessionStorage.getItem('adminToken') ||
+                    localStorage.getItem('adminPasswordHash') ||
+                    sessionStorage.getItem('adminPasswordHash') ||
+                    ''
+                ).trim();
+            } catch (_gErr) {
+                return activeAdminSessionToken || '';
+            }
+        }
+
+        async function verifyAdminSessionWithBackend(candidateToken = '') {
+            const tok = String(candidateToken || getStoredAdminCandidateToken() || '').trim();
+            if (!tok) return { checked: true, valid: false, status: 401 };
+            const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const targetUrl = isLocalOrigin ? '/api/admin/session-check' : 'http://localhost:3000/api/admin/session-check';
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 3500);
+            try {
+                const res = await fetch(targetUrl, {
+                    method: 'GET',
+                    cache: 'no-store',
+                    headers: {
+                        'X-Admin-Token': tok,
+                        'X-Admin-Password-Hash': tok
+                    },
+                    signal: controller.signal
+                });
+                if (res.status === 401) {
+                    clearStoredAdminAuthTokens();
+                    return { checked: true, valid: false, status: 401 };
+                }
+                if (res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    if (data && (data.authenticated || data.valid)) {
+                        activeAdminSessionToken = tok;
+                        try {
+                            const savedHash = localStorage.getItem('adminPasswordHash') || sessionStorage.getItem('adminPasswordHash') || '';
+                            if (/^[a-f0-9]{64}$/i.test(savedHash)) {
+                                activeAdminPasswordHash = savedHash.toLowerCase();
+                            } else if (/^[a-f0-9]{64}$/i.test(tok)) {
+                                activeAdminPasswordHash = tok.toLowerCase();
+                            }
+                        } catch (_hErr) {}
+                        return { checked: true, valid: true, status: 200, data };
+                    }
+                }
+                return { checked: false, valid: false, status: res.status };
+            } catch (_netErr) {
+                return { checked: false, valid: false, status: 0 };
+            } finally {
+                clearTimeout(timer);
+            }
+        }
+
+        window.toggleAdminModalPassVisibility = function() {
+            const inp = document.getElementById('adminModalPasswordInput');
+            const ico = document.getElementById('adminModalPassEyeIcon');
+            if (!inp) return;
+            const toText = inp.type === 'password';
+            inp.type = toText ? 'text' : 'password';
+            if (ico) {
+                ico.className = toText ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            }
+        };
+
+        window.promptAdminPasswordModal = function(options = {}) {
+            const modal = document.getElementById('adminLoginModal');
+            const titleEl = document.getElementById('adminLoginModalTitle');
+            const subEl = document.getElementById('adminLoginModalSubtitle');
+            const bannerEl = document.getElementById('adminLoginModalBanner');
+            const errEl = document.getElementById('adminLoginModalError');
+            const inpEl = document.getElementById('adminModalPasswordInput');
+            if (!modal || !inpEl) {
+                const fallbackMsg = options.loginMode === 'partner'
+                    ? '🔐 دخول الشريك المسوق — أدخل كلمة المرور الخاصة بك:'
+                    : '🔒 إدخال الرقم السري للوحة التحكم:';
+                return Promise.resolve(prompt(fallbackMsg));
+            }
+
+            if (adminLoginModalResolver) {
+                const prev = adminLoginModalResolver;
+                adminLoginModalResolver = null;
+                prev(null);
+            }
+
+            if (titleEl) {
+                titleEl.innerHTML = options.loginMode === 'partner'
+                    ? '<span>🤝</span><span>دخول بوابة الشريك المسوق</span>'
+                    : '<span>🔐</span><span>تسجيل دخول الإدارة الشاملة</span>';
+            }
+            if (subEl) {
+                subEl.textContent = options.loginMode === 'partner'
+                    ? 'أدخل كلمة المرور الخاصة بحسابك لمتابعة عملائك وعمليات الشراء المكتملة:'
+                    : 'أدخل كلمة مرور المدير لفتح لوحة التحكم الشاملة ومزامنة بطاقات قائمة الانتظار والموردين المنتظرين للرد:';
+            }
+            if (bannerEl) {
+                if (options.bannerText) {
+                    bannerEl.textContent = options.bannerText;
+                    bannerEl.classList.remove('hidden');
+                } else {
+                    bannerEl.textContent = '';
+                    bannerEl.classList.add('hidden');
+                }
+            }
+            if (errEl) {
+                if (options.errorText) {
+                    errEl.textContent = options.errorText;
+                    errEl.classList.remove('hidden');
+                } else {
+                    errEl.textContent = '';
+                    errEl.classList.add('hidden');
+                }
+            }
+            inpEl.type = 'password';
+            inpEl.value = '';
+            modal.classList.remove('hidden');
+            setTimeout(() => { try { inpEl.focus(); } catch (_) {} }, 50);
+
+            return new Promise((resolve) => {
+                adminLoginModalResolver = resolve;
+            });
+        };
+
+        window.submitAdminLoginModal = function(ev) {
+            if (ev) ev.preventDefault();
+            const inpEl = document.getElementById('adminModalPasswordInput');
+            const errEl = document.getElementById('adminLoginModalError');
+            const modal = document.getElementById('adminLoginModal');
+            const val = (inpEl?.value || '').trim();
+            if (!val) {
+                if (errEl) {
+                    errEl.textContent = '⚠️ يرجى إدخال كلمة المرور للمتابعة.';
+                    errEl.classList.remove('hidden');
+                }
+                return;
+            }
+            if (modal) modal.classList.add('hidden');
+            const resolver = adminLoginModalResolver;
+            adminLoginModalResolver = null;
+            if (resolver) resolver(val);
+        };
+
+        window.cancelAdminLoginModal = function() {
+            const modal = document.getElementById('adminLoginModal');
+            if (modal) modal.classList.add('hidden');
+            const resolver = adminLoginModalResolver;
+            adminLoginModalResolver = null;
+            if (resolver) resolver(null);
+        };
+
+        window.openAdminDashboardEntry = function() {
+            return window.switchTab('admin', 'default');
+        };
+
+        // ==========================================
+        // نافذة تسجيل الدخول / ربط الواتساب الحية (QR & Pairing Code + Safe Session Reset)
+        // ==========================================
+        function showWaModalFeedback(msg, isError = false) {
+            const el = document.getElementById('waModalFeedbackMsg');
+            if (!el) return;
+            if (!msg) {
+                el.classList.add('hidden');
+                el.textContent = '';
+                return;
+            }
+            el.classList.remove('hidden');
+            el.className = isError
+                ? 'text-xs font-bold px-3.5 py-2.5 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-200 text-center'
+                : 'text-xs font-bold px-3.5 py-2.5 rounded-xl bg-emerald-950/70 border border-emerald-500/50 text-emerald-200 text-center';
+            el.textContent = msg;
+        }
+
+        window.refreshWhatsAppModalStatus = async function() {
+            const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const targetUrl = isLocalOrigin ? '/api/qr/live-status' : 'http://localhost:3000/api/qr/live-status';
+            const headers = {};
+            const tok = getStoredAdminCandidateToken();
+            if (tok) {
+                headers['X-Admin-Token'] = tok;
+                headers['X-Admin-Password-Hash'] = tok;
+            }
+            try {
+                const res = await fetch(targetUrl, { method: 'GET', cache: 'no-store', headers });
+                if (!res.ok) return;
+                const data = await res.json();
+
+                const dotEl = document.getElementById('waModalStatusDot');
+                const txtEl = document.getElementById('waModalStatusText');
+                const phoneEl = document.getElementById('waModalConnectedPhoneBadge');
+                const warnEl = document.getElementById('waModalRestrictionWarning');
+                const qrHintEl = document.getElementById('waModalQrHint');
+                const spinEl = document.getElementById('waModalWaitingSpinner');
+                const qrWrapEl = document.getElementById('waModalQrImgWrap');
+                const qrImgEl = document.getElementById('waModalQrImg');
+                const connBoxEl = document.getElementById('waModalConnectedSuccessBox');
+                const pairWrapEl = document.getElementById('waModalPairingWrap');
+
+                if (warnEl) {
+                    if (data.restrictionWarning || data.lastDisconnectStatusCode === 401) {
+                        warnEl.textContent = '⚠️ تنبيه الجلسة: ' + (data.restrictionWarning || 'تم تسجيل الخروج أو تقييد الجلسة السابقة (Code 401). اضغط "تبديل رقم الواتساب / تسجيل خروج الجلسة الحالية" بالأسفل لتوليد باركود QR جديد فوراً.');
+                        warnEl.classList.remove('hidden');
+                    } else {
+                        warnEl.classList.add('hidden');
+                    }
+                }
+
+                if (data.status === 'connected') {
+                    if (dotEl) dotEl.className = 'w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]';
+                    if (txtEl) txtEl.textContent = '🟢 متصل وجاهز لاستقبال الطلبات والرد على الموردين';
+                    if (phoneEl && data.connectedPhone) {
+                        phoneEl.textContent = '+' + data.connectedPhone;
+                        phoneEl.classList.remove('hidden');
+                    }
+                    if (qrHintEl) qrHintEl.classList.add('hidden');
+                    if (spinEl) spinEl.classList.add('hidden');
+                    if (qrWrapEl) qrWrapEl.classList.add('hidden');
+                    if (connBoxEl) connBoxEl.classList.remove('hidden');
+                    if (pairWrapEl) pairWrapEl.classList.add('hidden');
+                    return;
+                }
+
+                if (phoneEl) phoneEl.classList.add('hidden');
+                if (connBoxEl) connBoxEl.classList.add('hidden');
+                if (qrHintEl) qrHintEl.classList.remove('hidden');
+                if (pairWrapEl) pairWrapEl.classList.remove('hidden');
+
+                if (data.status === 'waiting_qr' && data.qrDataUrl) {
+                    if (dotEl) dotEl.className = 'w-3 h-3 rounded-full bg-sky-400 animate-pulse';
+                    if (txtEl) txtEl.textContent = '📱 بانتظار مسح رمز الـ QR أو إدخال كود الربط في واتساب';
+                    if (spinEl) spinEl.classList.add('hidden');
+                    if (qrImgEl) qrImgEl.src = data.qrDataUrl;
+                    if (qrWrapEl) qrWrapEl.classList.remove('hidden');
+                } else {
+                    if (dotEl) dotEl.className = 'w-3 h-3 rounded-full bg-amber-400 animate-pulse';
+                    if (txtEl) txtEl.textContent = '⏳ جاري تهيئة الجلسة أو بانتظار تبديل الجلسة لتوليد QR جديد';
+                    if (qrWrapEl) qrWrapEl.classList.add('hidden');
+                    if (spinEl) spinEl.classList.remove('hidden');
+                }
+            } catch (_waErr) {
+                const txtEl = document.getElementById('waModalStatusText');
+                if (txtEl) txtEl.textContent = '⚠️ تعذر الاتصال بسيرفر البوت المحلي على المنفذ 3000';
+            }
+        };
+
+        window.openWhatsAppLoginModal = function() {
+            const modal = document.getElementById('whatsappLoginModal');
+            if (!modal) {
+                window.open('http://localhost:3000/qr', '_blank');
+                return;
+            }
+            modal.classList.remove('hidden');
+            showWaModalFeedback('');
+            window.refreshWhatsAppModalStatus();
+            if (waLoginModalPollTimer) clearInterval(waLoginModalPollTimer);
+            waLoginModalPollTimer = setInterval(() => {
+                if (modal.classList.contains('hidden')) {
+                    clearInterval(waLoginModalPollTimer);
+                    waLoginModalPollTimer = null;
+                    return;
+                }
+                window.refreshWhatsAppModalStatus();
+            }, 2000);
+        };
+
+        window.closeWhatsAppLoginModal = function() {
+            const modal = document.getElementById('whatsappLoginModal');
+            if (modal) modal.classList.add('hidden');
+            if (waLoginModalPollTimer) {
+                clearInterval(waLoginModalPollTimer);
+                waLoginModalPollTimer = null;
+            }
+        };
+
+        window.requestWhatsAppModalPairingCode = async function() {
+            const inp = document.getElementById('waModalPairingPhoneInput');
+            const codeBox = document.getElementById('waModalPairingCodeDisplay');
+            const btn = document.getElementById('btnRequestModalPairingCode');
+            const cleanPhone = window.formatSaudiPhone(inp?.value || '');
+            if (!cleanPhone || cleanPhone.length < 10) {
+                showWaModalFeedback('⚠️ يرجى إدخال رقم الجوال الصحيح بصيغة 9665xxxxxxxx أو 05xxxxxxxx.', true);
+                return;
+            }
+            const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const targetUrl = isLocalOrigin ? '/api/qr/pairing-code' : 'http://localhost:3000/api/qr/pairing-code';
+            const headers = { 'Content-Type': 'application/json' };
+            const tok = getStoredAdminCandidateToken();
+            if (tok) {
+                headers['X-Admin-Token'] = tok;
+                headers['X-Admin-Password-Hash'] = tok;
+            }
+            const origText = btn ? btn.textContent : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ جاري توليد الكود...';
+            }
+            try {
+                const res = await fetch(targetUrl, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({ phone: cleanPhone })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success || !data.pairingCode) {
+                    showWaModalFeedback(data.error || 'تعذر توليد كود الربط حالياً. يمكنك الضغط على تبديل الجلسة أولاً أو مسح الـ QR.', true);
+                    return;
+                }
+                if (codeBox) {
+                    codeBox.textContent = data.pairingCode;
+                    codeBox.classList.remove('hidden');
+                }
+                showWaModalFeedback('✅ أدخل كود الربط المكون من 8 خانات أعلاه في إشعار تطبيق واتساب بجوالك.');
+            } catch (_e) {
+                showWaModalFeedback('تعذر الاتصال بسيرفر البوت لطلب كود الربط.', true);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = origText;
+                }
+            }
+        };
+
+        window.resetWhatsAppModalSession = async function() {
+            if (!confirm('هل تريد أخذ نسخة احتياطية آمنة من مجلد الجلسة الحالية وتصفير auth_info_baileys لتوليد رمز QR جديد فوراً دون إيقاف السيرفر؟')) {
+                return;
+            }
+            const btn = document.getElementById('btnResetModalWaSession');
+            const codeBox = document.getElementById('waModalPairingCodeDisplay');
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري النسخ الاحتياطي وتوليد QR جديد...</span>';
+            }
+            const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const targetUrl = isLocalOrigin ? '/api/qr/reset-session' : 'http://localhost:3000/api/qr/reset-session';
+            const headers = { 'Content-Type': 'application/json' };
+            const tok = getStoredAdminCandidateToken();
+            if (tok) {
+                headers['X-Admin-Token'] = tok;
+                headers['X-Admin-Password-Hash'] = tok;
+            }
+            try {
+                const res = await fetch(targetUrl, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify({ waitQrMs: 5000 })
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.success) {
+                    showWaModalFeedback(data.error || 'تعذر إعادة تهيئة الجلسة.', true);
+                } else {
+                    if (codeBox) codeBox.classList.add('hidden');
+                    showWaModalFeedback(data.message || '✅ تم أخذ نسخة احتياطية وتوليد رمز QR جديد بنجاح!');
+                    await window.refreshWhatsAppModalStatus();
+                }
+            } catch (_e) {
+                showWaModalFeedback('تعذر الاتصال بالسيرفر المحلي لتبديل الجلسة.', true);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+        };
+
+        // ==========================================
+        // استكمال المحادثات مع الموردين المنتظرين للرد + تصدير جهات الاتصال VCF + تجميد البدء البارد
+        // ==========================================
+        function syncColdOutreachBadgeUI(isPaused) {
+            globalColdOutreachPausedState = Boolean(isPaused);
+            const topBadge = document.getElementById('adminColdOutreachBadge');
+            const toggleBtn = document.getElementById('btnToggleColdOutreachFreeze');
+            if (topBadge && currentRole === 'admin') {
+                topBadge.classList.remove('hidden');
+                if (globalColdOutreachPausedState) {
+                    topBadge.className = 'text-[11px] font-black px-3 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/40';
+                    topBadge.textContent = '🧊 البدء البارد مجمّد لحماية الرقم';
+                } else {
+                    topBadge.className = 'text-[11px] font-black px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/40';
+                    topBadge.textContent = '🟢 البدء البارد مسموح';
+                }
+            }
+            if (toggleBtn) {
+                if (globalColdOutreachPausedState) {
+                    toggleBtn.className = 'bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-400/40 px-3 py-1.5 rounded-xl text-[11px] font-black transition';
+                    toggleBtn.textContent = '🧊 البدء البارد مجمّد (اضغط للتفعيل يدوياً)';
+                } else {
+                    toggleBtn.className = 'bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/40 px-3 py-1.5 rounded-xl text-[11px] font-black transition';
+                    toggleBtn.textContent = '⏸️ تجميد البدء البارد فوراً';
+                }
+            }
+        }
+
+        window.toggleGlobalColdOutreachUI = async function() {
+            if (currentRole !== 'admin') return;
+            const targetPaused = !globalColdOutreachPausedState;
+            const confirmMsg = targetPaused
+                ? 'تأكيد التجميد الفوري لجميع الرسائل الافتتاحية الجديدة (Cold Outreach Freeze)؟'
+                : 'تنبيه: هل أنت متأكد من إلغاء تجميد البدء البارد والسماح بالحملات عند تشغيلها؟';
+            if (!confirm(confirmMsg)) return;
+            const res = await fetchBotBackend('/api/admin/cold-outreach/toggle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paused: targetPaused }),
+                timeoutMs: 8000
+            });
+            if (res && res.ok) {
+                const data = await res.json().catch(() => ({}));
+                syncColdOutreachBadgeUI(Boolean(data.cold_outreach_paused));
+                loadVerifierDripAndInactiveSuppliers();
+            }
+        };
+
+        window.updateUnansweredWaMeHref = function(phone, idx) {
+            const ta = document.getElementById(`unanswered-reply-ta-${idx}`);
+            const linkEl = document.getElementById(`unanswered-wame-link-${idx}`);
+            if (!ta || !linkEl) return;
+            const cleanPh = window.formatSaudiPhone(phone);
+            linkEl.href = `https://wa.me/${cleanPh}?text=${encodeURIComponent(ta.value || '')}`;
+        };
+
+        function renderUnansweredSuppliersCatchUpList(items = []) {
+            const wrap = document.getElementById('unansweredSuppliersCatchUpWrap');
+            const badge = document.getElementById('unansweredSuppliersCountBadge');
+            const container = document.getElementById('unansweredSuppliersListContainer');
+            if (!wrap || !container) return;
+            if (currentRole !== 'admin') {
+                wrap.classList.add('hidden');
+                return;
+            }
+            wrap.classList.remove('hidden');
+            if (badge) badge.textContent = String(items.length || 0);
+
+            if (!items.length) {
+                container.innerHTML = '<div class="bg-slate-950/75 border border-emerald-500/30 rounded-2xl p-4 text-center text-xs font-bold text-emerald-300">✅ ممتاز! لا توجد حالياً أي محادثات موردين متفاعلين متوقفة بدون رد.</div>';
+                return;
+            }
+
+            container.innerHTML = items.map((item, idx) => {
+                const safeName = escapeHTML(item.shop_name || 'مورد متفاعل');
+                const safePhone = escapeHTML(item.phone || '');
+                const safeDistrict = item.district ? `<span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700 text-[10px]">📍 ${escapeHTML(item.district)}</span>` : '';
+                const safeLabel = item.supplier_type_label_ar ? `<span class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[10px]">${escapeHTML(item.supplier_type_label_ar)}</span>` : '';
+                const lastText = escapeHTML(item.last_supplier_message || '');
+                const lastTime = item.last_supplier_at ? new Date(item.last_supplier_at).toLocaleString('ar-SA') : '';
+                const suggested = String(item.suggested_reply || '');
+                const waHref = `https://wa.me/${encodeURIComponent(item.phone || '')}?text=${encodeURIComponent(suggested)}`;
+
+                return `
+                    <div id="unanswered-sup-card-${idx}" class="bg-slate-950/90 border border-rose-500/35 rounded-2xl p-4 space-y-3 shadow-md">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-black text-white text-sm sm:text-base">${safeName}</span>
+                                <span dir="ltr" class="font-mono text-xs font-black text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-lg">+${safePhone}</span>
+                                ${safeLabel}
+                                ${safeDistrict}
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-400">${escapeHTML(lastTime)}</span>
+                        </div>
+
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 text-xs space-y-1">
+                            <span class="text-rose-300 font-black block">🗣️ آخر رسالة من المورد لم يُرد عليها:</span>
+                            <p class="text-slate-100 font-bold leading-relaxed whitespace-pre-line">${lastText}</p>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-[11px] font-black text-emerald-300">✍️ الرد الذكي المقترح (قابل للتعديل الفوري قبل الإرسال):</label>
+                            <textarea id="unanswered-reply-ta-${idx}" rows="3" oninput="updateUnansweredWaMeHref('${safePhone}', ${idx})" class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-bold text-white leading-relaxed">${escapeHTML(suggested)}</textarea>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                            <a id="unanswered-wame-link-${idx}" href="${escapeHTML(waHref)}" target="_blank" rel="noopener" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-black py-2.5 px-4 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5 text-center">
+                                <span>💬</span>
+                                <span>فتح المحادثة في واتساب جاهزة بالرد (wa.me)</span>
+                            </a>
+                            <button type="button" id="btn-send-unanswered-${idx}" onclick="sendUnansweredSupplierReplyNow('${safePhone}', ${idx})" class="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-black py-2.5 px-4 rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5">
+                                <span>🚀</span>
+                                <span>إرسال الرد عبر البوت الآن</span>
+                            </button>
+                        </div>
+                        <div id="unanswered-feedback-${idx}" class="hidden text-[11px] font-bold px-3 py-2 rounded-xl"></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.loadUnansweredSuppliersCatchUp = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/unanswered-suppliers', { method: 'GET', timeoutMs: 8000 });
+            if (res && res.ok) {
+                const data = await res.json().catch(() => ({}));
+                unansweredSuppliersCache = Array.isArray(data.items) ? data.items : [];
+                if (typeof data.cold_outreach_paused === 'boolean') {
+                    syncColdOutreachBadgeUI(data.cold_outreach_paused);
+                }
+                renderUnansweredSuppliersCatchUpList(unansweredSuppliersCache);
+            }
+        };
+
+        window.sendUnansweredSupplierReplyNow = async function(phone, idx) {
+            if (currentRole !== 'admin') return;
+            const ta = document.getElementById(`unanswered-reply-ta-${idx}`);
+            const btn = document.getElementById(`btn-send-unanswered-${idx}`);
+            const fb = document.getElementById(`unanswered-feedback-${idx}`);
+            const replyText = (ta?.value || '').trim();
+            if (!replyText) {
+                alert('يرجى كتابة نص الرد أولاً.');
+                return;
+            }
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري الإرسال الآمن (فاصل 20 ثانية)...</span>';
+            }
+            if (fb) {
+                fb.className = 'text-[11px] font-bold px-3 py-2 rounded-xl bg-sky-950/60 border border-sky-500/40 text-sky-200';
+                fb.textContent = '⏳ جاري إرسال الرد عبر جلسة الواتساب بفاصل أمان 20 ثانية...';
+                fb.classList.remove('hidden');
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/unanswered-suppliers/' + encodeURIComponent(phone) + '/send-reply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reply_text: replyText }),
+                    timeoutMs: 35000
+                });
+                const data = res ? await res.json().catch(() => ({})) : { success: false };
+                if (!res || !res.ok || !data.success) {
+                    if (fb) {
+                        fb.className = 'text-[11px] font-bold px-3 py-2 rounded-xl bg-rose-950/70 border border-rose-500/40 text-rose-200';
+                        fb.textContent = '⚠️ ' + (data.error || 'تعذر الإرسال عبر البوت (تأكد من ربط جلسة الواتساب أو استخدم زر wa.me الأخضر بجانبه).');
+                    }
+                    return;
+                }
+                if (fb) {
+                    fb.className = 'text-[11px] font-bold px-3 py-2 rounded-xl bg-emerald-950/70 border border-emerald-500/40 text-emerald-200';
+                    fb.textContent = '✅ تم إرسال الرد للمورد بنجاح وتحديث سجل المحادثة!';
+                }
+                setTimeout(() => { window.loadUnansweredSuppliersCatchUp(); }, 900);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+        };
+
+        window.downloadSuppliersContactsVcf = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/suppliers/export-contacts.vcf', { method: 'GET', timeoutMs: 12000 });
+            if (!res || !res.ok) {
+                alert('⚠️ تعذر تصدير ملف جهات الاتصال (VCF). تأكد من اتصال السيرفر المحلي.');
+                return;
+            }
+            const vcfText = await res.text();
+            const blob = new Blob([vcfText], { type: 'text/vcard;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `harajparts-suppliers-${new Date().toISOString().slice(0, 10)}.vcf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 2500);
+        };
+
+        // تهيئة أزرار الوصول السريع على localhost وفحص التوكن المخزن تلقائياً عند فتح الصفحة
+        (function initQuickWaHeaderAndSessionCheckOnBoot() {
+            const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const quickWaBtn = document.getElementById('headerWaLoginQuickBtn');
+            if (isLocalHost && quickWaBtn) {
+                quickWaBtn.classList.remove('hidden');
+            }
+            const sp = new URLSearchParams(window.location.search);
+            if (sp.get('qr') === '1' || window.location.hash === '#qr') {
+                setTimeout(() => window.openWhatsAppLoginModal(), 150);
+            }
+            const storedTok = getStoredAdminCandidateToken();
+            if (storedTok) {
+                verifyAdminSessionWithBackend(storedTok).then((chk) => {
+                    if (chk.checked && !chk.valid && (sp.get('admin') === '1' || window.location.hash === '#admin')) {
+                        window.switchTab('admin');
+                    }
+                });
+            } else if (sp.get('admin') === '1' || window.location.hash === '#admin') {
+                setTimeout(() => window.switchTab('admin'), 150);
+            }
+        })();
+
+        function handleAdminUnauthorized401(apiPath = '') {
+            clearStoredAdminAuthTokens();
 
             const pendingList = document.getElementById('pendingListContainer');
             if (pendingList) {
-                pendingList.innerHTML = '<div class="text-center text-amber-300 text-xs py-6 px-4 bg-amber-950/40 rounded-2xl border border-amber-500/40 font-bold">⚠️ انتهت صلاحية جلسة المدير أو تغيرت كلمة المرور على السيرفر (401 Unauthorized) — يرجى إعادة تسجيل الدخول لعرض بطاقات قائمة الانتظار الحية.</div>';
+                pendingList.innerHTML = '<div class="text-center text-amber-300 text-xs py-6 px-4 bg-amber-950/40 rounded-2xl border border-amber-500/40 font-bold">⚠️ انتهت صلاحية جلسة المدير أو تغيرت كلمة المرور على السيرفر (401 Unauthorized) — يرجى إدخال كلمة المرور في النافذة العلوية لعرض بطاقات قائمة الانتظار الحية.</div>';
             }
 
             const nowMs = Date.now();
             if (nowMs - lastAdmin401PromptAt < 4000) return;
             lastAdmin401PromptAt = nowMs;
             currentRole = null;
-            alert('⚠️ انتهت صلاحية جلسة المدير أو تغيرت كلمة المرور (401) — يرجى إدخال الرقم السري مجدداً لتحديث الصلاحية وعرض قائمة الانتظار.');
             if (typeof window.switchTab === 'function') {
                 setTimeout(() => {
-                    window.switchTab('admin');
-                }, 80);
+                    window.switchTab('admin', 'reauth_401');
+                }, 60);
             }
         }
 
@@ -4801,41 +5571,60 @@
 
         window.switchTab = async function(tab, loginMode = 'default') {
             if (tab === 'admin') {
-                const promptMsg = loginMode === 'partner'
-                    ? "🔐 دخول الشريك المسوق — أدخل كلمة المرور الخاصة بك لمتابعة العملاء والأرباح:"
-                    : "🔒 إدخال الرقم السري للوحة التحكم:";
-                const pass = prompt(promptMsg);
-                if (pass === null) return;
-                const passHash = await hashSHA256(pass);
-
-                // تحديث أحدث هاش للمدير من Firestore + التحقق الفوري مع السيرفر المحلي لمنع أي تعارض 401 صامت
                 await syncPlatformConfigFromSources();
-                let backendAdminVerified = false;
-                try {
-                    const adminLoginRes = await fetchBotBackend('/api/admin/login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Admin-Password-Hash': passHash,
-                            'X-Admin-Token': passHash
-                        },
-                        body: JSON.stringify({ admin_password_hash: passHash }),
-                        skipAuthPrompt: true,
-                        timeoutMs: 4000
-                    });
-                    if (adminLoginRes && adminLoginRes.ok) {
-                        const adminLoginJson = await adminLoginRes.json().catch(() => ({}));
-                        if (adminLoginJson && adminLoginJson.success) {
-                            backendAdminVerified = true;
-                            activeAdminPasswordHash = passHash;
-                            activeAdminSessionToken = adminLoginJson.auth_token || passHash;
+
+                let restoredFromValidSession = false;
+                if (loginMode !== 'partner' && loginMode !== 'reauth_401') {
+                    const candidateTok = getStoredAdminCandidateToken();
+                    if (candidateTok) {
+                        const sessionCheck = await verifyAdminSessionWithBackend(candidateTok);
+                        if (sessionCheck.checked && sessionCheck.valid) {
+                            restoredFromValidSession = true;
+                        } else if (sessionCheck.status === 401) {
+                            clearStoredAdminAuthTokens();
                         }
                     }
-                } catch (_admLoginErr) {}
+                }
 
-                if (passHash === activeAdminPasswordHash || backendAdminVerified) {
-                    activeAdminPasswordHash = passHash;
-                    if (!activeAdminSessionToken) activeAdminSessionToken = passHash;
+                let passHash = activeAdminPasswordHash;
+                let backendAdminVerified = restoredFromValidSession;
+
+                if (!restoredFromValidSession) {
+                    const bannerText = loginMode === 'reauth_401'
+                        ? '⚠️ انتهت صلاحية الجلسة السابقة (401) وتم تنظيف التوكن القديم من المتصفح — أدخل كلمة مرور المدير للمتابعة.'
+                        : '';
+                    const pass = await window.promptAdminPasswordModal({ loginMode, bannerText });
+                    if (pass === null) return;
+                    passHash = await hashSHA256(pass);
+
+                    try {
+                        const adminLoginRes = await fetchBotBackend('/api/admin/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-Admin-Password-Hash': passHash,
+                                'X-Admin-Token': passHash
+                            },
+                            body: JSON.stringify({ admin_password_hash: passHash }),
+                            skipAuthPrompt: true,
+                            timeoutMs: 4000
+                        });
+                        if (adminLoginRes && adminLoginRes.ok) {
+                            const adminLoginJson = await adminLoginRes.json().catch(() => ({}));
+                            if (adminLoginJson && adminLoginJson.success) {
+                                backendAdminVerified = true;
+                                activeAdminPasswordHash = passHash;
+                                activeAdminSessionToken = adminLoginJson.auth_token || passHash;
+                                persistAdminAuthTokens(activeAdminSessionToken, passHash);
+                            }
+                        }
+                    } catch (_admLoginErr) {}
+                }
+
+                if (restoredFromValidSession || passHash === activeAdminPasswordHash || backendAdminVerified) {
+                    if (passHash) activeAdminPasswordHash = passHash;
+                    if (!activeAdminSessionToken) activeAdminSessionToken = activeAdminPasswordHash;
+                    persistAdminAuthTokens(activeAdminSessionToken, activeAdminPasswordHash);
                     currentRole = 'admin';
                     currentAffiliateId = null;
                     currentAffiliateProfile = null;
@@ -4846,6 +5635,11 @@
                     document.getElementById('liveOrdersTitle').innerHTML = 'جميع الطلبات الحية في النظام';
                     
                     document.getElementById('affiliateStatsCards').classList.add('hidden');
+                    document.getElementById('headerWaLoginQuickBtn')?.classList.remove('hidden');
+                    document.getElementById('adminBarWaLoginBtn')?.classList.remove('hidden');
+                    document.getElementById('btnExportSuppliersVcf')?.classList.remove('hidden');
+                    document.getElementById('adminColdOutreachBadge')?.classList.remove('hidden');
+                    document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.remove('hidden');
                     const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
                     if (liveEnginesWrap) liveEnginesWrap.classList.remove('hidden');
                     document.getElementById('btn-pending').classList.remove('hidden');
@@ -4853,13 +5647,50 @@
                     document.getElementById('btn-invite').classList.remove('hidden');
                     document.getElementById('btn-settings').classList.remove('hidden');
                     document.getElementById('btn-affiliate').classList.add('hidden');
+                    if (typeof window.loadUnansweredSuppliersCatchUp === 'function') {
+                        window.loadUnansweredSuppliersCatchUp();
+                    }
                     if (typeof window.loadAdminLiveEnginesStatus === 'function') {
                         window.loadAdminLiveEnginesStatus();
                     }
                 } else {
                     const matchedAffiliate = await authenticateAffiliateByHash(passHash);
                     if (!matchedAffiliate) {
-                        alert("❌ كلمة المرور غير صحيحة!");
+                        const retryPass = await window.promptAdminPasswordModal({
+                            loginMode,
+                            errorText: '❌ كلمة المرور غير صحيحة! يرجى التأكد وإعادة المحاولة.'
+                        });
+                        if (retryPass !== null) {
+                            // إعادة المحاولة مباشرة عبر تخزين الإدخال مؤقتاً أو النداء المباشر
+                            const retryHash = await hashSHA256(retryPass);
+                            let retryOk = false;
+                            try {
+                                const rRes = await fetchBotBackend('/api/admin/login', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-Admin-Password-Hash': retryHash,
+                                        'X-Admin-Token': retryHash
+                                    },
+                                    body: JSON.stringify({ admin_password_hash: retryHash }),
+                                    skipAuthPrompt: true,
+                                    timeoutMs: 4000
+                                });
+                                if (rRes && rRes.ok) {
+                                    const rJson = await rRes.json().catch(() => ({}));
+                                    if (rJson && rJson.success) {
+                                        retryOk = true;
+                                        activeAdminPasswordHash = retryHash;
+                                        activeAdminSessionToken = rJson.auth_token || retryHash;
+                                        persistAdminAuthTokens(activeAdminSessionToken, retryHash);
+                                    }
+                                }
+                            } catch (_) {}
+                            if (retryOk || retryHash === activeAdminPasswordHash) {
+                                return window.switchTab('admin', 'default');
+                            }
+                            alert('❌ كلمة المرور غير صحيحة!');
+                        }
                         return;
                     }
 
@@ -4909,6 +5740,10 @@
                     document.getElementById('liveOrdersTitle').innerHTML = 'سجل عملائك القادمين عبر رابطك التسويقي';
                     
                     document.getElementById('affiliateStatsCards').classList.remove('hidden');
+                    document.getElementById('adminBarWaLoginBtn')?.classList.add('hidden');
+                    document.getElementById('btnExportSuppliersVcf')?.classList.add('hidden');
+                    document.getElementById('adminColdOutreachBadge')?.classList.add('hidden');
+                    document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.add('hidden');
                     const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
                     if (liveEnginesWrap) liveEnginesWrap.classList.add('hidden');
                     document.getElementById('btn-pending').classList.add('hidden');
@@ -6482,13 +7317,19 @@
             if (currentRole !== 'admin') return;
             loadVerifierDripAndInactiveSuppliers();
             try {
-                const [minerRes, pendingRes] = await Promise.all([
+                const [minerRes, syncRes] = await Promise.all([
                     fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 8000 }),
-                    fetchBotBackend('/api/admin/pending-suppliers?status=pending,pending_review,legacy_280_update,live_order_rescue,partial_85&sync_cloud=true', { method: 'GET', timeoutMs: 8000 })
+                    fetchBotBackend('/api/admin/pending-suppliers/sync-firestore', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}), timeoutMs: 10000 })
                 ]);
-                if (pendingRes && pendingRes.ok) {
-                    const pendingJson = await pendingRes.json();
-                    latestBackendPendingSuppliers = Array.isArray(pendingJson.items) ? pendingJson.items : [];
+                if (syncRes && syncRes.ok) {
+                    const syncJson = await syncRes.json();
+                    latestBackendPendingSuppliers = Array.isArray(syncJson.items) ? syncJson.items : [];
+                } else {
+                    const pendingRes = await fetchBotBackend('/api/admin/pending-suppliers?status=pending,pending_review,legacy_280_update,live_order_rescue,partial_85&sync_cloud=true', { method: 'GET', timeoutMs: 8000 });
+                    if (pendingRes && pendingRes.ok) {
+                        const pendingJson = await pendingRes.json();
+                        latestBackendPendingSuppliers = Array.isArray(pendingJson.items) ? pendingJson.items : [];
+                    }
                 }
                 if (minerRes && minerRes.ok) {
                     const payload = await minerRes.json();
