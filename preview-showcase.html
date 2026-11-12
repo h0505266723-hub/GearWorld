@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060911" />
+  <title>حراج القطع | عالم التروس — العرض التفاعلي الذكي 60FPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #060911;
+      --bg-card: #0c1322;
+      --bg-elevated: #111a2e;
+      --border-subtle: rgba(148, 163, 184, 0.16);
+      --border-gold: rgba(245, 158, 11, 0.42);
+      --border-emerald: rgba(16, 185, 129, 0.45);
+      --gold: #f59e0b;
+      --gold-bright: #fbbf24;
+      --emerald: #10b981;
+      --emerald-bright: #34d399;
+      --cyan: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100dvh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* خلفية ثابتة خفيفة لضمان 60FPS كاملة على كافة الجوالات */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 82% 12%, rgba(245, 158, 11, 0.13) 0%, rgba(245, 158, 11, 0) 48%),
+        radial-gradient(circle at 16% 86%, rgba(16, 185, 129, 0.14) 0%, rgba(16, 185, 129, 0) 52%),
+        linear-gradient(180deg, #060911 0%, #090f1d 52%, #060911 100%);
+    }
+
+    .showcase-shell {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      height: 100dvh;
+      margin: 0 auto;
+      padding-top: calc(var(--safe-top) + 10px);
+      padding-bottom: calc(var(--safe-bottom) + 12px);
+      padding-inline: clamp(12px, 3.8vw, 20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: clamp(8px, 1.6dvh, 14px);
+      overflow-x: hidden;
+    }
+
+    /* شريط تقدم القصص التفاعلي (4 مقاطع Reels) — يعمل حصرياً بـ transform: scaleX */
+    .reels-bars {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      direction: rtl;
+    }
+
+    .reel-seg {
+      position: relative;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .reel-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--emerald-bright), var(--gold-bright));
+      transform-origin: right center;
+      transform: scaleX(0);
+      will-change: transform;
+    }
+
+    /* الهيدر العلوي المدمج */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .brand-id {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .brand-emblem {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(16, 185, 129, 0.2));
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-titles {
+      min-width: 0;
+    }
+
+    .brand-name {
+      font-size: clamp(0.86rem, 3.5vw, 1rem);
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-domain {
+      font-size: clamp(0.68rem, 2.7vw, 0.76rem);
+      font-weight: 700;
+      color: var(--gold-bright);
+      letter-spacing: 0.2px;
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      appearance: none;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-radius: 10px;
+      height: 34px;
+      padding-inline: 10px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: transform 0.16s ease, opacity 0.16s ease;
+      will-change: transform, opacity;
+    }
+
+    .icon-btn:active {
+      transform: translate3d(0, 1px, 0) scale(0.96);
+    }
+
+    /* مبدّل المسارين: رحلة العميل الذكية / شبكة الموردين السرية */
+    .mode-switcher {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 3px;
+    }
+
+    .mode-pill-indicator {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      right: 3px;
+      width: calc(50% - 3px);
+      border-radius: 11px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.26), rgba(245, 158, 11, 0.24));
+      border: 1px solid var(--border-emerald);
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    .mode-switcher[data-mode="supplier"] .mode-pill-indicator {
+      transform: translate3d(-100%, 0, 0);
+    }
+
+    .mode-tab {
+      position: relative;
+      z-index: 1;
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: clamp(0.74rem, 3.1vw, 0.84rem);
+      font-weight: 800;
+      padding: 7px 6px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .mode-tab[aria-selected="true"] {
+      color: #ffffff;
+    }
+
+    /* مسرح المشاهد الأربعة (GPU-composited Stage) */
+    .stage-viewport {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      background: linear-gradient(180deg, rgba(17, 26, 46, 0.92) 0%, rgba(10, 16, 30, 0.96) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* مناطق اللمس السريع للتنقل على الجوال (يمين = سابق، يسار = تالي) */
+    .tap-zone {
+      position: absolute;
+      top: 0;
+      bottom: 68px;
+      width: 22%;
+      z-index: 6;
+      cursor: pointer;
+    }
+    .tap-zone-prev { right: 0; }
+    .tap-zone-next { left: 0; }
+
+    .scene-slide {
+      position: absolute;
+      inset: 0;
+      padding: clamp(14px, 3.6vw, 20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: clamp(8px, 1.5dvh, 14px);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(0, 18px, 0) scale(0.985);
+      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+      will-change: transform, opacity;
+    }
+
+    .scene-slide.is-active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate3d(0, 0, 0) scale(1);
+      z-index: 3;
+    }
+
+    .scene-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .scene-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .step-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--gold-bright);
+      border: 1px solid var(--border-gold);
+    }
+
+    .timing-chip {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--emerald-bright);
+      background: rgba(16, 185, 129, 0.13);
+      border: 1px solid var(--border-emerald);
+      padding: 2px 9px;
+      border-radius: 999px;
+      direction: ltr;
+    }
+
+    .scene-title {
+      font-size: clamp(1.08rem, 4.6vw, 1.32rem);
+      font-weight: 900;
+      line-height: 1.28;
+      color: #ffffff;
+    }
+
+    .scene-sub {
+      font-size: clamp(0.78rem, 3.2vw, 0.88rem);
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .visual-stage {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(8px, 1.6dvh, 12px);
+    }
+
+    /* عناصر المشهد 1: بطاقة الاستمارة المائلة + رسالة العميل */
+    .istimara-card {
+      background: linear-gradient(135deg, #13233f 0%, #0d182c 100%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 16px;
+      padding: clamp(10px, 2.8vw, 14px);
+      transform: translate3d(0, 0, 0) rotate(-1.8deg);
+      will-change: transform, opacity;
+    }
+
+    .istimara-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+
+    .istimara-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 10px;
+      font-size: clamp(0.72rem, 2.9vw, 0.8rem);
+    }
+
+    .istimara-field span {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    .istimara-field strong {
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    .vin-mono {
+      grid-column: 1 / -1;
+      margin-top: 2px;
+      background: rgba(6, 9, 17, 0.72);
+      border: 1px dashed rgba(251, 191, 36, 0.45);
+      border-radius: 9px;
+      padding: 5px 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: clamp(0.74rem, 3.1vw, 0.84rem);
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: var(--gold-bright);
+      text-align: center;
+      direction: ltr;
+    }
+
+    .wa-bubble {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(16, 185, 129, 0.1));
+      border: 1px solid var(--border-emerald);
+      border-radius: 16px 16px 4px 16px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wa-bubble-text {
+      font-size: clamp(0.82rem, 3.4vw, 0.94rem);
+      font-weight: 800;
+      color: #ecfdf5;
+      line-height: 1.35;
+    }
+
+    /* عناصر المشهد 2: ماسح الشاصي 0.8s + التصنيف الجراحي */
+    .vin-scanner-box {
+      position: relative;
+      background: #080e1c;
+      border: 1px solid var(--border-emerald);
+      border-radius: 16px;
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    .scan-beam {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--emerald-bright), var(--gold-bright), transparent);
+      transform: translate3d(0, 0, 0);
+      will-change: transform, opacity;
+    }
+
+    .spec-pills {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .spec-pill {
+      background: rgba(17, 26, 46, 0.9);
+      border: 1px solid var(--border-subtle);
+      border-radius: 11px;
+      padding: 7px 9px;
+      font-size: clamp(0.71rem, 2.9vw, 0.79rem);
+    }
+
+    .spec-pill small {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.64rem;
+    }
+
+    .spec-pill b {
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    /* عناصر المشهد 3: رادار توجيه الرياض (Team A & B) + قفل الخصوصية */
+    .dispatch-hub {
+      background: #080e1c;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .district-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(17, 26, 46, 0.88);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 11px;
+      padding: 7px 10px;
+      font-size: clamp(0.73rem, 3vw, 0.82rem);
+    }
+
+    .district-tag {
+      font-size: 0.67rem;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.16);
+      color: var(--emerald-bright);
+      border: 1px solid var(--border-emerald);
+      flex-shrink: 0;
+    }
+
+    .privacy-shield {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: clamp(0.72rem, 2.9vw, 0.8rem);
+      font-weight: 700;
+      color: #fef3c7;
+    }
+
+    /* عناصر المشهد 4: بطاقة التسعيرة الثلاثية الموحدة */
+    .quotes-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .quote-tier {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(17, 26, 46, 0.92);
+      border: 1px solid var(--border-subtle);
+      border-radius: 13px;
+      padding: 8px 11px;
+    }
+
+    .quote-tier.featured {
+      border-color: var(--border-emerald);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.14), rgba(17, 26, 46, 0.95));
+    }
+
+    .tier-meta strong {
+      display: block;
+      font-size: clamp(0.78rem, 3.2vw, 0.88rem);
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .tier-meta span {
+      font-size: clamp(0.67rem, 2.7vw, 0.74rem);
+      color: var(--text-muted);
+    }
+
+    .tier-price {
+      text-align: left;
+      flex-shrink: 0;
+    }
+
+    .tier-price b {
+      display: block;
+      font-size: clamp(0.88rem, 3.6vw, 1.02rem);
+      font-weight: 900;
+      color: var(--gold-bright);
+      direction: ltr;
+    }
+
+    .tier-price small {
+      font-size: 0.64rem;
+      color: var(--emerald-bright);
+      font-weight: 800;
+    }
+
+    /* شريط التنقل السفلي داخل المسرح */
+    .stage-nav-footer {
+      position: relative;
+      z-index: 7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .scene-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.7rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .dot-btn.is-current {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: var(--border-gold);
+      color: #ffffff;
+    }
+
+    /* أزرار التعميد والطلب الفوري السفلية */
+    .cta-dock {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 8px;
+    }
+
+    .cta-primary, .cta-secondary {
+      text-decoration: none;
+      border-radius: 14px;
+      padding: 11px 12px;
+      font-size: clamp(0.78rem, 3.3vw, 0.88rem);
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-align: center;
+      transition: transform 0.16s ease, opacity 0.16s ease;
+      will-change: transform, opacity;
+    }
+
+    .cta-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border: 1px solid rgba(52, 211, 153, 0.5);
+    }
+
+    .cta-secondary {
+      background: var(--bg-card);
+      color: var(--gold-bright);
+      border: 1px solid var(--border-gold);
+    }
+
+    .cta-primary:active, .cta-secondary:active {
+      transform: translate3d(0, 1px, 0) scale(0.97);
+    }
+
+    /* حركة دخول العناصر الفرعية بـ transform + opacity فقط */
+    .stagger-item {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+      transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+      will-change: transform, opacity;
+    }
+
+    .scene-slide.is-active .stagger-item {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .scene-slide.is-active .d-1 { transition-delay: 0.05s; }
+    .scene-slide.is-active .d-2 { transition-delay: 0.13s; }
+    .scene-slide.is-active .d-3 { transition-delay: 0.21s; }
+  </style>
+</head>
+<body>
+  <div class="ambient-bg" aria-hidden="true"></div>
+
+  <main class="showcase-shell" id="showcaseApp">
+    <!-- 1. شريط تقدم Reels الرباعي -->
+    <div class="reels-bars" role="tablist" aria-label="مشاهد العرض التفاعلي">
+      <div class="reel-seg" data-jump="0"><div class="reel-fill" id="fill-0"></div></div>
+      <div class="reel-seg" data-jump="1"><div class="reel-fill" id="fill-1"></div></div>
+      <div class="reel-seg" data-jump="2"><div class="reel-fill" id="fill-2"></div></div>
+      <div class="reel-seg" data-jump="3"><div class="reel-fill" id="fill-3"></div></div>
+    </div>
+
+    <!-- 2. الهيدر والهوية البصرية -->
+    <header class="top-bar">
+      <div class="brand-id">
+        <div class="brand-emblem" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3.5"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.08a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.08a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.08a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <div class="brand-name">حراج القطع | عالم التروس</div>
+          <div class="brand-domain">harajparts.com • 60FPS Live</div>
+        </div>
+      </div>
+
+      <div class="top-controls">
+        <button type="button" class="icon-btn" id="btnPlayPause" aria-label="إيقاف أو تشغيل العرض">
+          <span id="playPauseIcon">⏸</span>
+          <span id="playPauseText">إيقاف</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 3. مبدّل المسارين (رحلة العميل الذكية / شبكة الموردين السرية) -->
+    <nav class="mode-switcher" id="modeSwitcher" data-mode="customer" aria-label="وضع العرض">
+      <div class="mode-pill-indicator" aria-hidden="true"></div>
+      <button type="button" class="mode-tab" data-set-mode="customer" aria-selected="true">🚗 رحلة العميل الذكية</button>
+      <button type="button" class="mode-tab" data-set-mode="supplier" aria-selected="false">🔒 شبكة الموردين السرية</button>
+    </nav>
+
+    <!-- 4. مسرح المشاهد التفاعلي -->
+    <section class="stage-viewport" id="stageViewport">
+      <div class="tap-zone tap-zone-prev" id="tapPrev" title="المشهد السابق"></div>
+      <div class="tap-zone tap-zone-next" id="tapNext" title="المشهد التالي"></div>
+
+      <div id="slidesContainer"></div>
+    </section>
+
+    <!-- 5. شريط الطلب الفوري (Instant-Order CTA) -->
+    <footer class="cta-dock">
+      <a class="cta-primary" id="primaryWaCta" href="https://wa.me/966509046024?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AA%D8%B3%D8%B9%D9%8A%D8%B1%20%D9%82%D8%B7%D8%B9%D8%A9%20%D8%BA%D9%8A%D8%A7%D8%B1%20%D8%A8%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D8%B4%D8%A7%D8%B5%D9%8A" target="_blank" rel="noopener">
+        <span>💬 اطلب قطعتك عبر واتساب</span>
+      </a>
+      <a class="cta-secondary" href="/">
+        <span>⚡ طلب مباشر بالموقع</span>
+      </a>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var SCENE_DURATION_MS = 5800;
+
+      var SCENES_BY_MODE = {
+        customer: [
+          {
+            chip: 'المشهد 1 من 4 • الإدخال الذكي',
+            timing: 'Instant Vision + Voice',
+            title: 'صوّر الاستمارة أو أرسل بصمة صوتية بالعامية',
+            sub: 'لا حاجة لكتابة أرقام معقدة — أرسل صورة استمارة المركبة مع طلبك برسالة واحدة.',
+            html:
+              '<div class="istimara-card stagger-item d-1">' +
+                '<div class="istimara-top"><span>🇸🇦 رخصة سير مركبة (استمارة)</span><span>فحص بصري فوري</span></div>' +
+                '<div class="istimara-grid">' +
+                  '<div class="istimara-field"><span>الماركة والطراز</span><strong>جي إم سي يوكن دينالي</strong></div>' +
+                  '<div class="istimara-field"><span>سنة الصنع</span><strong>2022</strong></div>' +
+                  '<div class="vin-mono">VIN: 1GKS2BKT6NR284910</div>' +
+                '</div>' +
+              '</div>' +
+              '<div class="wa-bubble stagger-item d-2">' +
+                '<span style="font-size:1.35rem">🎙️</span>' +
+                '<div class="wa-bubble-text">"سلام عليكم يا غالي، أبي صدام أمامي وشبك خلية يوكن 2022 على نفس الشاصي"</div>' +
+              '</div>'
+          },
+          {
+            chip: 'المشهد 2 من 4 • مطابقة الشاصي',
+            timing: '0.8s VIN Decode',
+            title: 'قراءة الـ 17 خانة للشاصي والفرز الجراحي في 0.8 ثانية',
+            sub: 'يستخرج المحرك رقم الهيكل بدقة 100% ويطابق الفئة الجراحية الصحيحة من بين 14 تخصصاً.',
+            html:
+              '<div class="vin-scanner-box stagger-item d-1">' +
+                '<div class="scan-beam" id="activeScanBeam"></div>' +
+                '<div class="vin-mono" style="margin-top:0">1GKS2BKT6NR284910 ✓</div>' +
+                '<div class="spec-pills">' +
+                  '<div class="spec-pill"><small>المركبة المطابقة</small><b>GMC Yukon 2022 (6.2L)</b></div>' +
+                  '<div class="spec-pill"><small>التصنيف الجراحي الدقيق</small><b>#9 الصدامات والشبك والواجهة</b></div>' +
+                  '<div class="spec-pill"><small>القطع المفروزة</small><b>1. صدام أمامي • 2. شبك خلية</b></div>' +
+                  '<div class="spec-pill"><small>حماية الخطأ</small><b>مطابقة OEM برقم الهيكل</b></div>' +
+                '</div>' +
+              '</div>'
+          },
+          {
+            chip: 'المشهد 3 من 4 • التوجيه الجراحي',
+            timing: 'Team A & B Dispatch',
+            title: 'إرسال فوري لفرق الرياض المتخصصة مع قفل الخصوصية',
+            sub: 'يُوجَّه الطلب حصرياً لمحلات وتشاليح GMC المعتمدة في الرياض دون كشف رقمك لأي تاجر.',
+            html:
+              '<div class="dispatch-hub stagger-item d-1">' +
+                '<div class="district-row"><span>🏢 وكلاء ومحلات الصناعية القديمة والنسيم</span><span class="district-tag">Team A • جديد</span></div>' +
+                '<div class="district-row"><span>🏗️ تشاليح الحائر ومستوردو السلي (GMC)</span><span class="district-tag">Team B • تشليح</span></div>' +
+                '<div class="district-row"><span>⚡ محرك الإنقاذ الحي للقطع النادرة</span><span class="district-tag">حراج + Maps</span></div>' +
+              '</div>' +
+              '<div class="privacy-shield stagger-item d-2">' +
+                '<span>🔒</span>' +
+                '<span>درع السرية التام: جوالك وبياناتك محجوبة 100% عن الموردين لمنع أي إزعاج.</span>' +
+              '</div>'
+          },
+          {
+            chip: 'المشهد 4 من 4 • التسعيرة الموحدة',
+            timing: '3 Verified Tiers',
+            title: 'قارن 3 خيارات مضمونة واعتمد طلبك بضغطة زر',
+            sub: 'تصلك أقل الأسعار مفروزة بوضوح مع الضمان، ويستلم مندوب المنصة القطعة ويفحصها لك.',
+            html:
+              '<div class="quotes-stack">' +
+                '<div class="quote-tier featured stagger-item d-1">' +
+                  '<div class="tier-meta"><strong>✨ أصلي وكالة (GM Genuine)</strong><span>جديد بكرتون الوكيل • مطابقة شاصي 100%</span></div>' +
+                  '<div class="tier-price"><b>2,450 SAR</b><small>جاهز للتسليم</small></div>' +
+                '</div>' +
+                '<div class="quote-tier stagger-item d-2">' +
+                  '<div class="tier-meta"><strong>🛡️ تجاري معتمد درجة أولى</strong><span>مطابق للمواصفات • خيار اقتصادي ممتاز</span></div>' +
+                  '<div class="tier-price"><b>980 SAR</b><small>ضمان مطابقة</small></div>' +
+                '</div>' +
+                '<div class="quote-tier stagger-item d-3">' +
+                  '<div class="tier-meta"><strong>♻️ تشليح الحائر مضمون</strong><span>أصلي مفكوك نظيف على الشرط بدون سمكرة</span></div>' +
+                  '<div class="tier-price"><b>1,490 SAR</b><small>ضمان استبدال</small></div>' +
+                '</div>' +
+              '</div>'
+          }
+        ],
+        supplier: [
+          {
+            chip: 'شبكة التجار 1 من 4 • طلبات جاهزة',
+            timing: 'Zero-Noise Orders',
+            title: 'طلبات مفروزة برقم الشاصي حسب ماركة محلك فقط',
+            sub: 'لا إزعاج بماركات خارج تخصصك — تصلك فقط طلبات القطع المطابقة لمخزون متجرك أو تشليحك.',
+            html:
+              '<div class="vin-scanner-box stagger-item d-1">' +
+                '<div class="spec-pills" style="margin-top:0">' +
+                  '<div class="spec-pill"><small>التسجيل والاشتراك</small><b>مجاني 100% بدون التزام</b></div>' +
+                  '<div class="spec-pill"><small>دقة الفرز</small><b>14 فئة جراحية + شاصي VIN</b></div>' +
+                  '<div class="spec-pill"><small>نطاق التغطية</small><b>الصناعية القديمة • الحائر • السلي</b></div>' +
+                  '<div class="spec-pill"><small>أرشفة ذكية</small><b>تواصل مهني منظم عبر واتساب</b></div>' +
+                '</div>' +
+              '</div>'
+          },
+          {
+            chip: 'شبكة التجار 2 من 4 • تسعير بالصوت',
+            timing: 'Whisper + Gemini AI',
+            title: 'سعّر الطلب برسالة نصية أو بصمة صوتية سريعة',
+            sub: 'يفهم النظام لهجة السوق والتشاليح فوراً ويسجل سعرك والضمان بدقة دون نماذج معقدة.',
+            html:
+              '<div class="wa-bubble stagger-item d-1">' +
+                '<span style="font-size:1.35rem">🎤</span>' +
+                '<div class="wa-bubble-text">"حياك، الأصلي وكالة بـ 2150 والتجاري التايواني بـ 840 وعندنا تشليح الحائر نظيف بـ 1300 ضمان أسبوعين"</div>' +
+              '</div>' +
+              '<div class="privacy-shield stagger-item d-2">' +
+                '<span>🤖</span>' +
+                '<span>تحليل آلي فوري للسعر والحالة والضمان خلال أقل من ثانية.</span>' +
+              '</div>'
+          },
+          {
+            chip: 'شبكة التجار 3 من 4 • سرية تنافسية',
+            timing: '100% Confidential',
+            title: 'اسم محلك وأسعار الجملة محفوظة بسرية تامة',
+            sub: 'لا يظهر اسم محلك للعملاء ولا للمنافسين — نحمي خصوصية تسعيرتك في السوق بالكامل.',
+            html:
+              '<div class="dispatch-hub stagger-item d-1">' +
+                '<div class="district-row"><span>🔐 إخفاء هوية المتجر عن المنافسين</span><span class="district-tag">محمي 100%</span></div>' +
+                '<div class="district-row"><span>⚖️ ترسية عادلة للأسرع والأفضل سعراً</span><span class="district-tag">Team A / B</span></div>' +
+                '<div class="district-row"><span>📈 أولوية للرد السريع والمطابقة الدقيقة</span><span class="district-tag">نقاط سرعة</span></div>' +
+              '</div>'
+          },
+          {
+            chip: 'شبكة التجار 4 من 4 • استلام ودفع',
+            timing: 'Riyadh Field Couriers',
+            title: 'مندوب المنصة يستلم القطعة من باب محلك ويسدد فوراً',
+            sub: 'لا تشغل بالك بالشحن أو متابعة العميل — مندوبنا الميداني في الرياض يتولى الاستلام والفحص.',
+            html:
+              '<div class="quotes-stack">' +
+                '<div class="quote-tier featured stagger-item d-1">' +
+                  '<div class="tier-meta"><strong>🛵 استلام ميداني من المحل أو التشليح</strong><span>مندوبو المنصة يغطون كافة صناعيات الرياض</span></div>' +
+                  '<div class="tier-price"><b>فوري</b><small>نفس اليوم</small></div>' +
+                '</div>' +
+                '<div class="quote-tier stagger-item d-2">' +
+                  '<div class="tier-meta"><strong>🤝 انضم مجاناً لشركاء عالم التروس</strong><span>تفعيل رسمي بعد مراجعة الإدارة المختصة</span></div>' +
+                  '<div class="tier-price"><b>0 SAR</b><small>رسوم التسجيل</small></div>' +
+                '</div>' +
+              '</div>'
+          }
+        ]
+      };
+
+      var currentMode = 'customer';
+      var currentScene = 0;
+      var isPaused = false;
+      var elapsedInSceneMs = 0;
+      var lastFrameTs = null;
+
+      var slidesContainer = document.getElementById('slidesContainer');
+      var modeSwitcher = document.getElementById('modeSwitcher');
+      var btnPlayPause = document.getElementById('btnPlayPause');
+      var playPauseIcon = document.getElementById('playPauseIcon');
+      var playPauseText = document.getElementById('playPauseText');
+      var fills = [
+        document.getElementById('fill-0'),
+        document.getElementById('fill-1'),
+        document.getElementById('fill-2'),
+        document.getElementById('fill-3')
+      ];
+
+      function renderSlidesForMode(mode) {
+        var scenes = SCENES_BY_MODE[mode] || SCENES_BY_MODE.customer;
+        var htmlParts = [];
+        for (var i = 0; i < scenes.length; i++) {
+          var sc = scenes[i];
+          var dotsHtml = '';
+          for (var d = 0; d < scenes.length; d++) {
+            dotsHtml +=
+              '<button type="button" class="dot-btn' +
+              (d === i ? ' is-current' : '') +
+              '" data-dot="' + d + '">0' + (d + 1) + '</button>';
+          }
+          htmlParts.push(
+            '<article class="scene-slide' + (i === currentScene ? ' is-active' : '') + '" data-scene-idx="' + i + '">' +
+              '<div class="scene-header">' +
+                '<div class="scene-badge-row">' +
+                  '<span class="step-chip">' + sc.chip + '</span>' +
+                  '<span class="timing-chip">' + sc.timing + '</span>' +
+                '</div>' +
+                '<h1 class="scene-title">' + sc.title + '</h1>' +
+                '<p class="scene-sub">' + sc.sub + '</p>' +
+              '</div>' +
+              '<div class="visual-stage">' + sc.html + '</div>' +
+              '<div class="stage-nav-footer">' +
+                '<div class="scene-dots">' + dotsHtml + '</div>' +
+                '<div style="display:flex;gap:6px">' +
+                  '<button type="button" class="icon-btn" data-nav="prev">السابق</button>' +
+                  '<button type="button" class="icon-btn" data-nav="next">التالي</button>' +
+                '</div>' +
+              '</div>' +
+            '</article>'
+          );
+        }
+        slidesContainer.innerHTML = htmlParts.join('');
+      }
+
+      function syncActiveSlideClasses() {
+        var nodes = slidesContainer.querySelectorAll('.scene-slide');
+        for (var i = 0; i < nodes.length; i++) {
+          if (i === currentScene) {
+            nodes[i].classList.add('is-active');
+          } else {
+            nodes[i].classList.remove('is-active');
+          }
+        }
+      }
+
+      function updateProgressBars() {
+        var ratio = Math.min(1, Math.max(0, elapsedInSceneMs / SCENE_DURATION_MS));
+        for (var i = 0; i < 4; i++) {
+          var scale = i < currentScene ? 1 : i === currentScene ? ratio : 0;
+          fills[i].style.transform = 'scaleX(' + scale.toFixed(4) + ')';
+        }
+        var beam = document.getElementById('activeScanBeam');
+        if (beam && currentScene === 1 && currentMode === 'customer') {
+          var cycle = (elapsedInSceneMs % 1600) / 1600;
+          var yPx = Math.sin(cycle * Math.PI) * 128;
+          beam.style.transform = 'translate3d(0, ' + yPx.toFixed(1) + 'px, 0)';
+        }
+      }
+
+      function goToScene(targetIdx) {
+        var total = 4;
+        currentScene = ((targetIdx % total) + total) % total;
+        elapsedInSceneMs = 0;
+        syncActiveSlideClasses();
+        updateProgressBars();
+      }
+
+      function setMode(nextMode) {
+        if (nextMode !== 'customer' && nextMode !== 'supplier') return;
+        currentMode = nextMode;
+        currentScene = 0;
+        elapsedInSceneMs = 0;
+        modeSwitcher.setAttribute('data-mode', currentMode);
+        var tabs = modeSwitcher.querySelectorAll('.mode-tab');
+        for (var i = 0; i < tabs.length; i++) {
+          var isSel = tabs[i].getAttribute('data-set-mode') === currentMode;
+          tabs[i].setAttribute('aria-selected', isSel ? 'true' : 'false');
+        }
+        renderSlidesForMode(currentMode);
+        updateProgressBars();
+      }
+
+      function togglePause(explicitPause) {
+        isPaused = typeof explicitPause === 'boolean' ? explicitPause : !isPaused;
+        playPauseIcon.textContent = isPaused ? '▶' : '⏸';
+        playPauseText.textContent = isPaused ? 'تشغيل' : 'إيقاف';
+      }
+
+      /* حلقة requestAnimationFrame الوحيدة بتزامن 60 إطار/ثانية عبر GPU فقط */
+      function rafLoop(ts) {
+        if (lastFrameTs === null) {
+          lastFrameTs = ts;
+        }
+        var delta = Math.min(64, Math.max(0, ts - lastFrameTs));
+        lastFrameTs = ts;
+
+        if (!isPaused) {
+          elapsedInSceneMs += delta;
+          if (elapsedInSceneMs >= SCENE_DURATION_MS) {
+            goToScene(currentScene + 1);
+          } else {
+            updateProgressBars();
+          }
+        }
+        window.requestAnimationFrame(rafLoop);
+      }
+
+      btnPlayPause.addEventListener('click', function () {
+        togglePause();
+      });
+
+      document.getElementById('tapPrev').addEventListener('click', function () {
+        goToScene(currentScene - 1);
+      });
+
+      document.getElementById('tapNext').addEventListener('click', function () {
+        goToScene(currentScene + 1);
+      });
+
+      modeSwitcher.addEventListener('click', function (ev) {
+        var btn = ev.target.closest('[data-set-mode]');
+        if (btn) {
+          setMode(btn.getAttribute('data-set-mode'));
+        }
+      });
+
+      document.querySelector('.reels-bars').addEventListener('click', function (ev) {
+        var seg = ev.target.closest('[data-jump]');
+        if (seg) {
+          goToScene(Number(seg.getAttribute('data-jump')) || 0);
+        }
+      });
+
+      slidesContainer.addEventListener('click', function (ev) {
+        var dot = ev.target.closest('[data-dot]');
+        if (dot) {
+          goToScene(Number(dot.getAttribute('data-dot')) || 0);
+          return;
+        }
+        var nav = ev.target.closest('[data-nav]');
+        if (nav) {
+          goToScene(nav.getAttribute('data-nav') === 'prev' ? currentScene - 1 : currentScene + 1);
+        }
+      });
+
+      renderSlidesForMode(currentMode);
+      updateProgressBars();
+      window.requestAnimationFrame(rafLoop);
+    })();
+  </script>
+</body>
+</html>

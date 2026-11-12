@@ -1838,6 +1838,73 @@
                         <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-xl">✅</div>
                     </div>
                 </div>
+
+                <!-- المراقبة الحية للمدير فقط: توزيع الوكلاء التناسبي + محرك الإنقاذ الحي للطلبات المتأخرة -->
+                <div id="adminLiveEnginesMonitorWrap" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-3.5 pt-1">
+                    <!-- (1) بطاقة توزيع الوكلاء الحي (Proportional Agent Balancer) -->
+                    <div id="adminProportionalAgentsCard" class="bg-slate-900/90 border border-cyan-500/35 rounded-2xl p-4 space-y-3 shadow-inner">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-xs sm:text-sm font-black text-cyan-300 flex items-center gap-1.5">
+                                <span>⚖️</span>
+                                <span>توزيع الوكلاء الحي (Proportional Agent Balancer)</span>
+                            </h3>
+                            <button type="button" onclick="loadAdminLiveEnginesStatus()" class="bg-slate-800 hover:bg-slate-700 text-cyan-200 border border-slate-700 px-2.5 py-1 rounded-xl text-[11px] font-bold transition">
+                                🔄 تحديث حي
+                            </button>
+                        </div>
+                        <div id="adminAgentBalanceHeadline" class="bg-slate-950/90 border border-cyan-500/25 rounded-xl px-3 py-2 text-[11px] sm:text-xs font-black text-white leading-relaxed">
+                            9 وكلاء عملاء | 4 وكلاء موردين وبحث حي | مظلة الطوارئ: جاهزة (OpenRouter)
+                        </div>
+                        <div id="adminAgentBalanceDetails" class="flex flex-wrap gap-1.5 text-[11px] font-bold">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">👥 العملاء (65%): 9 وكلاء (6 Gemini + 3 Groq)</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-brand-500/15 text-brand-300 border border-brand-500/30">🏭 الموردون والبحث الحي (35%): 4 وكلاء (2 حوار + 2 إنقاذ)</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/30">🛡️ المظلة الاحتياطية: nvidia/nemotron-3.5-lightning:free</span>
+                        </div>
+                    </div>
+
+                    <!-- (2) بطاقة عداد وسجل عمليات الإنقاذ الحي للطلبات المتأخرة -->
+                    <div id="adminOrderRescueCard" class="bg-slate-900/90 border border-amber-500/35 rounded-2xl p-4 space-y-3 shadow-inner">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5">
+                                <span>🎯</span>
+                                <span>محرك الإنقاذ الحي للطلبات المتأخرة واستقطاب البائعين</span>
+                            </h3>
+                            <button type="button" id="btnToggleOrderRescueEngine" onclick="toggleOrderRescueEngineUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded-xl text-[11px] font-black transition shadow-sm">
+                                🟢 مفعّل (إيقاف)
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2">
+                                <p class="text-[10px] font-bold text-slate-400">⏳ الطلبات الجاري البحث لها</p>
+                                <p id="rescueStatActiveOrders" class="text-base sm:text-lg font-black text-amber-300 font-mono mt-0.5">0</p>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2">
+                                <p class="text-[10px] font-bold text-slate-400">🔎 البائعون المكتشفون</p>
+                                <p id="rescueStatDiscoveredSellers" class="text-base sm:text-lg font-black text-cyan-300 font-mono mt-0.5">0</p>
+                            </div>
+                            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2">
+                                <p class="text-[10px] font-bold text-slate-400">💰 العروض المستقطبة</p>
+                                <p id="rescueStatRescuedQuotes" class="text-base sm:text-lg font-black text-emerald-400 font-mono mt-0.5">0</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-950/70 border border-slate-800 rounded-xl px-3 py-2 text-[11px]">
+                            <div class="flex items-center gap-1.5 font-bold text-slate-300">
+                                <span>⏱️ دقائق الانتظار قبل الإنقاذ:</span>
+                                <input type="number" id="rescueWaitMinutesInput" min="2" max="240" value="35" dir="ltr" class="w-16 px-2 py-1 rounded-lg glass-input outline-none text-xs font-mono text-center text-amber-300">
+                                <span class="text-slate-400 text-[10px]">دقيقة (ودقيقتان عند 0 موردين)</span>
+                            </div>
+                            <button type="button" onclick="saveOrderRescueWaitMinutesUI()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-2.5 py-1 rounded-lg text-[11px] transition">
+                                حفظ المهلة
+                            </button>
+                        </div>
+
+                        <div id="rescueRecentLogsContainer" class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 max-h-28 overflow-y-auto space-y-1 text-[10px] font-bold text-slate-300">
+                            <p class="text-slate-500 text-center py-1">لا توجد عمليات إنقاذ مسجلة بعد — المراقب جاهز داخل ساعات الدوام (08:00 ص – 09:00 م).</p>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="adminButtonsContainer">
                     <button id="btn-pending" onclick="openPendingModal()" class="relative bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 py-3.5 rounded-2xl text-xs md:text-sm font-bold hover:bg-emerald-500 hover:text-white transition shadow-sm">
@@ -1937,24 +2004,24 @@
                 <div id="harajMinerActionFeedback" class="hidden text-[11px] font-bold px-3 py-2 rounded-xl bg-slate-950/90 border border-slate-700 text-emerald-300"></div>
             </div>
 
-            <!-- درع التقطير الآمن لحملة الـ 280 مورداً + قائمة واتساب غير مفعل (whatsapp_inactive) -->
+            <!-- درع التقطير الآمن الموحد لحملة الـ 280 مورداً + استقطاب حراج وخرائط جوجل (سقف 65/يوم) + قائمة واتساب غير مفعل -->
             <div id="verifierDripCampaignBox" class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3.5 mb-3 shrink-0 space-y-2.5">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-xs sm:text-sm font-black text-amber-300">🛡️ حملة تدقيق الـ 280 مورداً (درع التقطير الآمن 55/يوم):</span>
-                        <span id="verifierDripProgressBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">اليوم: 0 / 55</span>
+                        <span class="text-xs sm:text-sm font-black text-amber-300">🛡️ منظم عدم الحظر الموحد (تدقيق 45/يوم + استقطاب 20/يوم = 65/يوم):</span>
+                        <span id="verifierDripProgressBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">اليوم: 0 / 45</span>
                     </div>
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <button type="button" id="btnToggleVerifierDripCampaign" onclick="toggleVerifierDripCampaignUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm">
-                            <span>▶️ تشغيل حملة التدقيق الآمنة (55/يوم)</span>
+                            <span>▶️ تشغيل حملة التدقيق الآمنة (45/يوم)</span>
                         </button>
                         <button type="button" id="btnFilterWhatsAppInactive" onclick="toggleWhatsAppInactiveListUI()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5">
-                            <span>⚠️ واتساب غير مفعل (<span id="waInactiveBadgeCount">0</span>)</span>
+                            <span>⚠️ موردون توقف لديهم الواتساب (<span id="waInactiveBadgeCount">0</span>)</span>
                         </button>
                     </div>
                 </div>
-                <p id="verifierDripSummaryLine" class="text-[11px] text-slate-300 font-bold">فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 20–30 دقيقة كل 15 رسالة + فحص فردي للرقم عند حلول دوره فقط.</p>
-                <div id="waInactiveListPanel" class="hidden border-t border-slate-800 pt-2.5 space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                <p id="verifierDripSummaryLine" class="text-[11px] text-slate-300 font-bold">فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 25 دقيقة كل 15 رسالة + أولوية فورية لإنقاذ طلبات العملاء.</p>
+                <div id="waInactiveListPanel" class="hidden border-t border-slate-800 pt-2.5 space-y-2 max-h-56 overflow-y-auto pr-1"></div>
             </div>
 
             <div id="pendingListContainer" class="overflow-y-auto space-y-3 flex-1 pr-1"></div>
@@ -2293,6 +2360,9 @@
                             </button>
                         </div>
                         <div id="aiProviderStatusBadges" class="flex flex-wrap gap-2 pt-1 text-[11px] font-bold"></div>
+                        <div id="settingsModalAgentBalanceBanner" class="bg-slate-950/90 border border-cyan-500/30 rounded-xl px-3 py-2 text-[11px] font-black text-cyan-200">
+                            ⚖️ توزيع الوكلاء الحي: 9 وكلاء عملاء | 4 وكلاء موردين وبحث حي | مظلة الطوارئ: جاهزة (OpenRouter) — مع توسع تناسبي تلقائي (65% عملاء / 35% موردين وإنقاذ)
+                        </div>
                         <div class="border-t border-slate-800 pt-3 mt-2 flex flex-wrap items-center justify-between gap-2">
                             <div class="text-[11px] font-bold text-slate-300">
                                 <span>📡 ثنائي نوفمبر 2026: الأساسي <code class="text-emerald-300" id="radarActivePrimaryLabel">gemini-3.8-flash</code> (LOW) + البديل الفوري <code class="text-cyan-300">gemini-3.5-flash-lite</code></span>
@@ -2316,10 +2386,59 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/30 space-y-2">
                             <label class="block text-xs font-black text-emerald-400">
-                                ⚡ مفتاح Groq الذكي فائق السرعة (<code class="text-emerald-300">GROQ_API_KEY</code>):
+                                ⚡ حوض مفاتيح Groq للعملاء (<code class="text-emerald-300">GROQ_CUSTOMER_KEYS</code> — الحسابات 1..3):
                             </label>
-                            <input type="password" id="aiGroqKeyInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="gsk_..." class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
-                            <p class="text-[10px] text-slate-400">يُشغّل <code class="text-emerald-300">whisper-large-v3-turbo</code> للصوت (0.4ث بدون هلوسة سياقية) و<code class="text-emerald-300">llama-3.3-70b-versatile</code> للنوايا و<code class="text-emerald-300">llama-3.2-90b-vision-preview</code> للصور.</p>
+                            <textarea id="aiGroqCustomerKeysInput" rows="2" dir="ltr" placeholder="gsk_acc1..., gsk_acc2..., gsk_acc3..." class="w-full px-3.5 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left resize-y"></textarea>
+                            <label class="block text-[11px] font-bold text-emerald-300 pt-1">
+                                🏭 حوض مفاتيح Groq للموردين (<code class="text-emerald-200">GROQ_SUPPLIER_KEYS</code> — الحسابان 4..5):
+                            </label>
+                            <textarea id="aiGroqSupplierKeysInput" rows="2" dir="ltr" placeholder="gsk_acc4..., gsk_acc5..." class="w-full px-3.5 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left resize-y"></textarea>
+                            <input type="password" id="aiGroqKeyInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="مفتاح Groq إضافي اختياري (GROQ_API_KEY: gsk_...)" class="w-full px-3.5 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                            <p class="text-[10px] text-slate-400">تدوير مستقل 40,000 TPM + استعارة الحوض الشقيق تلقائياً عند الذروة (<code class="text-emerald-300">qwen/qwen3.8-27b</code> ⬅️ <code class="text-emerald-300">openai/gpt-oss-120b</code> + 5× <code class="text-emerald-300">whisper-large-v3-turbo</code> للصوت وتخطي فوري 0ms للصور).</p>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-purple-500/30 space-y-2">
+                            <label class="block text-xs font-black text-purple-300">
+                                🌐 مظلة OpenRouter السحابية (<code class="text-purple-200">OPENROUTER_API_KEYS</code>):
+                            </label>
+                            <input type="password" id="aiOpenrouterKeyInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="sk-or-v1-..." class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                            <textarea id="aiOpenrouterKeysPoolInput" rows="2" dir="ltr" placeholder="مفاتيح OpenRouter إضافية مفصولة بفاصلة (اختياري)" class="w-full px-3.5 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left resize-y"></textarea>
+                            <div class="pt-1">
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">النموذج المعتمد في OpenRouter (<code class="text-purple-200">OPENROUTER_MODEL</code>):</label>
+                                <select id="aiOpenrouterModelSelect" dir="ltr" class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono cursor-pointer">
+                                    <option value="nvidia/nemotron-3.5-lightning:free" class="bg-slate-900 text-white">nvidia/nemotron-3.5-lightning:free (افتراضي موصى به)</option>
+                                    <option value="baidu/ernie-5.5-flash-preview:free" class="bg-slate-900 text-white">baidu/ernie-5.5-flash-preview:free</option>
+                                    <option value="meta-llama/llama-4-maverick" class="bg-slate-900 text-white">meta-llama/llama-4-maverick</option>
+                                    <option value="openai/gpt-4o-mini" class="bg-slate-900 text-white">openai/gpt-4o-mini</option>
+                                    <option value="deepseek/deepseek-chat" class="bg-slate-900 text-white">deepseek/deepseek-chat</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-amber-500/30 space-y-2 md:col-span-2">
+                            <div class="text-xs font-black text-amber-300">🚀 منافذ المنصات السحابية المجانية الإضافية (مجهزة للتشغيل الفوري 0ms فور لصق المفتاح):</div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-amber-200 mb-1">Cerebras (<code class="text-amber-300">CEREBRAS_API_KEYS</code> — نص 3.5ث):</label>
+                                    <input type="password" id="aiCerebrasKeysInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="csk-..." class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-cyan-200 mb-1">Mistral (<code class="text-cyan-300">MISTRAL_API_KEYS</code> — Pixtral صور + نص):</label>
+                                    <input type="password" id="aiMistralKeysInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="Mistral API Key..." class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-200 mb-1">GitHub Models (<code class="text-slate-300">GITHUB_MODELS_KEYS</code> — gpt-4o-mini):</label>
+                                    <input type="password" id="aiGithubModelsKeysInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="ghp_... / github_pat_..." class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-rose-200 mb-1">Cohere (<code class="text-rose-300">COHERE_API_KEYS</code> — Command-A & Aya Vision):</label>
+                                    <input type="password" id="aiCohereKeysInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="Cohere API Key..." class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-orange-200 mb-1">SambaNova (<code class="text-orange-300">SAMBANOVA_API_KEYS</code> — نص 4.5ث):</label>
+                                    <input type="password" id="aiSambanovaKeysInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="SambaNova API Key..." class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono text-left">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="bg-slate-900/80 p-4 rounded-2xl border border-sky-500/30 space-y-2">
@@ -2328,21 +2447,6 @@
                             </label>
                             <input type="password" id="aiOpenaiKeyInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="sk-..." class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
                             <p class="text-[10px] text-slate-400">يُشغّل <code class="text-sky-300">gpt-4o-mini</code> للرؤية والنصوص و<code class="text-sky-300">whisper-1</code> لتفريغ المقاطع الصوتية.</p>
-                        </div>
-
-                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-purple-500/30 space-y-2">
-                            <label class="block text-xs font-black text-purple-300">
-                                🌐 مفتاح OpenRouter الاحتياطي (<code class="text-purple-200">OPENROUTER_API_KEY</code>):
-                            </label>
-                            <input type="password" id="aiOpenrouterKeyInput" data-ai-secret-input="1" dir="ltr" autocomplete="off" placeholder="sk-or-v1-..." class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left">
-                            <div class="pt-1">
-                                <label class="block text-[11px] font-bold text-slate-300 mb-1">النموذج المعتمد في OpenRouter (<code class="text-purple-200">OPENROUTER_MODEL</code>):</label>
-                                <select id="aiOpenrouterModelSelect" dir="ltr" class="w-full px-3 py-2 rounded-xl glass-input outline-none text-xs font-mono cursor-pointer">
-                                    <option value="meta-llama/llama-4-maverick" class="bg-slate-900 text-white">meta-llama/llama-4-maverick (افتراضي موصى به)</option>
-                                    <option value="openai/gpt-4o-mini" class="bg-slate-900 text-white">openai/gpt-4o-mini</option>
-                                    <option value="deepseek/deepseek-chat" class="bg-slate-900 text-white">deepseek/deepseek-chat</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="bg-slate-900/80 p-4 rounded-2xl border border-indigo-500/30 space-y-2">
@@ -2444,6 +2548,7 @@
                             <label class="checkbox-label font-bold text-brand-300 bg-brand-500/10 rounded mt-2 col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5"><input type="checkbox" value="شامل كوري" class="brand-cb">شامل كوري</label>
                             <label class="checkbox-label"><input type="checkbox" value="هيونداي" class="brand-cb">هيونداي</label>
                             <label class="checkbox-label"><input type="checkbox" value="كيا" class="brand-cb">كيا</label>
+                            <label class="checkbox-label"><input type="checkbox" value="جينيسيس" class="brand-cb">جينيسيس</label>
                             
                             <label class="checkbox-label font-bold text-brand-300 bg-brand-500/10 rounded mt-2 col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5"><input type="checkbox" value="شامل صيني" class="brand-cb">شامل صيني</label>
                             <label class="checkbox-label"><input type="checkbox" value="شانجان" class="brand-cb">شانجان</label>
@@ -4122,6 +4227,12 @@
                     if (fullData.ai_provider_status && typeof fullData.ai_provider_status === 'object') {
                         loadedAiStatus = fullData.ai_provider_status;
                     }
+                    if (fullData.proportional_agent_balance && typeof window.renderProportionalAgentsCardUI === 'function') {
+                        window.renderProportionalAgentsCardUI(fullData.proportional_agent_balance);
+                    }
+                    if (fullData.order_rescue_status && typeof window.renderOrderRescueCardUI === 'function') {
+                        window.renderOrderRescueCardUI(fullData.order_rescue_status);
+                    }
                     if (Array.isArray(fullData.customer_contact_numbers) && fullData.customer_contact_numbers.length > 0) {
                         const first = fullData.customer_contact_numbers[0];
                         platformConfigState.primaryCustomerWa = window.formatSaudiPhone(typeof first === 'object' ? first.phone : first) || platformConfigState.primaryCustomerWa;
@@ -4163,15 +4274,31 @@
 
             const aiGemEl = document.getElementById('aiGeminiKeysInput');
             const aiGroqEl = document.getElementById('aiGroqKeyInput');
+            const aiGroqCustEl = document.getElementById('aiGroqCustomerKeysInput');
+            const aiGroqSuppEl = document.getElementById('aiGroqSupplierKeysInput');
             const aiOaiEl = document.getElementById('aiOpenaiKeyInput');
             const aiOrEl = document.getElementById('aiOpenrouterKeyInput');
+            const aiOrPoolEl = document.getElementById('aiOpenrouterKeysPoolInput');
             const aiOrModEl = document.getElementById('aiOpenrouterModelSelect');
+            const aiCerEl = document.getElementById('aiCerebrasKeysInput');
+            const aiMisEl = document.getElementById('aiMistralKeysInput');
+            const aiGhEl = document.getElementById('aiGithubModelsKeysInput');
+            const aiCohEl = document.getElementById('aiCohereKeysInput');
+            const aiSmbEl = document.getElementById('aiSambanovaKeysInput');
             const aiDsEl = document.getElementById('aiDeepseekKeyInput');
             if (aiGemEl) aiGemEl.value = loadedAiSettings.gemini_api_keys || '';
             if (aiGroqEl) aiGroqEl.value = loadedAiSettings.groq_api_key || '';
+            if (aiGroqCustEl) aiGroqCustEl.value = loadedAiSettings.groq_customer_keys || '';
+            if (aiGroqSuppEl) aiGroqSuppEl.value = loadedAiSettings.groq_supplier_keys || '';
             if (aiOaiEl) aiOaiEl.value = loadedAiSettings.openai_api_key || '';
             if (aiOrEl) aiOrEl.value = loadedAiSettings.openrouter_api_key || '';
-            if (aiOrModEl) aiOrModEl.value = loadedAiSettings.openrouter_model || 'meta-llama/llama-4-maverick';
+            if (aiOrPoolEl) aiOrPoolEl.value = loadedAiSettings.openrouter_api_keys || '';
+            if (aiOrModEl) aiOrModEl.value = loadedAiSettings.openrouter_model || 'nvidia/nemotron-3.5-lightning:free';
+            if (aiCerEl) aiCerEl.value = loadedAiSettings.cerebras_api_keys || '';
+            if (aiMisEl) aiMisEl.value = loadedAiSettings.mistral_api_keys || '';
+            if (aiGhEl) aiGhEl.value = loadedAiSettings.github_models_keys || '';
+            if (aiCohEl) aiCohEl.value = loadedAiSettings.cohere_api_keys || '';
+            if (aiSmbEl) aiSmbEl.value = loadedAiSettings.sambanova_api_keys || '';
             if (aiDsEl) aiDsEl.value = loadedAiSettings.deepseek_api_key || '';
             renderAIProviderStatusBadges(loadedAiStatus);
             if (typeof window.loadModelRadarStatusUI === 'function') {
@@ -4209,9 +4336,14 @@
                 : `<span class="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-400 border border-slate-700/80">⚪ ${escapeHTML(label)}</span>`;
             box.innerHTML = [
                 badge(statusObj.gemini_keys_count > 0, `Gemini (${statusObj.gemini_keys_count || 0} مفاتيح)`),
-                badge(Boolean(statusObj.groq_active), 'Groq (Whisper + Llama 70B)'),
-                badge(Boolean(statusObj.openai_active), 'OpenAI (gpt-4o-mini)'),
-                badge(Boolean(statusObj.openrouter_active), `OpenRouter (${statusObj.openrouter_model || 'llama-4-maverick'})`),
+                badge(Boolean(statusObj.groq_active), `Groq (${statusObj.groq_keys_count || 0} حسابات: عملاء ${statusObj.groq_customer_keys_count || 0} / موردين ${statusObj.groq_supplier_keys_count || 0})`),
+                badge(Boolean(statusObj.cerebras_active), `Cerebras (${statusObj.cerebras_keys_count || 0})`),
+                badge(Boolean(statusObj.mistral_active), `Mistral (${statusObj.mistral_keys_count || 0})`),
+                badge(Boolean(statusObj.github_models_active), `GitHub Models (${statusObj.github_models_keys_count || 0})`),
+                badge(Boolean(statusObj.cohere_active), `Cohere (${statusObj.cohere_keys_count || 0})`),
+                badge(Boolean(statusObj.sambanova_active), `SambaNova (${statusObj.sambanova_keys_count || 0})`),
+                badge(Boolean(statusObj.openrouter_active), `OpenRouter (${statusObj.openrouter_model || 'nemotron-3.5-lightning:free'})`),
+                badge(Boolean(statusObj.openai_active), 'OpenAI'),
                 badge(Boolean(statusObj.deepseek_active), 'DeepSeek'),
             ].join('');
         }
@@ -4301,6 +4433,135 @@
             }
         };
 
+        window.renderProportionalAgentsCardUI = function(balanceObj) {
+            if (!balanceObj || typeof balanceObj !== 'object') return;
+            const custCnt = Number(balanceObj.customerAgentsCount ?? balanceObj.customerPool?.count ?? 0);
+            const supCnt = Number(balanceObj.supplierRescueAgentsCount ?? balanceObj.supplierRescuePool?.count ?? 0);
+            const custGem = Number(balanceObj.customerPool?.geminiCount ?? 0);
+            const custGrq = Number(balanceObj.customerPool?.groqCount ?? 0);
+            const custOth = Number(balanceObj.customerPool?.otherProvidersCount ?? 0);
+            const supGem = Number(balanceObj.supplierRescuePool?.geminiCount ?? 0);
+            const supGrq = Number(balanceObj.supplierRescuePool?.groqCount ?? 0);
+            const supOth = Number(balanceObj.supplierRescuePool?.otherProvidersCount ?? 0);
+            const onbCnt = Number(balanceObj.supplierRescuePool?.onboardingVerifierCount ?? 0);
+            const rescCnt = Number(balanceObj.supplierRescuePool?.liveOrderRescueCount ?? 0);
+            const umb = balanceObj.emergencyUmbrella || {};
+            const umbActive = Boolean(umb.active);
+            const umbModel = String(umb.primaryModel || 'nvidia/nemotron-3.5-lightning:free');
+
+            const headlineText = `${custCnt} وكلاء عملاء | ${supCnt} وكلاء موردين وبحث حي | مظلة الطوارئ: ${umbActive ? 'جاهزة (OpenRouter)' : 'غير مفعلة'}`;
+            const headEl = document.getElementById('adminAgentBalanceHeadline');
+            if (headEl) headEl.textContent = headlineText;
+
+            const modalBanner = document.getElementById('settingsModalAgentBalanceBanner');
+            if (modalBanner) {
+                modalBanner.textContent = `⚖️ توزيع الوكلاء الحي: ${headlineText} — توسع تناسبي تلقائي (65% عملاء / 35% موردين وإنقاذ)`;
+            }
+
+            const detEl = document.getElementById('adminAgentBalanceDetails');
+            if (detEl) {
+                const custMix = `${custGem} Gemini + ${custGrq} Groq${custOth > 0 ? ` + ${custOth} أخرى` : ''}`;
+                const supMix = `${supGem} Gemini + ${supGrq} Groq${supOth > 0 ? ` + ${supOth} أخرى` : ''}`;
+                detEl.innerHTML = [
+                    `<span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">👥 العملاء: ${custCnt} (${escapeHTML(custMix)})</span>`,
+                    `<span class="px-2.5 py-1 rounded-lg bg-brand-500/15 text-brand-300 border border-brand-500/30">🏭 الموردون والإنقاذ: ${supCnt} (${escapeHTML(supMix)} — ${onbCnt} حوار + ${rescCnt} صيد حي)</span>`,
+                    `<span class="px-2.5 py-1 rounded-lg ${umbActive ? 'bg-purple-500/15 text-purple-300 border-purple-500/30' : 'bg-slate-800 text-slate-400 border-slate-700'} border">🛡️ المظلة: ${umbActive ? escapeHTML(umbModel) : 'غير مفعلة'}</span>`
+                ].join('');
+            }
+        };
+
+        window.renderOrderRescueCardUI = function(statusObj) {
+            if (!statusObj || typeof statusObj !== 'object') return;
+            const enabled = Boolean(statusObj.enabled);
+            const activeOrders = Number(statusObj.activeRescueOrdersCount || 0) + Number(statusObj.awaitingProspectRepliesCount || 0);
+            const discovered = Number(statusObj.discoveredSellersTotal || 0);
+            const rescuedQuotes = Number(statusObj.rescuedQuotesTotal || 0);
+            const waitMins = Number(statusObj.unquotedOrderRescueMinutes || 35);
+
+            const actEl = document.getElementById('rescueStatActiveOrders');
+            const discEl = document.getElementById('rescueStatDiscoveredSellers');
+            const qtEl = document.getElementById('rescueStatRescuedQuotes');
+            const inpEl = document.getElementById('rescueWaitMinutesInput');
+            const toggleBtn = document.getElementById('btnToggleOrderRescueEngine');
+            const logsBox = document.getElementById('rescueRecentLogsContainer');
+
+            if (actEl) actEl.textContent = String(activeOrders);
+            if (discEl) discEl.textContent = String(discovered);
+            if (qtEl) qtEl.textContent = String(rescuedQuotes);
+            if (inpEl && document.activeElement !== inpEl) {
+                inpEl.value = String(waitMins);
+            }
+            if (toggleBtn) {
+                toggleBtn.dataset.enabled = enabled ? '1' : '0';
+                if (enabled) {
+                    toggleBtn.className = 'bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded-xl text-[11px] font-black transition shadow-sm';
+                    toggleBtn.textContent = '🟢 مفعّل (إيقاف)';
+                } else {
+                    toggleBtn.className = 'bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-xl text-[11px] font-black transition shadow-sm';
+                    toggleBtn.textContent = '⏸️ متوقف (تشغيل)';
+                }
+            }
+            if (logsBox) {
+                const logs = Array.isArray(statusObj.recentLogs) ? statusObj.recentLogs.slice(0, 12) : [];
+                if (!logs.length) {
+                    logsBox.innerHTML = '<p class="text-slate-500 text-center py-1">لا توجد عمليات إنقاذ مسجلة بعد — المراقب جاهز داخل ساعات الدوام (08:00 ص – 09:00 م).</p>';
+                } else {
+                    logsBox.innerHTML = logs.map((lg) => {
+                        const t = lg.at ? new Date(lg.at).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }) : '';
+                        return `<div class="flex items-start justify-between gap-2 border-b border-slate-900 pb-1 last:border-0"><span class="text-slate-200 leading-snug">🎯 ${escapeHTML(lg.message || lg.event || '')}</span><span class="text-slate-500 shrink-0 font-mono">${escapeHTML(t)}</span></div>`;
+                    }).join('');
+                }
+            }
+        };
+
+        window.loadAdminLiveEnginesStatus = async function() {
+            if (currentRole !== 'admin') return;
+            try {
+                const [balRes, rescRes] = await Promise.all([
+                    fetchBotBackend('/api/admin/agent-balancer/status', { method: 'GET', timeoutMs: 8000 }),
+                    fetchBotBackend('/api/admin/order-rescue/status', { method: 'GET', timeoutMs: 8000 })
+                ]);
+                if (balRes && balRes.ok) {
+                    const balJson = await balRes.json().catch(() => null);
+                    if (balJson && balJson.balance) window.renderProportionalAgentsCardUI(balJson.balance);
+                }
+                if (rescRes && rescRes.ok) {
+                    const rescJson = await rescRes.json().catch(() => null);
+                    if (rescJson) window.renderOrderRescueCardUI(rescJson);
+                }
+            } catch (_liveEngErr) {}
+        };
+
+        window.toggleOrderRescueEngineUI = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/order-rescue/toggle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({}),
+                timeoutMs: 8000
+            });
+            if (res && res.ok) {
+                const data = await res.json().catch(() => null);
+                if (data) window.renderOrderRescueCardUI(data);
+            }
+        };
+
+        window.saveOrderRescueWaitMinutesUI = async function() {
+            if (currentRole !== 'admin') return;
+            const inpEl = document.getElementById('rescueWaitMinutesInput');
+            const waitMinutes = Math.max(2, Math.min(240, Number(inpEl?.value || 35)));
+            const res = await fetchBotBackend('/api/admin/order-rescue/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ unquotedOrderRescueMinutes: waitMinutes }),
+                timeoutMs: 8000
+            });
+            if (res && res.ok) {
+                const data = await res.json().catch(() => null);
+                if (data) window.renderOrderRescueCardUI(data);
+            }
+        };
+
         window.closeWaSettingsModal = () => document.getElementById('waSettingsModal').classList.add('hidden');
 
         window.saveWaSettings = async () => {
@@ -4372,9 +4633,17 @@
                 const aiProviderSettingsPayload = {
                     gemini_api_keys: (document.getElementById('aiGeminiKeysInput')?.value || '').trim(),
                     groq_api_key: (document.getElementById('aiGroqKeyInput')?.value || '').trim(),
+                    groq_customer_keys: (document.getElementById('aiGroqCustomerKeysInput')?.value || '').trim(),
+                    groq_supplier_keys: (document.getElementById('aiGroqSupplierKeysInput')?.value || '').trim(),
                     openai_api_key: (document.getElementById('aiOpenaiKeyInput')?.value || '').trim(),
                     openrouter_api_key: (document.getElementById('aiOpenrouterKeyInput')?.value || '').trim(),
-                    openrouter_model: (document.getElementById('aiOpenrouterModelSelect')?.value || 'meta-llama/llama-4-maverick').trim(),
+                    openrouter_api_keys: (document.getElementById('aiOpenrouterKeysPoolInput')?.value || '').trim(),
+                    openrouter_model: (document.getElementById('aiOpenrouterModelSelect')?.value || 'nvidia/nemotron-3.5-lightning:free').trim(),
+                    cerebras_api_keys: (document.getElementById('aiCerebrasKeysInput')?.value || '').trim(),
+                    mistral_api_keys: (document.getElementById('aiMistralKeysInput')?.value || '').trim(),
+                    github_models_keys: (document.getElementById('aiGithubModelsKeysInput')?.value || '').trim(),
+                    cohere_api_keys: (document.getElementById('aiCohereKeysInput')?.value || '').trim(),
+                    sambanova_api_keys: (document.getElementById('aiSambanovaKeysInput')?.value || '').trim(),
                     deepseek_api_key: (document.getElementById('aiDeepseekKeyInput')?.value || '').trim()
                 };
 
@@ -4404,6 +4673,9 @@
                 }
 
                 closeWaSettingsModal();
+                if (typeof window.loadAdminLiveEnginesStatus === 'function') {
+                    window.loadAdminLiveEnginesStatus();
+                }
                 renderOrders(window.currentOrders);
             } finally {
                 if (saveBtn) {
@@ -4511,11 +4783,16 @@
                     document.getElementById('liveOrdersTitle').innerHTML = 'جميع الطلبات الحية في النظام';
                     
                     document.getElementById('affiliateStatsCards').classList.add('hidden');
+                    const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
+                    if (liveEnginesWrap) liveEnginesWrap.classList.remove('hidden');
                     document.getElementById('btn-pending').classList.remove('hidden');
                     document.getElementById('btn-suppliers').classList.remove('hidden');
                     document.getElementById('btn-invite').classList.remove('hidden');
                     document.getElementById('btn-settings').classList.remove('hidden');
                     document.getElementById('btn-affiliate').classList.add('hidden');
+                    if (typeof window.loadAdminLiveEnginesStatus === 'function') {
+                        window.loadAdminLiveEnginesStatus();
+                    }
                 } else {
                     const matchedAffiliate = await authenticateAffiliateByHash(passHash);
                     if (!matchedAffiliate) {
@@ -4569,6 +4846,8 @@
                     document.getElementById('liveOrdersTitle').innerHTML = 'سجل عملائك القادمين عبر رابطك التسويقي';
                     
                     document.getElementById('affiliateStatsCards').classList.remove('hidden');
+                    const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
+                    if (liveEnginesWrap) liveEnginesWrap.classList.add('hidden');
                     document.getElementById('btn-pending').classList.add('hidden');
                     document.getElementById('btn-suppliers').classList.add('hidden');
                     document.getElementById('btn-invite').classList.add('hidden');
@@ -5802,7 +6081,13 @@
             const safePhone = escapeHTML(data.phone || '');
             const safeTypeLabel = escapeHTML(resolveSupplierTypeBadgeText(data));
             const isLegacyUpdate = data.onboarding_source === 'legacy_280_update' || Boolean(data.existing_supplier_id);
-            const isHarajMined = !isLegacyUpdate && (data.source === 'haraj.com.sa' || String(docId).startsWith('haraj_'));
+            const rawRescueNotes = String(data.rescue_badge || data.yard_models_notes || data.ad_title || '');
+            const isLiveOrderRescue = data.source === 'live_order_rescue' || data.onboarding_source === 'live_order_rescue' || rawRescueNotes.includes('صيد حي أنقذ الطلب');
+            const rescueOrderMatch = rawRescueNotes.match(/صيد حي أنقذ الطلب\s*#?\s*(\d+)/);
+            const rescueBadgeLabel = rescueOrderMatch
+                ? `🎯 صيد حي أنقذ الطلب #${rescueOrderMatch[1]}`
+                : (data.rescued_order_id ? `🎯 صيد حي أنقذ الطلب #${data.rescued_order_id}` : '🎯 صيد حي أنقذ الطلب');
+            const isHarajMined = !isLegacyUpdate && !isLiveOrderRescue && (data.source === 'haraj.com.sa' || String(docId).startsWith('haraj_'));
             const safeAdTitle = data.ad_title ? escapeHTML(data.ad_title) : '';
             const safeAdUrl = data.ad_url ? escapeHTML(data.ad_url) : '';
             const brandsArr = Array.isArray(data.brands) ? data.brands : (Array.isArray(data.car_brands) ? data.car_brands : []);
@@ -5816,11 +6101,12 @@
             const safeCatsText = escapeHTML(catsLabelsArr.join('، ') || 'جميع الـ 14 فئة');
             const dataStr = encodeURIComponent(JSON.stringify(data)).replace(/'/g, '%27');
             return `
-                <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border border-slate-700/80 p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-1 h-full ${isLegacyUpdate ? 'bg-purple-500' : (isHarajMined ? 'bg-brand-500' : 'bg-emerald-500')}"></div>
+                <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border ${isLiveOrderRescue ? 'border-amber-500/50' : 'border-slate-700/80'} p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-1 h-full ${isLiveOrderRescue ? 'bg-amber-400' : (isLegacyUpdate ? 'bg-purple-500' : (isHarajMined ? 'bg-brand-500' : 'bg-emerald-500'))}"></div>
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-                        <div class="flex items-center gap-1.5">
+                        <div class="flex items-center gap-1.5 flex-wrap">
                             <p class="font-black text-white text-base">${safeName}</p>
+                            ${isLiveOrderRescue ? `<span class="text-[10px] font-black px-2.5 py-0.5 rounded-lg bg-amber-500/20 text-amber-200 border border-amber-400/50 shadow-sm">${escapeHTML(rescueBadgeLabel)}</span>` : ''}
                             ${isLegacyUpdate ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40">تحديث مورد مسجل</span>' : ''}
                             ${isHarajMined ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/40">منصة حراج</span>' : ''}
                         </div>
@@ -5857,8 +6143,9 @@
             for (const docItem of latestFirestorePendingDocs) {
                 if (pendingOptimisticPendingSupOps.has(docItem.id) || seenDocIds.has(docItem.id)) continue;
                 const isLegacy = docItem.data?.onboarding_source === 'legacy_280_update' || Boolean(docItem.data?.existing_supplier_id);
+                const isRescue = docItem.data?.source === 'live_order_rescue' || docItem.data?.onboarding_source === 'live_order_rescue';
                 const ph = window.formatSaudiPhone(docItem.data?.phone || '');
-                if (ph && !isLegacy && approvedPhones.has(ph)) continue;
+                if (ph && !isLegacy && !isRescue && approvedPhones.has(ph)) continue;
                 seenDocIds.add(docItem.id);
                 if (ph) seenPhones.add(ph);
                 cardsHtml.push(buildPendingSupplierCardHtml(docItem.id, docItem.data));
@@ -5868,9 +6155,10 @@
                 const docId = String(item.id || ('pending_' + item.phone));
                 if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) continue;
                 const isLegacy = item.onboarding_source === 'legacy_280_update' || Boolean(item.existing_supplier_id);
+                const isRescue = item.source === 'live_order_rescue' || item.onboarding_source === 'live_order_rescue';
                 const ph = window.formatSaudiPhone(item.phone || '');
                 if (ph && seenPhones.has(ph)) continue;
-                if (ph && !isLegacy && approvedPhones.has(ph)) continue;
+                if (ph && !isLegacy && !isRescue && approvedPhones.has(ph)) continue;
                 seenDocIds.add(docId);
                 if (ph) seenPhones.add(ph);
                 cardsHtml.push(buildPendingSupplierCardHtml(docId, item));
@@ -5940,22 +6228,24 @@
             if (latestVerifierDripStatus) {
                 const st = latestVerifierDripStatus;
                 const counts = st.counts || {};
+                const gov = st.outbound_governor || st.unified_governor || {};
+                const maxCap = Number(st.max_daily_outreach || 45);
                 if (badgeEl) {
-                    badgeEl.textContent = `اليوم: ${Number(st.daily_sent_count || 0)} / ${Number(st.max_daily_outreach || 55)} | المتبقي بالطابور: ${Number(counts.remaining_queue || 0)}`;
+                    badgeEl.textContent = `اليوم: ${Number(st.daily_sent_count || 0)} / ${maxCap} (الموحد: ${Number(gov.global_daily_sent || 0)}/${Number(gov.max_global_daily_cap || 65)}) | طابور التدقيق: ${Number(counts.remaining_queue || 0)}`;
                 }
                 if (btnToggle) {
                     if (st.running) {
                         btnToggle.className = 'bg-amber-600 hover:bg-amber-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm';
-                        btnToggle.innerHTML = '<span>⏸️ إيقاف حملة التدقيق الآمنة (55/يوم)</span>';
+                        btnToggle.innerHTML = `<span>⏸️ إيقاف حملة التدقيق الآمنة (${maxCap}/يوم)</span>`;
                     } else {
                         btnToggle.className = 'bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm';
-                        btnToggle.innerHTML = '<span>▶️ تشغيل حملة التدقيق الآمنة (55/يوم)</span>';
+                        btnToggle.innerHTML = `<span>▶️ تشغيل حملة التدقيق الآمنة (${maxCap}/يوم)</span>`;
                     }
                 }
                 if (summaryLine) {
                     const sandboxHint = st.sandbox_active ? ' | 🛡️ وضع الاختبار الأحادي مفعل' : '';
                     summaryLine.textContent =
-                        (st.last_action || 'فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 20–30 دقيقة كل 15 رسالة + فحص فردي عند الدور.') +
+                        (st.last_action || 'فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 25 دقيقة كل 15 رسالة + فحص فردي عند الدور.') +
                         ` — مرسل بانتظار رد: ${Number(counts.outreach_sent || 0)} | واتساب غير مفعل: ${Number(counts.whatsapp_inactive || 0)} | مراجعة هاتفية: ${Number(counts.needs_phone_call || 0)}${sandboxHint}`;
                 }
             }
@@ -5968,6 +6258,8 @@
                         const sid = Number(sup.id) || 0;
                         const sName = escapeHTML(sup.name || 'مورد مسجل');
                         const sPhone = escapeHTML(sup.phone || '');
+                        const dialClean = String(sup.phone || '').replace(/[^\d+]/g, '');
+                        const dialHref = dialClean.startsWith('966') ? '+' + dialClean : dialClean;
                         const sNote = escapeHTML(sup.verification_notes || '⚠️ الواتساب غير مفعل على هذا الرقم — يرجى تعديل الرقم أو حذف المورد');
                         return `
                             <div id="wa-inactive-row-${sid}" class="bg-slate-950/90 border border-rose-500/30 rounded-xl p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px]">
@@ -5975,7 +6267,8 @@
                                     <div class="font-black text-white">${sName} <span dir="ltr" class="text-rose-300 font-mono mr-1">(${sPhone})</span></div>
                                     <div class="text-amber-300 mt-0.5">${sNote}</div>
                                 </div>
-                                <div class="flex items-center gap-1.5 shrink-0">
+                                <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                                    <a href="tel:${escapeHTML(dialHref)}" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-2.5 py-1.5 rounded-lg transition inline-flex items-center gap-1">📞 اتصال عادي</a>
                                     <button type="button" onclick="editAndRecheckInactiveSupplier(${sid}, '${sPhone}')" class="bg-sky-600 hover:bg-sky-500 text-white font-black px-2.5 py-1.5 rounded-lg transition">✏️ تعديل الرقم وإعادة الفحص</button>
                                     <button type="button" onclick="deleteInactiveSupplierPermanentlyUI(${sid}, '${sPhone}', '${sName}')" class="bg-rose-600 hover:bg-rose-500 text-white font-black px-2.5 py-1.5 rounded-lg transition">🗑️ حذف المورد نهائياً</button>
                                 </div>
