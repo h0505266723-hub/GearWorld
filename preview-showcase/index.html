@@ -2,27 +2,39 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#060911" />
-  <title>حراج القطع | عالم التروس — العرض التفاعلي الذكي 60FPS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#04060b" />
+  <title>حراج القطع | عالم التروس — التجربة الميكانيكية ثلاثية الأبعاد 60FPS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+
   <style>
     :root {
-      --bg-deep: #060911;
-      --bg-card: #0c1322;
-      --bg-elevated: #111a2e;
-      --border-subtle: rgba(148, 163, 184, 0.16);
-      --border-gold: rgba(245, 158, 11, 0.42);
-      --border-emerald: rgba(16, 185, 129, 0.45);
+      --obsidian: #04060b;
+      --obsidian-mid: #080d18;
+      --glass-bg: rgba(9, 14, 26, 0.62);
+      --glass-strong: rgba(8, 13, 24, 0.82);
+      --border-hairline: rgba(226, 232, 240, 0.13);
+      --border-gold: rgba(245, 190, 75, 0.48);
+      --border-emerald: rgba(16, 185, 129, 0.52);
       --gold: #f59e0b;
-      --gold-bright: #fbbf24;
+      --gold-champagne: #fcd34d;
       --emerald: #10b981;
-      --emerald-bright: #34d399;
-      --cyan: #38bdf8;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --emerald-neon: #34d399;
+      --cyan-ice: #38bdf8;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -34,997 +46,2407 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
-      width: 100%;
-      height: 100dvh;
-      min-height: 100dvh;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      background-color: var(--bg-deep);
-      color: var(--text-main);
+    html {
+      background-color: var(--obsidian);
+      color: var(--text-primary);
       font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
-      user-select: none;
-      -webkit-font-smoothing: antialiased;
+      scroll-behavior: auto;
+      overscroll-behavior-y: none;
     }
 
-    /* خلفية ثابتة خفيفة لضمان 60FPS كاملة على كافة الجوالات */
-    .ambient-bg {
+    body {
+      width: 100%;
+      min-height: 550vh;
+      overflow-x: hidden;
+      background-color: var(--obsidian);
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+
+    /* مسار التمرير الطولي 550vh */
+    #scrollTrack {
+      position: relative;
+      width: 100%;
+      height: 550vh;
+      z-index: 1;
+      pointer-events: auto;
+      touch-action: pan-y;
+    }
+
+    /* لوحة WebGL المثبتة بملء الشاشة 100dvh */
+    #webglViewport {
       position: fixed;
       inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background:
-        radial-gradient(circle at 82% 12%, rgba(245, 158, 11, 0.13) 0%, rgba(245, 158, 11, 0) 48%),
-        radial-gradient(circle at 16% 86%, rgba(16, 185, 129, 0.14) 0%, rgba(16, 185, 129, 0) 52%),
-        linear-gradient(180deg, #060911 0%, #090f1d 52%, #060911 100%);
-    }
-
-    .showcase-shell {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 520px;
+      width: 100vw;
       height: 100dvh;
-      margin: 0 auto;
-      padding-top: calc(var(--safe-top) + 10px);
-      padding-bottom: calc(var(--safe-bottom) + 12px);
-      padding-inline: clamp(12px, 3.8vw, 20px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: clamp(8px, 1.6dvh, 14px);
-      overflow-x: hidden;
-    }
-
-    /* شريط تقدم القصص التفاعلي (4 مقاطع Reels) — يعمل حصرياً بـ transform: scaleX */
-    .reels-bars {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      direction: rtl;
-    }
-
-    .reel-seg {
-      position: relative;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.22);
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .reel-fill {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, var(--emerald-bright), var(--gold-bright));
-      transform-origin: right center;
-      transform: scaleX(0);
-      will-change: transform;
-    }
-
-    /* الهيدر العلوي المدمج */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .brand-id {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .brand-emblem {
-      width: 34px;
-      height: 34px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(16, 185, 129, 0.2));
-      border: 1px solid var(--border-gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .brand-titles {
-      min-width: 0;
-    }
-
-    .brand-name {
-      font-size: clamp(0.86rem, 3.5vw, 1rem);
-      font-weight: 900;
-      color: #ffffff;
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .brand-domain {
-      font-size: clamp(0.68rem, 2.7vw, 0.76rem);
-      font-weight: 700;
-      color: var(--gold-bright);
-      letter-spacing: 0.2px;
-    }
-
-    .top-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .icon-btn {
-      appearance: none;
-      border: 1px solid var(--border-subtle);
-      background: var(--bg-card);
-      color: var(--text-main);
-      border-radius: 10px;
-      height: 34px;
-      padding-inline: 10px;
-      font-family: inherit;
-      font-size: 0.75rem;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      cursor: pointer;
-      transition: transform 0.16s ease, opacity 0.16s ease;
-      will-change: transform, opacity;
-    }
-
-    .icon-btn:active {
-      transform: translate3d(0, 1px, 0) scale(0.96);
-    }
-
-    /* مبدّل المسارين: رحلة العميل الذكية / شبكة الموردين السرية */
-    .mode-switcher {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 3px;
-    }
-
-    .mode-pill-indicator {
-      position: absolute;
-      top: 3px;
-      bottom: 3px;
-      right: 3px;
-      width: calc(50% - 3px);
-      border-radius: 11px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.26), rgba(245, 158, 11, 0.24));
-      border: 1px solid var(--border-emerald);
-      transform: translate3d(0, 0, 0);
-      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform;
+      z-index: 2;
       pointer-events: none;
-    }
-
-    .mode-switcher[data-mode="supplier"] .mode-pill-indicator {
-      transform: translate3d(-100%, 0, 0);
-    }
-
-    .mode-tab {
-      position: relative;
-      z-index: 1;
-      appearance: none;
-      border: 0;
-      background: transparent;
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: clamp(0.74rem, 3.1vw, 0.84rem);
-      font-weight: 800;
-      padding: 7px 6px;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-
-    .mode-tab[aria-selected="true"] {
-      color: #ffffff;
-    }
-
-    /* مسرح المشاهد الأربعة (GPU-composited Stage) */
-    .stage-viewport {
-      position: relative;
-      flex: 1;
-      min-height: 0;
-      background: linear-gradient(180deg, rgba(17, 26, 46, 0.92) 0%, rgba(10, 16, 30, 0.96) 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: 22px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      background:
+        radial-gradient(circle at 50% 44%, rgba(20, 34, 62, 0.42) 0%, rgba(4, 6, 11, 0.96) 70%),
+        #04060b;
     }
 
-    /* مناطق اللمس السريع للتنقل على الجوال (يمين = سابق، يسار = تالي) */
-    .tap-zone {
-      position: absolute;
-      top: 0;
-      bottom: 68px;
-      width: 22%;
-      z-index: 6;
-      cursor: pointer;
-    }
-    .tap-zone-prev { right: 0; }
-    .tap-zone-next { left: 0; }
-
-    .scene-slide {
-      position: absolute;
-      inset: 0;
-      padding: clamp(14px, 3.6vw, 20px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: clamp(8px, 1.5dvh, 14px);
-      opacity: 0;
-      pointer-events: none;
-      transform: translate3d(0, 18px, 0) scale(0.985);
-      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
-      will-change: transform, opacity;
-    }
-
-    .scene-slide.is-active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translate3d(0, 0, 0) scale(1);
-      z-index: 3;
-    }
-
-    .scene-header {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .scene-badge-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .step-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 900;
-      background: rgba(245, 158, 11, 0.15);
-      color: var(--gold-bright);
-      border: 1px solid var(--border-gold);
-    }
-
-    .timing-chip {
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: var(--emerald-bright);
-      background: rgba(16, 185, 129, 0.13);
-      border: 1px solid var(--border-emerald);
-      padding: 2px 9px;
-      border-radius: 999px;
-      direction: ltr;
-    }
-
-    .scene-title {
-      font-size: clamp(1.08rem, 4.6vw, 1.32rem);
-      font-weight: 900;
-      line-height: 1.28;
-      color: #ffffff;
-    }
-
-    .scene-sub {
-      font-size: clamp(0.78rem, 3.2vw, 0.88rem);
-      font-weight: 500;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
-    .visual-stage {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: clamp(8px, 1.6dvh, 12px);
-    }
-
-    /* عناصر المشهد 1: بطاقة الاستمارة المائلة + رسالة العميل */
-    .istimara-card {
-      background: linear-gradient(135deg, #13233f 0%, #0d182c 100%);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: 16px;
-      padding: clamp(10px, 2.8vw, 14px);
-      transform: translate3d(0, 0, 0) rotate(-1.8deg);
-      will-change: transform, opacity;
-    }
-
-    .istimara-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
-      padding-bottom: 6px;
-      margin-bottom: 8px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: var(--cyan);
-    }
-
-    .istimara-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px 10px;
-      font-size: clamp(0.72rem, 2.9vw, 0.8rem);
-    }
-
-    .istimara-field span {
+    #glCanvas {
       display: block;
-      font-size: 0.65rem;
-      color: var(--text-muted);
+      width: 100%;
+      height: 100%;
+      pointer-events: auto;
+      touch-action: pan-y;
+      cursor: grab;
     }
 
-    .istimara-field strong {
+    #glCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* تظليل سينمائي ناعم للأطراف لإبراز النص الفضائي دون حجب المجسم */
+    .cinema-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(4, 6, 11, 0.78) 0%, rgba(4, 6, 11, 0) 21%, rgba(4, 6, 11, 0) 76%, rgba(4, 6, 11, 0.86) 100%),
+        radial-gradient(circle at 50% 50%, transparent 52%, rgba(2, 4, 9, 0.65) 100%);
+    }
+
+    /* طبقة خطوط الإشارة الهندسية ثلاثية الأبعاد 3D-to-2D SVG */
+    #calloutSvg {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      z-index: 4;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    #calloutNodesLayer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .callout-chip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translate3d(-9999px, -9999px, 0);
+      background: rgba(8, 13, 25, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.2);
+      border-radius: 11px;
+      padding: 5px 10px;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: border-color 0.22s ease, background-color 0.22s ease, opacity 0.22s ease;
+      will-change: transform, opacity;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .callout-chip:hover,
+    .callout-chip.is-selected {
+      border-color: var(--gold-champagne);
+      background: rgba(20, 28, 48, 0.9);
+    }
+
+    .callout-chip .part-ar {
+      display: block;
+      font-size: clamp(0.7rem, 2.6vw, 0.8rem);
+      font-weight: 800;
       color: #ffffff;
-      font-weight: 800;
+      line-height: 1.2;
     }
 
-    .vin-mono {
-      grid-column: 1 / -1;
-      margin-top: 2px;
-      background: rgba(6, 9, 17, 0.72);
-      border: 1px dashed rgba(251, 191, 36, 0.45);
-      border-radius: 9px;
-      padding: 5px 8px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: clamp(0.74rem, 3.1vw, 0.84rem);
-      font-weight: 800;
-      letter-spacing: 1.2px;
-      color: var(--gold-bright);
-      text-align: center;
+    .callout-chip .part-code {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--gold-champagne);
+      letter-spacing: 0.4px;
       direction: ltr;
+      text-align: right;
     }
 
-    .wa-bubble {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(16, 185, 129, 0.1));
-      border: 1px solid var(--border-emerald);
-      border-radius: 16px 16px 4px 16px;
-      padding: 10px 12px;
+    .beacon-tag {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translate3d(-9999px, -9999px, 0);
+      background: rgba(6, 22, 20, 0.82);
+      border: 1px solid rgba(52, 211, 153, 0.55);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: clamp(0.66rem, 2.4vw, 0.75rem);
+      font-weight: 800;
+      color: #ecfdf5;
+      white-space: nowrap;
+      pointer-events: none;
+      will-change: transform, opacity;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+    }
+
+    /* الطبقة السينمائية العلوية والسفلية HUD */
+    #hudLayer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      z-index: 6;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: calc(var(--safe-top) + 12px);
+      padding-bottom: calc(var(--safe-bottom) + 14px);
+      padding-inline: clamp(14px, 4vw, 34px);
+    }
+
+    /* الشريط العلوي بنمط Bugatti Telemetry */
+    .top-telemetry-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .brand-lockup {
       display: flex;
       align-items: center;
       gap: 10px;
+      text-decoration: none;
+      color: inherit;
     }
 
-    .wa-bubble-text {
-      font-size: clamp(0.82rem, 3.4vw, 0.94rem);
-      font-weight: 800;
-      color: #ecfdf5;
-      line-height: 1.35;
-    }
-
-    /* عناصر المشهد 2: ماسح الشاصي 0.8s + التصنيف الجراحي */
-    .vin-scanner-box {
-      position: relative;
-      background: #080e1c;
-      border: 1px solid var(--border-emerald);
-      border-radius: 16px;
-      padding: 12px;
-      overflow: hidden;
-    }
-
-    .scan-beam {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--emerald-bright), var(--gold-bright), transparent);
-      transform: translate3d(0, 0, 0);
-      will-change: transform, opacity;
-    }
-
-    .spec-pills {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 7px;
-      margin-top: 9px;
-    }
-
-    .spec-pill {
-      background: rgba(17, 26, 46, 0.9);
-      border: 1px solid var(--border-subtle);
+    .brand-crest {
+      width: 36px;
+      height: 36px;
       border-radius: 11px;
-      padding: 7px 9px;
-      font-size: clamp(0.71rem, 2.9vw, 0.79rem);
-    }
-
-    .spec-pill small {
-      display: block;
-      color: var(--text-muted);
-      font-size: 0.64rem;
-    }
-
-    .spec-pill b {
-      color: #ffffff;
-      font-weight: 800;
-    }
-
-    /* عناصر المشهد 3: رادار توجيه الرياض (Team A & B) + قفل الخصوصية */
-    .dispatch-hub {
-      background: #080e1c;
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .district-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: rgba(17, 26, 46, 0.88);
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      border-radius: 11px;
-      padding: 7px 10px;
-      font-size: clamp(0.73rem, 3vw, 0.82rem);
-    }
-
-    .district-tag {
-      font-size: 0.67rem;
-      font-weight: 900;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.16);
-      color: var(--emerald-bright);
-      border: 1px solid var(--border-emerald);
-      flex-shrink: 0;
-    }
-
-    .privacy-shield {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(245, 158, 11, 0.1);
+      background: linear-gradient(145deg, rgba(245, 158, 11, 0.22), rgba(16, 185, 129, 0.16));
       border: 1px solid var(--border-gold);
-      border-radius: 12px;
-      padding: 8px 10px;
-      font-size: clamp(0.72rem, 2.9vw, 0.8rem);
-      font-weight: 700;
-      color: #fef3c7;
-    }
-
-    /* عناصر المشهد 4: بطاقة التسعيرة الثلاثية الموحدة */
-    .quotes-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .quote-tier {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: rgba(17, 26, 46, 0.92);
-      border: 1px solid var(--border-subtle);
-      border-radius: 13px;
-      padding: 8px 11px;
-    }
-
-    .quote-tier.featured {
-      border-color: var(--border-emerald);
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.14), rgba(17, 26, 46, 0.95));
-    }
-
-    .tier-meta strong {
-      display: block;
-      font-size: clamp(0.78rem, 3.2vw, 0.88rem);
-      font-weight: 900;
-      color: #ffffff;
-    }
-
-    .tier-meta span {
-      font-size: clamp(0.67rem, 2.7vw, 0.74rem);
-      color: var(--text-muted);
-    }
-
-    .tier-price {
-      text-align: left;
+      justify-content: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
       flex-shrink: 0;
     }
 
-    .tier-price b {
+    .brand-text-wrap strong {
       display: block;
-      font-size: clamp(0.88rem, 3.6vw, 1.02rem);
+      font-size: clamp(0.86rem, 3.3vw, 1.02rem);
       font-weight: 900;
-      color: var(--gold-bright);
+      letter-spacing: -0.2px;
+      color: #ffffff;
+      line-height: 1.15;
+    }
+
+    .brand-text-wrap span {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--gold-champagne);
+      letter-spacing: 0.8px;
       direction: ltr;
+      text-align: right;
     }
 
-    .tier-price small {
-      font-size: 0.64rem;
-      color: var(--emerald-bright);
-      font-weight: 800;
-    }
-
-    /* شريط التنقل السفلي داخل المسرح */
-    .stage-nav-footer {
-      position: relative;
-      z-index: 7;
+    .telemetry-pills {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 8px;
-      padding-top: 6px;
-      border-top: 1px solid rgba(148, 163, 184, 0.12);
     }
 
-    .scene-dots {
-      display: flex;
+    .hud-micro-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-hairline);
+      color: #cbd5e1;
+      direction: ltr;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .dot-btn {
+    .fps-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--emerald-neon);
+      box-shadow: 0 0 8px var(--emerald-neon);
+    }
+
+    .home-back-link {
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border-hairline);
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .home-back-link:hover {
+      border-color: var(--gold-champagne);
+      background: rgba(245, 158, 11, 0.14);
+    }
+
+    /* النصوص السينمائية العائمة للمراحل الأربع (بدون صناديق شرائح!) */
+    .stage-copy-anchor {
+      position: fixed;
+      top: calc(var(--safe-top) + 64px);
+      right: clamp(14px, 4.5vw, 44px);
+      left: clamp(42px, 8vw, 80px);
+      max-width: 540px;
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    .phase-editorial {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      opacity: 0;
+      transform: translate3d(0, 14px, 0);
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+    .phase-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      color: var(--gold-champagne);
+      margin-bottom: 5px;
+    }
+
+    .phase-eyebrow::before {
+      content: '';
+      width: 18px;
+      height: 1px;
+      background: var(--gold-champagne);
+    }
+
+    .phase-headline {
+      font-size: clamp(1.18rem, 4.6vw, 2.05rem);
+      font-weight: 900;
+      line-height: 1.2;
+      color: #ffffff;
+      text-shadow: 0 8px 28px rgba(0, 0, 0, 0.85);
+      margin-bottom: 6px;
+    }
+
+    .phase-subcopy {
+      font-size: clamp(0.78rem, 2.9vw, 0.96rem);
+      font-weight: 500;
+      line-height: 1.5;
+      color: rgba(226, 232, 240, 0.82);
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
+      max-width: 470px;
+    }
+
+    /* عدادات المسح الليزري للـ VIN في المرحلة 1 (Bugatti Hairline HUD) */
+    #vinHudStrip {
+      margin-top: 10px;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vin-readout-box {
+      background: rgba(6, 14, 24, 0.72);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(52, 211, 153, 0.42);
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.68rem, 2.6vw, 0.8rem);
+      font-weight: 800;
+      color: var(--emerald-neon);
+      letter-spacing: 0.9px;
+      direction: ltr;
+    }
+
+    .bugatti-stat-chip {
+      background: rgba(12, 18, 32, 0.72);
+      border: 1px solid rgba(252, 211, 77, 0.35);
+      border-radius: 10px;
+      padding: 5px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #fef3c7;
+      direction: ltr;
+    }
+
+    /* مسطرة التقدم العمودية الدقيقة على اليسار */
+    .scroll-rail {
+      position: fixed;
+      left: clamp(10px, 2.4vw, 24px);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .rail-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.64rem;
+      font-weight: 800;
+      color: var(--gold-champagne);
+      direction: ltr;
+    }
+
+    .rail-track {
+      position: relative;
+      width: 3px;
+      height: 132px;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .rail-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(180deg, var(--emerald-neon), var(--gold-champagne));
+      transform-origin: top center;
+      transform: scaleY(0);
+      will-change: transform;
+    }
+
+    .rail-markers {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rail-step-btn {
+      appearance: none;
       width: 24px;
       height: 24px;
-      border-radius: 8px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15, 23, 42, 0.8);
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: 0.7rem;
-      font-weight: 900;
+      border-radius: 7px;
+      border: 1px solid var(--border-hairline);
+      background: rgba(8, 13, 24, 0.75);
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 800;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .dot-btn.is-current {
-      background: rgba(245, 158, 11, 0.22);
-      border-color: var(--border-gold);
+    .rail-step-btn.is-active {
+      border-color: var(--gold-champagne);
       color: #ffffff;
+      background: rgba(245, 158, 11, 0.22);
     }
 
-    /* أزرار التعميد والطلب الفوري السفلية */
-    .cta-dock {
+    /* منطقة التفاعل السفلية العائمة (تتبدل بسلاسة حسب المرحلة) */
+    .bottom-dock-zone {
+      position: relative;
+      width: 100%;
+      max-width: 620px;
+      margin-inline: auto;
+      min-height: 86px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .dock-panel {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+      pointer-events: none;
+      will-change: transform, opacity;
+      transition: opacity 0.24s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .dock-panel.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      pointer-events: auto;
+    }
+
+    /* مؤشر التمرير والتدوير في المرحلتين 1 و 2 */
+    .hint-bar {
+      margin-inline: auto;
+      width: fit-content;
+      max-width: 100%;
+      background: rgba(8, 13, 25, 0.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-hairline);
+      border-radius: 999px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(0.72rem, 2.8vw, 0.82rem);
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .scroll-chevron {
+      display: inline-block;
+      color: var(--gold-champagne);
+      animation: pulseDown 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulseDown {
+      0%, 100% { transform: translate3d(0, -2px, 0); opacity: 0.65; }
+      50% { transform: translate3d(0, 3px, 0); opacity: 1; }
+    }
+
+    /* شريط المرحلة 3: تبديل القطعة البطلة + شارة قفل الخصوصية */
+    .stage3-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .privacy-dual-lock {
+      background: rgba(6, 20, 18, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(52, 211, 153, 0.42);
+      border-radius: 999px;
+      padding: 5px 13px;
+      font-size: clamp(0.68rem, 2.6vw, 0.77rem);
+      font-weight: 800;
+      color: #d1fae5;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .segmented-switcher {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+      background: var(--glass-strong);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border-hairline);
+      border-radius: 16px;
+      padding: 5px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+    }
+
+    .seg-btn {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 12px;
+      padding: 8px 6px;
+      font-family: inherit;
+      font-size: clamp(0.7rem, 2.7vw, 0.82rem);
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .seg-btn.is-active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.24), rgba(16, 185, 129, 0.2));
+      border-color: var(--border-gold);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    }
+
+    /* المرحلة 4: مبدّل الخامات المعدنية + بطاقة الزجاج السائل Liquid Glass CTA */
+    .liquid-glass-card {
+      width: 100%;
+      background: linear-gradient(160deg, rgba(16, 24, 42, 0.76) 0%, rgba(7, 11, 21, 0.88) 100%);
+      backdrop-filter: blur(22px) saturate(165%);
+      -webkit-backdrop-filter: blur(22px) saturate(165%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-top-color: rgba(252, 211, 77, 0.45);
+      border-radius: 22px;
+      padding: clamp(11px, 2.8vw, 16px);
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.68),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .tier-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .material-tier-btn {
+      appearance: none;
+      background: rgba(7, 11, 20, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 13px;
+      padding: 7px 6px;
+      color: #cbd5e1;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: right;
+      transition: all 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .material-tier-btn .tier-title {
+      font-size: clamp(0.68rem, 2.6vw, 0.78rem);
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .material-tier-btn .tier-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      direction: ltr;
+      text-align: right;
+    }
+
+    .material-tier-btn .tier-price-tag {
+      font-size: 0.72rem;
+      font-weight: 900;
+      color: var(--gold-champagne);
+      margin-top: 2px;
+    }
+
+    .material-tier-btn.is-active[data-tier="oem_gold"] {
+      border-color: #fbbf24;
+      background: linear-gradient(145deg, rgba(245, 158, 11, 0.24), rgba(15, 23, 42, 0.85));
+    }
+
+    .material-tier-btn.is-active[data-tier="precision_chrome"] {
+      border-color: #38bdf8;
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.22), rgba(15, 23, 42, 0.85));
+    }
+
+    .material-tier-btn.is-active[data-tier="emerald_carbon"] {
+      border-color: #34d399;
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.24), rgba(15, 23, 42, 0.85));
+    }
+
+    .cta-actions-row {
       display: grid;
       grid-template-columns: 1.35fr 1fr;
       gap: 8px;
     }
 
-    .cta-primary, .cta-secondary {
+    .btn-liquid-wa,
+    .btn-liquid-web {
       text-decoration: none;
-      border-radius: 14px;
-      padding: 11px 12px;
-      font-size: clamp(0.78rem, 3.3vw, 0.88rem);
+      border-radius: 13px;
+      padding: 10px 12px;
+      font-size: clamp(0.76rem, 3vw, 0.88rem);
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
       text-align: center;
-      transition: transform 0.16s ease, opacity 0.16s ease;
-      will-change: transform, opacity;
+      transition: transform 0.16s ease, box-shadow 0.2s ease;
     }
 
-    .cta-primary {
+    .btn-liquid-wa {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #ffffff;
-      border: 1px solid rgba(52, 211, 153, 0.5);
+      border: 1px solid rgba(110, 231, 183, 0.55);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.32);
     }
 
-    .cta-secondary {
-      background: var(--bg-card);
-      color: var(--gold-bright);
+    .btn-liquid-web {
+      background: rgba(245, 158, 11, 0.14);
+      color: var(--gold-champagne);
       border: 1px solid var(--border-gold);
     }
 
-    .cta-primary:active, .cta-secondary:active {
-      transform: translate3d(0, 1px, 0) scale(0.97);
+    .btn-liquid-wa:active,
+    .btn-liquid-web:active {
+      transform: scale(0.97);
     }
 
-    /* حركة دخول العناصر الفرعية بـ transform + opacity فقط */
-    .stagger-item {
+    /* شاشة التحميل السريعة ريثما يجهز الاستوديو الانعكاسي */
+    #bootLoader {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      background: #04060b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: opacity 0.45s ease;
+      pointer-events: none;
+    }
+
+    #bootLoader.is-hidden {
       opacity: 0;
-      transform: translate3d(0, 10px, 0);
-      transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
-      will-change: transform, opacity;
     }
 
-    .scene-slide.is-active .stagger-item {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
+    .boot-ring {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid rgba(252, 211, 77, 0.2);
+      border-top-color: var(--gold-champagne);
+      border-right-color: var(--emerald-neon);
+      animation: spinGear 0.85s linear infinite;
     }
 
-    .scene-slide.is-active .d-1 { transition-delay: 0.05s; }
-    .scene-slide.is-active .d-2 { transition-delay: 0.13s; }
-    .scene-slide.is-active .d-3 { transition-delay: 0.21s; }
+    @keyframes spinGear {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 540px) {
+      .hud-micro-pill.hide-sm {
+        display: none;
+      }
+      .stage-copy-anchor {
+        top: calc(var(--safe-top) + 56px);
+        left: 38px;
+      }
+      .rail-track {
+        height: 96px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="ambient-bg" aria-hidden="true"></div>
+  <!-- شاشة إقلاع لحظية -->
+  <div id="bootLoader">
+    <div class="boot-ring"></div>
+    <div style="font-size:0.8rem;font-weight:800;color:#e2e8f0">جاري تجهيز المحرك الميكانيكي ثلاثي الأبعاد...</div>
+  </div>
 
-  <main class="showcase-shell" id="showcaseApp">
-    <!-- 1. شريط تقدم Reels الرباعي -->
-    <div class="reels-bars" role="tablist" aria-label="مشاهد العرض التفاعلي">
-      <div class="reel-seg" data-jump="0"><div class="reel-fill" id="fill-0"></div></div>
-      <div class="reel-seg" data-jump="1"><div class="reel-fill" id="fill-1"></div></div>
-      <div class="reel-seg" data-jump="2"><div class="reel-fill" id="fill-2"></div></div>
-      <div class="reel-seg" data-jump="3"><div class="reel-fill" id="fill-3"></div></div>
+  <!-- لوحة WebGL المثبتة 100dvh -->
+  <div id="webglViewport">
+    <canvas id="glCanvas" aria-label="مجسم ميكانيكي تفاعلي ثلاثي الأبعاد لمنصة حراج القطع"></canvas>
+  </div>
+
+  <div class="cinema-vignette" aria-hidden="true"></div>
+
+  <!-- طبقة خطوط الإشارة الهندسية ثلاثية الأبعاد (3D-to-2D Projected Callouts) -->
+  <svg id="calloutSvg" aria-hidden="true">
+    <defs>
+      <linearGradient id="calloutLineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#34d399" stop-opacity="0.95" />
+        <stop offset="100%" stop-color="#fcd34d" stop-opacity="0.85" />
+      </linearGradient>
+    </defs>
+    <g id="svgLinesGroup"></g>
+  </svg>
+  <div id="calloutNodesLayer"></div>
+
+  <!-- المسطرة الجانبية للتمرير (0% -> 100%) -->
+  <aside class="scroll-rail" aria-label="مؤشر مراحل التمرير">
+    <span class="rail-pct" id="railPctText">00%</span>
+    <div class="rail-track">
+      <div class="rail-fill" id="railFillBar"></div>
     </div>
+    <div class="rail-markers">
+      <button type="button" class="rail-step-btn is-active" data-scroll-to="0.08" title="المرحلة 1: المسح الليزري للشاصي">01</button>
+      <button type="button" class="rail-step-btn" data-scroll-to="0.38" title="المرحلة 2: التفكيك الهندسي الطائر">02</button>
+      <button type="button" class="rail-step-btn" data-scroll-to="0.68" title="المرحلة 3: التوجيه الجراحي بالرياض">03</button>
+      <button type="button" class="rail-step-btn" data-scroll-to="0.94" title="المرحلة 4: تبديل الخامات والطلب الفوري">04</button>
+    </div>
+  </aside>
 
-    <!-- 2. الهيدر والهوية البصرية -->
-    <header class="top-bar">
-      <div class="brand-id">
-        <div class="brand-emblem" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- النصوص السينمائية العائمة للمراحل الأربع -->
+  <div class="stage-copy-anchor">
+    <!-- المرحلة 1: 0% -> 22% -->
+    <section class="phase-editorial" id="copyPhase1">
+      <div class="phase-eyebrow">01 / LASER VIN TELEMETRY</div>
+      <h1 class="phase-headline">تشريح ليزري لرقم الشاصي ومطابقة الوكالة في 0.8 ثانية</h1>
+      <p class="phase-subcopy">مرّر للأسفل لمسح الهيكل ضوئياً وتفكيك المنظومة الميكانيكية في الفضاء ثلاثي الأبعاد بدقة مصانع السيارات الفائقة.</p>
+      <div id="vinHudStrip">
+        <div class="vin-readout-box" id="vinCodeHud">VIN: JN8AY2NY9P9000777</div>
+        <div class="bugatti-stat-chip" id="decodeTimerHud">DECODE: 0.80s</div>
+        <div class="bugatti-stat-chip">OEM MATCH: 100%</div>
+      </div>
+    </section>
+
+    <!-- المرحلة 2: 22% -> 55% -->
+    <section class="phase-editorial" id="copyPhase2">
+      <div class="phase-eyebrow">02 / EXPLODED CAD ARCHITECTURE</div>
+      <h2 class="phase-headline">تفكيك هندسي طائر لـ 14 فئة ميكانيكية دقيقة</h2>
+      <p class="phase-subcopy">المس أي قطعة طائرة أو اسحب بإصبعك لتدوير المنظومة في الفضاء وفحص الهوبات المثقبة، التروس المسننة، المساعدات، والدينمو النحاسي.</p>
+    </section>
+
+    <!-- المرحلة 3: 55% -> 80% -->
+    <section class="phase-editorial" id="copyPhase3">
+      <div class="phase-eyebrow">03 / RIYADH SURGICAL DISPATCH</div>
+      <h2 class="phase-headline">نبض توجيه فوري لصناعيات الرياض مع قفل الخصوصية</h2>
+      <p class="phase-subcopy">ينطلق طلبك المفروز برقم الهيكل مباشرةً إلى المتاجر والتشاليح المتخصصة بالقطعة فقط — دون كشف رقمك لأي طرف.</p>
+    </section>
+
+    <!-- المرحلة 4: 80% -> 100% -->
+    <section class="phase-editorial" id="copyPhase4">
+      <div class="phase-eyebrow">04 / TRI-TIER METALLURGY &amp; ORDER</div>
+      <h2 class="phase-headline">قارن الفئات الثلاث حياً على المجسم واعتمد قطعتك</h2>
+      <p class="phase-subcopy">بدّل بين معدن التيتانيوم الذهبي للوكالة، الكروم التجاري المعتمد، وكربون تشليح الحائر المضمون ثم أرسل طلبك فوراً.</p>
+    </section>
+  </div>
+
+  <!-- طبقة التحكم العلوية والسفلية -->
+  <div id="hudLayer">
+    <header class="top-telemetry-bar">
+      <a href="/" class="brand-lockup">
+        <div class="brand-crest" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fcd34d" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3.5"></circle>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.08a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.08a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.08a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
         </div>
-        <div class="brand-titles">
-          <div class="brand-name">حراج القطع | عالم التروس</div>
-          <div class="brand-domain">harajparts.com • 60FPS Live</div>
+        <div class="brand-text-wrap">
+          <strong>حراج القطع | عالم التروس</strong>
+          <span>HARAJPARTS.COM • WEBGL 3D STUDIO</span>
         </div>
-      </div>
+      </a>
 
-      <div class="top-controls">
-        <button type="button" class="icon-btn" id="btnPlayPause" aria-label="إيقاف أو تشغيل العرض">
-          <span id="playPauseIcon">⏸</span>
-          <span id="playPauseText">إيقاف</span>
-        </button>
+      <div class="telemetry-pills">
+        <div class="hud-micro-pill" title="مراقب الأداء الذكي 60FPS">
+          <span class="fps-dot" id="fpsStatusDot"></span>
+          <span id="fpsReadout">60 FPS</span>
+        </div>
+        <a href="/" class="home-back-link">الرئيسية</a>
       </div>
     </header>
 
-    <!-- 3. مبدّل المسارين (رحلة العميل الذكية / شبكة الموردين السرية) -->
-    <nav class="mode-switcher" id="modeSwitcher" data-mode="customer" aria-label="وضع العرض">
-      <div class="mode-pill-indicator" aria-hidden="true"></div>
-      <button type="button" class="mode-tab" data-set-mode="customer" aria-selected="true">🚗 رحلة العميل الذكية</button>
-      <button type="button" class="mode-tab" data-set-mode="supplier" aria-selected="false">🔒 شبكة الموردين السرية</button>
-    </nav>
+    <div class="bottom-dock-zone">
+      <!-- شريط الإرشاد للمرحلتين 1 و 2 -->
+      <div class="dock-panel is-visible" id="dockHint">
+        <div class="hint-bar">
+          <span class="scroll-chevron">▼</span>
+          <span id="dynamicHintText">مرّر للتشريح الميكانيكي • اسحب أفقياً لتدوير المجسم 360°</span>
+        </div>
+      </div>
 
-    <!-- 4. مسرح المشاهد التفاعلي -->
-    <section class="stage-viewport" id="stageViewport">
-      <div class="tap-zone tap-zone-prev" id="tapPrev" title="المشهد السابق"></div>
-      <div class="tap-zone tap-zone-next" id="tapNext" title="المشهد التالي"></div>
+      <!-- شريط المرحلة 3: العزل البؤري للقطعة + قفل الخصوصية المزدوج -->
+      <div class="dock-panel" id="dockStage3">
+        <div class="stage3-controls">
+          <div class="privacy-dual-lock">
+            <span>🔒</span>
+            <span>قفل الخصوصية المزدوج: رقم جوالك وهوية التاجر محجوبان 100%</span>
+          </div>
+          <div class="segmented-switcher" role="tablist" aria-label="اختيار القطعة البطلة">
+            <button type="button" class="seg-btn is-active" data-hero-focus="alternator">⚡ دينمو وكهرباء</button>
+            <button type="button" class="seg-btn" data-hero-focus="brakes_suspension">🛞 طقم فرامل وعضلات</button>
+            <button type="button" class="seg-btn" data-hero-focus="engine">⚙️ مكينة وتروس</button>
+          </div>
+        </div>
+      </div>
 
-      <div id="slidesContainer"></div>
-    </section>
+      <!-- شريط المرحلة 4: مبدّل الخامات الثلاثي + بطاقة الزجاج السائل للطلب الفوري -->
+      <div class="dock-panel" id="dockStage4">
+        <div class="liquid-glass-card">
+          <div class="tier-selector-grid" role="radiogroup" aria-label="تبديل فئة وخامة التسعير">
+            <button type="button" class="material-tier-btn is-active" data-tier="oem_gold">
+              <span class="tier-title">✨ أصلي وكالة</span>
+              <span class="tier-sub">OEM Gold Titanium</span>
+              <span class="tier-price-tag">مطابقة شاصي 100%</span>
+            </button>
+            <button type="button" class="material-tier-btn" data-tier="precision_chrome">
+              <span class="tier-title">⚙️ تجاري معتمد</span>
+              <span class="tier-sub">Precision Chrome</span>
+              <span class="tier-price-tag">درجة أولى بضمان</span>
+            </button>
+            <button type="button" class="material-tier-btn" data-tier="emerald_carbon">
+              <span class="tier-title">♻️ تشليح الحائر مضمون</span>
+              <span class="tier-sub">Emerald Carbon</span>
+              <span class="tier-price-tag">أصلي مفكوك عالشرط</span>
+            </button>
+          </div>
 
-    <!-- 5. شريط الطلب الفوري (Instant-Order CTA) -->
-    <footer class="cta-dock">
-      <a class="cta-primary" id="primaryWaCta" href="https://wa.me/966509046024?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AA%D8%B3%D8%B9%D9%8A%D8%B1%20%D9%82%D8%B7%D8%B9%D8%A9%20%D8%BA%D9%8A%D8%A7%D8%B1%20%D8%A8%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D8%B4%D8%A7%D8%B5%D9%8A" target="_blank" rel="noopener">
-        <span>💬 اطلب قطعتك عبر واتساب</span>
-      </a>
-      <a class="cta-secondary" href="/">
-        <span>⚡ طلب مباشر بالموقع</span>
-      </a>
-    </footer>
-  </main>
+          <div class="cta-actions-row">
+            <a
+              class="btn-liquid-wa"
+              id="waInstantOrderBtn"
+              href="https://wa.me/966509046024?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AA%D8%B3%D8%B9%D9%8A%D8%B1%20%D9%82%D8%B7%D8%B9%D8%A9%20%D8%BA%D9%8A%D8%A7%D8%B1%20%D8%A8%D8%B1%D9%82%D9%85%20%D8%A7%D9%84%D8%B4%D8%A7%D8%B5%D9%8A%20%D8%A3%D9%88%20%D8%B5%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%85%D8%A7%D8%B1%D8%A9"
+              target="_blank"
+              rel="noopener"
+            >
+              <span>💬 اطلب برقم الشاصي عبر واتساب</span>
+            </a>
+            <a class="btn-liquid-web" href="/">
+              <span>📸 ارفع الاستمارة بالموقع</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- مسار التمرير الطولي 550vh -->
+  <main id="scrollTrack" aria-hidden="true"></main>
 
   <script>
-    (function () {
-      'use strict';
+    setTimeout(function () {
+      var loader = document.getElementById('bootLoader');
+      if (loader) loader.classList.add('is-hidden');
+    }, 3200);
+  </script>
 
-      var SCENE_DURATION_MS = 5800;
+  <script type="module">
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-      var SCENES_BY_MODE = {
-        customer: [
-          {
-            chip: 'المشهد 1 من 4 • الإدخال الذكي',
-            timing: 'Instant Vision + Voice',
-            title: 'صوّر الاستمارة أو أرسل بصمة صوتية بالعامية',
-            sub: 'لا حاجة لكتابة أرقام معقدة — أرسل صورة استمارة المركبة مع طلبك برسالة واحدة.',
-            html:
-              '<div class="istimara-card stagger-item d-1">' +
-                '<div class="istimara-top"><span>🇸🇦 رخصة سير مركبة (استمارة)</span><span>فحص بصري فوري</span></div>' +
-                '<div class="istimara-grid">' +
-                  '<div class="istimara-field"><span>الماركة والطراز</span><strong>جي إم سي يوكن دينالي</strong></div>' +
-                  '<div class="istimara-field"><span>سنة الصنع</span><strong>2022</strong></div>' +
-                  '<div class="vin-mono">VIN: 1GKS2BKT6NR284910</div>' +
-                '</div>' +
-              '</div>' +
-              '<div class="wa-bubble stagger-item d-2">' +
-                '<span style="font-size:1.35rem">🎙️</span>' +
-                '<div class="wa-bubble-text">"سلام عليكم يا غالي، أبي صدام أمامي وشبك خلية يوكن 2022 على نفس الشاصي"</div>' +
-              '</div>'
-          },
-          {
-            chip: 'المشهد 2 من 4 • مطابقة الشاصي',
-            timing: '0.8s VIN Decode',
-            title: 'قراءة الـ 17 خانة للشاصي والفرز الجراحي في 0.8 ثانية',
-            sub: 'يستخرج المحرك رقم الهيكل بدقة 100% ويطابق الفئة الجراحية الصحيحة من بين 14 تخصصاً.',
-            html:
-              '<div class="vin-scanner-box stagger-item d-1">' +
-                '<div class="scan-beam" id="activeScanBeam"></div>' +
-                '<div class="vin-mono" style="margin-top:0">1GKS2BKT6NR284910 ✓</div>' +
-                '<div class="spec-pills">' +
-                  '<div class="spec-pill"><small>المركبة المطابقة</small><b>GMC Yukon 2022 (6.2L)</b></div>' +
-                  '<div class="spec-pill"><small>التصنيف الجراحي الدقيق</small><b>#9 الصدامات والشبك والواجهة</b></div>' +
-                  '<div class="spec-pill"><small>القطع المفروزة</small><b>1. صدام أمامي • 2. شبك خلية</b></div>' +
-                  '<div class="spec-pill"><small>حماية الخطأ</small><b>مطابقة OEM برقم الهيكل</b></div>' +
-                '</div>' +
-              '</div>'
-          },
-          {
-            chip: 'المشهد 3 من 4 • التوجيه الجراحي',
-            timing: 'Team A & B Dispatch',
-            title: 'إرسال فوري لفرق الرياض المتخصصة مع قفل الخصوصية',
-            sub: 'يُوجَّه الطلب حصرياً لمحلات وتشاليح GMC المعتمدة في الرياض دون كشف رقمك لأي تاجر.',
-            html:
-              '<div class="dispatch-hub stagger-item d-1">' +
-                '<div class="district-row"><span>🏢 وكلاء ومحلات الصناعية القديمة والنسيم</span><span class="district-tag">Team A • جديد</span></div>' +
-                '<div class="district-row"><span>🏗️ تشاليح الحائر ومستوردو السلي (GMC)</span><span class="district-tag">Team B • تشليح</span></div>' +
-                '<div class="district-row"><span>⚡ محرك الإنقاذ الحي للقطع النادرة</span><span class="district-tag">حراج + Maps</span></div>' +
-              '</div>' +
-              '<div class="privacy-shield stagger-item d-2">' +
-                '<span>🔒</span>' +
-                '<span>درع السرية التام: جوالك وبياناتك محجوبة 100% عن الموردين لمنع أي إزعاج.</span>' +
-              '</div>'
-          },
-          {
-            chip: 'المشهد 4 من 4 • التسعيرة الموحدة',
-            timing: '3 Verified Tiers',
-            title: 'قارن 3 خيارات مضمونة واعتمد طلبك بضغطة زر',
-            sub: 'تصلك أقل الأسعار مفروزة بوضوح مع الضمان، ويستلم مندوب المنصة القطعة ويفحصها لك.',
-            html:
-              '<div class="quotes-stack">' +
-                '<div class="quote-tier featured stagger-item d-1">' +
-                  '<div class="tier-meta"><strong>✨ أصلي وكالة (GM Genuine)</strong><span>جديد بكرتون الوكيل • مطابقة شاصي 100%</span></div>' +
-                  '<div class="tier-price"><b>2,450 SAR</b><small>جاهز للتسليم</small></div>' +
-                '</div>' +
-                '<div class="quote-tier stagger-item d-2">' +
-                  '<div class="tier-meta"><strong>🛡️ تجاري معتمد درجة أولى</strong><span>مطابق للمواصفات • خيار اقتصادي ممتاز</span></div>' +
-                  '<div class="tier-price"><b>980 SAR</b><small>ضمان مطابقة</small></div>' +
-                '</div>' +
-                '<div class="quote-tier stagger-item d-3">' +
-                  '<div class="tier-meta"><strong>♻️ تشليح الحائر مضمون</strong><span>أصلي مفكوك نظيف على الشرط بدون سمكرة</span></div>' +
-                  '<div class="tier-price"><b>1,490 SAR</b><small>ضمان استبدال</small></div>' +
-                '</div>' +
-              '</div>'
+    (function initCarbon3DScrollytelling() {
+      const canvas = document.getElementById('glCanvas');
+      const bootLoader = document.getElementById('bootLoader');
+      const fpsReadout = document.getElementById('fpsReadout');
+      const fpsStatusDot = document.getElementById('fpsStatusDot');
+      const railPctText = document.getElementById('railPctText');
+      const railFillBar = document.getElementById('railFillBar');
+      const vinCodeHud = document.getElementById('vinCodeHud');
+      const decodeTimerHud = document.getElementById('decodeTimerHud');
+      const dynamicHintText = document.getElementById('dynamicHintText');
+
+      const copyPhase1 = document.getElementById('copyPhase1');
+      const copyPhase2 = document.getElementById('copyPhase2');
+      const copyPhase3 = document.getElementById('copyPhase3');
+      const copyPhase4 = document.getElementById('copyPhase4');
+
+      const dockHint = document.getElementById('dockHint');
+      const dockStage3 = document.getElementById('dockStage3');
+      const dockStage4 = document.getElementById('dockStage4');
+
+      const svgLinesGroup = document.getElementById('svgLinesGroup');
+      const calloutNodesLayer = document.getElementById('calloutNodesLayer');
+
+      // =========================================================================
+      // 1. WebGLRenderer + Adaptive FPS Governor + Studio PMREM HDRI
+      // =========================================================================
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        powerPreference: 'high-performance',
+        alpha: false,
+        stencil: false,
+      });
+
+      const maxInitialDpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      let currentDprCap = maxInitialDpr;
+      let adaptiveDowngraded = false;
+
+      renderer.setPixelRatio(currentDprCap);
+      renderer.setSize(window.innerWidth, window.innerHeight, false);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.24;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x04060b);
+      scene.fog = new THREE.FogExp2(0x04060b, 0.042);
+
+      const camera = new THREE.PerspectiveCamera(
+        42,
+        window.innerWidth / Math.max(1, window.innerHeight),
+        0.1,
+        80
+      );
+      camera.position.set(0, 0.45, 7.2);
+
+      // بناء إضاءة استوديو انعكاسية حقيقية (RoomEnvironment + لوحات إضاءة Bugatti الطولية)
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+
+      const studioEnvScene = new RoomEnvironment();
+      const addStudioSoftbox = (colorHex, intensity, w, h, pos, lookTarget) => {
+        const panel = new THREE.Mesh(
+          new THREE.PlaneGeometry(w, h),
+          new THREE.MeshBasicMaterial({
+            color: new THREE.Color(colorHex).multiplyScalar(intensity),
+            side: THREE.DoubleSide,
+          })
+        );
+        panel.position.copy(pos);
+        panel.lookAt(lookTarget);
+        studioEnvScene.add(panel);
+      };
+      // إضاءة علوية طولية لابراز انعكاس التيتانيوم والذهب بنمط بوجاتي
+      addStudioSoftbox(0xfff7e6, 9.0, 14, 2.2, new THREE.Vector3(0, 7.5, 2.0), new THREE.Vector3(0, 0, 0));
+      addStudioSoftbox(0xfbbf24, 6.2, 8, 3.0, new THREE.Vector3(7.5, 2.8, 3.5), new THREE.Vector3(0, 0, 0));
+      addStudioSoftbox(0x34d399, 5.4, 8, 3.0, new THREE.Vector3(-7.5, 2.2, -2.5), new THREE.Vector3(0, 0, 0));
+      addStudioSoftbox(0x38bdf8, 4.8, 10, 1.8, new THREE.Vector3(0, -5.5, 4.0), new THREE.Vector3(0, 0, 0));
+
+      const envRenderTarget = pmremGenerator.fromScene(studioEnvScene, 0.032);
+      scene.environment = envRenderTarget.texture;
+      studioEnvScene.traverse((obj) => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) obj.material.dispose();
+      });
+      pmremGenerator.dispose();
+
+      // إضاءات ديناميكية مكملة للمعادن
+      const keyLight = new THREE.DirectionalLight(0xfff6e5, 2.4);
+      keyLight.position.set(4.5, 6.5, 5.2);
+      scene.add(keyLight);
+
+      const rimLightLeft = new THREE.DirectionalLight(0x38bdf8, 1.65);
+      rimLightLeft.position.set(-5.8, 2.4, -4.0);
+      scene.add(rimLightLeft);
+
+      const tierAccentSpot = new THREE.PointLight(0xfbbf24, 3.4, 16, 1.5);
+      tierAccentSpot.position.set(2.8, 2.6, 3.2);
+      scene.add(tierAccentSpot);
+
+      const laserGlowLight = new THREE.PointLight(0x10b981, 0, 7.5, 1.8);
+      scene.add(laserGlowLight);
+
+      // =========================================================================
+      // 2. الخامات الدقيقة الإجرائية (Procedural Micro-Textures & Bugatti Metals)
+      // =========================================================================
+      function createRadialLatheTexture() {
+        const c = document.createElement('canvas');
+        c.width = 256;
+        c.height = 256;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#808080';
+        ctx.fillRect(0, 0, 256, 256);
+        for (let r = 8; r < 126; r += 2) {
+          const shade = 110 + Math.floor(Math.sin(r * 0.9) * 28 + ((r * 17) % 19));
+          ctx.strokeStyle = `rgb(${shade},${shade},${shade})`;
+          ctx.lineWidth = 1.1;
+          ctx.beginPath();
+          ctx.arc(128, 128, r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        const tex = new THREE.CanvasTexture(c);
+        tex.needsUpdate = true;
+        return tex;
+      }
+
+      function createCarbonWeaveTexture() {
+        const c = document.createElement('canvas');
+        c.width = 64;
+        c.height = 64;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#22262e';
+        ctx.fillRect(0, 0, 64, 64);
+        for (let y = 0; y < 64; y += 8) {
+          for (let x = 0; x < 64; x += 8) {
+            const diag = ((x + y) / 8) % 2 === 0;
+            ctx.fillStyle = diag ? '#555d6b' : '#2d333d';
+            ctx.fillRect(x, y, 7, 7);
+            ctx.fillStyle = diag ? '#727c8f' : '#1b1f26';
+            ctx.fillRect(x + 1, y + 1, 5, 2);
           }
-        ],
-        supplier: [
-          {
-            chip: 'شبكة التجار 1 من 4 • طلبات جاهزة',
-            timing: 'Zero-Noise Orders',
-            title: 'طلبات مفروزة برقم الشاصي حسب ماركة محلك فقط',
-            sub: 'لا إزعاج بماركات خارج تخصصك — تصلك فقط طلبات القطع المطابقة لمخزون متجرك أو تشليحك.',
-            html:
-              '<div class="vin-scanner-box stagger-item d-1">' +
-                '<div class="spec-pills" style="margin-top:0">' +
-                  '<div class="spec-pill"><small>التسجيل والاشتراك</small><b>مجاني 100% بدون التزام</b></div>' +
-                  '<div class="spec-pill"><small>دقة الفرز</small><b>14 فئة جراحية + شاصي VIN</b></div>' +
-                  '<div class="spec-pill"><small>نطاق التغطية</small><b>الصناعية القديمة • الحائر • السلي</b></div>' +
-                  '<div class="spec-pill"><small>أرشفة ذكية</small><b>تواصل مهني منظم عبر واتساب</b></div>' +
-                '</div>' +
-              '</div>'
-          },
-          {
-            chip: 'شبكة التجار 2 من 4 • تسعير بالصوت',
-            timing: 'Whisper + Gemini AI',
-            title: 'سعّر الطلب برسالة نصية أو بصمة صوتية سريعة',
-            sub: 'يفهم النظام لهجة السوق والتشاليح فوراً ويسجل سعرك والضمان بدقة دون نماذج معقدة.',
-            html:
-              '<div class="wa-bubble stagger-item d-1">' +
-                '<span style="font-size:1.35rem">🎤</span>' +
-                '<div class="wa-bubble-text">"حياك، الأصلي وكالة بـ 2150 والتجاري التايواني بـ 840 وعندنا تشليح الحائر نظيف بـ 1300 ضمان أسبوعين"</div>' +
-              '</div>' +
-              '<div class="privacy-shield stagger-item d-2">' +
-                '<span>🤖</span>' +
-                '<span>تحليل آلي فوري للسعر والحالة والضمان خلال أقل من ثانية.</span>' +
-              '</div>'
-          },
-          {
-            chip: 'شبكة التجار 3 من 4 • سرية تنافسية',
-            timing: '100% Confidential',
-            title: 'اسم محلك وأسعار الجملة محفوظة بسرية تامة',
-            sub: 'لا يظهر اسم محلك للعملاء ولا للمنافسين — نحمي خصوصية تسعيرتك في السوق بالكامل.',
-            html:
-              '<div class="dispatch-hub stagger-item d-1">' +
-                '<div class="district-row"><span>🔐 إخفاء هوية المتجر عن المنافسين</span><span class="district-tag">محمي 100%</span></div>' +
-                '<div class="district-row"><span>⚖️ ترسية عادلة للأسرع والأفضل سعراً</span><span class="district-tag">Team A / B</span></div>' +
-                '<div class="district-row"><span>📈 أولوية للرد السريع والمطابقة الدقيقة</span><span class="district-tag">نقاط سرعة</span></div>' +
-              '</div>'
-          },
-          {
-            chip: 'شبكة التجار 4 من 4 • استلام ودفع',
-            timing: 'Riyadh Field Couriers',
-            title: 'مندوب المنصة يستلم القطعة من باب محلك ويسدد فوراً',
-            sub: 'لا تشغل بالك بالشحن أو متابعة العميل — مندوبنا الميداني في الرياض يتولى الاستلام والفحص.',
-            html:
-              '<div class="quotes-stack">' +
-                '<div class="quote-tier featured stagger-item d-1">' +
-                  '<div class="tier-meta"><strong>🛵 استلام ميداني من المحل أو التشليح</strong><span>مندوبو المنصة يغطون كافة صناعيات الرياض</span></div>' +
-                  '<div class="tier-price"><b>فوري</b><small>نفس اليوم</small></div>' +
-                '</div>' +
-                '<div class="quote-tier stagger-item d-2">' +
-                  '<div class="tier-meta"><strong>🤝 انضم مجاناً لشركاء عالم التروس</strong><span>تفعيل رسمي بعد مراجعة الإدارة المختصة</span></div>' +
-                  '<div class="tier-price"><b>0 SAR</b><small>رسوم التسجيل</small></div>' +
-                '</div>' +
-              '</div>'
-          }
-        ]
+        }
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(10, 10);
+        tex.needsUpdate = true;
+        return tex;
+      }
+
+      function createCopperWindingTexture() {
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 128;
+        const ctx = c.getContext('2d');
+        for (let y = 0; y < 128; y += 4) {
+          ctx.fillStyle = y % 8 === 0 ? '#d97736' : '#8f3f14';
+          ctx.fillRect(0, y, 128, 3);
+          ctx.fillStyle = '#f6ad76';
+          ctx.fillRect(0, y, 128, 1);
+        }
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(5, 5);
+        tex.needsUpdate = true;
+        return tex;
+      }
+
+      const radialTex = createRadialLatheTexture();
+      const carbonTex = createCarbonWeaveTexture();
+      const copperTex = createCopperWindingTexture();
+
+      // المواد المعدنية الفيزيائية الأساسية (قابلة للتحول الفوري في المرحلة 4)
+      const materials = {
+        primaryAlloy: new THREE.MeshPhysicalMaterial({
+          color: 0xcbd5e1,
+          metalness: 0.94,
+          roughness: 0.19,
+          clearcoat: 0.45,
+          clearcoatRoughness: 0.14,
+          bumpMap: radialTex,
+          bumpScale: 0.008,
+          envMapIntensity: 2.1,
+        }),
+        heroAccentMetal: new THREE.MeshPhysicalMaterial({
+          color: 0xeab308,
+          metalness: 0.92,
+          roughness: 0.16,
+          clearcoat: 0.78,
+          clearcoatRoughness: 0.1,
+          envMapIntensity: 2.35,
+        }),
+        machinedSteel: new THREE.MeshPhysicalMaterial({
+          color: 0x94a3b8,
+          metalness: 0.96,
+          roughness: 0.24,
+          bumpMap: radialTex,
+          bumpScale: 0.012,
+          envMapIntensity: 1.95,
+        }),
+        carbonComposite: new THREE.MeshPhysicalMaterial({
+          color: 0x1a202c,
+          metalness: 0.38,
+          roughness: 0.28,
+          clearcoat: 0.92,
+          clearcoatRoughness: 0.08,
+          roughnessMap: carbonTex,
+          bumpMap: carbonTex,
+          bumpScale: 0.018,
+          envMapIntensity: 1.85,
+        }),
+        woundCopper: new THREE.MeshPhysicalMaterial({
+          color: 0xd97736,
+          metalness: 0.95,
+          roughness: 0.22,
+          clearcoat: 0.35,
+          map: copperTex,
+          bumpMap: copperTex,
+          bumpScale: 0.016,
+          envMapIntensity: 2.25,
+        }),
+        darkGunmetal: new THREE.MeshPhysicalMaterial({
+          color: 0x27303f,
+          metalness: 0.88,
+          roughness: 0.32,
+          clearcoat: 0.3,
+          envMapIntensity: 1.65,
+        }),
+        aeroWireRib: new THREE.MeshPhysicalMaterial({
+          color: 0x64748b,
+          metalness: 0.9,
+          roughness: 0.2,
+          transparent: true,
+          opacity: 0.62,
+          envMapIntensity: 2.0,
+        }),
       };
 
-      var currentMode = 'customer';
-      var currentScene = 0;
-      var isPaused = false;
-      var elapsedInSceneMs = 0;
-      var lastFrameTs = null;
+      // إعدادات باقات المعادن الثلاث للمرحلة 4
+      const TIER_PRESETS = {
+        oem_gold: {
+          primaryColor: 0xd4dce6,
+          primaryRoughness: 0.18,
+          primaryMetalness: 0.94,
+          accentColor: 0xf59e0b,
+          accentRoughness: 0.15,
+          accentMetalness: 0.93,
+          steelColor: 0x9fb0c4,
+          spotColor: 0xfbbf24,
+          rimColor: 0x38bdf8,
+        },
+        precision_chrome: {
+          primaryColor: 0xf1f5f9,
+          primaryRoughness: 0.07,
+          primaryMetalness: 1.0,
+          accentColor: 0x7dd3fc,
+          accentRoughness: 0.1,
+          accentMetalness: 0.98,
+          steelColor: 0xe2e8f0,
+          spotColor: 0x38bdf8,
+          rimColor: 0xe0f2fe,
+        },
+        emerald_carbon: {
+          primaryColor: 0x2d3748,
+          primaryRoughness: 0.24,
+          primaryMetalness: 0.76,
+          accentColor: 0x10b981,
+          accentRoughness: 0.14,
+          accentMetalness: 0.9,
+          steelColor: 0x4a5568,
+          spotColor: 0x10b981,
+          rimColor: 0x34d399,
+        },
+      };
 
-      var slidesContainer = document.getElementById('slidesContainer');
-      var modeSwitcher = document.getElementById('modeSwitcher');
-      var btnPlayPause = document.getElementById('btnPlayPause');
-      var playPauseIcon = document.getElementById('playPauseIcon');
-      var playPauseText = document.getElementById('playPauseText');
-      var fills = [
-        document.getElementById('fill-0'),
-        document.getElementById('fill-1'),
-        document.getElementById('fill-2'),
-        document.getElementById('fill-3')
+      let activeTierKey = 'oem_gold';
+      const targetTierColors = {
+        primary: new THREE.Color(TIER_PRESETS.oem_gold.primaryColor),
+        accent: new THREE.Color(TIER_PRESETS.oem_gold.accentColor),
+        steel: new THREE.Color(TIER_PRESETS.oem_gold.steelColor),
+        spot: new THREE.Color(TIER_PRESETS.oem_gold.spotColor),
+        rim: new THREE.Color(TIER_PRESETS.oem_gold.rimColor),
+      };
+
+      function applyMaterialTier(tierKey) {
+        if (!TIER_PRESETS[tierKey]) return;
+        activeTierKey = tierKey;
+        const p = TIER_PRESETS[tierKey];
+        targetTierColors.primary.setHex(p.primaryColor);
+        targetTierColors.accent.setHex(p.accentColor);
+        targetTierColors.steel.setHex(p.steelColor);
+        targetTierColors.spot.setHex(p.spotColor);
+        targetTierColors.rim.setHex(p.rimColor);
+
+        materials.primaryAlloy.roughness = p.primaryRoughness;
+        materials.primaryAlloy.metalness = p.primaryMetalness;
+        materials.primaryAlloy.bumpMap = tierKey === 'emerald_carbon' ? carbonTex : radialTex;
+        materials.primaryAlloy.bumpScale = tierKey === 'emerald_carbon' ? 0.02 : 0.008;
+        materials.primaryAlloy.needsUpdate = true;
+
+        materials.heroAccentMetal.roughness = p.accentRoughness;
+        materials.heroAccentMetal.metalness = p.accentMetalness;
+
+        document.querySelectorAll('.material-tier-btn').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.tier === tierKey);
+        });
+      }
+
+      // =========================================================================
+      // 3. البناء الهندسي الإجرائي عالي الدقة (Procedural CAD-Grade Assemblies)
+      // =========================================================================
+      const masterRig = new THREE.Group();
+      scene.add(masterRig);
+
+      // دالة مساعدة لتوليد ترس مسنن هندسي حقيقي بفتحات تخفيف وزن
+      function createInvoluteGearMesh(teeth, outerR, rootR, boreR, depth, holeCount, mat) {
+        const shape = new THREE.Shape();
+        const step = (Math.PI * 2) / teeth;
+        for (let i = 0; i < teeth; i++) {
+          const a0 = i * step;
+          const a1 = a0 + step * 0.18;
+          const a2 = a0 + step * 0.34;
+          const a3 = a0 + step * 0.62;
+          const a4 = a0 + step * 0.78;
+          const p0x = Math.cos(a0) * rootR;
+          const p0y = Math.sin(a0) * rootR;
+          if (i === 0) shape.moveTo(p0x, p0y);
+          else shape.lineTo(p0x, p0y);
+          shape.lineTo(Math.cos(a1) * rootR, Math.sin(a1) * rootR);
+          shape.lineTo(Math.cos(a2) * outerR, Math.sin(a2) * outerR);
+          shape.lineTo(Math.cos(a3) * outerR, Math.sin(a3) * outerR);
+          shape.lineTo(Math.cos(a4) * rootR, Math.sin(a4) * rootR);
+        }
+        shape.closePath();
+
+        // فتحة المحور الوسطى
+        const centerHole = new THREE.Path();
+        centerHole.absarc(0, 0, boreR, 0, Math.PI * 2, true);
+        shape.holes.push(centerHole);
+
+        // فتحات تخفيف الوزن الدائرية
+        if (holeCount > 0) {
+          const ringR = (rootR + boreR) * 0.52;
+          const cutR = (rootR - boreR) * 0.23;
+          for (let h = 0; h < holeCount; h++) {
+            const ha = (h / holeCount) * Math.PI * 2;
+            const hp = new THREE.Path();
+            hp.absarc(Math.cos(ha) * ringR, Math.sin(ha) * ringR, cutR, 0, Math.PI * 2, true);
+            shape.holes.push(hp);
+          }
+        }
+
+        const geo = new THREE.ExtrudeGeometry(shape, {
+          depth,
+          bevelEnabled: true,
+          bevelThickness: 0.018,
+          bevelSize: 0.015,
+          bevelSegments: 2,
+          curveSegments: 16,
+        });
+        geo.center();
+        return new THREE.Mesh(geo, mat);
+      }
+
+      // منحنى حلزوني رياضي لبناء ياي المساعد بـ TubeGeometry
+      class HelixSpringCurve extends THREE.Curve {
+        constructor(radius, height, turns) {
+          super();
+          this.radius = radius;
+          this.height = height;
+          this.turns = turns;
+        }
+        getPoint(t, optionalTarget = new THREE.Vector3()) {
+          const angle = t * Math.PI * 2 * this.turns;
+          const x = Math.cos(angle) * this.radius;
+          const y = (t - 0.5) * this.height;
+          const z = Math.sin(angle) * this.radius;
+          return optionalTarget.set(x, y, z);
+        }
+      }
+
+      // -------------------------------------------------------------------------
+      // (A) الهيكل الانسيابي الشبكي للمركبة (Aerodynamic Hyper-Chassis Silhouette)
+      // -------------------------------------------------------------------------
+      const chassisLeft = new THREE.Group();
+      const chassisRight = new THREE.Group();
+      const chassisSpine = new THREE.Group();
+      masterRig.add(chassisLeft, chassisRight, chassisSpine);
+
+      function buildAeroSideRibs(sign) {
+        const sideGroup = new THREE.Group();
+        // خط السقف والأعمدة الانسيابي
+        const roofCurve = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(sign * 0.82, -0.22, 2.25),
+          new THREE.Vector3(sign * 0.98, 0.24, 1.35),
+          new THREE.Vector3(sign * 0.86, 0.82, 0.35),
+          new THREE.Vector3(sign * 0.84, 0.84, -0.85),
+          new THREE.Vector3(sign * 0.92, 0.36, -1.95),
+          new THREE.Vector3(sign * 0.78, -0.18, -2.22),
+        ]);
+        sideGroup.add(new THREE.Mesh(new THREE.TubeGeometry(roofCurve, 64, 0.018, 8, false), materials.aeroWireRib));
+
+        // خط الكتف والرفارف العضلية
+        const shoulderCurve = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(sign * 0.88, -0.36, 2.28),
+          new THREE.Vector3(sign * 1.24, -0.05, 1.52),
+          new THREE.Vector3(sign * 1.18, 0.14, 0.0),
+          new THREE.Vector3(sign * 1.26, 0.06, -1.45),
+          new THREE.Vector3(sign * 0.86, -0.3, -2.24),
+        ]);
+        sideGroup.add(new THREE.Mesh(new THREE.TubeGeometry(shoulderCurve, 64, 0.015, 8, false), materials.aeroWireRib));
+
+        // قوس العجلة الأمامي والخلفي
+        for (const zCenter of [1.32, -1.35]) {
+          const archPts = [];
+          for (let i = 0; i <= 14; i++) {
+            const a = (i / 14) * Math.PI;
+            archPts.push(
+              new THREE.Vector3(
+                sign * (1.22 + Math.sin(a) * 0.08),
+                -0.55 + Math.sin(a) * 0.48,
+                zCenter + Math.cos(a) * 0.52
+              )
+            );
+          }
+          const archCurve = new THREE.CatmullRomCurve3(archPts);
+          sideGroup.add(new THREE.Mesh(new THREE.TubeGeometry(archCurve, 28, 0.014, 8, false), materials.aeroWireRib));
+        }
+        return sideGroup;
+      }
+
+      chassisLeft.add(buildAeroSideRibs(-1));
+      chassisRight.add(buildAeroSideRibs(1));
+
+      // خطوط وسط السقف وغطاء المحرك والشبك الأمامي المضيء
+      for (const xOff of [-0.28, 0, 0.28]) {
+        const centerCurve = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(xOff, -0.28, 2.34),
+          new THREE.Vector3(xOff * 1.2, 0.18, 1.42),
+          new THREE.Vector3(xOff * 1.1, 0.88, 0.2),
+          new THREE.Vector3(xOff * 1.1, 0.86, -0.92),
+          new THREE.Vector3(xOff, 0.25, -2.18),
+        ]);
+        chassisSpine.add(new THREE.Mesh(new THREE.TubeGeometry(centerCurve, 56, 0.011, 6, false), materials.aeroWireRib));
+      }
+
+      // شبك أمامي مضيء خفيف بنمط السيارات الخارقة
+      const drlMat = new THREE.MeshBasicMaterial({ color: 0xfcd34d, transparent: true, opacity: 0.75 });
+      for (const s of [-1, 1]) {
+        const drlCurve = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(s * 0.42, -0.18, 2.28),
+          new THREE.Vector3(s * 0.88, -0.1, 2.16),
+          new THREE.Vector3(s * 1.08, -0.02, 1.96),
+        ]);
+        chassisSpine.add(new THREE.Mesh(new THREE.TubeGeometry(drlCurve, 18, 0.014, 6, false), drlMat));
+      }
+
+      // -------------------------------------------------------------------------
+      // (B) المنظومة 1: البساتم وعمود الكرنك والتروس المسننة (Engine & Gears)
+      // -------------------------------------------------------------------------
+      const engineAssembly = new THREE.Group();
+      engineAssembly.name = 'engine';
+      masterRig.add(engineAssembly);
+
+      const mainGear24 = createInvoluteGearMesh(24, 0.62, 0.51, 0.14, 0.14, 6, materials.primaryAlloy);
+      mainGear24.position.set(0, -0.12, 0.36);
+      engineAssembly.add(mainGear24);
+
+      const idlerGear16 = createInvoluteGearMesh(16, 0.43, 0.34, 0.1, 0.16, 5, materials.heroAccentMetal);
+      idlerGear16.position.set(0.74, 0.36, 0.36);
+      engineAssembly.add(idlerGear16);
+
+      const camPinion12 = createInvoluteGearMesh(12, 0.33, 0.25, 0.08, 0.15, 0, materials.machinedSteel);
+      camPinion12.position.set(-0.68, 0.34, 0.36);
+      engineAssembly.add(camPinion12);
+
+      // عمود الكرنك المخرط + 4 بساتم متحركة
+      const crankShaftBar = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.085, 0.085, 1.25, 24),
+        materials.machinedSteel
+      );
+      crankShaftBar.rotation.x = Math.PI / 2;
+      crankShaftBar.position.set(0, -0.12, -0.22);
+      engineAssembly.add(crankShaftBar);
+
+      const pistonUnits = [];
+      for (let i = 0; i < 4; i++) {
+        const zPos = -0.66 + i * 0.31;
+        const vAngle = (i % 2 === 0 ? 1 : -1) * 0.34; // تصميم V4 ميكانيكي فخم
+        const unit = new THREE.Group();
+        unit.position.set(0, -0.12, zPos);
+        unit.rotation.z = vAngle;
+
+        // حدبة توازن الكرنك
+        const web = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.34, 0.07), materials.darkGunmetal);
+        web.position.y = -0.05;
+        unit.add(web);
+
+        // ذراع التوصيل H-Beam
+        const rod = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.52, 0.055), materials.heroAccentMetal);
+        rod.position.y = 0.28;
+        unit.add(rod);
+
+        // رأس البستم المخرط + 3 شنابر احتراق
+        const pistonHead = new THREE.Group();
+        const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.185, 0.24, 28), materials.primaryAlloy);
+        pistonHead.add(crown);
+        for (const ry of [0.06, 0.02, -0.02]) {
+          const ring = new THREE.Mesh(new THREE.TorusGeometry(0.191, 0.008, 8, 28), materials.heroAccentMetal);
+          ring.rotation.x = Math.PI / 2;
+          ring.position.y = ry;
+          pistonHead.add(ring);
+        }
+        // بنز البستم (Wrist Pin)
+        const wristPin = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, 0.34, 16), materials.machinedSteel);
+        wristPin.rotation.z = Math.PI / 2;
+        wristPin.position.y = -0.03;
+        pistonHead.add(wristPin);
+
+        pistonHead.position.y = 0.56;
+        unit.add(pistonHead);
+
+        // قميص السلندر المخرط بفتحة مقطعية تكشف حركة البستم والشنابر بالداخل
+        const sleeve = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.212, 0.212, 0.46, 28, 1, true, -0.5, Math.PI * 1.35),
+          materials.darkGunmetal
+        );
+        sleeve.position.y = 0.56;
+        sleeve.material.side = THREE.DoubleSide;
+        unit.add(sleeve);
+
+        engineAssembly.add(unit);
+        pistonUnits.push({
+          pistonHead,
+          rod,
+          web,
+          phase: i * (Math.PI * 0.5),
+        });
+      }
+
+      // -------------------------------------------------------------------------
+      // (C) المنظومة 2: هوب فرامل مثقب ومهوّى + كليبر 6 بساتم ذهبي (Brake System)
+      // -------------------------------------------------------------------------
+      const brakeAssembly = new THREE.Group();
+      brakeAssembly.name = 'brakes';
+      masterRig.add(brakeAssembly);
+
+      const rotorSpinGroup = new THREE.Group();
+      brakeAssembly.add(rotorSpinGroup);
+
+      function buildDrilledRotorDisc(zOffset) {
+        const discShape = new THREE.Shape();
+        discShape.absarc(0, 0, 0.78, 0, Math.PI * 2, false);
+        const bore = new THREE.Path();
+        bore.absarc(0, 0, 0.38, 0, Math.PI * 2, true);
+        discShape.holes.push(bore);
+
+        // ثقوب التبريد الحلزونية (30 ثقباً حقيقياً نافذاً)
+        for (let arm = 0; arm < 10; arm++) {
+          const baseA = (arm / 10) * Math.PI * 2;
+          for (let k = 0; k < 3; k++) {
+            const r = 0.46 + k * 0.11;
+            const a = baseA + k * 0.095;
+            const hole = new THREE.Path();
+            hole.absarc(Math.cos(a) * r, Math.sin(a) * r, 0.022, 0, Math.PI * 2, true);
+            discShape.holes.push(hole);
+          }
+        }
+
+        const geo = new THREE.ExtrudeGeometry(discShape, {
+          depth: 0.036,
+          bevelEnabled: true,
+          bevelThickness: 0.005,
+          bevelSize: 0.005,
+          bevelSegments: 1,
+          curveSegments: 28,
+        });
+        geo.translate(0, 0, -0.018);
+        const mesh = new THREE.Mesh(geo, materials.machinedSteel);
+        mesh.position.z = zOffset;
+        return mesh;
+      }
+
+      rotorSpinGroup.add(buildDrilledRotorDisc(0.042));
+      rotorSpinGroup.add(buildDrilledRotorDisc(-0.042));
+
+      // ريش التهوية الداخلية بين طبقتي الهوب
+      for (let v = 0; v < 18; v++) {
+        const va = (v / 18) * Math.PI * 2;
+        const vane = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.022, 0.05), materials.darkGunmetal);
+        vane.position.set(Math.cos(va) * 0.57, Math.sin(va) * 0.57, 0);
+        vane.rotation.z = va;
+        rotorSpinGroup.add(vane);
+      }
+
+      // صرة الهوب الوسطى (CNC Center Bell Hat) + مسامير التيتانيوم
+      const bellHat = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.34, 0.16, 32), materials.carbonComposite);
+      bellHat.rotation.x = Math.PI / 2;
+      bellHat.position.z = 0.03;
+      rotorSpinGroup.add(bellHat);
+
+      for (let b = 0; b < 10; b++) {
+        const ba = (b / 10) * Math.PI * 2;
+        const bobbin = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.18, 12), materials.heroAccentMetal);
+        bobbin.rotation.x = Math.PI / 2;
+        bobbin.position.set(Math.cos(ba) * 0.38, Math.sin(ba) * 0.38, 0.02);
+        rotorSpinGroup.add(bobbin);
+      }
+
+      // كليبر 6 بساتم ذهبي منحوت متمركز هندسياً حول محيط الهوب
+      const caliperShape = new THREE.Shape();
+      const innerArcR = 0.52;
+      const outerArcR = 0.91;
+      const startA = -0.32;
+      const endA = 1.24;
+      caliperShape.absarc(0, 0, outerArcR, startA, endA, false);
+      caliperShape.absarc(0, 0, innerArcR, endA, startA, true);
+      caliperShape.closePath();
+
+      const caliperGeo = new THREE.ExtrudeGeometry(caliperShape, {
+        depth: 0.28,
+        bevelEnabled: true,
+        bevelThickness: 0.032,
+        bevelSize: 0.026,
+        bevelSegments: 3,
+        curveSegments: 24,
+      });
+      caliperGeo.translate(0, 0, -0.14);
+      const caliperBody = new THREE.Mesh(caliperGeo, materials.heroAccentMetal);
+      caliperBody.position.set(0, 0, 0);
+      brakeAssembly.add(caliperBody);
+
+      // 6 أغطية بساتم تيتانيوم بارزة على واجهة الكليبر + أنبوب الزيت المعدني
+      for (let p = 0; p < 3; p++) {
+        const pa = 0.05 + p * 0.42;
+        for (const zSide of [0.155, -0.155]) {
+          const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.068, 0.068, 0.04, 20), materials.primaryAlloy);
+          cup.rotation.x = Math.PI / 2;
+          cup.position.set(Math.cos(pa) * 0.72, Math.sin(pa) * 0.72, zSide);
+          brakeAssembly.add(cup);
+        }
+      }
+      const bridgePipe = new THREE.Mesh(
+        new THREE.TubeGeometry(
+          new THREE.CatmullRomCurve3([
+            new THREE.Vector3(0.84, 0.15, 0.16),
+            new THREE.Vector3(0.98, 0.35, 0),
+            new THREE.Vector3(0.84, 0.15, -0.16),
+          ]),
+          20,
+          0.016,
+          10,
+          false
+        ),
+        materials.machinedSteel
+      );
+      brakeAssembly.add(bridgePipe);
+
+      // -------------------------------------------------------------------------
+      // (D) المنظومة 3: المساعد الحلزوني ومقص العضلات (Coilover & Control Arm)
+      // -------------------------------------------------------------------------
+      const suspensionAssembly = new THREE.Group();
+      suspensionAssembly.name = 'suspension';
+      masterRig.add(suspensionAssembly);
+
+      const springCurve = new HelixSpringCurve(0.24, 1.18, 7.5);
+      const coilSpringMesh = new THREE.Mesh(
+        new THREE.TubeGeometry(springCurve, 180, 0.042, 14, false),
+        materials.heroAccentMetal
+      );
+      suspensionAssembly.add(coilSpringMesh);
+
+      // جسم المساعد الملولب + عمود الكروم اللامع
+      const damperTube = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.125, 0.125, 0.85, 24),
+        materials.darkGunmetal
+      );
+      damperTube.position.y = -0.22;
+      suspensionAssembly.add(damperTube);
+
+      const chromeShaft = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.055, 0.055, 0.85, 20),
+        materials.primaryAlloy
+      );
+      chromeShaft.position.y = 0.32;
+      suspensionAssembly.add(chromeShaft);
+
+      // كرسي المساعد العلوي (CNC Top Mount) + خزان النيتروجين الجانبي
+      const topMount = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.26, 0.09, 24), materials.primaryAlloy);
+      topMount.position.y = 0.68;
+      suspensionAssembly.add(topMount);
+
+      const lowerPerch = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.06, 24), materials.primaryAlloy);
+      lowerPerch.position.y = -0.58;
+      suspensionAssembly.add(lowerPerch);
+
+      const nitrogenRes = new THREE.Mesh(new THREE.CylinderGeometry(0.095, 0.095, 0.52, 20), materials.carbonComposite);
+      nitrogenRes.position.set(0.34, -0.28, 0.12);
+      suspensionAssembly.add(nitrogenRes);
+
+      // مقص العضلات السفلي المخرط (Forged A-Arm Wishbone) + الجوزة
+      const wishboneArmA = new THREE.Mesh(
+        new THREE.TubeGeometry(
+          new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-0.55, -0.78, 0.28),
+            new THREE.Vector3(-0.18, -0.74, 0.12),
+            new THREE.Vector3(0.22, -0.72, 0.0),
+          ]),
+          20,
+          0.042,
+          12,
+          false
+        ),
+        materials.primaryAlloy
+      );
+      const wishboneArmB = new THREE.Mesh(
+        new THREE.TubeGeometry(
+          new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-0.55, -0.78, -0.28),
+            new THREE.Vector3(-0.18, -0.74, -0.12),
+            new THREE.Vector3(0.22, -0.72, 0.0),
+          ]),
+          20,
+          0.042,
+          12,
+          false
+        ),
+        materials.primaryAlloy
+      );
+      const ballJoint = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.08, 0.14, 20), materials.heroAccentMetal);
+      ballJoint.position.set(0.24, -0.72, 0);
+      suspensionAssembly.add(wishboneArmA, wishboneArmB, ballJoint);
+
+      // -------------------------------------------------------------------------
+      // (E) المنظومة 4: الدينمو بملفات النحاس وكمبروسر التكييف (Alternator & A/C)
+      // -------------------------------------------------------------------------
+      const alternatorAssembly = new THREE.Group();
+      alternatorAssembly.name = 'alternator';
+      masterRig.add(alternatorAssembly);
+
+      // قلب الملفات النحاسية الحقيقية داخل الدينمو
+      const copperStator = new THREE.Mesh(
+        new THREE.TorusGeometry(0.34, 0.11, 20, 36),
+        materials.woundCopper
+      );
+      alternatorAssembly.add(copperStator);
+
+      for (let c = 0; c < 12; c++) {
+        const ca = (c / 12) * Math.PI * 2;
+        const coilPole = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.16, 0.26), materials.woundCopper);
+        coilPole.position.set(Math.cos(ca) * 0.34, Math.sin(ca) * 0.34, 0);
+        coilPole.rotation.z = ca;
+        alternatorAssembly.add(coilPole);
+      }
+
+      // القفص المعدني المهوى للدينمو (يكشف النحاس من بين الأضلاع)
+      const frontBell = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.46, 0.49, 0.14, 24, 1, true),
+        materials.primaryAlloy
+      );
+      frontBell.rotation.x = Math.PI / 2;
+      frontBell.position.z = 0.18;
+      const rearBell = frontBell.clone();
+      rearBell.position.z = -0.18;
+      alternatorAssembly.add(frontBell, rearBell);
+
+      for (let rib = 0; rib < 8; rib++) {
+        const ra = (rib / 8) * Math.PI * 2;
+        const cageStrut = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.045, 0.5), materials.primaryAlloy);
+        cageStrut.position.set(Math.cos(ra) * 0.47, Math.sin(ra) * 0.47, 0);
+        cageStrut.rotation.z = ra;
+        alternatorAssembly.add(cageStrut);
+      }
+
+      // مروحة التبريد الأمامية + بكرة السير المضلعة (Serpentine Pulley)
+      const altRotorSpinner = new THREE.Group();
+      for (let f = 0; f < 12; f++) {
+        const fa = (f / 12) * Math.PI * 2;
+        const blade = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.025, 0.06), materials.heroAccentMetal);
+        blade.position.set(Math.cos(fa) * 0.3, Math.sin(fa) * 0.3, 0.27);
+        blade.rotation.z = fa + 0.45;
+        altRotorSpinner.add(blade);
+      }
+      const pulley = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.19, 0.18, 28), materials.darkGunmetal);
+      pulley.rotation.x = Math.PI / 2;
+      pulley.position.z = 0.38;
+      const pulleyNut = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.22, 6), materials.heroAccentMetal);
+      pulleyNut.rotation.x = Math.PI / 2;
+      pulleyNut.position.z = 0.4;
+      altRotorSpinner.add(pulley, pulleyNut);
+      alternatorAssembly.add(altRotorSpinner);
+
+      // وحدة كمبروسر التكييف المجاورة + أنبوب التبريد الألومنيوم
+      const acBody = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.56, 24), materials.machinedSteel);
+      acBody.rotation.x = Math.PI / 2;
+      acBody.position.set(-0.48, -0.44, -0.06);
+      const acClutch = new THREE.Mesh(new THREE.CylinderGeometry(0.23, 0.23, 0.09, 24), materials.carbonComposite);
+      acClutch.rotation.x = Math.PI / 2;
+      acClutch.position.set(-0.48, -0.44, 0.27);
+      const refrigerantPipe = new THREE.Mesh(
+        new THREE.TubeGeometry(
+          new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-0.48, -0.16, -0.15),
+            new THREE.Vector3(-0.22, 0.08, -0.26),
+            new THREE.Vector3(0.05, 0.12, -0.25),
+          ]),
+          20,
+          0.026,
+          10,
+          false
+        ),
+        materials.heroAccentMetal
+      );
+      alternatorAssembly.add(acBody, acClutch, refrigerantPipe);
+
+      // =========================================================================
+      // 4. شعاع المسح الليزري (Phase 1) + جزيئات الفضاء + رادار الرياض (Phase 3)
+      // =========================================================================
+      // لوح المسح الليزري الزمردي
+      const laserGroup = new THREE.Group();
+      const laserSheet = new THREE.Mesh(
+        new THREE.PlaneGeometry(3.5, 2.5),
+        new THREE.MeshBasicMaterial({
+          color: 0x10b981,
+          transparent: true,
+          opacity: 0,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        })
+      );
+      const laserCoreBeam = new THREE.Mesh(
+        new THREE.BoxGeometry(3.55, 0.025, 0.03),
+        new THREE.MeshBasicMaterial({
+          color: 0x6ee7b7,
+          transparent: true,
+          opacity: 0,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        })
+      );
+      laserGroup.add(laserSheet, laserCoreBeam);
+      masterRig.add(laserGroup);
+
+      // جزيئات العمق الفضائي (Depth Dust Particles)
+      const PARTICLE_COUNT = 220;
+      const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particlePositions[i * 3] = (Math.random() - 0.5) * 16;
+        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 11;
+        particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 14 - 1.5;
+      }
+      const particleGeo = new THREE.BufferGeometry();
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+      const particleMat = new THREE.PointsMaterial({
+        color: 0x94a3b8,
+        size: 0.042,
+        transparent: true,
+        opacity: 0.45,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      const spaceParticles = new THREE.Points(particleGeo, particleMat);
+      scene.add(spaceParticles);
+
+      // رادار التوجيه الجراحي بالرياض (Phase 3): حلقات موجية + 3 منارات صناعية
+      const radarGroup = new THREE.Group();
+      radarGroup.visible = false;
+      scene.add(radarGroup);
+
+      const radarPulseRings = [];
+      for (let r = 0; r < 3; r++) {
+        const ringMesh = new THREE.Mesh(
+          new THREE.RingGeometry(0.45, 0.49, 64),
+          new THREE.MeshBasicMaterial({
+            color: r % 2 === 0 ? 0x10b981 : 0xfbbf24,
+            transparent: true,
+            opacity: 0,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          })
+        );
+        ringMesh.rotation.x = -Math.PI / 2;
+        ringMesh.position.y = -0.95;
+        radarGroup.add(ringMesh);
+        radarPulseRings.push({ mesh: ringMesh, phaseOffset: r / 3 });
+      }
+
+      const RIYADH_BEACONS = [
+        { id: 'old_ind', label: '📍 الصناعية القديمة • Team A جديد', pos: new THREE.Vector3(1.65, -0.78, 0.85) },
+        { id: 'haer', label: '📍 تشليح الحائر • Team B تشليح', pos: new THREE.Vector3(-1.62, -0.82, 0.78) },
+        { id: 'sulay', label: '📍 السلي • مستورد ومكائن', pos: new THREE.Vector3(0.05, -0.88, -1.65) },
       ];
 
-      function renderSlidesForMode(mode) {
-        var scenes = SCENES_BY_MODE[mode] || SCENES_BY_MODE.customer;
-        var htmlParts = [];
-        for (var i = 0; i < scenes.length; i++) {
-          var sc = scenes[i];
-          var dotsHtml = '';
-          for (var d = 0; d < scenes.length; d++) {
-            dotsHtml +=
-              '<button type="button" class="dot-btn' +
-              (d === i ? ' is-current' : '') +
-              '" data-dot="' + d + '">0' + (d + 1) + '</button>';
+      const beaconNodes = RIYADH_BEACONS.map((b) => {
+        const sphere = new THREE.Mesh(
+          new THREE.SphereGeometry(0.075, 16, 16),
+          new THREE.MeshBasicMaterial({ color: 0x34d399 })
+        );
+        sphere.position.copy(b.pos);
+        radarGroup.add(sphere);
+
+        // قوس ضوئي يصل المركز بالمنارة
+        const arcCurve = new THREE.QuadraticBezierCurve3(
+          new THREE.Vector3(0, -0.45, 0),
+          new THREE.Vector3(b.pos.x * 0.5, 0.15, b.pos.z * 0.5),
+          b.pos
+        );
+        const arcLine = new THREE.Mesh(
+          new THREE.TubeGeometry(arcCurve, 24, 0.009, 6, false),
+          new THREE.MeshBasicMaterial({
+            color: 0x34d399,
+            transparent: true,
+            opacity: 0.55,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          })
+        );
+        radarGroup.add(arcLine);
+
+        const domEl = document.createElement('div');
+        domEl.className = 'beacon-tag';
+        domEl.textContent = b.label;
+        calloutNodesLayer.appendChild(domEl);
+
+        return { ...b, mesh: sphere, arcLine, domEl };
+      });
+
+      // =========================================================================
+      // 5. بطاقات الإشارة الهندسية المتتبعة ثلاثية الأبعاد (3D-to-2D Callouts)
+      // =========================================================================
+      const SUB_ASSEMBLIES = [
+        {
+          key: 'brakes',
+          heroGroupKey: 'brakes_suspension',
+          group: brakeAssembly,
+          nameAr: 'فرامل وهوبات سيراميك',
+          code: 'OEM #BRK-6P-390',
+          compactPos: new THREE.Vector3(0.68, -0.26, 0.85),
+          explodedDesktop: new THREE.Vector3(2.05, 0.62, 0.72),
+          explodedMobile: new THREE.Vector3(0.92, 0.88, 0.55),
+          compactScale: 0.68,
+          explodedScale: 0.88,
+          calloutSide: 1,
+        },
+        {
+          key: 'suspension',
+          heroGroupKey: 'brakes_suspension',
+          group: suspensionAssembly,
+          nameAr: 'عضلات ونظام تعليق',
+          code: 'OEM #SUS-920-AIR',
+          compactPos: new THREE.Vector3(-0.68, -0.1, 0.82),
+          explodedDesktop: new THREE.Vector3(-2.05, 0.58, 0.58),
+          explodedMobile: new THREE.Vector3(-0.92, 0.82, 0.45),
+          compactScale: 0.68,
+          explodedScale: 0.86,
+          calloutSide: -1,
+        },
+        {
+          key: 'engine',
+          heroGroupKey: 'engine',
+          group: engineAssembly,
+          nameAr: 'مكائن وتروس وتوضيب',
+          code: 'OEM #ENG-4800-TI',
+          compactPos: new THREE.Vector3(0, 0.04, -0.18),
+          explodedDesktop: new THREE.Vector3(-1.45, -0.78, -0.45),
+          explodedMobile: new THREE.Vector3(-0.76, -0.68, -0.25),
+          compactScale: 0.78,
+          explodedScale: 0.94,
+          calloutSide: -1,
+        },
+        {
+          key: 'alternator',
+          heroGroupKey: 'alternator',
+          group: alternatorAssembly,
+          nameAr: 'دينمو وكهرباء وتبريد',
+          code: 'OEM #ALT-220A-CU',
+          compactPos: new THREE.Vector3(0.18, 0.08, 0.68),
+          explodedDesktop: new THREE.Vector3(1.58, -0.72, 0.35),
+          explodedMobile: new THREE.Vector3(0.82, -0.64, 0.3),
+          compactScale: 0.7,
+          explodedScale: 0.94,
+          calloutSide: 1,
+        },
+      ];
+
+      let selectedPartKey = 'alternator';
+      let selectedHeroCategory = 'alternator';
+
+      const calloutTrackers = SUB_ASSEMBLIES.map((item) => {
+        const chip = document.createElement('div');
+        chip.className = 'callout-chip';
+        chip.innerHTML = `<span class="part-ar">${item.nameAr}</span><span class="part-code">${item.code}</span>`;
+
+        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        poly.setAttribute('fill', 'none');
+        poly.setAttribute('stroke', 'url(#calloutLineGrad)');
+        poly.setAttribute('stroke-width', '1.4');
+        poly.setAttribute('stroke-linecap', 'round');
+
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('r', '3.6');
+        dot.setAttribute('fill', '#34d399');
+
+        svgLinesGroup.appendChild(poly);
+        svgLinesGroup.appendChild(dot);
+        calloutNodesLayer.appendChild(chip);
+
+        chip.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          selectSubAssembly(item.key, item.heroGroupKey);
+        });
+
+        return { item, chip, poly, dot };
+      });
+
+      function selectSubAssembly(partKey, heroCat) {
+        selectedPartKey = partKey;
+        if (heroCat) {
+          selectedHeroCategory = heroCat;
+          document.querySelectorAll('[data-hero-focus]').forEach((b) => {
+            b.classList.toggle('is-active', b.dataset.heroFocus === heroCat);
+          });
+        }
+        calloutTrackers.forEach((tr) => {
+          tr.chip.classList.toggle('is-selected', tr.item.key === selectedPartKey);
+        });
+      }
+
+      document.querySelectorAll('[data-hero-focus]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const focusKey = btn.dataset.heroFocus;
+          selectedHeroCategory = focusKey;
+          const matchingPart =
+            focusKey === 'alternator'
+              ? 'alternator'
+              : focusKey === 'engine'
+              ? 'engine'
+              : 'brakes';
+          selectSubAssembly(matchingPart, focusKey);
+        });
+      });
+
+      document.querySelectorAll('.material-tier-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          applyMaterialTier(btn.dataset.tier);
+        });
+      });
+
+      document.querySelectorAll('[data-scroll-to]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const ratio = parseFloat(btn.dataset.scrollTo || '0');
+          const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+          window.scrollTo({ top: ratio * maxScroll, behavior: 'smooth' });
+        });
+      });
+
+      // =========================================================================
+      // 6. تفاعل اللمس والتدوير الحر + النقر الثلاثي الأبعاد (Touch Orbit & Raycast)
+      // =========================================================================
+      const raycaster = new THREE.Raycaster();
+      const pointerNdc = new THREE.Vector2();
+
+      let isDraggingOrbit = false;
+      let pointerDownX = 0;
+      let pointerDownY = 0;
+      let pointerMovedDist = 0;
+      let targetUserYaw = 0;
+      let targetUserPitch = 0;
+      let currentUserYaw = 0;
+      let currentUserPitch = 0;
+      let gyroYaw = 0;
+      let gyroPitch = 0;
+
+      canvas.addEventListener('pointerdown', (e) => {
+        isDraggingOrbit = true;
+        pointerDownX = e.clientX;
+        pointerDownY = e.clientY;
+        pointerMovedDist = 0;
+      });
+
+      window.addEventListener(
+        'pointermove',
+        (e) => {
+          if (!isDraggingOrbit) return;
+          const dx = e.clientX - pointerDownX;
+          const dy = e.clientY - pointerDownY;
+          pointerMovedDist += Math.hypot(dx, dy);
+
+          // على الجوال: التمرير العمودي يبقى للصفحة، والسحب الأفقي يدير المجسم بسلاسة
+          if (e.pointerType === 'mouse' || Math.abs(dx) > Math.abs(dy) * 1.15) {
+            targetUserYaw += dx * 0.0075;
+            targetUserPitch = Math.max(-0.55, Math.min(0.55, targetUserPitch + dy * 0.0045));
           }
-          htmlParts.push(
-            '<article class="scene-slide' + (i === currentScene ? ' is-active' : '') + '" data-scene-idx="' + i + '">' +
-              '<div class="scene-header">' +
-                '<div class="scene-badge-row">' +
-                  '<span class="step-chip">' + sc.chip + '</span>' +
-                  '<span class="timing-chip">' + sc.timing + '</span>' +
-                '</div>' +
-                '<h1 class="scene-title">' + sc.title + '</h1>' +
-                '<p class="scene-sub">' + sc.sub + '</p>' +
-              '</div>' +
-              '<div class="visual-stage">' + sc.html + '</div>' +
-              '<div class="stage-nav-footer">' +
-                '<div class="scene-dots">' + dotsHtml + '</div>' +
-                '<div style="display:flex;gap:6px">' +
-                  '<button type="button" class="icon-btn" data-nav="prev">السابق</button>' +
-                  '<button type="button" class="icon-btn" data-nav="next">التالي</button>' +
-                '</div>' +
-              '</div>' +
-            '</article>'
-          );
-        }
-        slidesContainer.innerHTML = htmlParts.join('');
-      }
+          pointerDownX = e.clientX;
+          pointerDownY = e.clientY;
+        },
+        { passive: true }
+      );
 
-      function syncActiveSlideClasses() {
-        var nodes = slidesContainer.querySelectorAll('.scene-slide');
-        for (var i = 0; i < nodes.length; i++) {
-          if (i === currentScene) {
-            nodes[i].classList.add('is-active');
-          } else {
-            nodes[i].classList.remove('is-active');
+      window.addEventListener('pointerup', (e) => {
+        if (!isDraggingOrbit) return;
+        isDraggingOrbit = false;
+        if (pointerMovedDist < 9) {
+          // نقرة مباشرة على المجسم ثلاثي الأبعاد لاختيار القطعة
+          pointerNdc.x = (e.clientX / Math.max(1, window.innerWidth)) * 2 - 1;
+          pointerNdc.y = -(e.clientY / Math.max(1, window.innerHeight)) * 2 + 1;
+          raycaster.setFromCamera(pointerNdc, camera);
+          const candidateGroups = SUB_ASSEMBLIES.map((s) => s.group);
+          const hits = raycaster.intersectObjects(candidateGroups, true);
+          if (hits.length > 0) {
+            let obj = hits[0].object;
+            while (obj && !SUB_ASSEMBLIES.some((s) => s.group === obj)) {
+              obj = obj.parent;
+            }
+            const found = SUB_ASSEMBLIES.find((s) => s.group === obj);
+            if (found) {
+              selectSubAssembly(found.key, found.heroGroupKey);
+            }
           }
         }
+      });
+
+      // إمالة الجيروسكوب الطفيفة على الجوالات الداعمة
+      window.addEventListener(
+        'deviceorientation',
+        (ev) => {
+          if (ev.gamma !== null && ev.beta !== null) {
+            gyroYaw = THREE.MathUtils.clamp(ev.gamma / 45, -1, 1) * 0.18;
+            gyroPitch = THREE.MathUtils.clamp((ev.beta - 45) / 45, -1, 1) * 0.12;
+          }
+        },
+        { passive: true }
+      );
+
+      // =========================================================================
+      // 7. دوال المنحنيات السينمائية وحساب التمرير المخمّد (Damped Scroll Physics)
+      // =========================================================================
+      const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+      const smoothstep = (e0, e1, x) => {
+        const t = clamp01((x - e0) / (e1 - e0));
+        return t * t * (3 - 2 * t);
+      };
+
+      const phaseEnvelope = (p, start, fadeInEnd, fadeOutStart, end) => {
+        if (p <= start || p >= end) return 0;
+        if (p < fadeInEnd) return smoothstep(start, fadeInEnd, p);
+        if (p > fadeOutStart) return 1 - smoothstep(fadeOutStart, end, p);
+        return 1;
+      };
+
+      let targetProgress = 0;
+      let currentProgress = 0;
+
+      function updateScrollTarget() {
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        targetProgress = clamp01(window.scrollY / maxScroll);
       }
 
-      function updateProgressBars() {
-        var ratio = Math.min(1, Math.max(0, elapsedInSceneMs / SCENE_DURATION_MS));
-        for (var i = 0; i < 4; i++) {
-          var scale = i < currentScene ? 1 : i === currentScene ? ratio : 0;
-          fills[i].style.transform = 'scaleX(' + scale.toFixed(4) + ')';
-        }
-        var beam = document.getElementById('activeScanBeam');
-        if (beam && currentScene === 1 && currentMode === 'customer') {
-          var cycle = (elapsedInSceneMs % 1600) / 1600;
-          var yPx = Math.sin(cycle * Math.PI) * 128;
-          beam.style.transform = 'translate3d(0, ' + yPx.toFixed(1) + 'px, 0)';
-        }
-      }
+      window.addEventListener('scroll', updateScrollTarget, { passive: true });
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / Math.max(1, window.innerHeight);
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight, false);
+        updateScrollTarget();
+      });
+      updateScrollTarget();
 
-      function goToScene(targetIdx) {
-        var total = 4;
-        currentScene = ((targetIdx % total) + total) % total;
-        elapsedInSceneMs = 0;
-        syncActiveSlideClasses();
-        updateProgressBars();
-      }
+      // =========================================================================
+      // 8. حلقة requestAnimationFrame الوحيدة + Adaptive FPS Governor
+      // =========================================================================
+      const projVec = new THREE.Vector3();
+      const tmpTargetPos = new THREE.Vector3();
+      const desiredCamPos = new THREE.Vector3();
+      const desiredLookAt = new THREE.Vector3();
+      const currentLookAt = new THREE.Vector3(0, 0, 0);
 
-      function setMode(nextMode) {
-        if (nextMode !== 'customer' && nextMode !== 'supplier') return;
-        currentMode = nextMode;
-        currentScene = 0;
-        elapsedInSceneMs = 0;
-        modeSwitcher.setAttribute('data-mode', currentMode);
-        var tabs = modeSwitcher.querySelectorAll('.mode-tab');
-        for (var i = 0; i < tabs.length; i++) {
-          var isSel = tabs[i].getAttribute('data-set-mode') === currentMode;
-          tabs[i].setAttribute('aria-selected', isSel ? 'true' : 'false');
-        }
-        renderSlidesForMode(currentMode);
-        updateProgressBars();
-      }
+      const FULL_VIN = 'JN8AY2NY9P9000777';
+      const railStepBtns = Array.from(document.querySelectorAll('.rail-step-btn'));
 
-      function togglePause(explicitPause) {
-        isPaused = typeof explicitPause === 'boolean' ? explicitPause : !isPaused;
-        playPauseIcon.textContent = isPaused ? '▶' : '⏸';
-        playPauseText.textContent = isPaused ? 'تشغيل' : 'إيقاف';
-      }
+      let lastTs = performance.now();
+      let fpsSampleCount = 0;
+      let fpsAccumMs = 0;
+      let warmupFrames = 0;
 
-      /* حلقة requestAnimationFrame الوحيدة بتزامن 60 إطار/ثانية عبر GPU فقط */
-      function rafLoop(ts) {
-        if (lastFrameTs === null) {
-          lastFrameTs = ts;
-        }
-        var delta = Math.min(64, Math.max(0, ts - lastFrameTs));
-        lastFrameTs = ts;
+      // إخفاء شاشة التحميل بعد أول إطار مرسوم
+      requestAnimationFrame(() => {
+        bootLoader.classList.add('is-hidden');
+      });
 
-        if (!isPaused) {
-          elapsedInSceneMs += delta;
-          if (elapsedInSceneMs >= SCENE_DURATION_MS) {
-            goToScene(currentScene + 1);
-          } else {
-            updateProgressBars();
+      function animateFrame(nowTs) {
+        requestAnimationFrame(animateFrame);
+
+        const dtMs = Math.min(64, Math.max(1, nowTs - lastTs));
+        const dtSec = dtMs * 0.001;
+        const elapsedSec = nowTs * 0.001;
+        lastTs = nowTs;
+
+        // مراقب الأداء الذكي (Adaptive FPS Governor)
+        warmupFrames++;
+        if (warmupFrames > 30) {
+          fpsSampleCount++;
+          fpsAccumMs += dtMs;
+          if (fpsSampleCount >= 42) {
+            const avgFps = Math.round((fpsSampleCount * 1000) / Math.max(1, fpsAccumMs));
+            fpsReadout.textContent = `${Math.min(60, avgFps)} FPS`;
+            if (avgFps < 52 && !adaptiveDowngraded && currentDprCap > 1.2) {
+              adaptiveDowngraded = true;
+              currentDprCap = Math.min(window.devicePixelRatio || 1, 1.2);
+              renderer.setPixelRatio(currentDprCap);
+              renderer.setSize(window.innerWidth, window.innerHeight, false);
+              fpsStatusDot.style.background = '#fcd34d';
+            }
+            fpsSampleCount = 0;
+            fpsAccumMs = 0;
           }
         }
-        window.requestAnimationFrame(rafLoop);
+
+        // فيزياء التمرير المخمّدة (Damped Lerp 0.075)
+        currentProgress += (targetProgress - currentProgress) * 0.075;
+        const p = currentProgress;
+        const isPortraitMobile = window.innerWidth / Math.max(1, window.innerHeight) < 0.85;
+
+        // تحديث مسطرة التمرير والنسب
+        const pctInt = Math.round(p * 100);
+        railPctText.textContent = `${String(pctInt).padStart(2, '0')}%`;
+        railFillBar.style.transform = `scaleY(${p.toFixed(4)})`;
+
+        const activeStageIdx = p < 0.22 ? 0 : p < 0.55 ? 1 : p < 0.8 ? 2 : 3;
+        for (let i = 0; i < railStepBtns.length; i++) {
+          railStepBtns[i].classList.toggle('is-active', i === activeStageIdx);
+        }
+
+        // تحديث النصوص السينمائية العائمة بتلاشي ناعم
+        const w1 = p < 0.01 ? 1 : phaseEnvelope(p, -0.05, 0.0, 0.16, 0.23);
+        const w2 = phaseEnvelope(p, 0.2, 0.26, 0.48, 0.56);
+        const w3 = phaseEnvelope(p, 0.53, 0.59, 0.74, 0.81);
+        const w4 = p > 0.86 ? 1 : smoothstep(0.79, 0.86, p);
+
+        const applyCopyFade = (el, w) => {
+          el.style.opacity = w.toFixed(3);
+          el.style.transform = `translate3d(0, ${((1 - w) * 14).toFixed(1)}px, 0)`;
+        };
+        applyCopyFade(copyPhase1, w1);
+        applyCopyFade(copyPhase2, w2);
+        applyCopyFade(copyPhase3, w3);
+        applyCopyFade(copyPhase4, w4);
+
+        // تبديل أشرطة التحكم السفلية حسب المرحلة
+        dockHint.classList.toggle('is-visible', p < 0.54);
+        dockStage3.classList.toggle('is-visible', p >= 0.54 && p < 0.8);
+        dockStage4.classList.toggle('is-visible', p >= 0.8);
+
+        if (p < 0.22) {
+          dynamicHintText.textContent = 'مرّر للمسح الليزري والتفكيك • اسحب أفقياً لتدوير المجسم';
+        } else if (p < 0.54) {
+          dynamicHintText.textContent = 'المس أي قطعة طائرة لفحصها أو اسحب لتدوير الفضاء 360°';
+        }
+
+        // ---------------------------------------------------------------------
+        // تحول ألوان خامات التسعير الثلاث بسلاسة في كل إطار
+        // ---------------------------------------------------------------------
+        materials.primaryAlloy.color.lerp(targetTierColors.primary, 0.09);
+        materials.heroAccentMetal.color.lerp(targetTierColors.accent, 0.09);
+        materials.machinedSteel.color.lerp(targetTierColors.steel, 0.09);
+        tierAccentSpot.color.lerp(targetTierColors.spot, 0.09);
+        rimLightLeft.color.lerp(targetTierColors.rim, 0.09);
+
+        // ---------------------------------------------------------------------
+        // كوريغرافيا المرحلة 1 (0% -> 22%): مسح ليزري للـ VIN وتوهج الهيكل
+        // ---------------------------------------------------------------------
+        const scanProgress = clamp01((p - 0.01) / 0.19);
+        const scanActiveAlpha = p < 0.23 ? Math.sin(clamp01(p / 0.22) * Math.PI) : 0;
+        const laserZ = THREE.MathUtils.lerp(2.35, -2.35, scanProgress);
+
+        laserGroup.position.z = laserZ;
+        laserSheet.material.opacity = scanActiveAlpha * 0.24;
+        laserCoreBeam.material.opacity = scanActiveAlpha * 0.92;
+        laserGlowLight.position.set(0, 0.2, laserZ);
+        laserGlowLight.intensity = scanActiveAlpha * 4.2;
+
+        if (p <= 0.23) {
+          const charsShown = Math.max(4, Math.round(scanProgress * FULL_VIN.length));
+          vinCodeHud.textContent = `VIN: ${FULL_VIN.slice(0, charsShown)}${charsShown < FULL_VIN.length ? '▌' : ' ✓'}`;
+          decodeTimerHud.textContent = `DECODE: ${(scanProgress * 0.8).toFixed(2)}s`;
+        }
+
+        // ---------------------------------------------------------------------
+        // انفتاح شقّي الهيكل الشبكي أثناء التفكيك وعودتهما عند الالتحام
+        // ---------------------------------------------------------------------
+        const explodeFactor = smoothstep(0.21, 0.42, p) * (1 - smoothstep(0.76, 0.9, p));
+        const stage3FocusFactor = smoothstep(0.55, 0.64, p) * (1 - smoothstep(0.76, 0.84, p));
+
+        const chassisSpread = explodeFactor * 1.35 + stage3FocusFactor * 1.6;
+        chassisLeft.position.x = -chassisSpread;
+        chassisRight.position.x = chassisSpread;
+        materials.aeroWireRib.opacity = THREE.MathUtils.lerp(0.62, 0.11, clamp01(explodeFactor + stage3FocusFactor));
+
+        // ---------------------------------------------------------------------
+        // حركة القطع الميكانيكية الحية (تروس + بساتم + هوب + دينمو)
+        // ---------------------------------------------------------------------
+        const mechSpin = elapsedSec * 1.15 + p * 8.5;
+        mainGear24.rotation.z = mechSpin;
+        idlerGear16.rotation.z = -mechSpin * (24 / 16) + 0.14;
+        camPinion12.rotation.z = -mechSpin * (24 / 12);
+
+        for (let i = 0; i < pistonUnits.length; i++) {
+          const pu = pistonUnits[i];
+          const crankA = mechSpin * 2.2 + pu.phase;
+          const stroke = Math.sin(crankA) * 0.12;
+          pu.pistonHead.position.y = 0.56 + stroke;
+          pu.rod.position.y = 0.28 + stroke * 0.5;
+          pu.rod.rotation.z = Math.cos(crankA) * 0.11;
+          pu.web.rotation.z = crankA;
+        }
+
+        rotorSpinGroup.rotation.z = -mechSpin * 1.35;
+        altRotorSpinner.rotation.z = mechSpin * 2.8;
+        coilSpringMesh.scale.y = 1 + Math.sin(elapsedSec * 2.4) * 0.035 * (explodeFactor + 0.3);
+
+        // ---------------------------------------------------------------------
+        // تموضع المنظومات الأربع عبر المراحل (Compact -> Exploded -> Hero Focus -> Re-Docked)
+        // ---------------------------------------------------------------------
+        let heroWorldAnchor = new THREE.Vector3(0, 0, 0);
+
+        for (let i = 0; i < SUB_ASSEMBLIES.length; i++) {
+          const item = SUB_ASSEMBLIES[i];
+          const expVec = isPortraitMobile ? item.explodedMobile : item.explodedDesktop;
+
+          // الموقع بين المدمج والمفكك
+          tmpTargetPos.lerpVectors(item.compactPos, expVec, explodeFactor);
+
+          // طفو مداري ناعم في الفضاء أثناء التفكيك
+          const floatY = Math.sin(elapsedSec * 1.5 + i * 1.7) * 0.065 * explodeFactor;
+          tmpTargetPos.y += floatY;
+
+          // العزل البؤري في المرحلة 3
+          const isHeroInStage3 = item.heroGroupKey === selectedHeroCategory;
+          if (stage3FocusFactor > 0.001) {
+            const heroStagePos =
+              selectedHeroCategory === 'brakes_suspension'
+                ? new THREE.Vector3(item.key === 'brakes' ? 0.58 : -0.58, 0.15, 0.25)
+                : new THREE.Vector3(0, 0.12, 0.25);
+
+            const recessedPos = expVec.clone().multiplyScalar(1.45).add(new THREE.Vector3(0, 0.3, -1.6));
+            tmpTargetPos.lerp(isHeroInStage3 ? heroStagePos : recessedPos, stage3FocusFactor);
+          }
+
+          item.group.position.lerp(tmpTargetPos, 0.12);
+
+          // تكبير القطعة المختارة أو البطلة
+          const baseScale = THREE.MathUtils.lerp(item.compactScale, item.explodedScale, explodeFactor);
+          const focusBoost =
+            stage3FocusFactor > 0.05
+              ? isHeroInStage3
+                ? 1.16
+                : 0.58
+              : item.key === selectedPartKey && explodeFactor > 0.25
+              ? 1.08
+              : 1.0;
+          const finalScale = baseScale * focusBoost;
+          item.group.scale.setScalar(THREE.MathUtils.lerp(item.group.scale.x, finalScale, 0.12));
+
+          if (item.key === selectedPartKey) {
+            heroWorldAnchor.copy(item.group.position);
+          }
+        }
+
+        // ---------------------------------------------------------------------
+        // دوران المنصة الرئيسية + تفاعل اللمس والجيروسكوب
+        // ---------------------------------------------------------------------
+        if (!isDraggingOrbit) {
+          const recenterRate = p >= 0.22 && p <= 0.8 ? 0.999 : 0.965;
+          targetUserYaw *= recenterRate;
+          targetUserPitch *= 0.985;
+        }
+        currentUserYaw += (targetUserYaw + gyroYaw - currentUserYaw) * 0.1;
+        currentUserPitch += (targetUserPitch + gyroPitch - currentUserPitch) * 0.1;
+
+        const choreoYaw =
+          p < 0.22
+            ? -0.45 + p * 2.1 + Math.sin(elapsedSec * 0.35) * 0.08
+            : p < 0.55
+            ? 0.02 + (p - 0.22) * 1.15
+            : p < 0.8
+            ? 0.38 + Math.sin(elapsedSec * 0.45) * 0.12
+            : 0.42 + (p - 0.8) * 2.2;
+
+        masterRig.rotation.y = choreoYaw + currentUserYaw;
+        masterRig.rotation.x = 0.08 + currentUserPitch;
+
+        // ---------------------------------------------------------------------
+        // حركة الكاميرا السينمائية المتكيفة مع شاشات الجوال العمودية
+        // ---------------------------------------------------------------------
+        const mobileZBoost = isPortraitMobile ? 1.85 : 0.0;
+        if (p < 0.22) {
+          desiredCamPos.set(0, 0.42, 6.2 + mobileZBoost - p * 2.2);
+          desiredLookAt.set(0, 0.02, 0);
+        } else if (p < 0.55) {
+          desiredCamPos.set(0, 0.22, 5.95 + mobileZBoost * 1.05);
+          desiredLookAt.set(0, 0.05, 0);
+        } else if (p < 0.8) {
+          desiredCamPos.set(0.18, 0.26, 3.85 + mobileZBoost * 0.72);
+          desiredLookAt.set(0, -0.08, 0.1);
+        } else {
+          desiredCamPos.set(0, 0.18, 4.95 + mobileZBoost * 0.85);
+          desiredLookAt.set(0, -0.22, 0);
+        }
+
+        camera.position.lerp(desiredCamPos, 0.08);
+        currentLookAt.lerp(desiredLookAt, 0.09);
+        camera.lookAt(currentLookAt);
+
+        // ---------------------------------------------------------------------
+        // رادار التوجيه الجراحي بالرياض في المرحلة 3 (55% -> 80%)
+        // ---------------------------------------------------------------------
+        const radarAlpha = phaseEnvelope(p, 0.54, 0.6, 0.74, 0.8);
+        radarGroup.visible = radarAlpha > 0.01;
+        if (radarGroup.visible) {
+          for (let r = 0; r < radarPulseRings.length; r++) {
+            const rp = radarPulseRings[r];
+            const wave = (elapsedSec * 0.55 + rp.phaseOffset) % 1;
+            const scale = 0.5 + wave * 3.8;
+            rp.mesh.scale.setScalar(scale);
+            rp.mesh.material.opacity = (1 - wave) * 0.52 * radarAlpha;
+          }
+
+          for (let b = 0; b < beaconNodes.length; b++) {
+            const bn = beaconNodes[b];
+            bn.arcLine.material.opacity = 0.5 * radarAlpha;
+            projVec.copy(bn.pos).project(camera);
+            if (projVec.z < 1) {
+              const sx = (projVec.x * 0.5 + 0.5) * window.innerWidth;
+              const sy = (-projVec.y * 0.5 + 0.5) * window.innerHeight;
+              bn.domEl.style.opacity = radarAlpha.toFixed(3);
+              bn.domEl.style.transform = `translate3d(${(sx - 68).toFixed(1)}px, ${(sy + 10).toFixed(1)}px, 0)`;
+            } else {
+              bn.domEl.style.opacity = '0';
+            }
+          }
+        } else {
+          for (let b = 0; b < beaconNodes.length; b++) {
+            beaconNodes[b].domEl.style.opacity = '0';
+          }
+        }
+
+        // ---------------------------------------------------------------------
+        // إسقاط خطوط الإشارة الهندسية ثلاثية الأبعاد (Phase 2: 22% -> 55%)
+        // ---------------------------------------------------------------------
+        const calloutAlpha = phaseEnvelope(p, 0.23, 0.29, 0.48, 0.54);
+        for (let i = 0; i < calloutTrackers.length; i++) {
+          const tr = calloutTrackers[i];
+          if (calloutAlpha <= 0.02) {
+            tr.chip.style.opacity = '0';
+            tr.chip.style.pointerEvents = 'none';
+            tr.poly.setAttribute('opacity', '0');
+            tr.dot.setAttribute('opacity', '0');
+            continue;
+          }
+
+          tr.item.group.getWorldPosition(projVec);
+          projVec.project(camera);
+
+          if (projVec.z > 1) {
+            tr.chip.style.opacity = '0';
+            tr.poly.setAttribute('opacity', '0');
+            tr.dot.setAttribute('opacity', '0');
+            continue;
+          }
+
+          const ax = (projVec.x * 0.5 + 0.5) * window.innerWidth;
+          const ay = (-projVec.y * 0.5 + 0.5) * window.innerHeight;
+
+          const dir = tr.item.calloutSide;
+          const elbowDx = isPortraitMobile ? 22 * dir : 42 * dir;
+          const elbowDy = i < 2 ? -24 : 24;
+          const tailDx = isPortraitMobile ? 34 * dir : 68 * dir;
+
+          const ex = THREE.MathUtils.clamp(ax + elbowDx, 24, window.innerWidth - 24);
+          const ey = THREE.MathUtils.clamp(ay + elbowDy, 88, window.innerHeight - 110);
+          const lx = THREE.MathUtils.clamp(ex + tailDx, 18, window.innerWidth - 18);
+
+          tr.dot.setAttribute('cx', ax.toFixed(1));
+          tr.dot.setAttribute('cy', ay.toFixed(1));
+          tr.dot.setAttribute('opacity', calloutAlpha.toFixed(3));
+
+          tr.poly.setAttribute('points', `${ax.toFixed(1)},${ay.toFixed(1)} ${ex.toFixed(1)},${ey.toFixed(1)} ${lx.toFixed(1)},${ey.toFixed(1)}`);
+          tr.poly.setAttribute('opacity', calloutAlpha.toFixed(3));
+
+          const chipW = tr.chip.offsetWidth || 138;
+          const chipH = tr.chip.offsetHeight || 38;
+          const chipX = dir > 0
+            ? Math.min(window.innerWidth - chipW - 10, lx + 4)
+            : Math.max(10, lx - chipW - 4);
+          const chipY = THREE.MathUtils.clamp(ey - chipH * 0.5, 80, window.innerHeight - 110);
+
+          tr.chip.style.opacity = calloutAlpha.toFixed(3);
+          tr.chip.style.pointerEvents = calloutAlpha > 0.35 ? 'auto' : 'none';
+          tr.chip.style.transform = `translate3d(${chipX.toFixed(1)}px, ${chipY.toFixed(1)}px, 0)`;
+        }
+
+        // دوران خفيف لجزيئات العمق الفضائي
+        spaceParticles.rotation.y = elapsedSec * 0.025 - p * 0.4;
+
+        renderer.render(scene, camera);
       }
 
-      btnPlayPause.addEventListener('click', function () {
-        togglePause();
-      });
-
-      document.getElementById('tapPrev').addEventListener('click', function () {
-        goToScene(currentScene - 1);
-      });
-
-      document.getElementById('tapNext').addEventListener('click', function () {
-        goToScene(currentScene + 1);
-      });
-
-      modeSwitcher.addEventListener('click', function (ev) {
-        var btn = ev.target.closest('[data-set-mode]');
-        if (btn) {
-          setMode(btn.getAttribute('data-set-mode'));
-        }
-      });
-
-      document.querySelector('.reels-bars').addEventListener('click', function (ev) {
-        var seg = ev.target.closest('[data-jump]');
-        if (seg) {
-          goToScene(Number(seg.getAttribute('data-jump')) || 0);
-        }
-      });
-
-      slidesContainer.addEventListener('click', function (ev) {
-        var dot = ev.target.closest('[data-dot]');
-        if (dot) {
-          goToScene(Number(dot.getAttribute('data-dot')) || 0);
-          return;
-        }
-        var nav = ev.target.closest('[data-nav]');
-        if (nav) {
-          goToScene(nav.getAttribute('data-nav') === 'prev' ? currentScene - 1 : currentScene + 1);
-        }
-      });
-
-      renderSlidesForMode(currentMode);
-      updateProgressBars();
-      window.requestAnimationFrame(rafLoop);
+      requestAnimationFrame(animateFrame);
     })();
   </script>
 </body>
