@@ -2697,8 +2697,38 @@
         };
         let adminAffiliatesCache = [];
         let allCloudOrdersSnapshotForStats = [];
+        let activeAdminSessionToken = null;
+        let lastAdmin401PromptAt = 0;
 
-        // جسر اتصال مرن مع سيرفر البوت (يدعم localhost وربط الجسر المحلي الصامت من الدومين الحي)
+        function handleAdminUnauthorized401(apiPath = '') {
+            activeAdminSessionToken = null;
+            try {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminPasswordHash');
+                localStorage.removeItem('haraj_admin_token');
+                sessionStorage.removeItem('adminToken');
+                sessionStorage.removeItem('adminPasswordHash');
+                sessionStorage.removeItem('haraj_admin_token');
+            } catch (_stErr) {}
+
+            const pendingList = document.getElementById('pendingListContainer');
+            if (pendingList) {
+                pendingList.innerHTML = '<div class="text-center text-amber-300 text-xs py-6 px-4 bg-amber-950/40 rounded-2xl border border-amber-500/40 font-bold">⚠️ انتهت صلاحية جلسة المدير أو تغيرت كلمة المرور على السيرفر (401 Unauthorized) — يرجى إعادة تسجيل الدخول لعرض بطاقات قائمة الانتظار الحية.</div>';
+            }
+
+            const nowMs = Date.now();
+            if (nowMs - lastAdmin401PromptAt < 4000) return;
+            lastAdmin401PromptAt = nowMs;
+            currentRole = null;
+            alert('⚠️ انتهت صلاحية جلسة المدير أو تغيرت كلمة المرور (401) — يرجى إدخال الرقم السري مجدداً لتحديث الصلاحية وعرض قائمة الانتظار.');
+            if (typeof window.switchTab === 'function') {
+                setTimeout(() => {
+                    window.switchTab('admin');
+                }, 80);
+            }
+        }
+
+        // جسر اتصال مرن مع سيرفر البوت (يدعم localhost وربط الجسر المحلي الصامت من الدومين الحي + كشف 401 الصريح)
         async function fetchBotBackend(apiPath, options = {}) {
             const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             const targetUrl = isLocalOrigin ? apiPath : `http://localhost:3000${apiPath}`;
@@ -2706,12 +2736,12 @@
                 const controller = new AbortController();
                 const timer = setTimeout(() => controller.abort(), options.timeoutMs || 5000);
                 const mergedHeaders = { ...(options.headers || {}) };
-                if (currentRole === 'admin' && activeAdminPasswordHash) {
-                    if (!mergedHeaders['X-Admin-Password-Hash'] && !mergedHeaders['x-admin-password-hash']) {
+                if (currentRole === 'admin' && (activeAdminPasswordHash || activeAdminSessionToken)) {
+                    if (!mergedHeaders['X-Admin-Password-Hash'] && !mergedHeaders['x-admin-password-hash'] && activeAdminPasswordHash) {
                         mergedHeaders['X-Admin-Password-Hash'] = activeAdminPasswordHash;
                     }
                     if (!mergedHeaders['X-Admin-Token'] && !mergedHeaders['x-admin-token']) {
-                        mergedHeaders['X-Admin-Token'] = activeAdminPasswordHash;
+                        mergedHeaders['X-Admin-Token'] = activeAdminSessionToken || activeAdminPasswordHash;
                     }
                 }
                 try {
@@ -2720,6 +2750,15 @@
                         headers: mergedHeaders,
                         signal: controller.signal
                     });
+                    if (
+                        res &&
+                        res.status === 401 &&
+                        !options.skipAuthPrompt &&
+                        currentRole === 'admin' &&
+                        /^\/api\/(?:admin|settings|supplier-hunter)\b/.test(String(apiPath || ''))
+                    ) {
+                        handleAdminUnauthorized401(apiPath);
+                    }
                     return res;
                 } finally {
                     clearTimeout(timer);
@@ -4769,10 +4808,34 @@
                 if (pass === null) return;
                 const passHash = await hashSHA256(pass);
 
-                // تحديث أحدث هاش للمدير من Firestore قبل المقارنة لضمان إبطال أي كلمة مرور قديمة فوراً
+                // تحديث أحدث هاش للمدير من Firestore + التحقق الفوري مع السيرفر المحلي لمنع أي تعارض 401 صامت
                 await syncPlatformConfigFromSources();
+                let backendAdminVerified = false;
+                try {
+                    const adminLoginRes = await fetchBotBackend('/api/admin/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Admin-Password-Hash': passHash,
+                            'X-Admin-Token': passHash
+                        },
+                        body: JSON.stringify({ admin_password_hash: passHash }),
+                        skipAuthPrompt: true,
+                        timeoutMs: 4000
+                    });
+                    if (adminLoginRes && adminLoginRes.ok) {
+                        const adminLoginJson = await adminLoginRes.json().catch(() => ({}));
+                        if (adminLoginJson && adminLoginJson.success) {
+                            backendAdminVerified = true;
+                            activeAdminPasswordHash = passHash;
+                            activeAdminSessionToken = adminLoginJson.auth_token || passHash;
+                        }
+                    }
+                } catch (_admLoginErr) {}
 
-                if (passHash === activeAdminPasswordHash) {
+                if (passHash === activeAdminPasswordHash || backendAdminVerified) {
+                    activeAdminPasswordHash = passHash;
+                    if (!activeAdminSessionToken) activeAdminSessionToken = passHash;
                     currentRole = 'admin';
                     currentAffiliateId = null;
                     currentAffiliateProfile = null;
@@ -6082,6 +6145,13 @@
             const safeTypeLabel = escapeHTML(resolveSupplierTypeBadgeText(data));
             const isLegacyUpdate = data.onboarding_source === 'legacy_280_update' || Boolean(data.existing_supplier_id);
             const rawRescueNotes = String(data.rescue_badge || data.yard_models_notes || data.ad_title || '');
+            const isPartial85 =
+                data.outreach_status === 'partial_85' ||
+                data.review_stage === 'partial_85' ||
+                data.status === 'partial_85' ||
+                data.is_partial_85 === true ||
+                rawRescueNotes.includes('مكتمل التخصص (بانتظار اسم المحل/الحي)');
+            const partial85BadgeLabel = data.partial_85_badge || '⏳ مكتمل التخصص (بانتظار اسم المحل/الحي)';
             const isLiveOrderRescue = data.source === 'live_order_rescue' || data.onboarding_source === 'live_order_rescue' || rawRescueNotes.includes('صيد حي أنقذ الطلب');
             const rescueOrderMatch = rawRescueNotes.match(/صيد حي أنقذ الطلب\s*#?\s*(\d+)/);
             const rescueBadgeLabel = rescueOrderMatch
@@ -6097,15 +6167,18 @@
             const catsLabelsArr = Array.isArray(data.fine_categories_labels_ar) && data.fine_categories_labels_ar.length > 0
                 ? data.fine_categories_labels_ar
                 : rawCatsArr.map(c => SURGICAL_TAXONOMY_14_MAP[c] || c);
-            const safeBrandsText = escapeHTML(brandsArr.join('، ') || 'غير محدد');
+            const safeBrandsText = brandsArr.length >= 25
+                ? `جميع السيارات والماركات المعتمدة (${brandsArr.length} ماركة)`
+                : escapeHTML(brandsArr.join('، ') || 'غير محدد');
             const safeCatsText = escapeHTML(catsLabelsArr.join('، ') || 'جميع الـ 14 فئة');
             const dataStr = encodeURIComponent(JSON.stringify(data)).replace(/'/g, '%27');
             return `
-                <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border ${isLiveOrderRescue ? 'border-amber-500/50' : 'border-slate-700/80'} p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-1 h-full ${isLiveOrderRescue ? 'bg-amber-400' : (isLegacyUpdate ? 'bg-purple-500' : (isHarajMined ? 'bg-brand-500' : 'bg-emerald-500'))}"></div>
+                <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border ${isLiveOrderRescue ? 'border-amber-500/50' : (isPartial85 ? 'border-cyan-500/50' : 'border-slate-700/80')} p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-1 h-full ${isLiveOrderRescue ? 'bg-amber-400' : (isPartial85 ? 'bg-cyan-400' : (isLegacyUpdate ? 'bg-purple-500' : (isHarajMined ? 'bg-brand-500' : 'bg-emerald-500')))}"></div>
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
                         <div class="flex items-center gap-1.5 flex-wrap">
                             <p class="font-black text-white text-base">${safeName}</p>
+                            ${isPartial85 ? `<span class="text-[10px] font-black px-2.5 py-0.5 rounded-lg bg-cyan-500/20 text-cyan-200 border border-cyan-400/50 shadow-sm">${escapeHTML(partial85BadgeLabel)}</span>` : ''}
                             ${isLiveOrderRescue ? `<span class="text-[10px] font-black px-2.5 py-0.5 rounded-lg bg-amber-500/20 text-amber-200 border border-amber-400/50 shadow-sm">${escapeHTML(rescueBadgeLabel)}</span>` : ''}
                             ${isLegacyUpdate ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40">تحديث مورد مسجل</span>' : ''}
                             ${isHarajMined ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/40">منصة حراج</span>' : ''}
@@ -6130,41 +6203,85 @@
             `;
         }
 
+        function isActionablePendingCardUI(data) {
+            if (!data || typeof data !== 'object') return false;
+            const st = String(data.status || 'pending').trim().toLowerCase();
+            if (st === 'approved' || st === 'rejected') return false;
+            const outSt = String(data.outreach_status || '').trim().toLowerCase();
+            if (['queued', 'queued_ready', 'whatsapp_inactive', 'sandbox_protected'].includes(outSt)) {
+                return false;
+            }
+            const idStr = String(data.id || '').trim();
+            if (
+                idStr.startsWith('pending_discovery_') &&
+                !['onboarding_completed', 'partial_85', 'pending_review'].includes(outSt) &&
+                data.review_stage !== 'partial_85' &&
+                data.is_partial_85 !== true &&
+                data.source !== 'live_order_rescue' &&
+                data.onboarding_source !== 'live_order_rescue'
+            ) {
+                return false;
+            }
+            if (
+                outSt === 'contacted' &&
+                data.review_stage !== 'partial_85' &&
+                data.is_partial_85 !== true &&
+                data.source !== 'live_order_rescue' &&
+                data.onboarding_source !== 'live_order_rescue'
+            ) {
+                return false;
+            }
+            return true;
+        }
+
         function renderCombinedPendingSuppliersView() {
             const list = document.getElementById('pendingListContainer');
             const badge = document.getElementById('pendingBadge');
             if (!list || !badge) return;
 
             const approvedPhones = new Set((suppliersDB || []).map(s => window.formatSaudiPhone(s.phone || '')));
+            const seenPhoneBranchKeys = new Set();
             const seenPhones = new Set();
             const seenDocIds = new Set();
             const cardsHtml = [];
 
             for (const docItem of latestFirestorePendingDocs) {
+                if (!docItem || !isActionablePendingCardUI(docItem.data)) continue;
                 if (pendingOptimisticPendingSupOps.has(docItem.id) || seenDocIds.has(docItem.id)) continue;
                 const isLegacy = docItem.data?.onboarding_source === 'legacy_280_update' || Boolean(docItem.data?.existing_supplier_id);
                 const isRescue = docItem.data?.source === 'live_order_rescue' || docItem.data?.onboarding_source === 'live_order_rescue';
+                const isVerifiedOrPartial = ['onboarding_completed', 'partial_85', 'pending_review'].includes(String(docItem.data?.outreach_status || ''));
                 const ph = window.formatSaudiPhone(docItem.data?.phone || '');
-                if (ph && !isLegacy && !isRescue && approvedPhones.has(ph)) continue;
+                const brIdx = Number(docItem.data?.branch_index || 1) || 1;
+                const pbKey = ph ? `${ph}__b${brIdx}` : '';
+                if (pbKey && seenPhoneBranchKeys.has(pbKey)) continue;
+                if (ph && !isLegacy && !isRescue && !isVerifiedOrPartial && approvedPhones.has(ph)) continue;
                 seenDocIds.add(docItem.id);
+                if (pbKey) seenPhoneBranchKeys.add(pbKey);
                 if (ph) seenPhones.add(ph);
                 cardsHtml.push(buildPendingSupplierCardHtml(docItem.id, docItem.data));
             }
 
             for (const item of latestBackendPendingSuppliers) {
+                if (!item || !isActionablePendingCardUI(item)) continue;
                 const docId = String(item.id || ('pending_' + item.phone));
                 if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) continue;
                 const isLegacy = item.onboarding_source === 'legacy_280_update' || Boolean(item.existing_supplier_id);
                 const isRescue = item.source === 'live_order_rescue' || item.onboarding_source === 'live_order_rescue';
+                const isVerifiedOrPartial = ['onboarding_completed', 'partial_85', 'pending_review'].includes(String(item.outreach_status || ''));
                 const ph = window.formatSaudiPhone(item.phone || '');
-                if (ph && seenPhones.has(ph)) continue;
-                if (ph && !isLegacy && !isRescue && approvedPhones.has(ph)) continue;
+                const brIdx = Number(item.branch_index || 1) || 1;
+                const pbKey = ph ? `${ph}__b${brIdx}` : '';
+                if (pbKey && seenPhoneBranchKeys.has(pbKey)) continue;
+                if (ph && !isLegacy && !isRescue && !isVerifiedOrPartial && approvedPhones.has(ph)) continue;
                 seenDocIds.add(docId);
+                if (pbKey) seenPhoneBranchKeys.add(pbKey);
                 if (ph) seenPhones.add(ph);
                 cardsHtml.push(buildPendingSupplierCardHtml(docId, item));
             }
 
             for (const sup of latestHarajMinedSuppliers) {
+                if (!sup || !['onboarding_completed', 'partial_85', 'pending_review'].includes(String(sup.outreach_status || ''))) continue;
                 const docId = sup.id || ('haraj_' + sup.phone);
                 if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) continue;
                 const ph = window.formatSaudiPhone(sup.phone || '');
@@ -6367,7 +6484,7 @@
             try {
                 const [minerRes, pendingRes] = await Promise.all([
                     fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 8000 }),
-                    fetchBotBackend('/api/admin/pending-suppliers?status=pending', { method: 'GET', timeoutMs: 8000 })
+                    fetchBotBackend('/api/admin/pending-suppliers?status=pending,pending_review,legacy_280_update,live_order_rescue,partial_85&sync_cloud=true', { method: 'GET', timeoutMs: 8000 })
                 ]);
                 if (pendingRes && pendingRes.ok) {
                     const pendingJson = await pendingRes.json();
@@ -6466,11 +6583,16 @@
                 unsubscribePending = null;
             }
             loadHarajMinerReadinessAndPending();
-            const q = query(collection(db, "pending_suppliers"), orderBy("timestamp", "desc"));
+            const q = collection(db, "pending_suppliers");
             unsubscribePending = onSnapshot(q, (snap) => {
                 const docs = [];
                 snap.forEach(docSnap => {
                     docs.push({ id: docSnap.id, data: docSnap.data() });
+                });
+                docs.sort((a, b) => {
+                    const ta = a.data?.timestamp?.toMillis ? a.data.timestamp.toMillis() : (Date.parse(a.data?.timestamp || a.data?.updated_at || '') || 0);
+                    const tb = b.data?.timestamp?.toMillis ? b.data.timestamp.toMillis() : (Date.parse(b.data?.timestamp || b.data?.updated_at || '') || 0);
+                    return tb - ta;
                 });
                 latestFirestorePendingDocs = docs;
                 renderCombinedPendingSuppliersView();
@@ -6495,7 +6617,7 @@
 
             const normIncomingPhone = window.formatSaudiPhone(data.phone || '');
             const existingIdx = suppliersDB.findIndex((s) =>
-                (data.existing_supplier_id && String(s.id) === String(data.existing_supplier_id)) ||
+                (data.existing_supplier_id && (String(s.id) === String(data.existing_supplier_id) || Number(s.id) === Number(data.existing_supplier_id))) ||
                 (normIncomingPhone && window.formatSaudiPhone(s.phone || '') === normIncomingPhone)
             );
             const updatedRecord = {
