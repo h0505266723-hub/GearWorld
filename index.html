@@ -1921,6 +1921,73 @@
                     </div>
                 </div>
 
+                <!-- 📖 قائمة انتظار المصطلحات المشكوك فيها (وكيل مراجعة المحادثات) — للمدير فقط -->
+                <div id="adminTerminologyAuditorWrap" class="hidden bg-slate-900/95 border border-violet-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
+                    <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-800 pb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-xs sm:text-sm font-black text-violet-300 flex items-center gap-1.5">
+                                <span>📖</span>
+                                <span>قائمة انتظار المصطلحات المشكوك فيها (وكيل مراجعة المحادثات)</span>
+                            </h3>
+                            <span id="adminPendingTermsCountBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-400/40">
+                                ⏳ بانتظار المراجعة: 0
+                            </span>
+                            <span id="adminAutoAddedTermsBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                ⚡ أُضيف تلقائياً (ثقة ≥ 90%): 0
+                            </span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" id="btnScanTerminologyNow" onclick="scanConversationsTerminologyNowUI()" class="bg-violet-600 hover:bg-violet-500 text-white px-3 py-1.5 rounded-xl text-[11px] font-black transition shadow-sm flex items-center gap-1">
+                                <span>🔍</span>
+                                <span>فحص المحادثات الجديدة</span>
+                            </button>
+                            <button type="button" onclick="sendOwnerTerminologyDigestUI()" class="bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-200 border border-emerald-500/35 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition">
+                                📲 ملخص لواتساب المالك
+                            </button>
+                            <button type="button" onclick="loadAdminTerminologyAuditorUI()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition">
+                                🔄 تحديث
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-slate-300 font-bold leading-relaxed">
+                        🧠 <span class="text-violet-300">حوكمة عدم التخمين (القانون 8):</span> المصطلحات الواضحة جداً (<code class="text-emerald-300">confidence ≥ 0.90</code>) تُضاف للقاموس تلقائياً، أما الألفاظ المشكوك فيها أو الغامضة فتُودَع هنا لسؤالك عنها؛ وفور تعديلها واعتمادها تتفعل في البوت وتدخل في بيانات التدريب!
+                    </p>
+                    <div id="adminPendingTermsContainer" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
+                        <div class="text-xs text-slate-400 text-center py-3">جاري تحميل قائمة مراجعة المصطلحات...</div>
+                    </div>
+                </div>
+
+                <!-- 🔥 القطع الأكثر طلباً حسب نوع وفئة السيارة + تصدير بيانات تدريب النموذج JSONL — للمدير فقط -->
+                <div id="adminMostDemandedAndTrainingWrap" class="hidden bg-slate-900/95 border border-amber-500/40 rounded-2xl p-4 space-y-3.5 shadow-lg">
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5">
+                                <span>🔥</span>
+                                <span>القطع الأكثر طلباً حسب نوع وفئة السيارة</span>
+                            </h3>
+                            <span id="adminDemandedTotalBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-400/40">
+                                إجمالي مؤشر الطلب: 0
+                            </span>
+                            <span id="adminTrainingExamplesBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-200 border border-cyan-500/35">
+                                🛡️ حزمة التدريب المعمّاة: جاهزة
+                            </span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" id="btnExportAiTrainingJsonl" onclick="exportAiTrainingJsonlUI()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 px-3.5 py-2 rounded-xl text-xs font-black transition shadow-md flex items-center gap-1.5">
+                                <span>📦</span>
+                                <span>تصدير حزمة تدريب النموذج JSONL</span>
+                            </button>
+                            <button type="button" onclick="loadAdminMostDemandedPartsUI()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition">
+                                🔄 تحديث الإحصائيات
+                            </button>
+                        </div>
+                    </div>
+                    <div id="adminDemandedBrandTabs" class="flex flex-wrap items-center gap-1.5"></div>
+                    <div id="adminDemandedPartsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[460px] overflow-y-auto pr-1">
+                        <div class="text-xs text-slate-400 text-center py-3 col-span-full">جاري تحميل مؤشر القطع الأكثر طلباً حسب المركبة والفئة...</div>
+                    </div>
+                </div>
+
                 <!-- المراقبة الحية للمدير فقط: توزيع الوكلاء التناسبي + محرك الإنقاذ الحي للطلبات المتأخرة -->
                 <div id="adminLiveEnginesMonitorWrap" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-3.5 pt-1">
                     <!-- (1) بطاقة توزيع الوكلاء الحي (Proportional Agent Balancer) -->
@@ -5816,6 +5883,8 @@
                     document.getElementById('adminColdOutreachBadge')?.classList.remove('hidden');
                     document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.remove('hidden');
                     document.getElementById('adminGoogleContactsTopBar')?.classList.remove('hidden');
+                    document.getElementById('adminTerminologyAuditorWrap')?.classList.remove('hidden');
+                    document.getElementById('adminMostDemandedAndTrainingWrap')?.classList.remove('hidden');
                     const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
                     if (liveEnginesWrap) liveEnginesWrap.classList.remove('hidden');
                     document.getElementById('btn-pending').classList.remove('hidden');
@@ -5828,6 +5897,12 @@
                     }
                     if (typeof window.loadGoogleContactsBarStatus === 'function') {
                         window.loadGoogleContactsBarStatus();
+                    }
+                    if (typeof window.loadAdminTerminologyAuditorUI === 'function') {
+                        window.loadAdminTerminologyAuditorUI();
+                    }
+                    if (typeof window.loadAdminMostDemandedPartsUI === 'function') {
+                        window.loadAdminMostDemandedPartsUI();
                     }
                     if (typeof window.loadAdminLiveEnginesStatus === 'function') {
                         window.loadAdminLiveEnginesStatus();
@@ -5924,6 +5999,8 @@
                     document.getElementById('adminColdOutreachBadge')?.classList.add('hidden');
                     document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.add('hidden');
                     document.getElementById('adminGoogleContactsTopBar')?.classList.add('hidden');
+                    document.getElementById('adminTerminologyAuditorWrap')?.classList.add('hidden');
+                    document.getElementById('adminMostDemandedAndTrainingWrap')?.classList.add('hidden');
                     if (typeof window.closeGoogleContactsTestModal === 'function') window.closeGoogleContactsTestModal();
                     const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
                     if (liveEnginesWrap) liveEnginesWrap.classList.add('hidden');
@@ -8511,6 +8588,366 @@
                     alert("تعذر حذف طلب الانضمام بسبب الاتصال، تمت استعادة البطاقة.");
                 } finally {
                     pendingOptimisticPendingSupOps.delete(docId);
+                }
+            }
+        };
+
+        // ============================================================================
+        // 📖 واجهة وكيل مراجعة المحادثات (المصطلحات المشكوك فيها) + 🔥 القطع الأكثر طلباً + 📦 تصدير JSONL
+        // ============================================================================
+        let cachedDemandedCatalogsUI = {};
+        let activeDemandedBrandKeyUI = 'isuzu';
+
+        window.loadAdminTerminologyAuditorUI = async function() {
+            if (currentRole !== 'admin') return;
+            const container = document.getElementById('adminPendingTermsContainer');
+            const pendingBadge = document.getElementById('adminPendingTermsCountBadge');
+            const autoBadge = document.getElementById('adminAutoAddedTermsBadge');
+            try {
+                const res = await fetchBotBackend('/api/admin/terminology-auditor/pending', { method: 'GET', timeoutMs: 6000 });
+                if (!res || !res.ok) return;
+                const data = await res.json();
+                const pendingItems = Array.isArray(data.pending_items) ? data.pending_items : [];
+                const counts = data.counts || {};
+                const gTotals = data.glossary_totals || {};
+
+                if (pendingBadge) {
+                    const pCnt = Number(counts.pending || pendingItems.length || 0);
+                    pendingBadge.textContent = pCnt > 0 ? `⏳ بانتظار مراجعتك: ${pCnt}` : '✅ لا توجد مصطلحات معلقة (0)';
+                    pendingBadge.className = pCnt > 0
+                        ? 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/25 text-amber-200 border border-amber-400/50 animate-pulse'
+                        : 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+                }
+                if (autoBadge) {
+                    const aCnt = Number(counts.auto_added || 0);
+                    const totalActive = Number(gTotals.parts_slang_count || 0) + Number(gTotals.brand_phonetics_count || 0) + Number(gTotals.industrial_zones_count || 0);
+                    autoBadge.textContent = `⚡ مضاف تلقائياً: ${aCnt} | القاموس الحي: ${totalActive} مدخل`;
+                }
+
+                if (!container) return;
+                if (pendingItems.length === 0) {
+                    container.innerHTML = `
+                        <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 text-center text-xs text-slate-400">
+                            ✨ لا توجد مصطلحات مشكوك فيها بانتظار المراجعة حالياً. يعمل وكيل مراجعة المحادثات في الخلفية مع كل محادثة جديدة.
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = pendingItems.map((item) => {
+                    const id = Number(item.id);
+                    const cleanSuggested = String(item.suggested_meaning || '').replace(/\s*—\s*سبب الشك:.*$/i, '').trim();
+                    const confPct = Math.round((Number(item.confidence) || 0.5) * 100);
+                    const catVal = item.category_type || 'قطعة غيار';
+                    return `
+                        <div id="pending-term-card-${id}" class="bg-slate-950/85 border border-violet-500/30 rounded-xl p-3.5 space-y-2.5">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="text-sm font-black text-amber-300">«${escapeHTML(item.raw_term || '')}»</span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-violet-500/20 text-violet-200 border border-violet-500/30">${escapeHTML(catVal)}</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded-lg bg-slate-800 text-slate-300">ثقة الرصد: ${confPct}%</span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-cyan-500/15 text-cyan-200">${escapeHTML(item.speaker_type || 'عميل')}</span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <button type="button" onclick="toggleTerminologyEditBox(${id})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/40 px-2.5 py-1 rounded-lg text-[11px] font-black transition">
+                                        ✏️ تعديل المعنى والتصنيف
+                                    </button>
+                                    <button type="button" onclick="approveTerminologyItemUI(${id})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1 rounded-lg text-[11px] font-black transition shadow-sm">
+                                        ✅ اعتماد وحفظ في مجلد المصطلحات والتدريب
+                                    </button>
+                                    <button type="button" onclick="ignoreTerminologyItemUI(${id})" class="bg-rose-500/15 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 px-2.5 py-1 rounded-lg text-[11px] font-bold transition">
+                                        🗑️ تجاهل / خطأ عابر
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="text-xs text-slate-200 bg-slate-900/90 border border-slate-800 rounded-lg p-2.5 leading-relaxed">
+                                <span class="text-slate-400 font-bold">💬 الجملة في المحادثة:</span> ${escapeHTML(item.context_quote || '')}
+                            </div>
+                            <div class="text-[11px] text-violet-200/90">
+                                <span class="font-bold text-slate-400">💡 اقتراح الوكيل السحابي:</span> ${escapeHTML(item.suggested_meaning || 'بانتظار تحديد المعنى الدقيق')}
+                            </div>
+                            <div id="term-edit-box-${id}" class="hidden grid grid-cols-1 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-800">
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 font-bold mb-1">الكلمة / المصطلح العامي</label>
+                                    <input type="text" id="term-raw-${id}" value="${escapeHTML(item.raw_term || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-violet-400 outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 font-bold mb-1">المعنى المعتمد / الفصيح</label>
+                                    <input type="text" id="term-meaning-${id}" value="${escapeHTML(cleanSuggested)}" placeholder="مثال: شوكة الكلتش" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-emerald-400 outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 font-bold mb-1">المرادف الإنجليزي (OEM اختياري)</label>
+                                    <input type="text" id="term-oem-${id}" value="${escapeHTML(item.oem_english || '')}" placeholder="Clutch Fork" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-cyan-400 outline-none" />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 font-bold mb-1">نوع التصنيف في القاموس</label>
+                                    <select id="term-cat-${id}" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:border-violet-400 outline-none">
+                                        <option value="قطعة غيار" ${catVal === 'قطعة غيار' ? 'selected' : ''}>قطعة غيار (parts_slang_ar.json)</option>
+                                        <option value="ماركة أو فئة سيارة" ${catVal === 'ماركة أو فئة سيارة' ? 'selected' : ''}>ماركة أو فئة سيارة (brands_and_phonetics_ar.json)</option>
+                                        <option value="حي صناعي" ${catVal === 'حي صناعي' ? 'selected' : ''}>حي صناعي (riyadh_industrial_zones.json)</option>
+                                        <option value="تعبير تفاوضي" ${catVal === 'تعبير تفاوضي' ? 'selected' : ''}>تعبير تفاوضي / سوقي</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (_) {}
+        };
+
+        window.toggleTerminologyEditBox = function(id) {
+            const box = document.getElementById('term-edit-box-' + id);
+            if (!box) return;
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden')) {
+                document.getElementById('term-meaning-' + id)?.focus();
+            }
+        };
+
+        window.scanConversationsTerminologyNowUI = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnScanTerminologyNow');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الفحص...';
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/terminology-auditor/scan-now', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ limit: 100 }),
+                    timeoutMs: 12000
+                });
+                if (res && res.ok) {
+                    const out = await res.json();
+                    await window.loadAdminTerminologyAuditorUI();
+                    if (typeof window.showAdminActionToast === 'function') {
+                        window.showAdminActionToast(
+                            `🔍 اكتمل فحص المحادثات (${out.sweep?.totalAuditedMessages || 0} رسالة جديدة — أُضيف تلقائياً: ${out.sweep?.autoAddedCount || 0} | محال للمراجعة: ${out.sweep?.queuedCount || 0})`,
+                            'cyan'
+                        );
+                    }
+                }
+            } catch (_) {
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            }
+        };
+
+        window.sendOwnerTerminologyDigestUI = async function() {
+            if (currentRole !== 'admin') return;
+            try {
+                const res = await fetchBotBackend('/api/admin/terminology-auditor/send-owner-digest', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    timeoutMs: 8000
+                });
+                if (res && res.ok) {
+                    const out = await res.json();
+                    if (typeof window.showAdminActionToast === 'function') {
+                        window.showAdminActionToast(
+                            out.sent
+                                ? '📲 تم إرسال ملخص المصطلحات المشكوك فيها إلى واتساب المدير المالك.'
+                                : (out.message || 'تم تجهيز ملخص المصطلحات (اربط واتساب للإرسال المباشر).'),
+                            out.sent ? 'emerald' : 'cyan'
+                        );
+                    }
+                }
+            } catch (_) {}
+        };
+
+        window.approveTerminologyItemUI = async function(id) {
+            if (currentRole !== 'admin') return;
+            const rawEl = document.getElementById('term-raw-' + id);
+            const meaningEl = document.getElementById('term-meaning-' + id);
+            const oemEl = document.getElementById('term-oem-' + id);
+            const catEl = document.getElementById('term-cat-' + id);
+
+            let approvedMeaning = meaningEl ? meaningEl.value.trim() : '';
+            if (!approvedMeaning || approvedMeaning.includes('يحتاج تأكيد') || approvedMeaning.includes('غير مسجل')) {
+                const editBox = document.getElementById('term-edit-box-' + id);
+                if (editBox && editBox.classList.contains('hidden')) {
+                    editBox.classList.remove('hidden');
+                }
+                const prompted = window.prompt('أدخل المعنى الهندسي/المعتمد لهذا المصطلح لحفظه في القاموس الحي وحزمة التدريب:', approvedMeaning);
+                if (!prompted || !prompted.trim()) return;
+                approvedMeaning = prompted.trim();
+                if (meaningEl) meaningEl.value = approvedMeaning;
+            }
+
+            try {
+                const res = await fetchBotBackend('/api/admin/terminology-auditor/' + encodeURIComponent(id) + '/approve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        raw_term: rawEl ? rawEl.value.trim() : undefined,
+                        approved_meaning: approvedMeaning,
+                        formal_name_ar: approvedMeaning,
+                        oem_english: oemEl ? oemEl.value.trim() : '',
+                        category_type: catEl ? catEl.value : 'قطعة غيار'
+                    }),
+                    timeoutMs: 8000
+                });
+                if (!res || !res.ok) {
+                    const errJson = res ? await res.json().catch(() => ({})) : {};
+                    alert(errJson.error || 'تعذر اعتماد المصطلح.');
+                    return;
+                }
+                const out = await res.json();
+                document.getElementById('pending-term-card-' + id)?.remove();
+                await window.loadAdminTerminologyAuditorUI();
+                await window.loadAdminMostDemandedPartsUI();
+                if (typeof window.showAdminActionToast === 'function') {
+                    window.showAdminActionToast(
+                        `✅ تم حفظ المصطلح في [${out.target_file || 'terminology_glossary'}] وتفعيله فوراً في البوت وملف التدريب JSONL!`,
+                        'emerald'
+                    );
+                }
+            } catch (_) {
+                alert('حدث خطأ أثناء حفظ المصطلح.');
+            }
+        };
+
+        window.ignoreTerminologyItemUI = async function(id) {
+            if (currentRole !== 'admin') return;
+            try {
+                const res = await fetchBotBackend('/api/admin/terminology-auditor/' + encodeURIComponent(id) + '/ignore', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reason: 'خطأ عابر تم تجاهله من المدير' }),
+                    timeoutMs: 6000
+                });
+                if (res && res.ok) {
+                    document.getElementById('pending-term-card-' + id)?.remove();
+                    await window.loadAdminTerminologyAuditorUI();
+                }
+            } catch (_) {}
+        };
+
+        window.renderSelectedDemandedBrandCatalogUI = function(brandKey) {
+            activeDemandedBrandKeyUI = brandKey;
+            const tabsEl = document.getElementById('adminDemandedBrandTabs');
+            const gridEl = document.getElementById('adminDemandedPartsGrid');
+            if (!gridEl) return;
+
+            const keys = Object.keys(cachedDemandedCatalogsUI);
+            if (tabsEl) {
+                tabsEl.innerHTML = keys.map((k) => {
+                    const doc = cachedDemandedCatalogsUI[k];
+                    const isAct = k === activeDemandedBrandKeyUI;
+                    return `<button type="button" onclick="renderSelectedDemandedBrandCatalogUI('${escapeHTML(k)}')" class="${
+                        isAct
+                            ? 'bg-amber-500 text-slate-950 font-black shadow-md'
+                            : 'bg-slate-800/90 hover:bg-slate-700 text-slate-200 font-bold border border-slate-700'
+                    } px-3 py-1.5 rounded-xl text-xs transition">${escapeHTML(doc.brand_ar || k)}</button>`;
+                }).join('');
+            }
+
+            const selectedDoc = cachedDemandedCatalogsUI[brandKey] || cachedDemandedCatalogsUI[keys[0]];
+            if (!selectedDoc || !Array.isArray(selectedDoc.vehicle_trims)) {
+                gridEl.innerHTML = '<div class="text-xs text-slate-400 col-span-full py-3 text-center">لا توجد بيانات متاحة لهذه الماركة.</div>';
+                return;
+            }
+
+            gridEl.innerHTML = selectedDoc.vehicle_trims.map((trim) => {
+                const parts = Array.isArray(trim.most_demanded_parts) ? trim.most_demanded_parts : [];
+                return `
+                    <div class="bg-slate-950/85 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+                        <div class="border-b border-slate-800/90 pb-2">
+                            <div class="text-xs sm:text-sm font-black text-amber-300">${escapeHTML(trim.trim_label_ar || trim.model_ar || '')}</div>
+                            <div class="text-[10px] text-slate-400 font-mono mt-0.5">${escapeHTML(trim.engine_spec || '')} ${trim.year_range ? '• ' + escapeHTML(trim.year_range) : ''}</div>
+                        </div>
+                        <div class="space-y-1.5">
+                            ${parts.slice(0, 8).map((p, idx) => `
+                                <div class="flex items-center justify-between gap-2 text-xs bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800/70">
+                                    <div class="truncate">
+                                        <span class="text-amber-400 font-bold ml-1">${idx + 1}.</span>
+                                        <span class="text-slate-100 font-bold">${escapeHTML(p.canonical_part_name || '')}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 shrink-0">
+                                        ${p.avg_price_sar ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300">~${Math.round(Number(p.avg_price_sar))} ر.س</span>` : ''}
+                                        <span class="text-[10px] font-black px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 border border-amber-500/30">${Number(p.demand_count || 0)} طلب</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.loadAdminMostDemandedPartsUI = async function() {
+            if (currentRole !== 'admin') return;
+            const totalBadge = document.getElementById('adminDemandedTotalBadge');
+            const trainBadge = document.getElementById('adminTrainingExamplesBadge');
+            try {
+                const [demRes, trRes] = await Promise.all([
+                    fetchBotBackend('/api/admin/most-demanded-parts', { method: 'GET', timeoutMs: 6000 }),
+                    fetchBotBackend('/api/admin/ai-training/status', { method: 'GET', timeoutMs: 6000 }).catch(() => null)
+                ]);
+                if (demRes && demRes.ok) {
+                    const data = await demRes.json();
+                    cachedDemandedCatalogsUI = data.brand_catalogs || {};
+                    if (totalBadge && data.summary) {
+                        totalBadge.textContent = `إجمالي مؤشر الطلب: ${Number(data.summary.total_tracked_demands || 0)} عبر ${Number(data.summary.total_brand_files || 0)} ملفات ماركات`;
+                    }
+                    const preferred = cachedDemandedCatalogsUI[activeDemandedBrandKeyUI]
+                        ? activeDemandedBrandKeyUI
+                        : (cachedDemandedCatalogsUI.isuzu ? 'isuzu' : Object.keys(cachedDemandedCatalogsUI)[0]);
+                    if (preferred) {
+                        window.renderSelectedDemandedBrandCatalogUI(preferred);
+                    }
+                }
+                if (trRes && trRes.ok && trainBadge) {
+                    const st = await trRes.json();
+                    trainBadge.textContent = `🛡️ حزمة التدريب المعمّاة: ${Number(st.total_examples || 0)} عينة SFT جاهزة`;
+                }
+            } catch (_) {}
+        };
+
+        window.exportAiTrainingJsonlUI = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnExportAiTrainingJsonl');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري تجهيز وتعمية حزمة JSONL...';
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/ai-training/export.jsonl', { method: 'GET', timeoutMs: 20000 });
+                if (!res || !res.ok) {
+                    alert('تعذر تصدير حزمة التدريب JSONL. تأكد من صلاحية الجلسة الإدارية.');
+                    return;
+                }
+                const totalEx = res.headers.get('X-Total-Examples') || '';
+                const blob = await res.blob();
+                const dlUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = dlUrl;
+                a.download = `sft_haraj_parts_dataset_${new Date().toISOString().slice(0, 10)}.jsonl`;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    a.remove();
+                    URL.revokeObjectURL(dlUrl);
+                }, 400);
+                await window.loadAdminMostDemandedPartsUI();
+                if (typeof window.showAdminActionToast === 'function') {
+                    window.showAdminActionToast(
+                        `📦 تم تصدير حزمة تدريب النموذج بنجاح (${totalEx} عينة SFT مُعمّاة بالكامل من الأرقام الشخصية)!`,
+                        'emerald'
+                    );
+                }
+            } catch (_) {
+                alert('حدث خطأ أثناء تحميل ملف التدريب JSONL.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
                 }
             }
         };
