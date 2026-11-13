@@ -83,6 +83,9 @@
 }
   </script>
 
+  <link rel="preload" as="image" href="./assets/sequences/mobile_9x16/frame_0001.webp?v=20s_v3" media="(max-width: 768px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="./assets/sequences/desktop_16x9/frame_0001.webp?v=20s_v3" media="(min-width: 769px)" fetchpriority="high" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -110,11 +113,16 @@
   <style>
     :root {
       --bg-deep: #05080f;
+      --bg-panel: rgba(8, 14, 27, 0.8);
+      --border-glass: rgba(56, 189, 248, 0.3);
       --cyan: #00d4ff;
+      --cyan-soft: rgba(0, 212, 255, 0.16);
       --amber: #f59e0b;
       --emerald: #10b981;
+      --whatsapp: #25d366;
       --text-main: #f8fafc;
-      --font-ar: 'Tajawal', 'Cairo', system-ui, -apple-system, sans-serif;
+      --text-muted: #cbd5e1;
+      --font-ar: 'Cairo', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
 
@@ -124,11 +132,11 @@
       padding: 0;
     }
 
+    /* CRITICAL: Never set overflow: hidden or overflow-x: hidden on html/body so position: sticky stays locked */
     html {
       background-color: var(--bg-deep);
       color: var(--text-main);
       font-family: var(--font-ar);
-      scroll-behavior: smooth;
     }
 
     body {
@@ -137,58 +145,748 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* GPU-Accelerated Lightweight Hero (Zero Image Sequence Bloat — < 0.6s First Paint) */
-    .fast-hero-wrap {
-      position: relative;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 82% 18%, rgba(0, 212, 255, 0.14), transparent 46%),
-        radial-gradient(circle at 14% 82%, rgba(16, 185, 129, 0.13), transparent 48%),
-        linear-gradient(180deg, #05080f 0%, #0b1324 100%);
-      border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+    /* ============ TOP FIXED HEADER & STAGE NAVIGATION ============ */
+    .top-header {
+      transition: transform 0.32s ease, opacity 0.32s ease;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 24px;
+      background: linear-gradient(180deg, rgba(5, 8, 15, 0.92) 0%, rgba(5, 8, 15, 0.68) 78%, rgba(5, 8, 15, 0) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
-    .fast-hero-grid-bg {
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-pulse {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 14px var(--cyan), 0 0 28px rgba(0, 212, 255, 0.65);
+      animation: pulseGlow 2s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.28); opacity: 0.7; }
+    }
+
+    .brand-title {
+      font-weight: 900;
+      font-size: 1.15rem;
+      letter-spacing: -0.2px;
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      color: var(--cyan);
+      letter-spacing: 1.2px;
+    }
+
+    .stage-nav-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(10, 18, 34, 0.76);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 5px 8px;
+      border-radius: 999px;
+    }
+
+    .stage-pill {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-ar);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      white-space: nowrap;
+    }
+
+    .stage-pill:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stage-pill.active {
+      color: #03111c;
+      background: var(--cyan);
+      box-shadow: 0 0 16px rgba(0, 212, 255, 0.55);
+    }
+
+    .skip-order-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #25d366 0%, #10b981 100%);
+      color: #041b0e;
+      font-family: var(--font-ar);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 9px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.38);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .skip-order-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(37, 211, 102, 0.58);
+    }
+
+    /* ============ BULLETPROOF STICKY TRACK ARCHITECTURE ============ */
+    #scrolly-track {
+      position: relative;
+      width: 100%;
+      height: 600vh;
+    }
+
+    #sticky-viewport {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0c1629 0%, #05080f 100%);
+    }
+
+    /* All layers inside #sticky-viewport use position: absolute */
+    #scrolly-canvas {
+      max-width: none;
       position: absolute;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    .canvas-vignette {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
       pointer-events: none;
-      opacity: 0.18;
+      background:
+        radial-gradient(circle at 42% 48%, rgba(5, 8, 15, 0.02) 35%, rgba(5, 8, 15, 0.55) 100%),
+        linear-gradient(270deg, rgba(5, 8, 15, 0.38) 0%, rgba(5, 8, 15, 0.06) 34%, rgba(5, 8, 15, 0.35) 100%),
+        linear-gradient(180deg, rgba(5, 8, 15, 0.42) 0%, transparent 20%, transparent 78%, rgba(5, 8, 15, 0.72) 100%);
+    }
+
+    .scanline-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.16;
       background-image:
-        linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
-      background-size: 48px 48px;
+        linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px);
+      background-size: 56px 56px;
       mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
       -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
     }
 
-    .gpu-pulse-dot {
-      width: 10px;
-      height: 10px;
+    /* ============ AI DIAGNOSTIC TECHNICAL HUD OVERLAY ============ */
+    .ai-tech-hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      pointer-events: none;
+      transition: opacity 0.25s linear;
+    }
+
+    .hud-reticle {
+      display: none !important;
+    }
+
+    .hud-telemetry-box {
+      position: absolute;
+      right: 3%;
+      left: auto;
+      top: 72px;
+      bottom: auto;
+      width: auto;
+      max-width: 380px;
+      background: rgba(8, 13, 24, 0.42);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(0, 212, 255, 0.22);
       border-radius: 999px;
+      padding: 6px 14px;
+      direction: rtl;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+    }
+
+    .hud-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .hud-metrics,
+    .hud-progress-wrap {
+      display: none !important;
+    }
+
+    .hud-status-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+
+    .hud-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
       background: #10b981;
-      box-shadow: 0 0 12px #10b981;
-      animation: gpuPulse 2.2s infinite ease-in-out;
+      box-shadow: 0 0 10px #10b981;
+    }
+
+    .hud-mode-code {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: #94a3b8;
+      direction: ltr;
+    }
+
+    .hud-metric-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 6px 9px;
+    }
+
+    .hud-metric-label {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      display: block;
+    }
+
+    .hud-metric-val {
+      font-family: var(--font-ar);
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #f8fafc;
+      direction: rtl;
+      display: inline-block;
+    }
+
+    .hud-progress-bar {
+      height: 100%;
+      width: 5%;
+      background: linear-gradient(90deg, var(--cyan), #10b981);
+      border-radius: 999px;
+    }
+
+    /* ============ STACKED ABSOLUTE STORY CARDS (01 -> 04 + VAN DISPATCH) ============ */
+    .stage-cards-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    .story-card {
+      position: absolute;
+      right: 3%;
+      left: auto;
+      top: 50%;
+      width: min(380px, calc(100vw - 32px));
+      max-width: 380px;
+      background: rgba(10, 14, 24, 0.32);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-right: 4px solid var(--cyan);
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(0, calc(-50% + 28px), 0);
+      will-change: opacity, transform;
+    }
+
+    .story-card.accent-amber {
+      border-right-color: var(--amber);
+    }
+
+    .story-card.accent-emerald {
+      border-right-color: var(--emerald);
+    }
+
+    .story-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--cyan);
+      background: var(--cyan-soft);
+      border: 1px solid rgba(0, 212, 255, 0.35);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .story-card.accent-amber .story-badge {
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.16);
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+
+    .story-card.accent-emerald .story-badge {
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+
+    .story-headline {
+      font-size: clamp(1.22rem, 1.85vw, 1.58rem);
+      font-weight: 900;
+      line-height: 1.32;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.75);
+    }
+
+    .story-desc {
+      font-size: clamp(0.86rem, 1.0vw, 0.94rem);
+      line-height: 1.62;
+      color: #e2e8f0;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+    }
+
+    .story-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .story-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(10, 14, 24, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #f1f5f9;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 26px;
+      right: 5vw;
+      z-index: 7;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      background: rgba(7, 13, 24, 0.78);
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .mouse-wheel-icon {
+      width: 18px;
+      height: 28px;
+      border: 2px solid var(--cyan);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .mouse-wheel-icon::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      width: 3px;
+      height: 6px;
+      background: var(--cyan);
+      border-radius: 2px;
+      transform: translateX(-50%);
+      animation: wheelScroll 1.5s infinite;
+    }
+
+    @keyframes wheelScroll {
+      0% { opacity: 1; top: 5px; }
+      100% { opacity: 0; top: 15px; }
+    }
+
+    /* ============ STAGE 05 (80% -> 100%): 3-COLUMN SPLIT SCREEN OVER CANVAS ============ */
+    .split-delivery-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      padding-top: 66px;
+      background: rgba(5, 8, 15, 0.82);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      will-change: opacity;
+    }
+
+    .customer-col {
+      position: relative;
+      overflow: hidden;
+      border-left: 1px solid rgba(255, 255, 255, 0.14);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px 24px;
       will-change: transform, opacity;
     }
 
-    @keyframes gpuPulse {
-      0%, 100% { transform: scale3d(1, 1, 1); opacity: 1; }
-      50% { transform: scale3d(1.28, 1.28, 1); opacity: 0.65; }
+    .customer-col:last-child {
+      border-left: none;
     }
 
-    .tier-fast-card {
-      background: rgba(15, 23, 42, 0.76);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 1.25rem;
-      padding: 1.1rem 1.15rem;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-      transform: translate3d(0, 0, 0);
-      will-change: transform;
+    .customer-bg {
+      max-width: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      transition: transform 0.65s ease;
+      z-index: 0;
     }
 
-    .tier-fast-card:hover {
-      transform: translate3d(0, -3px, 0);
-      border-color: rgba(0, 212, 255, 0.5);
+    .customer-col:hover .customer-bg {
+      transform: scale(1.05);
+    }
+
+    .customer-shade {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: linear-gradient(
+        180deg,
+        rgba(5, 8, 15, 0.22) 0%,
+        rgba(5, 8, 15, 0.45) 42%,
+        rgba(5, 8, 15, 0.94) 100%
+      );
+    }
+
+    .customer-content {
+      position: relative;
+      z-index: 2;
+      background: rgba(8, 15, 29, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .tier-ribbon {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .tier-salvage {
+      background: rgba(0, 212, 255, 0.18);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 212, 255, 0.45);
+    }
+
+    .tier-oem {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.45);
+    }
+
+    .tier-aftermarket {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.45);
+    }
+
+    .customer-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .customer-desc {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+    }
+
+    .customer-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-bottom: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .choose-tier-btn {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-family: var(--font-ar);
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .choose-tier-btn:hover {
+      background: var(--cyan);
+      color: #031320;
+      border-color: var(--cyan);
+    }
+
+    /* ============ RESPONSIVE MOBILE & TABLET ============ */
+    @media (max-width: 1040px) {
+      .stage-nav-pills {
+        gap: 3px;
+        padding: 4px 6px;
+      }
+      .stage-pill {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-header {
+        flex-wrap: nowrap;
+        padding: 7px 12px;
+        gap: 8px;
+        height: 46px;
+        background: rgba(5, 8, 15, 0.78);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .stage-nav-pills {
+        display: none !important;
+      }
+      .brand-title {
+        font-size: 0.95rem;
+      }
+      .brand-sub {
+        display: none;
+      }
+      .skip-order-btn {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+      }
+      .canvas-vignette {
+        background:
+          linear-gradient(180deg, rgba(5, 8, 15, 0.38) 0%, transparent 16%, transparent 66%, rgba(5, 8, 15, 0.72) 100%);
+      }
+      .hud-reticle,
+      .hud-telemetry-box,
+      .hud-metrics,
+      .hud-progress-wrap {
+        display: none !important;
+      }
+      .story-card {
+        right: 10px;
+        left: 10px;
+        width: auto;
+        max-width: none;
+        top: auto;
+        bottom: 8px;
+        max-height: 18vh;
+        padding: 8px 12px;
+        border-radius: 12px;
+        background: rgba(10, 14, 24, 0.35);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.32);
+      }
+      .story-badge {
+        font-size: 0.62rem;
+        padding: 2px 8px;
+        margin-bottom: 4px;
+      }
+      .story-headline {
+        font-size: 0.92rem;
+        line-height: 1.24;
+        margin-bottom: 3px;
+      }
+      .story-desc {
+        font-size: 0.72rem;
+        line-height: 1.32;
+        margin-bottom: 5px;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .story-tags {
+        gap: 4px;
+      }
+      .story-tag {
+        font-size: 0.60rem;
+        padding: 1px 6px;
+      }
+      .mouse-wheel-icon {
+        display: none !important;
+      }
+      .scroll-hint {
+        bottom: 156px;
+        right: 50%;
+        transform: translateX(50%);
+        white-space: nowrap;
+        font-size: 0.73rem;
+        padding: 5px 13px;
+        background: rgba(10, 15, 25, 0.62);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .split-delivery-overlay {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        padding: 54px 12px 12px;
+      }
+      .customer-col {
+        border-left: none;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        padding: 8px 10px;
+        min-height: 0;
+        justify-content: center;
+        align-items: flex-start;
+        background: #080d18;
+      }
+      .customer-bg {
+        width: 54%;
+        height: 100%;
+        left: 0;
+        right: auto;
+        object-fit: cover;
+        object-position: center 38%;
+      }
+      .customer-shade {
+        background: linear-gradient(
+          270deg,
+          rgba(7, 12, 22, 0.96) 0%,
+          rgba(7, 12, 22, 0.86) 44%,
+          rgba(7, 12, 22, 0.12) 72%,
+          rgba(7, 12, 22, 0.05) 100%
+        );
+      }
+      .customer-content {
+        width: 55%;
+        margin-left: auto;
+        padding: 8px 10px;
+        border-radius: 12px;
+        background: rgba(10, 15, 25, 0.52);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+      .tier-ribbon {
+        font-size: 0.66rem;
+        margin-bottom: 3px;
+        padding: 2px 8px;
+      }
+      .customer-title {
+        font-size: 0.94rem;
+        margin-bottom: 2px;
+      }
+      .customer-desc {
+        font-size: 0.73rem;
+        line-height: 1.36;
+        margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .customer-meta {
+        display: none;
+      }
+      .choose-tier-btn {
+        padding: 6px 10px;
+        font-size: 0.76rem;
+        border-radius: 8px;
+      }
     }
 
     /* ============ EXISTING OFFICIAL PLATFORM STYLES ============ */
@@ -221,78 +919,205 @@
 </head>
 <body class="selection:bg-brand-500 selection:text-white">
 
-  <!-- واجهة العرض العلوية الخفيفة فائقة السرعة (< 0.6s GPU-Accelerated — صفر استنزاف إطارات) -->
-  <section id="fast-hero-showcase" class="fast-hero-wrap py-6 sm:py-8 px-4" aria-label="منصة حراج القطع وعالم التروس">
-    <div class="fast-hero-grid-bg"></div>
-    <div class="max-w-5xl mx-auto relative z-10 space-y-5">
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <div class="inline-flex items-center gap-2.5 bg-slate-900/80 border border-cyan-400/30 px-3.5 py-1.5 rounded-full text-xs font-black text-cyan-300">
-          <span class="gpu-pulse-dot"></span>
-          <span>مطابقة هندسية 100% برقم الهيكل (VIN) • تغطية شاملة لكافة مدن المملكة</span>
+  <!-- FIXED TOP NAVIGATION & STAGE JUMP BUTTONS (01 -> 05) + SKIP TO #order-section -->
+  <header class="top-header">
+    <a href="#scrolly-track" id="brand-home-link" class="brand-block">
+      <span class="brand-pulse"></span>
+      <div>
+        <span class="brand-title">عالم التروس</span>
+        <span class="brand-sub">GEARS WORLD • AI AUTO PARTS</span>
+      </div>
+    </a>
+
+    <nav class="stage-nav-pills" aria-label="مراحل القصة">
+      <button type="button" class="stage-pill active" data-stage-btn="1" data-target-progress="0.06">01 المطابقة الرقمية (VIN)</button>
+      <button type="button" class="stage-pill" data-stage-btn="2" data-target-progress="0.35">02 بدي • ميكانيك • كهرباء</button>
+      <button type="button" class="stage-pill" data-stage-btn="3" data-target-progress="0.60">03 الجديد (وكالة وتجاري)</button>
+      <button type="button" class="stage-pill" data-stage-btn="4" data-target-progress="0.82">04 المستخدم المضمون (تشليح)</button>
+      <button type="button" class="stage-pill" data-stage-btn="5" data-target-progress="0.96">05 مقارنة المسارات للطلب</button>
+    </nav>
+
+    <a href="#order-section" id="skip-to-order-btn" class="skip-order-btn">
+      <span>تخطي للطلب السريع</span>
+      <span aria-hidden="true">⚡</span>
+    </a>
+  </header>
+
+  <!-- 600VH BULLETPROOF SCROLLYTELLING TRACK -->
+  <section id="scrolly-track" aria-label="رحلة مطابقة وتوريد القطعة">
+    <div id="sticky-viewport">
+      <!-- Layer 1: Fullscreen Photorealistic Canvas -->
+      <canvas id="scrolly-canvas"></canvas>
+
+      <!-- Layer 2 & 3: Cinematic Vignette & Scanline Grid -->
+      <div class="canvas-vignette"></div>
+      <div class="scanline-grid"></div>
+
+      <!-- Layer 4: Engineering Catalog & Inspection HUD -->
+      <div id="ai-tech-hud" class="ai-tech-hud">
+        <div id="hud-reticle" class="hud-reticle">
+          <span id="hud-reticle-tag" class="hud-reticle-tag">FRAMES 001–050 // VIN DIGITAL MATCH</span>
         </div>
-        <div class="flex items-center gap-2 flex-wrap">
-          <a href="/preview-showcase" class="inline-flex items-center gap-1.5 bg-indigo-500/15 hover:bg-indigo-500/30 border border-indigo-400/40 text-indigo-200 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition">
-            <span>✨</span>
-            <span>العرض التفاعلي ثلاثي الأبعاد (3D)</span>
-          </a>
-          <button type="button" id="topHeaderAdminBtn" onclick="openAdminDashboardEntry()" class="inline-flex items-center gap-1.5 bg-slate-900/90 hover:bg-brand-600 border border-brand-500/50 text-slate-100 hover:text-white text-xs font-extrabold px-3.5 py-2 rounded-xl transition">
-            <span>🔐</span>
-            <span>دخول المدير</span>
-          </button>
+
+        <div class="hud-telemetry-box">
+          <div class="hud-header-row">
+            <span class="hud-status-label">
+              <span class="hud-live-dot"></span>
+              <span id="hud-stage-status">المطابقة الرقمية وبداية التفكيك</span>
+            </span>
+            <span id="hud-mode-code" class="hud-mode-code">01 / 04</span>
+          </div>
+          <div class="hud-metrics">
+            <div class="hud-metric-item">
+              <span class="hud-metric-label">الدقة والمعيار</span>
+              <span id="hud-accuracy" class="hud-metric-val">مطابقة 100% برقم الهيكل (VIN)</span>
+            </div>
+            <div class="hud-metric-item">
+              <span class="hud-metric-label">النطاق البصري</span>
+              <span id="hud-part-state" class="hud-metric-val">الإطارات 1–50 • تفكيك المركبة</span>
+            </div>
+          </div>
+          <div class="hud-progress-wrap">
+            <div id="hud-progress-bar" class="hud-progress-bar"></div>
+          </div>
         </div>
       </div>
 
-      <div class="text-center sm:text-right flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-        <div class="space-y-2 max-w-2xl">
-          <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
-            حراج القطع <span class="text-cyan-400">|</span> عالم التروس
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-300 font-bold leading-relaxed">
-            تسعير ذكي فوري لقطع البدي والميكانيكا والكهرباء والقيور من شبكة الوكلاء والمستوردين والتشاليح المعتمدة مع شحن سريع لكافة المدن.
+      <!-- Layer 5: Stacked Absolute Stage Cards (200-Frame Continuous Story) -->
+      <div class="stage-cards-layer">
+        <!-- Stage 01 Card: Frames 1-50 (0% -> 25%) -->
+        <article id="stage-card-1" class="story-card" data-stage-card="1">
+          <div class="story-badge">الإطارات 1–50 • المطابقة الرقمية برقم الهيكل (VIN)</div>
+          <h1 id="story-headline" class="story-headline">المطابقة الرقمية برقم الهيكل (VIN) وبداية تفكيك المركبة</h1>
+          <p class="story-desc">
+            قراءة فورية لبيانات المركبة ومطابقتها مع الكتالوجات الهندسية المعتمدة لتحديد رقم القطعة المطابق لموديل سيارتك دون أي خطأ مع بدء التفكيك الهندسي الواقعي.
           </p>
-        </div>
-        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 shrink-0">
-          <a href="#orderForm" id="skip-to-order-btn" class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-lg shadow-emerald-500/25 transition inline-flex items-center gap-2">
-            <span>اطلب قطعتك الآن</span>
-            <span>⚡</span>
-          </a>
-        </div>
+          <div class="story-tags">
+            <span class="story-tag">مطابقة رقم الهيكل VIN</span>
+            <span class="story-tag">تحديد رقم القطعة OEM</span>
+            <span class="story-tag">بداية تفكيك المركبة</span>
+          </div>
+        </article>
+
+        <!-- Stage 02 Card: Frames 51-100 (25% -> 50%) -->
+        <article id="stage-card-2" class="story-card" data-stage-card="2">
+          <div class="story-badge">الإطارات 51–100 • تغطية شاملة للقطاعات الثلاثة</div>
+          <h2 class="story-headline">تغطية شاملة: قطع البدي • قطع الميكانيك • قطع الكهرباء</h2>
+          <p class="story-desc">
+            تفكيك هندسي متكامل يبرز القطاعات الثلاثة بوضوح: قطع البدي (صدامات، رفارف، كبوت، شمعات)، قطع الميكانيك (قيور، طنجرات، محركات، عضلات)، وقطع الكهرباء (دينمو، سلف، كمبيوترات وشرائح قير).
+          </p>
+          <div class="story-tags">
+            <span class="story-tag">قطع البدي (صدامات • رفارف • شمعات)</span>
+            <span class="story-tag">قطع الميكانيك (قيور • طنجرات • محركات • عضلات)</span>
+            <span class="story-tag">قطع الكهرباء (دينمو • سلف • كمبيوترات وشرائح قير)</span>
+          </div>
+        </article>
+
+        <!-- Stage 03 Card: Frames 101-150 (50% -> 75%) -->
+        <article id="stage-card-3" class="story-card accent-amber" data-stage-card="3">
+          <div class="story-badge">الإطارات 101–150 • فتح الصندوق — خيارات الجديد</div>
+          <h2 class="story-headline">فتح الصندوق — خيارات الجديد: الأصلي وكالة (OEM) والبديل التجاري المعتمد</h2>
+          <p class="story-desc">
+            حركة كاميرا بانورامية متصلة نحو طاولة التوريد والفحص لاستعراض القطع الجديدة: الأصلي وكالة (OEM) بأعلى اعتمادية، والبديل التجاري المعتمد بجودة موثوقة وسعر اقتصادي.
+          </p>
+          <div class="story-tags">
+            <span class="story-tag">أصلي وكالة جديد (OEM)</span>
+            <span class="story-tag">بديل تجاري جديد معتمد</span>
+            <span class="story-tag">فتح الصندوق الرسمي</span>
+          </div>
+        </article>
+
+        <!-- Stage 04 Card: Frames 151-200 (75% -> 91%) -->
+        <article id="stage-card-4" class="story-card accent-emerald" data-stage-card="4">
+          <div class="story-badge">الإطارات 151–200 • المستخدم المضمون ومقارنة المسارات</div>
+          <h2 class="story-headline">خيار المستخدم المضمون (التشليح المفحوص) ومقارنة المسارات الثلاثة</h2>
+          <p class="story-desc">
+            لقطة قريبة فائقة الوضوح للقطعة الأصلية المستعملة والمفحوصة على بساط الفحص الهندسي كخيار مستخدم مضمون (تشليح مفحوص) بجانب الجديد الأصلي والتجاري للمقارنة الشفافة والطلب الفوري.
+          </p>
+          <div class="story-tags">
+            <span class="story-tag">المستخدم المضمون (التشليح المفحوص)</span>
+            <span class="story-tag">الأصلي وكالة + التجاري المعتمد</span>
+            <span class="story-tag">مقارنة المسارات الثلاثة للطلب الفوري</span>
+          </div>
+        </article>
+
+        <!-- Stage 05 Transition Card (hidden / merged into Stage 04 & Split Comparison) -->
+        <article id="stage-card-van" class="story-card" data-stage-card="5-van" style="display:none;">
+          <div class="story-badge">الإطارات 151–200 • مقارنة المسارات الثلاثة للطلب الفوري</div>
+          <h2 class="story-headline">اختر المسار الأنسب لسيارتك واطلبه فوراً</h2>
+          <p class="story-desc">
+            قارن بين الأصلي وكالة (OEM)، المستخدم المضمون (التشليح المفحوص)، والبديل التجاري المعتمد مع شحن مباشر لكافة مدن المملكة.
+          </p>
+        </article>
       </div>
 
-      <!-- مسارات التوريد الثلاثة للاختيار السريع بنقرة واحدة -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div class="tier-fast-card flex flex-col justify-between gap-2.5">
-          <div>
-            <span class="inline-block text-[11px] font-black text-amber-300 bg-amber-500/15 border border-amber-500/35 px-2.5 py-0.5 rounded-full mb-1.5">الخيار الأول • الأصلي وكالة (OEM)</span>
-            <h3 class="text-sm sm:text-base font-black text-white">قطع وكالة أصلية (OEM)</h3>
-            <p class="text-xs text-slate-300 mt-1 leading-relaxed">بتغليف المصنع الرسمي ومطابقة 100% لرقم الشاصي (VIN).</p>
-          </div>
-          <button type="button" data-select-tier="أصلي وكالة (OEM)" class="w-full bg-amber-500/15 hover:bg-amber-500 hover:text-slate-950 text-amber-200 border border-amber-500/40 font-black text-xs py-2 px-3 rounded-xl transition">
-            اختر الأصلي وكالة للطلب
-          </button>
-        </div>
+      <!-- Scroll Cue -->
+      <div id="scroll-hint" class="scroll-hint">
+        <span class="mouse-wheel-icon"></span>
+        <span id="scroll-hint-text">اسحب للأعلى لمتابعة رحلة القطعة</span>
+      </div>
 
-        <div class="tier-fast-card flex flex-col justify-between gap-2.5">
-          <div>
-            <span class="inline-block text-[11px] font-black text-cyan-300 bg-cyan-500/15 border border-cyan-500/35 px-2.5 py-0.5 rounded-full mb-1.5">الخيار الثاني • التشليح المضمون</span>
-            <h3 class="text-sm sm:text-base font-black text-white">أصلي مستعمل مفحوص ومضمون</h3>
-            <p class="text-xs text-slate-300 mt-1 leading-relaxed">قطع أصلية مفحوصة فنياً بضمان تشغيل وسعر اقتصادي.</p>
+      <!-- Layer 6: Stage 05 Climax (80% -> 100%) 3-Column Comparison Split Screen Over Canvas -->
+      <div id="split-delivery-overlay" class="split-delivery-overlay" aria-label="مقارنة الخيارات الثلاثة">
+        <!-- Option 1: Genuine OEM -->
+        <article class="customer-col" data-tier="أصلي وكالة (OEM)">
+          <img class="customer-bg" src="./assets/images/tiers/tier_oem_rolls.webp" loading="lazy" alt="قطع غيار أصلية وكالة OEM بتغليف المصنع الرسمي" />
+          <div class="customer-shade"></div>
+          <div class="customer-content">
+            <span class="tier-ribbon tier-oem">الخيار الأول • الأصلي وكالة (OEM)</span>
+            <h3 class="customer-title">قطع وكالة أصلية (OEM)</h3>
+            <p class="customer-desc">
+              قطع جديدة بتغليف المصنع الرسمي من الوكلاء والموزعين المعتمدين بمطابقة 100% لرقم الهيكل (VIN) وأعلى عمر افتراضي.
+            </p>
+            <div class="customer-meta">
+              <span>⚡ شحن مباشر وسريع</span>
+              <span>✔ مواصفات المصنع OEM</span>
+            </div>
+            <button type="button" class="choose-tier-btn" data-select-tier="أصلي وكالة (OEM)">
+              اختر فئة الأصلي وكالة (OEM) للطلب
+            </button>
           </div>
-          <button type="button" data-select-tier="تشليح مضمون (أصلي مستعمل مفحوص)" class="w-full bg-cyan-500/15 hover:bg-cyan-400 hover:text-slate-950 text-cyan-200 border border-cyan-500/40 font-black text-xs py-2 px-3 rounded-xl transition">
-            اختر التشليح المضمون للطلب
-          </button>
-        </div>
+        </article>
 
-        <div class="tier-fast-card flex flex-col justify-between gap-2.5">
-          <div>
-            <span class="inline-block text-[11px] font-black text-emerald-300 bg-emerald-500/15 border border-emerald-500/35 px-2.5 py-0.5 rounded-full mb-1.5">الخيار الثالث • التجاري المعتمد</span>
-            <h3 class="text-sm sm:text-base font-black text-white">بديل تجاري بجودة معتمدة</h3>
-            <p class="text-xs text-slate-300 mt-1 leading-relaxed">مصانع عالمية معتمدة توازن بين الجودة الموثوقة والسعر العملي.</p>
+        <!-- Option 2: Inspected Salvage -->
+        <article class="customer-col" data-tier="تشليح مضمون (أصلي مستعمل مفحوص)">
+          <img class="customer-bg" src="./assets/images/tiers/tier_salvage_landcruiser.webp" loading="lazy" alt="قطع تشليح أصلية مستعملة مفحوصة ومضمونة" />
+          <div class="customer-shade"></div>
+          <div class="customer-content">
+            <span class="tier-ribbon tier-salvage">الخيار الثاني • التشليح المضمون</span>
+            <h3 class="customer-title">أصلي مستعمل مفحوص ومضمون</h3>
+            <p class="customer-desc">
+              قطع وكالة مستخرجة من مركبات سليمة ومفحوصة فنياً للتأكد من كفاءتها الميكانيكية والكهربائية بسعر اقتصادي مع ضمان التشغيل.
+            </p>
+            <div class="customer-meta">
+              <span>⚡ جاهزة للتركيب المباشر</span>
+              <span>✔ فحص فني وضمان تشغيل</span>
+            </div>
+            <button type="button" class="choose-tier-btn" data-select-tier="تشليح مضمون (أصلي مستعمل مفحوص)">
+              اختر فئة التشليح المضمون للطلب
+            </button>
           </div>
-          <button type="button" data-select-tier="بديل تجاري معتمد" class="w-full bg-emerald-500/15 hover:bg-emerald-500 hover:text-slate-950 text-emerald-200 border border-emerald-500/40 font-black text-xs py-2 px-3 rounded-xl transition">
-            اختر التجاري المعتمد للطلب
-          </button>
-        </div>
+        </article>
+
+        <!-- Option 3: Certified Aftermarket -->
+        <article class="customer-col" data-tier="بديل تجاري معتمد">
+          <img class="customer-bg" src="./assets/images/tiers/tier_aftermarket_camry.webp" loading="lazy" alt="بدائل تجارية عالية الجودة من مصانع عالمية معتمدة" />
+          <div class="customer-shade"></div>
+          <div class="customer-content">
+            <span class="tier-ribbon tier-aftermarket">الخيار الثالث • التجاري المعتمد</span>
+            <h3 class="customer-title">بديل تجاري بجودة معتمدة</h3>
+            <p class="customer-desc">
+              قطع جديدة من مصانع عالمية معتمدة تمنحك توازناً عملياً بين السعر الاقتصادي والجودة الموثوقة للاستخدام اليومي.
+            </p>
+            <div class="customer-meta">
+              <span>⚡ متوفر للشحن الفوري</span>
+              <span>✔ مصانع عالمية معتمدة</span>
+            </div>
+            <button type="button" class="choose-tier-btn" data-select-tier="بديل تجاري معتمد">
+              اختر فئة التجاري المعتمد للطلب
+            </button>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -8851,10 +9676,13 @@
 
   </div>
 
+  <!-- GSAP + ScrollTrigger (Deferred — Non-Blocking) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
   <script>
     // =========================================================================
-    // إعداد رقم الواتساب الموحد + تهيئة سنوات الصنع واختيار مسارات التوريد السريعة (< 0.6s بدون أي استنزاف إطارات)
-    // =========================================================================
+    // إعداد رقم الواتساب الموحد لجميع أزرار ونماذج الصفحة (يتحدث ديناميكياً من مركز الإعدادات الشامل):
     let WHATSAPP_NUMBER = window.WHATSAPP_NUMBER || '966509046024';
     window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
     window.addEventListener('haraj:whatsapp-number-updated', function (ev) {
@@ -8862,10 +9690,12 @@
         WHATSAPP_NUMBER = ev.detail.phone;
       }
     });
+    // =========================================================================
 
     window.addEventListener('DOMContentLoaded', function () {
       'use strict';
 
+      // توليد سنوات الصنع برمجياً داخل #carYear عند جاهزية الصفحة
       const carYearSelect = document.getElementById('carYear');
       if (carYearSelect && carYearSelect.options.length <= 1) {
         const yearFrag = document.createDocumentFragment();
@@ -8879,42 +9709,763 @@
         carYearSelect.appendChild(yearFrag);
       }
 
-      const skipBtn = document.getElementById('skip-to-order-btn');
-      if (skipBtn) {
-        skipBtn.addEventListener('click', function (e) {
-          const orderForm = document.getElementById('orderForm') || document.getElementById('order-section');
-          if (orderForm) {
-            e.preventDefault();
-            orderForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const track = document.getElementById('scrolly-track');
+      const canvas = document.getElementById('scrolly-canvas');
+      if (!track || !canvas) return;
+      const ctx = canvas.getContext('2d', { alpha: false });
+
+      const HUD_STATES = [
+        {
+          min: 0.0,
+          max: 0.25,
+          accent: '#00d4ff',
+          status: 'المطابقة الرقمية وبداية التفكيك',
+          code: '01 / 04',
+          accuracy: 'مطابقة 100% برقم الهيكل (VIN)',
+          partState: 'الإطارات 1–50 • تفكيك المركبة',
+          reticleText: 'FRAMES 001–050 // VIN DIGITAL MATCH',
+          reticleScale: 1.0,
+          pillIndex: 0
+        },
+        {
+          min: 0.25,
+          max: 0.50,
+          accent: '#00d4ff',
+          status: 'تغطية شاملة: بدي • ميكانيك • كهرباء',
+          code: '02 / 04',
+          accuracy: 'صدامات ورفارف • قيور ومحركات • دينمو وكمبيوترات',
+          partState: 'الإطارات 51–100 • القطاعات الثلاثة',
+          reticleText: 'FRAMES 051–100 // BODY • MECH • ELEC',
+          reticleScale: 0.92,
+          pillIndex: 1
+        },
+        {
+          min: 0.50,
+          max: 0.75,
+          accent: '#f59e0b',
+          status: 'فتح الصندوق — خيارات الجديد (OEM + تجاري)',
+          code: '03 / 04',
+          accuracy: 'أصلي وكالة OEM + بديل تجاري معتمد',
+          partState: 'الإطارات 101–150 • القطع الجديدة',
+          reticleText: 'FRAMES 101–150 // NEW OEM & AFTERMARKET',
+          reticleScale: 0.90,
+          pillIndex: 2
+        },
+        {
+          min: 0.75,
+          max: 0.92,
+          accent: '#10b981',
+          status: 'خيار المستخدم المضمون (التشليح المفحوص)',
+          code: '04 / 04',
+          accuracy: 'مفحوص ومضمون + مقارنة الخيارات الثلاثة',
+          partState: 'الإطارات 151–200 • تشليح ومقارنة',
+          reticleText: 'FRAMES 151–200 // INSPECTED USED & COMPARE',
+          reticleScale: 0.94,
+          pillIndex: 3
+        },
+        {
+          min: 0.92,
+          max: 1.01,
+          accent: '#38bdf8',
+          status: 'مقارنة المسارات الثلاثة للطلب الفوري',
+          code: '04 / 04',
+          accuracy: 'أصلي وكالة • تشليح مضمون • تجاري معتمد',
+          partState: 'الإطارات 151–200 • الطلب المباشر',
+          reticleText: 'COMPARE & ORDER // 3 SUPPLY PATHS',
+          reticleScale: 0.96,
+          pillIndex: 4
+        }
+      ];
+
+      const CARD_WINDOWS = [
+        { el: document.getElementById('stage-card-1'), in0: -0.1, in1: 0.0, out0: 0.21, out1: 0.25 },
+        { el: document.getElementById('stage-card-2'), in0: 0.25, in1: 0.29, out0: 0.46, out1: 0.50 },
+        { el: document.getElementById('stage-card-3'), in0: 0.50, in1: 0.54, out0: 0.71, out1: 0.75 },
+        { el: document.getElementById('stage-card-4'), in0: 0.75, in1: 0.79, out0: 0.88, out1: 0.91 }
+      ];
+
+      const DEFAULT_FRAME_PATHS = {
+        scene1: './assets/frames/scene1_bmw_exploded.jpg',
+        scene2: './assets/frames/scene2_robot_salvage.jpg',
+        scene3: './assets/frames/scene3_warehouse_oem.jpg',
+        scene4: './assets/frames/scene4_warehouse_aftermarket.jpg',
+        scene5: './assets/frames/scene5_loading_van.jpg'
+      };
+
+      const PRELOAD_BATCH_SIZE = 8;
+      const CACHE_BUST_VER = '20s_v3';
+
+      const loadedScenes = {};
+      const videoSequenceFrames = [];
+      let sequenceUrls = [];
+      const inflightFrameIndices = new Set();
+      let hasVideoSequences = false;
+      let loadedFramesCount = 0;
+
+      const state = {
+        progress: 0,
+        targetFrame: 0,
+        smoothFrame: 0,
+        activeHudIndex: -1,
+        mouseX: 0,
+        mouseY: 0,
+        targetMouseX: 0,
+        targetMouseY: 0,
+        isMobileLayout: window.innerWidth <= 768,
+        needsRender: true,
+        isTrackVisible: true,
+        isAdminTabOpen: false,
+        firstFramePainted: false,
+        rafId: 0
+      };
+
+      window.__harajScrollyState = {
+        state,
+        videoSequenceFrames,
+        get sequenceUrls() {
+          return sequenceUrls;
+        },
+        preloadBatchSize: PRELOAD_BATCH_SIZE
+      };
+
+      const hudRoot = document.getElementById('ai-tech-hud');
+      const hudStatus = document.getElementById('hud-stage-status');
+      const hudCode = document.getElementById('hud-mode-code');
+      const hudAccuracy = document.getElementById('hud-accuracy');
+      const hudPartState = document.getElementById('hud-part-state');
+      const hudProgressBar = document.getElementById('hud-progress-bar');
+      const hudReticle = document.getElementById('hud-reticle');
+      const hudReticleTag = document.getElementById('hud-reticle-tag');
+      const splitOverlay = document.getElementById('split-delivery-overlay');
+      const customerCols = Array.from(splitOverlay.querySelectorAll('.customer-col'));
+      const scrollHint = document.getElementById('scroll-hint');
+      const stagePills = Array.from(document.querySelectorAll('.stage-pill'));
+
+      function clamp01(v) {
+        return Math.max(0, Math.min(1, v));
+      }
+
+      function smoothstep(edge0, edge1, x) {
+        if (edge1 <= edge0) return x >= edge1 ? 1 : 0;
+        const t = clamp01((x - edge0) / (edge1 - edge0));
+        return t * t * (3 - 2 * t);
+      }
+
+      function normalizeRelativePath(p) {
+        if (!p) return p;
+        const base = p.startsWith('./') || p.startsWith('http') ? p : `./${p}`;
+        return base.includes('?v=') ? base : `${base}?v=${CACHE_BUST_VER}`;
+      }
+
+      function computeRawTrackProgress() {
+        const rect = track.getBoundingClientRect();
+        const scrollable = Math.max(1, track.offsetHeight - window.innerHeight);
+        return clamp01(-rect.top / scrollable);
+      }
+
+      function loadImage(src, priorityHint) {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.decoding = 'async';
+          if (priorityHint && 'fetchPriority' in img) {
+            try { img.fetchPriority = priorityHint; } catch (_) {}
+          }
+          img.onload = () => {
+            if (typeof img.decode === 'function') {
+              img.decode().catch(() => {}).finally(() => resolve(img));
+            } else {
+              resolve(img);
+            }
+          };
+          img.onerror = () => resolve(null);
+          img.src = src;
+        });
+      }
+
+      function scheduleIdleBatch(callback) {
+        if (typeof window.requestIdleCallback === 'function') {
+          window.requestIdleCallback(callback, { timeout: 180 });
+        } else {
+          setTimeout(callback, 24);
+        }
+      }
+
+      function ensureFrameLoadedAt(idx, priorityHint) {
+        if (idx < 0 || idx >= sequenceUrls.length) return Promise.resolve(null);
+        if (videoSequenceFrames[idx]) return Promise.resolve(videoSequenceFrames[idx]);
+        if (inflightFrameIndices.has(idx)) return Promise.resolve(null);
+        inflightFrameIndices.add(idx);
+        return loadImage(sequenceUrls[idx], priorityHint || 'low').then((img) => {
+          inflightFrameIndices.delete(idx);
+          if (img && !videoSequenceFrames[idx]) {
+            videoSequenceFrames[idx] = img;
+            loadedFramesCount += 1;
+            const curFloor = Math.floor(state.smoothFrame);
+            const curCeil = Math.ceil(state.smoothFrame);
+            if (idx === 0 || Math.abs(idx - curFloor) <= 2 || Math.abs(idx - curCeil) <= 2) {
+              state.needsRender = true;
+              if (typeof wakeCanvasLoopRef === 'function') wakeCanvasLoopRef();
+            }
+          }
+          return img;
+        });
+      }
+
+      function getBestAvailableFrame(targetIdx) {
+        const total = videoSequenceFrames.length;
+        if (total === 0) return null;
+        const clamped = Math.max(0, Math.min(total - 1, targetIdx));
+        if (videoSequenceFrames[clamped]) return videoSequenceFrames[clamped];
+        // عند سحب المستخدم سريعاً قبل اكتمال الدفعات الخلفية: اطلب الإطار فوراً واعرض أقرب إطار جاهز بدون أي شاشة سوداء
+        ensureFrameLoadedAt(clamped, 'high');
+        for (let d = 1; d < total; d++) {
+          if (clamped - d >= 0 && videoSequenceFrames[clamped - d]) {
+            return videoSequenceFrames[clamped - d];
+          }
+          if (clamped + d < total && videoSequenceFrames[clamped + d]) {
+            return videoSequenceFrames[clamped + d];
+          }
+        }
+        return null;
+      }
+
+      function startProgressiveBatchedPreload() {
+        let nextSequentialIdx = 1;
+        const total = sequenceUrls.length;
+
+        function pumpNextBatch() {
+          if (nextSequentialIdx >= total && loadedFramesCount >= total) return;
+          // احترام عزل أحمال الإدارة: إذا فُتح تبويب الإدارة، أوقف التحميل الخلفي مؤقتاً لترك 100% من الشبكة والمعالج للإدارة
+          if (state.isAdminTabOpen) {
+            setTimeout(pumpNextBatch, 600);
+            return;
+          }
+
+          const batchIndices = [];
+          // 1) إعطاء الأولوية للإطارات القريبة من موضع التمرير الحالي للمستخدم
+          const focusIdx = Math.max(0, Math.min(total - 1, Math.round(state.targetFrame)));
+          for (let offset = 0; offset <= 6 && batchIndices.length < PRELOAD_BATCH_SIZE; offset++) {
+            const fwd = focusIdx + offset;
+            if (fwd < total && !videoSequenceFrames[fwd] && !inflightFrameIndices.has(fwd)) {
+              batchIndices.push(fwd);
+            }
+          }
+          // 2) استكمال التحميل التسلسلي الهادئ بدفعات صغيرة من 8 إطارات
+          while (batchIndices.length < PRELOAD_BATCH_SIZE && nextSequentialIdx < total) {
+            const candidate = nextSequentialIdx++;
+            if (!videoSequenceFrames[candidate] && !inflightFrameIndices.has(candidate)) {
+              batchIndices.push(candidate);
+            }
+          }
+
+          if (batchIndices.length === 0) {
+            if (nextSequentialIdx < total) {
+              scheduleIdleBatch(pumpNextBatch);
+            }
+            return;
+          }
+
+          Promise.all(batchIndices.map((idx) => ensureFrameLoadedAt(idx, 'low'))).then(() => {
+            if (nextSequentialIdx < total) {
+              scheduleIdleBatch(pumpNextBatch);
+            }
+          });
+        }
+
+        scheduleIdleBatch(pumpNextBatch);
+      }
+
+      async function initAssets() {
+        const useMobileSeq = window.innerWidth <= 768;
+        const priorityFrame1Path = useMobileSeq
+          ? `./assets/sequences/mobile_9x16/frame_0001.webp?v=${CACHE_BUST_VER}`
+          : `./assets/sequences/desktop_16x9/frame_0001.webp?v=${CACHE_BUST_VER}`;
+        const defaultSeqLength = useMobileSeq ? 320 : 200;
+
+        // 1) أولوية قصوى (Priority #1): تحميل ورسم الإطار الأول frame_0001.webp فوراً بالتوازي مع قراءة manifest.json
+        const firstFramePromise = loadImage(priorityFrame1Path, 'high').then((firstImg) => {
+          if (firstImg) {
+            if (videoSequenceFrames.length === 0) {
+              videoSequenceFrames.length = defaultSeqLength;
+            }
+            videoSequenceFrames[0] = firstImg;
+            loadedFramesCount = Math.max(loadedFramesCount, 1);
+            hasVideoSequences = true;
+            state.firstFramePainted = true;
+            resizeCanvas();
+            const initP = computeRawTrackProgress();
+            applyProgress(initP);
+            state.smoothFrame = state.targetFrame;
+            renderCanvas();
+          }
+          return firstImg;
+        });
+
+        const manifestPromise = fetch(`./assets/frames/manifest.json?v=${CACHE_BUST_VER}`)
+          .then((res) => (res && res.ok ? res.json() : null))
+          .catch(() => null);
+
+        const [firstImg, manifest] = await Promise.all([firstFramePromise, manifestPromise]);
+
+        let resolvedUrls = [];
+        if (manifest && manifest.hasVideoSequences) {
+          if (useMobileSeq && manifest.mobileSequences && Array.isArray(manifest.mobileSequences.mobile_9x16)) {
+            resolvedUrls = manifest.mobileSequences.mobile_9x16.map(normalizeRelativePath);
+          } else if (manifest.sequences && Array.isArray(manifest.sequences.desktop_16x9)) {
+            resolvedUrls = manifest.sequences.desktop_16x9.map(normalizeRelativePath);
+          }
+        }
+
+        if (resolvedUrls.length === 0) {
+          const folder = useMobileSeq ? 'mobile_9x16' : 'desktop_16x9';
+          for (let i = 1; i <= defaultSeqLength; i++) {
+            resolvedUrls.push(`./assets/sequences/${folder}/frame_${String(i).padStart(4, '0')}.webp?v=${CACHE_BUST_VER}`);
+          }
+        }
+
+        sequenceUrls = resolvedUrls;
+        videoSequenceFrames.length = sequenceUrls.length;
+        if (firstImg) {
+          videoSequenceFrames[0] = firstImg;
+          hasVideoSequences = true;
+        } else {
+          // في حال تعذر الإطار الأول فقط، نحمل المشاهد الاحتياطية الخمسة
+          const frameMap = (manifest && manifest.frames) || DEFAULT_FRAME_PATHS;
+          await Promise.all(
+            Object.entries(DEFAULT_FRAME_PATHS).map(async ([key, fallbackSrc]) => {
+              const candidate = normalizeRelativePath(frameMap[key] || fallbackSrc);
+              const img = await loadImage(candidate, 'high');
+              if (img) loadedScenes[key] = img;
+            })
+          );
+        }
+
+        resizeCanvas();
+        const currentP = computeRawTrackProgress();
+        applyProgress(currentP);
+        state.smoothFrame = state.targetFrame;
+        window.__harajScrollyState = {
+          state,
+          videoSequenceFrames,
+          sequenceUrls,
+          preloadBatchSize: PRELOAD_BATCH_SIZE
+        };
+        renderCanvas();
+
+        // 2) تحميل بقية إطارات التفكيك تدريجياً في الخلفية على دفعات هادئة من 8 إطارات عبر requestIdleCallback
+        if (sequenceUrls.length > 1) {
+          startProgressiveBatchedPreload();
+        }
+      }
+
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        state.isMobileLayout = w <= 768;
+        const hintTextEl = document.getElementById('scroll-hint-text');
+        if (hintTextEl) {
+          hintTextEl.textContent = state.isMobileLayout
+            ? 'اسحب للأعلى لمتابعة رحلة القطعة'
+            : 'مرّر للأسفل لمتابعة رحلة القطعة';
+        }
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        state.needsRender = true;
+      }
+
+      function drawCoverImage(img, alpha, scale, offsetX, offsetY) {
+        if (!img || alpha <= 0.001) return;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const iw = img.naturalWidth || (state.isMobileLayout ? 720 : 1280);
+        const ih = img.naturalHeight || (state.isMobileLayout ? 1280 : 720);
+
+        if (state.isMobileLayout) {
+          const availH = vh * 0.84;
+          const fitScale = Math.min(vw / iw, (availH / ih) * 1.08);
+          const drawW = iw * fitScale;
+          const drawH = ih * fitScale;
+          const dx = (vw - drawW) * 0.5;
+          const dy = Math.max(4, (availH - drawH) * 0.45);
+
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.drawImage(img, dx, dy, drawW, drawH);
+          ctx.restore();
+          return;
+        }
+
+        const baseRatio = Math.max(vw / iw, vh / ih);
+        const finalScale = baseRatio * scale * 0.95;
+        const drawW = iw * finalScale;
+        const drawH = ih * finalScale;
+        const dx = Math.max(vw - drawW, -Math.round(vw * 0.03)) + offsetX * 0.35;
+        const dy = (vh - drawH) * 0.5 + offsetY * 0.35;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(img, dx, dy, drawW, drawH);
+        ctx.restore();
+      }
+
+      function renderCanvas() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const p = state.progress;
+
+        ctx.fillStyle = '#070b13';
+        ctx.fillRect(0, 0, vw, vh);
+
+        const px = state.mouseX * 18;
+        const py = state.mouseY * 12;
+
+        if (hasVideoSequences && videoSequenceFrames.length > 0) {
+          const maxIdx = videoSequenceFrames.length - 1;
+          const sf = Math.max(0, Math.min(maxIdx, state.smoothFrame));
+          const idxA = Math.floor(sf);
+          const idxB = Math.min(maxIdx, Math.ceil(sf));
+          const blend = sf % 1;
+
+          const frameA = getBestAvailableFrame(idxA);
+          const frameB = idxB !== idxA ? videoSequenceFrames[idxB] : null;
+
+          drawCoverImage(frameA, 1, 1.0, px, py);
+          if (frameB && frameB !== frameA && blend > 0.005) {
+            drawCoverImage(frameB, blend, 1.0, px, py);
+          } else if (idxB !== idxA && !frameB) {
+            ensureFrameLoadedAt(idxB, 'high');
+          }
+          return;
+        }
+
+        const s1 = loadedScenes.scene1;
+        const s2 = loadedScenes.scene2;
+        const s3 = loadedScenes.scene3;
+        const s4 = loadedScenes.scene4;
+        const s5 = loadedScenes.scene5;
+
+        if (p < 0.22) {
+          const tZoom = smoothstep(0.0, 0.22, p);
+          const fadeTo2 = smoothstep(0.16, 0.22, p);
+          drawCoverImage(s1, 1, 1.02 + tZoom * 0.56, px * 1.1, py * 1.1);
+          drawCoverImage(s2, fadeTo2, 1.16 - fadeTo2 * 0.1, px, py);
+        } else if (p < 0.42) {
+          const local = smoothstep(0.22, 0.42, p);
+          const fadeTo3 = smoothstep(0.36, 0.42, p);
+          const panOffset = fadeTo3 * -34;
+          drawCoverImage(s2, 1, 1.06 + local * 0.08, px + panOffset, py);
+          drawCoverImage(s3, fadeTo3, 1.12 - fadeTo3 * 0.07, px + (1 - fadeTo3) * 34, py);
+        } else if (p < 0.62) {
+          const local = smoothstep(0.42, 0.62, p);
+          const fadeTo4 = smoothstep(0.56, 0.62, p);
+          drawCoverImage(s3, 1, 1.05 + local * 0.08, px, py - fadeTo4 * 18);
+          drawCoverImage(s4, fadeTo4, 1.13 - fadeTo4 * 0.07, px, py + (1 - fadeTo4) * 20);
+        } else {
+          const local = smoothstep(0.62, 0.82, p);
+          const fadeTo5 = smoothstep(0.69, 0.75, p);
+          drawCoverImage(s4, 1, 1.06 + local * 0.07, px, py);
+          drawCoverImage(s5, fadeTo5, 1.12 - smoothstep(0.69, 0.9, p) * 0.08, px, py);
+        }
+      }
+
+      function updateStackedCards(p) {
+        const baseShift = state.isMobileLayout ? 0 : -50;
+
+        for (let i = 0; i < CARD_WINDOWS.length; i++) {
+          const cw = CARD_WINDOWS[i];
+          if (!cw.el) continue;
+
+          let alpha = 0;
+          let yPx = 28;
+
+          if (p >= cw.in0 && p <= cw.out1) {
+            if (p < cw.in1) {
+              const tIn = smoothstep(cw.in0, cw.in1, p);
+              alpha = tIn;
+              yPx = (1 - tIn) * 28;
+            } else if (p <= cw.out0) {
+              alpha = 1;
+              yPx = 0;
+            } else {
+              const tOut = smoothstep(cw.out0, cw.out1, p);
+              alpha = 1 - tOut;
+              yPx = -tOut * 24;
+            }
+          }
+
+          cw.el.style.opacity = alpha.toFixed(3);
+          cw.el.style.visibility = alpha > 0.01 ? 'visible' : 'hidden';
+          cw.el.style.pointerEvents = alpha > 0.6 ? 'auto' : 'none';
+          if (state.isMobileLayout) {
+            cw.el.style.transform = `translate3d(0, ${yPx.toFixed(1)}px, 0)`;
+          } else {
+            cw.el.style.transform = `translate3d(0, calc(${baseShift}% + ${yPx.toFixed(1)}px), 0)`;
+          }
+        }
+      }
+
+      function updateSplitScreen(p) {
+        const splitAlpha = smoothstep(0.91, 0.95, p);
+        const isVisible = splitAlpha > 0.005;
+
+        splitOverlay.style.opacity = splitAlpha.toFixed(3);
+        splitOverlay.style.visibility = isVisible ? 'visible' : 'hidden';
+        splitOverlay.style.pointerEvents = splitAlpha > 0.75 ? 'auto' : 'none';
+        splitOverlay.classList.toggle('active', p >= 0.91);
+
+        customerCols.forEach((col, i) => {
+          const colStart = 0.91 + i * 0.015;
+          const colProgress = smoothstep(colStart, colStart + 0.045, p);
+          const colY = (1 - colProgress) * 30;
+          col.style.opacity = colProgress.toFixed(3);
+          col.style.transform = `translate3d(0, ${colY.toFixed(1)}px, 0)`;
+        });
+
+        hudRoot.style.opacity = (1 - splitAlpha).toFixed(3);
+      }
+
+      function applyProgress(p) {
+        state.progress = p;
+        if (hasVideoSequences && videoSequenceFrames.length > 0) {
+          state.targetFrame = clamp01(p) * (videoSequenceFrames.length - 1);
+        }
+        state.needsRender = true;
+        if (typeof wakeCanvasLoopRef === 'function') wakeCanvasLoopRef();
+
+        hudProgressBar.style.width = `${Math.max(4, Math.round(p * 100))}%`;
+        const hideHint = p > 0.03;
+        scrollHint.style.opacity = hideHint ? '0' : '1';
+        scrollHint.style.pointerEvents = 'none';
+        scrollHint.style.visibility = hideHint ? 'hidden' : 'visible';
+
+        updateStackedCards(p);
+        updateSplitScreen(p);
+
+        let hIdx = HUD_STATES.findIndex((h) => p >= h.min && p < h.max);
+        if (hIdx === -1) hIdx = HUD_STATES.length - 1;
+
+        if (hIdx !== state.activeHudIndex) {
+          state.activeHudIndex = hIdx;
+          const h = HUD_STATES[hIdx];
+          hudStatus.textContent = h.status;
+          hudCode.textContent = h.code;
+          hudAccuracy.textContent = h.accuracy;
+          hudPartState.textContent = h.partState;
+          hudReticleTag.textContent = h.reticleText;
+          hudReticle.style.transform = `translate(-50%, -50%) scale(${h.reticleScale})`;
+          hudReticle.style.borderColor = h.accent;
+
+          stagePills.forEach((pill, idx) => {
+            pill.classList.toggle('active', idx === h.pillIndex);
+          });
+        }
+      }
+
+      function syncHeaderVisibility() {
+        const topHeader = document.querySelector('.top-header');
+        const orderSec = document.getElementById('order-section');
+        if (!topHeader || !orderSec) return;
+        const pastTrack = orderSec.getBoundingClientRect().top <= 80;
+        topHeader.style.transform = pastTrack ? 'translateY(-110%)' : 'translateY(0)';
+        topHeader.style.opacity = pastTrack ? '0' : '1';
+        topHeader.style.pointerEvents = pastTrack ? 'none' : 'auto';
+      }
+      window.addEventListener('scroll', syncHeaderVisibility, { passive: true });
+
+      function setupScrollEngine() {
+        // تفعيل السحب باللمس والتمرير فوراً (0ms) حتى قبل اكتمال تحميل GSAP المؤجل
+        const onNativeScroll = () => {
+          applyProgress(computeRawTrackProgress());
+        };
+        window.addEventListener('scroll', onNativeScroll, { passive: true });
+
+        const attachGsapIfAvailable = () => {
+          if (window.gsap && window.ScrollTrigger) {
+            window.removeEventListener('scroll', onNativeScroll);
+            window.gsap.registerPlugin(window.ScrollTrigger);
+            window.ScrollTrigger.create({
+              trigger: track,
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 0.35,
+              onUpdate: (self) => {
+                applyProgress(self.progress);
+              }
+            });
+          }
+        };
+
+        if (document.readyState === 'complete') {
+          attachGsapIfAvailable();
+        } else {
+          window.addEventListener('load', attachGsapIfAvailable, { once: true });
+        }
+
+        stagePills.forEach((pill) => {
+          pill.addEventListener('click', () => {
+            const targetP = parseFloat(pill.getAttribute('data-target-progress') || '0');
+            const scrollable = Math.max(1, track.offsetHeight - window.innerHeight);
+            const targetY = track.offsetTop + scrollable * targetP;
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+          });
+        });
+
+        document.getElementById('brand-home-link')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.getElementById('skip-to-order-btn')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          const orderSec = document.getElementById('order-section');
+          if (orderSec) {
+            orderSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         });
       }
 
-      document.querySelectorAll('[data-select-tier]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const tier = btn.getAttribute('data-select-tier') || '';
-          const condSelect = document.getElementById('partCondition');
-          const partsTextarea = document.getElementById('carParts');
-          if (condSelect) {
-            condSelect.value = tier.includes('تشليح') ? 'مستعمل' : 'جديد';
+      let wakeCanvasLoopRef = null;
+
+      function setupInteractions() {
+        state.isAdminTabOpen = Boolean(
+          document.getElementById('admin-view') &&
+          !document.getElementById('admin-view').classList.contains('hidden')
+        );
+
+        function tick() {
+          if (!state.isTrackVisible || state.isAdminTabOpen) {
+            state.rafId = 0;
+            return;
           }
-          if (partsTextarea && !partsTextarea.value.includes(tier)) {
-            partsTextarea.placeholder = 'الفئة المختارة: ' + tier + ' — اكتب اسم القطعة المطلوبة هنا...';
+          let stillAnimating = false;
+          const dx = state.targetMouseX - state.mouseX;
+          const dy = state.targetMouseY - state.mouseY;
+          if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
+            state.mouseX += dx * 0.08;
+            state.mouseY += dy * 0.08;
+            state.needsRender = true;
+            stillAnimating = true;
           }
-          const banner = document.getElementById('selected-tier-banner');
-          const bannerText = document.getElementById('selected-tier-name');
-          const tierWaLink = document.getElementById('tier-instant-wa-link');
-          if (banner && bannerText) {
-            bannerText.textContent = tier;
-            banner.classList.remove('hidden');
+          if (hasVideoSequences && videoSequenceFrames.length > 0) {
+            const frameDiff = state.targetFrame - state.smoothFrame;
+            if (Math.abs(frameDiff) > 0.002) {
+              state.smoothFrame += frameDiff * 0.22;
+              state.needsRender = true;
+              stillAnimating = true;
+            } else if (state.smoothFrame !== state.targetFrame) {
+              state.smoothFrame = state.targetFrame;
+              state.needsRender = true;
+            }
           }
-          if (tierWaLink) {
-            const activeWa = window.WHATSAPP_NUMBER || WHATSAPP_NUMBER || '966509046024';
-            tierWaLink.href = 'https://wa.me/' + activeWa + '?text=' + encodeURIComponent('مرحباً، أرغب بطلب تسعيرة قطعة غيار - الفئة المختارة: ' + tier);
+          if (state.needsRender) {
+            renderCanvas();
+            state.needsRender = false;
           }
-          (document.getElementById('orderForm') || document.getElementById('order-section'))?.scrollIntoView({ behavior: 'smooth' });
+          if (stillAnimating) {
+            state.rafId = requestAnimationFrame(tick);
+          } else {
+            state.rafId = 0;
+          }
+        }
+
+        function wakeCanvasLoop() {
+          if (!state.isTrackVisible || state.isAdminTabOpen) return;
+          if (!state.rafId) {
+            state.needsRender = true;
+            state.rafId = requestAnimationFrame(tick);
+          }
+        }
+        wakeCanvasLoopRef = wakeCanvasLoop;
+
+        // إيقاف رسم #scrolly-canvas فوراً بنسبة 100% طوال فترة فتح تبويب الإدارة، واستئنافه فقط عند العودة لواجهة التصفح
+        window.addEventListener('haraj:active-tab-changed', (ev) => {
+          state.isAdminTabOpen = Boolean(ev && ev.detail && ev.detail.isAdminOpen);
+          if (state.isAdminTabOpen) {
+            if (state.rafId) {
+              cancelAnimationFrame(state.rafId);
+              state.rafId = 0;
+            }
+          } else if (state.isTrackVisible) {
+            wakeCanvasLoop();
+          }
         });
-      });
+
+        // الإيقاف الذكي لمحرك الـ Canvas عندما يكون #scrolly-track خارج الشاشة لتوفير 100% من المعالج وكرت الشاشة للوحة التحكم
+        if ('IntersectionObserver' in window && track) {
+          const trackVisibilityObserver = new IntersectionObserver(
+            (entries) => {
+              const entry = entries[0];
+              if (!entry) return;
+              if (entry.isIntersecting) {
+                state.isTrackVisible = true;
+                wakeCanvasLoop();
+              } else {
+                state.isTrackVisible = false;
+                if (state.rafId) {
+                  cancelAnimationFrame(state.rafId);
+                  state.rafId = 0;
+                }
+              }
+            },
+            { root: null, rootMargin: '120px 0px', threshold: 0 }
+          );
+          trackVisibilityObserver.observe(track);
+        }
+
+        window.addEventListener(
+          'mousemove',
+          (e) => {
+            if (!state.isTrackVisible || state.isAdminTabOpen) return;
+            state.targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            state.targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            wakeCanvasLoop();
+          },
+          { passive: true }
+        );
+
+        window.addEventListener('resize', () => {
+          resizeCanvas();
+          applyProgress(state.progress);
+          wakeCanvasLoop();
+          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+        });
+
+        wakeCanvasLoop();
+
+        document.querySelectorAll('[data-select-tier]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const tier = btn.getAttribute('data-select-tier') || '';
+            const condSelect = document.getElementById('partCondition');
+            const partsTextarea = document.getElementById('carParts');
+            if (condSelect) {
+              condSelect.value = tier.includes('تشليح') ? 'مستعمل' : 'جديد';
+            }
+            if (partsTextarea && !partsTextarea.value.includes(tier)) {
+              partsTextarea.placeholder = 'الفئة المختارة: ' + tier + ' — اكتب اسم القطعة المطلوبة هنا...';
+            }
+            const banner = document.getElementById('selected-tier-banner');
+            const bannerText = document.getElementById('selected-tier-name');
+            const tierWaLink = document.getElementById('tier-instant-wa-link');
+            if (banner && bannerText) {
+              bannerText.textContent = tier;
+              banner.classList.remove('hidden');
+            }
+            if (tierWaLink) {
+              const activeWa = window.WHATSAPP_NUMBER || WHATSAPP_NUMBER || '966509046024';
+              tierWaLink.href = 'https://wa.me/' + activeWa + '?text=' + encodeURIComponent('مرحباً، أرغب بطلب تسعيرة قطعة غيار - الفئة المختارة: ' + tier);
+            }
+            document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+      }
+
+      resizeCanvas();
+      applyProgress(0);
+      setupScrollEngine();
+      setupInteractions();
+      initAssets();
     });
   </script>
 
