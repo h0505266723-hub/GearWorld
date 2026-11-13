@@ -1325,14 +1325,18 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-black text-lg py-4 rounded-2xl shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 hover:scale-[1.01] active:scale-95 transition-all mt-6 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-paper-plane"></i>
-                        <span>إرسال الطلب للسوق الآن</span>
+                    <button type="submit" id="orderSubmitWaBtn" class="w-full bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-lg py-4 rounded-2xl shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.01] active:scale-95 transition-all mt-6 flex items-center justify-center gap-2.5">
+                        <i class="fa-brands fa-whatsapp text-2xl" aria-hidden="true"></i>
+                        <span>إتمام الطلب وإرسال رسالة واتساب 💬</span>
                     </button>
                 </form>
 
-                <div id="successMsg" class="hidden mt-6 p-5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-2xl text-center font-bold animate-pulse">
-                    <i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>تم إرسال طلبك بنجاح! سنتواصل معك بالتسعيرات المتاحة قريباً.
+                <div id="successMsg" class="hidden mt-6 p-5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-2xl text-center font-bold" role="status" aria-live="polite">
+                    <div id="successMsgText"><i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>تم حفظ طلبك بنجاح! أرسل رسالة الطلب عبر واتساب لاعتماده وبدء التسعير فوراً.</div>
+                    <a id="successWaCheckoutBtn" href="https://wa.me/966509046024" target="_blank" rel="noopener" class="hidden mt-4 w-full bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-base py-3.5 rounded-2xl shadow-lg shadow-emerald-500/30 transition-all items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-2xl" aria-hidden="true"></i>
+                        <span>فتح الواتساب وإرسال الطلب الآن 💬</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -6879,13 +6883,55 @@
             }
         })();
 
+        // إتمام الطلب بمبادرة العميل عبر واتساب (CUSTOMER-INITIATED WHATSAPP CHECKOUT)
+        const HARAJ_CHECKOUT_WA_NUMBER = '966509046024';
+        window.generateHarajWebRefCode = function() {
+            const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let suffix = '';
+            try {
+                const rnd = new Uint32Array(4);
+                (window.crypto || window.msCrypto).getRandomValues(rnd);
+                for (let i = 0; i < 4; i++) suffix += alphabet[rnd[i] % alphabet.length];
+            } catch (_) {
+                for (let i = 0; i < 4; i++) suffix += alphabet[Math.floor(Math.random() * alphabet.length)];
+            }
+            return `WEB-${suffix}`;
+        };
+        window.buildHarajWhatsAppCheckoutMessage = function(f) {
+            const clean = (v) => String(v == null ? '' : v).replace(/\s*\r?\n+\s*/g, ' | ').replace(/\s{2,}/g, ' ').trim();
+            const vinTxt = clean(f.vin).toUpperCase();
+            const lines = [
+                `مرحباً حراج القطع، أرغب باعتماد وتسعير طلبي رقم (#${clean(f.refCode)}):`,
+                `• الاسم: ${clean(f.name)}`,
+                `• المركبة: ${clean(f.brand)} ${clean(f.model)} (${clean(f.year)})`,
+                `• رقم الهيكل (VIN): ${vinTxt || 'غير مرفق'}`,
+                `• القسم والحالة: ${clean(f.category)} — ${clean(f.condition)}`,
+                `• القطع المطلوبة: ${clean(f.parts)}`
+            ];
+            if (f.hasImage) lines.push('• مرفق صورة عبر الموقع: نعم ✅');
+            return lines.join('\n');
+        };
+        window.buildHarajWhatsAppCheckoutUrl = function(f) {
+            return `https://wa.me/${HARAJ_CHECKOUT_WA_NUMBER}?text=${encodeURIComponent(window.buildHarajWhatsAppCheckoutMessage(f))}`;
+        };
+
         document.getElementById('orderForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const btn = this.querySelector('button[type="submit"]'); const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الطلب...'; btn.disabled = true;
+            const btn = this.querySelector('button[type="submit"]'); const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري حفظ الطلب وفتح الواتساب...'; btn.disabled = true;
+            const uaStr = navigator.userAgent || '';
+            const isMobileCheckout = /Android|iPhone|iPad|iPod|Mobile/i.test(uaStr) || (navigator.maxTouchPoints > 1 && /Macintosh/i.test(uaStr));
+            // على الكمبيوتر: فتح نافذة متزامنة مع ضغطة الزر لتفادي حاجب النوافذ المنبثقة، وعلى الجوال: انتقال مباشر لرابط wa.me
+            let preOpenedWaWin = null;
+            if (!isMobileCheckout) {
+                try { preOpenedWaWin = window.open('about:blank', '_blank'); } catch (_) { preOpenedWaWin = null; }
+            }
+            const webRefCode = window.generateHarajWebRefCode();
+            let waCheckoutUrl = '';
             try {
                 const imgFile = document.getElementById('carImage').files[0]; let base64Image = "";
                 if(imgFile) {
                     if (!imgFile.type || !imgFile.type.startsWith('image/')) {
+                        try { if (preOpenedWaWin) preOpenedWaWin.close(); } catch (_) {}
                         alert("الرجاء اختيار ملف صورة صالح فقط.");
                         btn.innerHTML = orig; btn.disabled = false; return;
                     }
@@ -6906,6 +6952,20 @@
                 const carVinVal = document.getElementById('carVin').value;
                 const carPartsVal = document.getElementById('carParts').value;
 
+                // تجميع رسالة واتساب واحدة أنيقة بكافة بيانات الطلب والكود المرجعي (قبل تفريغ النموذج)
+                waCheckoutUrl = window.buildHarajWhatsAppCheckoutUrl({
+                    refCode: webRefCode,
+                    name: custNameVal,
+                    brand: finalBrand,
+                    model: carModelVal,
+                    year: carYearVal,
+                    vin: carVinVal,
+                    category: finalCategory,
+                    condition: partConditionVal,
+                    parts: carPartsVal,
+                    hasImage: Boolean(base64Image && base64Image.startsWith('data:image/'))
+                });
+
                 const mappedBackendCategory =
                     partConditionVal === 'مستعمل'
                         ? 'scrap'
@@ -6916,9 +6976,12 @@
                 let backendOrderResult = null;
                 const cleanAffiliateForBackend = affiliateId !== 'مباشر (بدون مندوب)' ? affiliateId : null;
                 try {
+                    const backendAbort = typeof AbortController === 'function' ? new AbortController() : null;
+                    const backendAbortTimer = backendAbort ? setTimeout(() => backendAbort.abort(), 9000) : null;
                     const apiRes = await fetch('/api/website-order', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
+                        signal: backendAbort ? backendAbort.signal : undefined,
                         body: JSON.stringify({
                             customer_name: custNameVal,
                             customer_phone: custPhoneVal,
@@ -6930,9 +6993,12 @@
                             part_category: mappedBackendCategory,
                             speed_tier: 'balanced_45m',
                             affiliate_code: cleanAffiliateForBackend,
-                            image_data: base64Image || null
+                            image_data: base64Image || null,
+                            web_ref_code: webRefCode,
+                            customer_initiated_checkout: true
                         })
                     });
+                    if (backendAbortTimer) clearTimeout(backendAbortTimer);
                     if (apiRes.ok) {
                         backendOrderResult = await apiRes.json();
                     }
@@ -7005,6 +7071,8 @@
                             backendOrderId: backendOrderResult?.order_id || null,
                             botStatus: effectiveBotStatus,
                             botRequestedAt: serverTimestamp(),
+                            webRefCode: webRefCode,
+                            customerInitiatedCheckout: true,
                             purchaseStatus: 'pending',
                             hasImage: hasUploadedImage,
                             imageData: "",
@@ -7026,19 +7094,40 @@
                 
                 this.reset();
                 document.getElementById('carBrandSpecific').disabled = true; document.getElementById('customCarBrand').classList.add('hidden'); document.getElementById('customPartCategory').classList.add('hidden');
-                const successEl = document.getElementById('successMsg');
-                if (backendOrderResult?.unclear_image_warning && backendOrderResult?.message) {
-                    successEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-4xl mb-2 block text-amber-400"></i>${escapeHTML(backendOrderResult.message)}`;
-                } else if (backendOrderResult?.merged && backendOrderResult?.message) {
-                    successEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>${escapeHTML(backendOrderResult.message)}`;
-                } else if (backendOrderResult?.order_id) {
-                    successEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>تم استلام طلبك رقم (#${escapeHTML(backendOrderResult.order_id)}) وتوجيهه لبوت واتساب والموردين بنجاح! تفقد رسائل الواتساب الآن.`;
-                } else if (cloudMergeNote) {
-                    successEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>${escapeHTML(cloudMergeNote)}`;
+                window.showHarajWhatsAppCheckoutSuccess(webRefCode, waCheckoutUrl, preOpenedWaWin, isMobileCheckout);
+            } catch(e) {
+                // حتى عند تعذر الحفظ السحابي: رسالة واتساب تحمل كافة بيانات الطلب ويُنشئه البوت فور وصولها دون أي سؤال إضافي
+                if (waCheckoutUrl) {
+                    window.showHarajWhatsAppCheckoutSuccess(webRefCode, waCheckoutUrl, preOpenedWaWin, isMobileCheckout);
+                } else {
+                    try { if (preOpenedWaWin) preOpenedWaWin.close(); } catch (_) {}
+                    alert("حدث خطأ أثناء حفظ الطلب، يرجى المحاولة مجدداً.");
                 }
-                successEl.classList.remove('hidden'); setTimeout(() => successEl.classList.add('hidden'), 7000); document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
-            } catch(e) { alert("حدث خطأ أثناء رفع الطلب للسحابة"); } finally { btn.innerHTML = orig; btn.disabled = false; }
+            } finally { btn.innerHTML = orig; btn.disabled = false; }
         });
+
+        window.showHarajWhatsAppCheckoutSuccess = function(refCode, waUrl, preOpenedWin, isMobile) {
+            const successEl = document.getElementById('successMsg');
+            const successTextEl = document.getElementById('successMsgText');
+            const waBtn = document.getElementById('successWaCheckoutBtn');
+            if (successTextEl) {
+                successTextEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block"></i>تم حفظ طلبك رقم (#${escapeHTML(refCode)}) بنجاح ✅<br><span class="text-emerald-200/90 text-sm">جاري فتح الواتساب برسالة الطلب الجاهزة — اضغط (إرسال) لاعتماد طلبك وبدء التسعير فوراً.</span>`;
+            }
+            if (waBtn && waUrl) {
+                waBtn.href = waUrl;
+                waBtn.classList.remove('hidden');
+                waBtn.classList.add('flex');
+            }
+            if (successEl) successEl.classList.remove('hidden');
+            document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
+            if (!waUrl) return;
+            if (preOpenedWin && !preOpenedWin.closed) {
+                try { preOpenedWin.location.href = waUrl; return; } catch (_) {}
+            }
+            if (isMobile) {
+                setTimeout(() => { window.location.href = waUrl; }, 350);
+            }
+        };
 
         let editingSupOldPhone = null;
         let editingSupGoogleResourceName = null;
