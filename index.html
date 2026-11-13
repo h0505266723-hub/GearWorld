@@ -1883,6 +1883,44 @@
                     <div id="unansweredSuppliersListContainer" class="space-y-3 max-h-[420px] overflow-y-auto pr-1"></div>
                 </div>
 
+                <!-- شريط ربط والتحقق الفوري من سجل جهات اتصال البريد والهاتف (Google Contacts OAuth2) — للمدير فقط -->
+                <div id="adminGoogleContactsTopBar" class="hidden bg-slate-900/95 border border-emerald-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
+                    <div class="flex flex-wrap items-center justify-between gap-2.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-xs sm:text-sm font-black text-emerald-300 flex items-center gap-1.5">
+                                <span>📇</span>
+                                <span>سجل جهات اتصال البريد والهاتف (Google Contacts)</span>
+                            </h3>
+                            <span id="adminGoogleContactsStatusBadge" class="text-[11px] font-black px-3 py-1 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/35">
+                                🔴 غير مربوط بعد — اضغط للربط
+                            </span>
+                            <span id="adminGoogleContactsPendingBadge" class="hidden text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-200 border border-amber-400/40">
+                                ⏳ بانتظار المزامنة: 0
+                            </span>
+                        </div>
+                        <button type="button" onclick="loadGoogleContactsBarStatus()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-xl text-[11px] font-bold transition">
+                            🔄 تحديث الحالة
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-300 font-bold leading-relaxed">
+                        🛡️ <span class="text-amber-300">حماية تلقائية مفعّلة:</span> الأسماء الخام غير المراجعة من حراج أو خرائط جوجل <strong>لا تُرفع أبداً تلقائياً</strong> إلى بريدك؛ يُحفظ في بريدك وهاتفك فقط المورد الذي تراجع اسمه وتضغط له زر الاعتماد.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-0.5">
+                        <button type="button" id="btnConnectGoogleContactsOAuth" onclick="connectGoogleContactsOAuthUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 px-3 rounded-xl text-xs font-black transition shadow-md flex items-center justify-center gap-1.5">
+                            <span>🔗</span>
+                            <span>ربط / تغيير البريد الإلكتروني لجهات الاتصال</span>
+                        </button>
+                        <button type="button" onclick="openGoogleContactsTestModal()" class="bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-200 border border-cyan-500/40 py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5">
+                            <span>🧪</span>
+                            <span>تجربة حفظ اسم والتحقق في البريد</span>
+                        </button>
+                        <button type="button" id="btnSyncAllApprovedGoogleContacts" onclick="syncAllApprovedSuppliersToGoogleUI()" class="bg-brand-500/15 hover:bg-brand-500/25 text-brand-200 border border-brand-500/40 py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5">
+                            <span>🔄</span>
+                            <span>مزامنة كافة الموردين المعتمدين إلى جهات الاتصال</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- المراقبة الحية للمدير فقط: توزيع الوكلاء التناسبي + محرك الإنقاذ الحي للطلبات المتأخرة -->
                 <div id="adminLiveEnginesMonitorWrap" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-3.5 pt-1">
                     <!-- (1) بطاقة توزيع الوكلاء الحي (Proportional Agent Balancer) -->
@@ -2571,15 +2609,35 @@
                     <i class="fa-solid fa-plus-circle"></i> إضافة مورد جديد
                 </h4>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
                         <label class="block text-sm font-bold text-slate-200 mb-1.5">اسم المتجر / الورشة</label>
-                        <input type="text" id="newSupName" placeholder="مثال: تشليح القمة" class="w-full px-4 py-3 glass-input rounded-xl text-sm outline-none">
+                        <input type="text" id="newSupName" oninput="refreshApprovedSupplierContactPreview()" placeholder="مثال: مؤسسة عبد المحسن صالح لقطع الغيار" class="w-full px-4 py-3 glass-input rounded-xl text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-200 mb-1.5">الحي الصناعي / الموقع</label>
+                        <input type="text" id="newSupDistrict" oninput="refreshApprovedSupplierContactPreview()" placeholder="مثال: الصناعية القديمة" class="w-full px-4 py-3 glass-input rounded-xl text-sm outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-slate-200 mb-1.5">رقم الواتساب</label>
                         <input type="tel" id="newSupPhone" placeholder="05xxxxxxxx" class="w-full px-4 py-3 glass-input rounded-xl text-sm outline-none text-left font-mono" dir="ltr">
                     </div>
+                </div>
+                <div class="bg-emerald-950/35 border border-emerald-500/30 rounded-2xl p-3.5 mb-5 space-y-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <label class="text-xs font-black text-emerald-300 flex items-center gap-1.5">
+                            <span>👁️</span>
+                            <span>معاينة وحقل اسم جهة الاتصال في الهاتف والبريد (يُحدَّث تلقائياً في Google Contacts):</span>
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <select id="newSupContactTpl" onchange="refreshApprovedSupplierContactPreview(true)" class="px-2.5 py-1 rounded-lg glass-input text-[11px] font-bold text-emerald-200 outline-none">
+                                <option value="prefixed">قالب: مورد حراج | الاسم (الحي)</option>
+                                <option value="plain">قالب: اسم المتجر الصافي فقط</option>
+                            </select>
+                            <button type="button" onclick="resetApprovedSupplierContactAuto()" class="text-[11px] font-bold text-cyan-300 hover:text-cyan-200 px-2 py-1 rounded-lg bg-slate-900 border border-slate-700">↺ تلقائي</button>
+                        </div>
+                    </div>
+                    <input type="text" id="newSupContactName" data-manual-override="0" oninput="this.dataset.manualOverride='1'" placeholder="مورد حراج | اسم المتجر (الحي)" class="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs font-bold text-emerald-100 outline-none">
                 </div>
                 
                 <div class="bg-amber-500/10 p-4 rounded-2xl border border-amber-500/20 mb-5">
@@ -2659,6 +2717,76 @@
             
             <h4 class="text-sm font-bold text-slate-300 mb-3 border-t border-slate-800 pt-4 mt-2">الموردين النشطين حالياً في النظام:</h4>
             <div id="suppliersListContainer" class="overflow-y-auto space-y-3 pr-2 max-h-[35vh]"></div>
+        </div>
+    </div>
+
+    <!-- شريط تنبيه فوري عائم للإدارة (حفظ التعديلات + الاعتماد ومزامنة جهات اتصال جوجل) -->
+    <div id="adminFloatingToastBanner" style="z-index: 100050;" class="fixed top-4 left-1/2 -translate-x-1/2 hidden max-w-xl w-[94vw] px-4 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl text-xs sm:text-sm font-black text-center transition-all"></div>
+
+    <!-- نافذة تجربة حفظ اسم مورد والتحقق الفوري في بريد Google Contacts وهاتف الإدارة -->
+    <div id="googleContactsTestModal" style="z-index: 99999;" class="fixed inset-0 hidden flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-3 sm:p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-5 sm:p-6 max-w-lg w-full shadow-2xl max-h-[93vh] overflow-y-auto border border-cyan-500/40 space-y-4">
+            <div class="flex justify-between items-start gap-3 border-b border-slate-800 pb-3">
+                <div>
+                    <h3 class="font-black text-base sm:text-lg text-cyan-300 flex items-center gap-2">
+                        <span>🧪</span>
+                        <span>تجربة حفظ اسم والتحقق الفوري في البريد والهاتف</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-400 font-bold mt-1">
+                        احفظ اسماً تجريبياً الآن في <code class="text-emerald-300">contacts.google.com</code> وتأكد من ظهوره في جوالك، ثم احذفه بضغطة زر واحدة.
+                    </p>
+                </div>
+                <button type="button" onclick="closeGoogleContactsTestModal()" class="text-slate-400 hover:text-white bg-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition border border-slate-700 shrink-0">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">اسم المتجر التجريبي</label>
+                        <input type="text" id="gcTestShopName" value="مؤسسة تجربة حراج القطع" oninput="updateGoogleContactsTestLivePreview()" class="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">الحي الصناعي</label>
+                        <input type="text" id="gcTestDistrict" value="الصناعية القديمة" oninput="updateGoogleContactsTestLivePreview()" class="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs font-bold outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">رقم الجوال التجريبي</label>
+                        <input type="tel" id="gcTestPhone" value="0500000099" dir="ltr" oninput="updateGoogleContactsTestLivePreview()" class="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs font-mono text-left outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">قالب التسمية</label>
+                        <select id="gcTestTemplate" onchange="updateGoogleContactsTestLivePreview()" class="w-full px-3 py-2.5 glass-input rounded-xl text-xs font-bold outline-none">
+                            <option value="prefixed">مع بادئة: مورد حراج | الاسم (الحي)</option>
+                            <option value="plain">اسم المتجر الصافي فقط</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950/90 border border-emerald-500/35 rounded-2xl p-3.5 space-y-1.5 text-xs">
+                    <p class="text-[11px] font-black text-emerald-300">👁️ معاينة البطاقة كما ستظهر في بريدك وهاتفك:</p>
+                    <p class="font-black text-white text-sm" id="gcTestPreviewName">مورد حراج | مؤسسة تجربة حراج القطع (الصناعية القديمة)</p>
+                    <p class="text-[11px] text-slate-300 font-mono" dir="ltr" id="gcTestPreviewPhone">+966500000099</p>
+                    <p class="text-[10px] text-slate-400">🏢 جهة العمل: مؤسسة تجربة حراج القطع | 📝 الملاحظات: التصنيف والماركات للبحث السريع</p>
+                </div>
+
+                <div id="gcTestResultBox" class="hidden rounded-2xl p-3.5 text-xs font-bold leading-relaxed border"></div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                    <button type="button" id="btnRunGcTestSave" onclick="runGoogleContactsTestSaveUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white py-3 px-4 rounded-xl text-xs font-black transition shadow-md">
+                        💾 حفظ الاسم التجريبي في البريد الآن
+                    </button>
+                    <button type="button" id="btnRunGcTestDelete" onclick="runGoogleContactsTestDeleteUI()" class="bg-rose-500/15 hover:bg-rose-500 hover:text-white text-rose-300 border border-rose-500/40 py-3 px-4 rounded-xl text-xs font-black transition">
+                        🗑️ حذف الاسم التجريبي بضغطة واحدة
+                    </button>
+                </div>
+                <a href="https://contacts.google.com" target="_blank" rel="noopener" class="block text-center text-[11px] font-black text-cyan-300 hover:text-cyan-200 underline pt-1">
+                    ↗ فتح سجل جهات اتصال جوجل مباشرة (contacts.google.com) للتحقق بالعين
+                </a>
+            </div>
         </div>
     </div>
 
@@ -3492,15 +3620,37 @@
             if (sp.get('qr') === '1' || window.location.hash === '#qr') {
                 setTimeout(() => window.openWhatsAppLoginModal(), 150);
             }
+            const wantsAdminTab = sp.get('admin') === '1' || window.location.hash === '#admin' || sp.get('google_contacts') === 'connected';
+            const justConnectedGoogle = sp.get('google_contacts') === 'connected';
+            const triggerPostGoogleConnectBanner = () => {
+                if (!justConnectedGoogle) return;
+                setTimeout(() => {
+                    if (typeof window.showAdminActionToast === 'function') {
+                        window.showAdminActionToast('✅ تم ربط حساب Google Contacts بنجاح! سيُحفظ أي مورد تعتمده تلقائياً في جهات اتصال البريد والهاتف.', 'emerald');
+                    }
+                    if (typeof window.loadGoogleContactsBarStatus === 'function') {
+                        window.loadGoogleContactsBarStatus();
+                    }
+                    try {
+                        const cleanUrl = new URL(window.location.href);
+                        cleanUrl.searchParams.delete('google_contacts');
+                        window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+                    } catch (_) {}
+                }, 400);
+            };
             const storedTok = getStoredAdminCandidateToken();
             if (storedTok) {
                 verifyAdminSessionWithBackend(storedTok).then((chk) => {
-                    if (chk.checked && !chk.valid && (sp.get('admin') === '1' || window.location.hash === '#admin')) {
+                    if (wantsAdminTab) {
                         window.switchTab('admin');
+                        triggerPostGoogleConnectBanner();
                     }
                 });
-            } else if (sp.get('admin') === '1' || window.location.hash === '#admin') {
-                setTimeout(() => window.switchTab('admin'), 150);
+            } else if (wantsAdminTab) {
+                setTimeout(() => {
+                    window.switchTab('admin');
+                    triggerPostGoogleConnectBanner();
+                }, 150);
             }
         })();
 
@@ -5665,6 +5815,7 @@
                     document.getElementById('btnExportSuppliersVcf')?.classList.remove('hidden');
                     document.getElementById('adminColdOutreachBadge')?.classList.remove('hidden');
                     document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.remove('hidden');
+                    document.getElementById('adminGoogleContactsTopBar')?.classList.remove('hidden');
                     const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
                     if (liveEnginesWrap) liveEnginesWrap.classList.remove('hidden');
                     document.getElementById('btn-pending').classList.remove('hidden');
@@ -5674,6 +5825,9 @@
                     document.getElementById('btn-affiliate').classList.add('hidden');
                     if (typeof window.loadUnansweredSuppliersCatchUp === 'function') {
                         window.loadUnansweredSuppliersCatchUp();
+                    }
+                    if (typeof window.loadGoogleContactsBarStatus === 'function') {
+                        window.loadGoogleContactsBarStatus();
                     }
                     if (typeof window.loadAdminLiveEnginesStatus === 'function') {
                         window.loadAdminLiveEnginesStatus();
@@ -5769,6 +5923,8 @@
                     document.getElementById('btnExportSuppliersVcf')?.classList.add('hidden');
                     document.getElementById('adminColdOutreachBadge')?.classList.add('hidden');
                     document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.add('hidden');
+                    document.getElementById('adminGoogleContactsTopBar')?.classList.add('hidden');
+                    if (typeof window.closeGoogleContactsTestModal === 'function') window.closeGoogleContactsTestModal();
                     const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
                     if (liveEnginesWrap) liveEnginesWrap.classList.add('hidden');
                     document.getElementById('btn-pending').classList.add('hidden');
@@ -6794,13 +6950,274 @@
             } catch(e) { alert("حدث خطأ أثناء رفع الطلب للسحابة"); } finally { btn.innerHTML = orig; btn.disabled = false; }
         });
 
+        let editingSupOldPhone = null;
+        let editingSupGoogleResourceName = null;
+        let adminToastHideTimer = null;
+
+        window.showAdminActionToast = function(message, tone = 'emerald') {
+            const el = document.getElementById('adminFloatingToastBanner');
+            if (!el) return;
+            const toneClasses = {
+                emerald: 'bg-emerald-950/95 text-emerald-100 border-emerald-400/60 shadow-emerald-500/20',
+                cyan: 'bg-cyan-950/95 text-cyan-100 border-cyan-400/60 shadow-cyan-500/20',
+                amber: 'bg-amber-950/95 text-amber-100 border-amber-400/60 shadow-amber-500/20',
+                rose: 'bg-rose-950/95 text-rose-100 border-rose-400/60 shadow-rose-500/20'
+            };
+            el.className = `fixed top-4 left-1/2 -translate-x-1/2 max-w-xl w-[94vw] px-4 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl text-xs sm:text-sm font-black text-center transition-all ${toneClasses[tone] || toneClasses.emerald}`;
+            el.textContent = message;
+            el.classList.remove('hidden');
+            if (adminToastHideTimer) clearTimeout(adminToastHideTimer);
+            adminToastHideTimer = setTimeout(() => {
+                el.classList.add('hidden');
+            }, 6500);
+        };
+
+        window.buildGoogleContactNamePreviewUI = function(shopName, district, templateMode = 'prefixed') {
+            const cleanShop = String(shopName || '').replace(/[\r\n\t]+/g, ' ').replace(/\s{2,}/g, ' ').trim() || 'مورد قطع غيار معتمد';
+            const cleanDist = String(district || '').replace(/[\r\n\t]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+            if (String(templateMode || '').trim().toLowerCase() === 'plain') {
+                return cleanShop;
+            }
+            if (cleanShop.startsWith('مورد حراج |')) {
+                return cleanShop;
+            }
+            if (cleanDist && !cleanShop.includes(cleanDist)) {
+                return `مورد حراج | ${cleanShop} (${cleanDist})`;
+            }
+            return `مورد حراج | ${cleanShop}`;
+        };
+
+        window.refreshApprovedSupplierContactPreview = function(forceReset = false) {
+            const nameEl = document.getElementById('newSupName');
+            const distEl = document.getElementById('newSupDistrict');
+            const tplEl = document.getElementById('newSupContactTpl');
+            const contactEl = document.getElementById('newSupContactName');
+            if (!contactEl) return;
+            if (forceReset) contactEl.dataset.manualOverride = '0';
+            if (contactEl.dataset.manualOverride === '1') return;
+            contactEl.value = window.buildGoogleContactNamePreviewUI(
+                nameEl ? nameEl.value : '',
+                distEl ? distEl.value : '',
+                tplEl ? tplEl.value : 'prefixed'
+            );
+        };
+
+        window.resetApprovedSupplierContactAuto = function() {
+            window.refreshApprovedSupplierContactPreview(true);
+        };
+
+        window.loadGoogleContactsBarStatus = async function() {
+            if (currentRole !== 'admin') return;
+            const badgeEl = document.getElementById('adminGoogleContactsStatusBadge');
+            const pendingEl = document.getElementById('adminGoogleContactsPendingBadge');
+            try {
+                const res = await fetchBotBackend('/api/admin/google-contacts/status', { method: 'GET', timeoutMs: 5000 });
+                if (!res || !res.ok) return;
+                const st = await res.json();
+                if (badgeEl) {
+                    if (st.connected) {
+                        const emailTxt = st.connectedEmail || 'حساب Google مربوط';
+                        const cnt = Number(st.googleSavedCount ?? st.googleSyncedCount ?? 0);
+                        badgeEl.className = 'text-[11px] font-black px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/50';
+                        badgeEl.textContent = `🟢 متصل بالبريد: ${emailTxt} | محفوظ في البريد: ${cnt} مورد`;
+                    } else {
+                        badgeEl.className = 'text-[11px] font-black px-3 py-1 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/35';
+                        badgeEl.textContent = '🔴 غير مربوط بعد — اضغط زر الربط لاختيار البريد';
+                    }
+                }
+                if (pendingEl) {
+                    const pCnt = Number(st.pendingGoogleSyncCount || 0);
+                    if (pCnt > 0) {
+                        pendingEl.textContent = `⏳ بانتظار المزامنة للبريد: ${pCnt}`;
+                        pendingEl.classList.remove('hidden');
+                    } else {
+                        pendingEl.classList.add('hidden');
+                    }
+                }
+            } catch (_) {}
+        };
+
+        window.connectGoogleContactsOAuthUI = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnConnectGoogleContactsOAuth');
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري فتح بوابة Google OAuth...';
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/google-contacts/auth-url', { method: 'GET', timeoutMs: 6000 });
+                if (!res || !res.ok) {
+                    alert('تعذر الاتصال بالسيرفر المحلي لإنشاء رابط ربط Google Contacts. تأكد من عمل السيرفر على المنفذ 3000.');
+                    return;
+                }
+                const data = await res.json();
+                if (!data.authUrl) {
+                    alert(data.error || 'مفاتيح Google OAuth غير مهيأة في ملف .env على السيرفر.');
+                    return;
+                }
+                window.location.href = data.authUrl;
+            } catch (e) {
+                alert('حدث خطأ أثناء فتح رابط ربط حساب Google Contacts.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+        };
+
+        window.updateGoogleContactsTestLivePreview = function() {
+            const shop = document.getElementById('gcTestShopName')?.value || '';
+            const dist = document.getElementById('gcTestDistrict')?.value || '';
+            const phRaw = document.getElementById('gcTestPhone')?.value || '';
+            const tpl = document.getElementById('gcTestTemplate')?.value || 'prefixed';
+            const prevNameEl = document.getElementById('gcTestPreviewName');
+            const prevPhoneEl = document.getElementById('gcTestPreviewPhone');
+            if (prevNameEl) prevNameEl.textContent = window.buildGoogleContactNamePreviewUI(shop, dist, tpl);
+            if (prevPhoneEl) {
+                const normPh = window.formatSaudiPhone(phRaw || '0500000099');
+                prevPhoneEl.textContent = normPh ? `+${normPh}` : '+966500000099';
+            }
+        };
+
+        window.openGoogleContactsTestModal = function() {
+            if (currentRole !== 'admin') return;
+            const modal = document.getElementById('googleContactsTestModal');
+            if (!modal) return;
+            window.updateGoogleContactsTestLivePreview();
+            const resBox = document.getElementById('gcTestResultBox');
+            if (resBox) resBox.classList.add('hidden');
+            modal.classList.remove('hidden');
+        };
+
+        window.closeGoogleContactsTestModal = function() {
+            const modal = document.getElementById('googleContactsTestModal');
+            if (modal) modal.classList.add('hidden');
+        };
+
+        let lastGcTestResourceName = null;
+        window.runGoogleContactsTestSaveUI = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnRunGcTestSave');
+            const resBox = document.getElementById('gcTestResultBox');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ في البريد...'; }
+            try {
+                const payload = {
+                    shop_name: document.getElementById('gcTestShopName')?.value || 'مؤسسة تجربة حراج القطع',
+                    district: document.getElementById('gcTestDistrict')?.value || 'الصناعية القديمة',
+                    phone: document.getElementById('gcTestPhone')?.value || '0500000099',
+                    contact_name_template: document.getElementById('gcTestTemplate')?.value || 'prefixed'
+                };
+                const res = await fetchBotBackend('/api/admin/google-contacts/test-save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    timeoutMs: 12000
+                });
+                const out = res ? await res.json().catch(() => ({})) : {};
+                if (res && res.ok && out.synced) {
+                    lastGcTestResourceName = out.resourceName || null;
+                    if (resBox) {
+                        resBox.className = 'rounded-2xl p-3.5 text-xs font-bold leading-relaxed border bg-emerald-950/70 border-emerald-500/50 text-emerald-200';
+                        resBox.innerHTML = `✅ تم حفظ البطاقة التجريبية فوراً في بريد Google Contacts!<br>📇 الاسم: <strong>${escapeHTML(out.finalDisplayName || '')}</strong><br>🆔 المعرّف السحابي: <code dir="ltr" class="text-cyan-300">${escapeHTML(out.resourceName || '')}</code> — افتح بريدك أو هاتفك الآن للتأكد بالعين ثم اضغط زر الحذف أدناه.`;
+                        resBox.classList.remove('hidden');
+                    }
+                    window.loadGoogleContactsBarStatus();
+                } else {
+                    const reasonMsg = out.reason === 'google_oauth_not_connected'
+                        ? '⚠️ لم يتم ربط البريد الإلكتروني بعد! اضغط زر "ربط / تغيير البريد الإلكتروني لجهات الاتصال" في الشريط العلوي أولاً.'
+                        : (out.error || 'تعذر حفظ البطاقة التجريبية في Google Contacts.');
+                    if (resBox) {
+                        resBox.className = 'rounded-2xl p-3.5 text-xs font-bold leading-relaxed border bg-amber-950/70 border-amber-500/50 text-amber-200';
+                        resBox.textContent = reasonMsg;
+                        resBox.classList.remove('hidden');
+                    }
+                }
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+            }
+        };
+
+        window.runGoogleContactsTestDeleteUI = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnRunGcTestDelete');
+            const resBox = document.getElementById('gcTestResultBox');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحذف...'; }
+            try {
+                const phone = document.getElementById('gcTestPhone')?.value || '0500000099';
+                const res = await fetchBotBackend('/api/admin/google-contacts/test-save', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ resourceName: lastGcTestResourceName, phone }),
+                    timeoutMs: 12000
+                });
+                const out = res ? await res.json().catch(() => ({})) : {};
+                if (res && res.ok && out.deleted) {
+                    lastGcTestResourceName = null;
+                    if (resBox) {
+                        resBox.className = 'rounded-2xl p-3.5 text-xs font-bold leading-relaxed border bg-cyan-950/70 border-cyan-500/50 text-cyan-200';
+                        resBox.textContent = '🗑️ تم حذف الاسم التجريبي من سجل جهات اتصال البريد والهاتف بنجاح!';
+                        resBox.classList.remove('hidden');
+                    }
+                    window.loadGoogleContactsBarStatus();
+                } else {
+                    if (resBox) {
+                        resBox.className = 'rounded-2xl p-3.5 text-xs font-bold leading-relaxed border bg-rose-950/70 border-rose-500/50 text-rose-200';
+                        resBox.textContent = out.error || 'لم يتم العثور على بطاقة تجريبية نشطة لحذفها.';
+                        resBox.classList.remove('hidden');
+                    }
+                }
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+            }
+        };
+
+        window.syncAllApprovedSuppliersToGoogleUI = async function() {
+            if (currentRole !== 'admin') return;
+            const btn = document.getElementById('btnSyncAllApprovedGoogleContacts');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المعتمدين...'; }
+            try {
+                const res = await fetchBotBackend('/api/admin/google-contacts/sync-approved', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ onlyPending: false }),
+                    timeoutMs: 35000
+                });
+                const out = res ? await res.json().catch(() => ({})) : {};
+                if (res && res.ok && out.success) {
+                    if (out.reason === 'google_oauth_not_connected') {
+                        window.showAdminActionToast('⚠️ يرجى ربط البريد الإلكتروني أولاً من زر "ربط / تغيير البريد الإلكتروني لجهات الاتصال" ليتم رفع الموردين المعتمدين.', 'amber');
+                    } else {
+                        window.showAdminActionToast(`✅ اكتملت مزامنة الموردين المعتمدين إلى Google Contacts: إجمالي ${out.syncedCount || 0} (جديد: ${out.createdCount || 0} | تحديث اسم بدون تكرار: ${out.updatedCount || 0})`, 'emerald');
+                    }
+                    window.loadGoogleContactsBarStatus();
+                } else {
+                    window.showAdminActionToast(out.error || 'تعذر إتمام مزامنة الموردين المعتمدين.', 'rose');
+                }
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerHTML = orig; }
+            }
+        };
+
         window.openAddSupplierManual = function() {
             if (currentRole !== 'admin') return;
             editingSupId = null;
+            editingSupOldPhone = null;
+            editingSupGoogleResourceName = null;
             document.getElementById('supplierFormContainer').classList.remove('hidden');
             document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> إضافة مورد جديد يدوياً';
             document.getElementById('newSupName').value = '';
+            const distEl = document.getElementById('newSupDistrict');
+            if (distEl) distEl.value = '';
             document.getElementById('newSupPhone').value = '';
+            const tplEl = document.getElementById('newSupContactTpl');
+            if (tplEl) tplEl.value = 'prefixed';
+            const contactEl = document.getElementById('newSupContactName');
+            if (contactEl) { contactEl.dataset.manualOverride = '0'; contactEl.value = ''; }
             document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
             document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = false);
             document.querySelectorAll('.cat-cb').forEach(cb => cb.checked = false);
@@ -6812,11 +7229,23 @@
             if (currentRole !== 'admin') return;
             const sup = suppliersDB.find(s => s.id === id); if(!sup) return;
             editingSupId = id;
+            editingSupOldPhone = sup.phone || null;
+            editingSupGoogleResourceName = sup.google_resource_name || null;
             document.getElementById('supplierFormContainer').classList.remove('hidden');
             document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> تعديل بيانات: ' + escapeHTML(sup.name);
             document.getElementById('newSupName').value = sup.name;
+            const distEl = document.getElementById('newSupDistrict');
+            if (distEl) distEl.value = sup.district || '';
             let showPhone = sup.phone; if(showPhone.startsWith('9665')) showPhone = '05' + showPhone.substring(4);
             document.getElementById('newSupPhone').value = showPhone;
+            const tplEl = document.getElementById('newSupContactTpl');
+            if (tplEl) tplEl.value = sup.contact_name_template || 'prefixed';
+            const contactEl = document.getElementById('newSupContactName');
+            if (contactEl) {
+                const defaultPreview = window.buildGoogleContactNamePreviewUI(sup.name, sup.district || '', sup.contact_name_template || 'prefixed');
+                contactEl.value = sup.contact_display_name || defaultPreview;
+                contactEl.dataset.manualOverride = (sup.contact_display_name && sup.contact_display_name !== defaultPreview) ? '1' : '0';
+            }
             
             document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = sup.conditions && sup.conditions.includes(cb.value));
             document.querySelectorAll('.brand-cb').forEach(cb => cb.checked = sup.brands && sup.brands.includes(cb.value));
@@ -6825,12 +7254,21 @@
             document.getElementById('supplierFormContainer').scrollTop = 0;
         };
 
-        window.cancelEdit = function() { editingSupId = null; document.getElementById('supplierFormContainer').classList.add('hidden'); };
+        window.cancelEdit = function() {
+            editingSupId = null;
+            editingSupOldPhone = null;
+            editingSupGoogleResourceName = null;
+            document.getElementById('supplierFormContainer').classList.add('hidden');
+        };
 
         window.addSupplierCloud = async function() {
             if (currentRole !== 'admin') return;
             const name = document.getElementById('newSupName').value.trim();
+            const district = (document.getElementById('newSupDistrict')?.value || '').trim();
             const phone = window.formatSaudiPhone(document.getElementById('newSupPhone').value); 
+            const contactTpl = document.getElementById('newSupContactTpl')?.value || 'prefixed';
+            const rawContactName = (document.getElementById('newSupContactName')?.value || '').trim();
+            const contactDisplayName = rawContactName || window.buildGoogleContactNamePreviewUI(name, district, contactTpl);
             
             const isDuplicate = suppliersDB.some(s => s.phone === phone && s.id !== editingSupId);
             if (isDuplicate) { alert("عذراً، لا يمكن الإضافة! يوجد مورد مسجل بهذا الرقم مسبقاً."); return; }
@@ -6847,11 +7285,35 @@
             if(!name || !phone) { alert("الرجاء إدخال الاسم والرقم."); return; }
             if(conditions.length === 0 || brands.length === 0 || categories.length === 0) { alert("الرجاء تحديد التخصصات."); return; }
 
+            const capturedEditingId = editingSupId;
+            const capturedOldPhone = editingSupOldPhone;
+            const capturedGoogleResourceName = editingSupGoogleResourceName;
             const prevSuppliersBackup = [...suppliersDB];
-            if(editingSupId) {
-                suppliersDB = suppliersDB.map(s => s.id === editingSupId ? { ...s, name, phone, conditions, brands, categories } : s);
+            const targetLocalId = capturedEditingId || Date.now().toString();
+            if(capturedEditingId) {
+                suppliersDB = suppliersDB.map(s => s.id === capturedEditingId ? {
+                    ...s,
+                    name,
+                    district: district || s.district || null,
+                    phone,
+                    contact_display_name: contactDisplayName,
+                    contact_name_template: contactTpl,
+                    conditions,
+                    brands,
+                    categories
+                } : s);
             } else {
-                suppliersDB.push({ id: Date.now().toString(), name, phone, conditions, brands, categories });
+                suppliersDB.push({
+                    id: targetLocalId,
+                    name,
+                    district: district || null,
+                    phone,
+                    contact_display_name: contactDisplayName,
+                    contact_name_template: contactTpl,
+                    conditions,
+                    brands,
+                    categories
+                });
             }
             // استجابة فورية 0ms قبل انتظار الشبكة
             cancelEdit();
@@ -6859,7 +7321,43 @@
             if (window.currentOrders) renderOrders(window.currentOrders);
 
             try {
-                await setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB });
+                const backendSyncPromise = fetchBotBackend('/api/admin/suppliers/upsert-and-sync', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: capturedEditingId,
+                        old_phone: capturedOldPhone,
+                        google_resource_name: capturedGoogleResourceName,
+                        name,
+                        district,
+                        phone,
+                        contact_display_name: contactDisplayName,
+                        contact_name_template: contactTpl,
+                        conditions,
+                        brands,
+                        categories
+                    }),
+                    timeoutMs: 12000
+                }).then(r => r && r.ok ? r.json() : null).catch(() => null);
+
+                const [, backendOut] = await Promise.all([
+                    setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB }),
+                    backendSyncPromise
+                ]);
+
+                if (backendOut && backendOut.supplier) {
+                    const gResName = backendOut.supplier.google_resource_name || backendOut.google_contact_sync?.resourceName || null;
+                    if (gResName) {
+                        suppliersDB = suppliersDB.map(s => (s.id === targetLocalId || s.phone === phone) ? { ...s, google_resource_name: gResName } : s);
+                        setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB }).catch(() => {});
+                    }
+                    window.loadGoogleContactsBarStatus();
+                    if (backendOut.google_contact_sync?.synced) {
+                        window.showAdminActionToast(`✅ تم حفظ بيانات [${name}] في الموقع + تحديث اسمه تلقائياً في Google Contacts بدون تكرار!`, 'emerald');
+                    } else {
+                        window.showAdminActionToast(`✅ تم حفظ بيانات [${name}] في الموقع وقاعدة البيانات بنجاح.`, 'cyan');
+                    }
+                }
             } catch (e) {
                 suppliersDB = prevSuppliersBackup;
                 renderSuppliersModalList();
@@ -6997,12 +7495,228 @@
         let latestHarajMinedSuppliers = [];
         let latestHarajQuotaSummary = null;
 
+        const REVERSE_SURGICAL_14_AR_MAP = Object.entries(SURGICAL_TAXONOMY_14_MAP).reduce((acc, [k, v]) => {
+            acc[String(v).trim()] = k;
+            return acc;
+        }, {});
+
+        function parseCommaListUI(rawText) {
+            return String(rawText || '')
+                .split(/[،,\n]+/)
+                .map(s => s.trim())
+                .filter(Boolean);
+        }
+
+        function parseEditedCategoriesInputUI(rawText, fallbackArr, supplierType) {
+            if (supplierType === 'full_car_dismantler') return [...ALL_14_SURGICAL_KEYS];
+            const items = parseCommaListUI(rawText);
+            if (items.length === 0) return Array.isArray(fallbackArr) && fallbackArr.length > 0 ? fallbackArr : [...ALL_14_SURGICAL_KEYS];
+            if (items.some(x => x.includes('جميع الـ 14') || x === '*')) return [...ALL_14_SURGICAL_KEYS];
+            return items.map(lbl => REVERSE_SURGICAL_14_AR_MAP[lbl] || lbl);
+        }
+
+        window.togglePendingCardEditDrawer = function(safeId) {
+            const drawer = document.getElementById('pending-edit-drawer-' + safeId);
+            if (!drawer) return;
+            drawer.classList.toggle('hidden');
+        };
+
+        window.onPendingCardFieldInput = function(safeId, forceAuto = false) {
+            const shopEl = document.getElementById('p-edit-shop-' + safeId);
+            const distEl = document.getElementById('p-edit-district-' + safeId);
+            const tplEl = document.getElementById('p-edit-tpl-' + safeId);
+            const contactEl = document.getElementById('p-edit-contact-name-' + safeId);
+            const badgePreviewEl = document.getElementById('pending-card-contact-preview-' + safeId);
+            if (!contactEl) return;
+            if (forceAuto) contactEl.dataset.manualOverride = '0';
+            if (contactEl.dataset.manualOverride !== '1') {
+                contactEl.value = window.buildGoogleContactNamePreviewUI(
+                    shopEl ? shopEl.value : '',
+                    distEl ? distEl.value : '',
+                    tplEl ? tplEl.value : 'prefixed'
+                );
+            }
+            if (badgePreviewEl) {
+                badgePreviewEl.textContent = '📇 سيُحفظ في جهات الاتصال باسم: ' + (contactEl.value || '');
+            }
+        };
+
+        window.resetPendingContactNameAuto = function(safeId) {
+            window.onPendingCardFieldInput(safeId, true);
+        };
+
+        function collectPendingCardEditsFromDom(docId, baseData = {}) {
+            const safeId = escapeHTML(docId);
+            const cardEl = document.getElementById('pending-sup-card-' + docId) || document.getElementById('pending-sup-card-' + safeId);
+            let mergedBase = { ...baseData };
+            if (cardEl && cardEl.dataset.cardJson) {
+                try {
+                    mergedBase = { ...mergedBase, ...JSON.parse(decodeURIComponent(cardEl.dataset.cardJson)) };
+                } catch (_) {}
+            }
+            const shopEl = document.getElementById('p-edit-shop-' + safeId);
+            if (!shopEl) return mergedBase;
+
+            const distEl = document.getElementById('p-edit-district-' + safeId);
+            const phoneEl = document.getElementById('p-edit-phone-' + safeId);
+            const typeEl = document.getElementById('p-edit-type-' + safeId);
+            const teamEl = document.getElementById('p-edit-team-' + safeId);
+            const brandsEl = document.getElementById('p-edit-brands-' + safeId);
+            const catsEl = document.getElementById('p-edit-cats-' + safeId);
+            const tplEl = document.getElementById('p-edit-tpl-' + safeId);
+            const contactEl = document.getElementById('p-edit-contact-name-' + safeId);
+
+            const shopName = (shopEl.value || '').trim() || mergedBase.shop_name || mergedBase.name || 'مورد قطع غيار';
+            const district = (distEl ? distEl.value : '').trim() || mergedBase.district || 'الرياض';
+            const formattedPhone = window.formatSaudiPhone((phoneEl ? phoneEl.value : '') || mergedBase.fast_pricing_phone || mergedBase.phone || '') || mergedBase.phone || '';
+            const supplierType = (typeEl ? typeEl.value : '') || mergedBase.supplier_type || 'specialized_used_importer';
+            const preferredTeamRaw = (teamEl ? teamEl.value : 'auto');
+            const preferredTeam = (preferredTeamRaw === 'A' || preferredTeamRaw === 'B') ? preferredTeamRaw : null;
+
+            const rawBrandsInput = brandsEl ? brandsEl.value.trim() : '';
+            const parsedBrands = (!rawBrandsInput || rawBrandsInput.includes('جميع السيارات'))
+                ? (Array.isArray(mergedBase.brands) && mergedBase.brands.length >= 25 ? mergedBase.brands : (Array.isArray(mergedBase.car_brands) && mergedBase.car_brands.length >= 25 ? mergedBase.car_brands : ['*']))
+                : parseCommaListUI(rawBrandsInput);
+
+            const fallbackCats = mergedBase.fine_categories || mergedBase.categories || ALL_14_SURGICAL_KEYS;
+            const parsedCats = parseEditedCategoriesInputUI(catsEl ? catsEl.value : '', fallbackCats, supplierType);
+
+            const contactTpl = (tplEl ? tplEl.value : '') || mergedBase.contact_name_template || 'prefixed';
+            const autoPreview = window.buildGoogleContactNamePreviewUI(shopName, district, contactTpl);
+            const contactDisplayName = (contactEl && contactEl.value.trim()) ? contactEl.value.trim() : autoPreview;
+
+            return {
+                ...mergedBase,
+                name: shopName,
+                shop_name: shopName,
+                district,
+                phone: formattedPhone,
+                fast_pricing_phone: formattedPhone,
+                supplier_type: supplierType,
+                team: preferredTeam,
+                preferred_team: preferredTeam,
+                brands: parsedBrands,
+                car_brands: parsedBrands,
+                categories: parsedCats,
+                fine_categories: parsedCats,
+                part_categories: parsedCats,
+                contact_name_template: contactTpl,
+                contact_display_name: contactDisplayName,
+                custom_contact_display_name: contactEl?.dataset?.manualOverride === '1' ? contactDisplayName : ''
+            };
+        }
+
+        window.savePendingSupplierEditsUI = async function(docId) {
+            if (currentRole !== 'admin') return;
+            const safeId = escapeHTML(docId);
+            const saveBtn = document.getElementById('btn-save-pending-' + safeId);
+            const origHtml = saveBtn ? saveBtn.innerHTML : '';
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري حفظ التعديل...';
+            }
+            try {
+                const updatedPayload = collectPendingCardEditsFromDom(docId, {});
+                let patchRes = await fetchBotBackend('/api/admin/pending-suppliers/' + encodeURIComponent(docId), {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedPayload),
+                    timeoutMs: 8000
+                });
+
+                if (patchRes && patchRes.status === 404) {
+                    await fetchBotBackend('/api/admin/pending-suppliers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: docId, ...updatedPayload }),
+                        timeoutMs: 8000
+                    });
+                    patchRes = await fetchBotBackend('/api/admin/pending-suppliers/' + encodeURIComponent(docId), {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updatedPayload),
+                        timeoutMs: 8000
+                    });
+                }
+
+                const patchJson = (patchRes && patchRes.ok) ? await patchRes.json().catch(() => ({})) : {};
+                const finalCardData = {
+                    ...updatedPayload,
+                    ...(patchJson.pending_supplier || {}),
+                    contact_display_name: patchJson.preview_contact_name || updatedPayload.contact_display_name,
+                    admin_reviewed_at: new Date().toISOString()
+                };
+
+                await setDoc(doc(db, "pending_suppliers", docId), {
+                    name: finalCardData.shop_name,
+                    shop_name: finalCardData.shop_name,
+                    district: finalCardData.district,
+                    phone: finalCardData.phone,
+                    fast_pricing_phone: finalCardData.fast_pricing_phone,
+                    supplier_type: finalCardData.supplier_type,
+                    preferred_team: finalCardData.preferred_team || null,
+                    brands: finalCardData.brands,
+                    car_brands: finalCardData.car_brands,
+                    categories: finalCardData.fine_categories,
+                    fine_categories: finalCardData.fine_categories,
+                    contact_display_name: finalCardData.contact_display_name,
+                    contact_name_template: finalCardData.contact_name_template,
+                    admin_reviewed_at: finalCardData.admin_reviewed_at
+                }, { merge: true }).catch(() => {});
+
+                // تحديث الحالة الحية في البطاقة المفتوحة فوراً
+                const cardEl = document.getElementById('pending-sup-card-' + docId) || document.getElementById('pending-sup-card-' + safeId);
+                if (cardEl) {
+                    cardEl.dataset.cardJson = encodeURIComponent(JSON.stringify(finalCardData));
+                }
+                const titleEl = document.getElementById('pending-card-title-' + safeId);
+                if (titleEl) titleEl.textContent = finalCardData.shop_name;
+                const distBadgeEl = document.getElementById('pending-card-district-' + safeId);
+                if (distBadgeEl) distBadgeEl.textContent = '📍 الحي الصناعي: ' + finalCardData.district;
+                const phoneBadgeEl = document.getElementById('pending-card-phone-' + safeId);
+                if (phoneBadgeEl) phoneBadgeEl.textContent = finalCardData.phone;
+                const typeBadgeEl = document.getElementById('pending-card-type-' + safeId);
+                if (typeBadgeEl) typeBadgeEl.textContent = resolveSupplierTypeBadgeText(finalCardData);
+                const contactPrevEl = document.getElementById('pending-card-contact-preview-' + safeId);
+                if (contactPrevEl) contactPrevEl.textContent = '📇 سيُحفظ في جهات الاتصال باسم: ' + finalCardData.contact_display_name;
+                const savedBadgeEl = document.getElementById('pending-save-badge-' + safeId);
+                if (savedBadgeEl) savedBadgeEl.classList.remove('hidden');
+
+                latestBackendPendingSuppliers = latestBackendPendingSuppliers.map(it =>
+                    String(it.id) === String(docId) ? { ...it, ...finalCardData } : it
+                );
+                latestFirestorePendingDocs = latestFirestorePendingDocs.map(d =>
+                    String(d.id) === String(docId) ? { ...d, data: { ...d.data, ...finalCardData } } : d
+                );
+
+                window.showAdminActionToast('✓ تم حفظ التعديل وجاهز للاعتماد: ' + finalCardData.contact_display_name, 'cyan');
+            } catch (err) {
+                alert('حدث خطأ أثناء حفظ تعديل البطاقة. يرجى المحاولة مرة أخرى.');
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = origHtml;
+                }
+            }
+        };
+
         function buildPendingSupplierCardHtml(docId, data) {
             const safeId = escapeHTML(docId);
-            const safeName = escapeHTML(data.shop_name || data.name || '');
-            const safeDistrict = escapeHTML(data.district || 'الرياض');
-            const safePhone = escapeHTML(data.phone || '');
+            const rawShopName = data.shop_name || data.name || '';
+            const rawDistrict = data.district || 'الرياض';
+            const rawPhone = data.fast_pricing_phone || data.phone || '';
+            const safeName = escapeHTML(rawShopName);
+            const safeDistrict = escapeHTML(rawDistrict);
+            const safePhone = escapeHTML(rawPhone);
             const safeTypeLabel = escapeHTML(resolveSupplierTypeBadgeText(data));
+            const curSupplierType = String(data.supplier_type || 'specialized_used_importer').trim();
+            const curTeam = String(data.preferred_team || data.team || 'auto').trim();
+            const curTemplate = String(data.contact_name_template || 'prefixed').trim() === 'plain' ? 'plain' : 'prefixed';
+            const defaultContactPreview = window.buildGoogleContactNamePreviewUI(rawShopName, rawDistrict, curTemplate);
+            const resolvedContactPreview = String(data.custom_contact_display_name || data.contact_display_name || defaultContactPreview).trim();
+            const isManualContactOverride = Boolean(data.custom_contact_display_name && data.custom_contact_display_name !== defaultContactPreview);
+            const hasSavedReview = Boolean(data.admin_reviewed_at);
+
             const isLegacyUpdate = data.onboarding_source === 'legacy_280_update' || Boolean(data.existing_supplier_id);
             const rawRescueNotes = String(data.rescue_badge || data.yard_models_notes || data.ad_title || '');
             const isPartial85 =
@@ -7030,34 +7744,116 @@
             const safeBrandsText = brandsArr.length >= 25
                 ? `جميع السيارات والماركات المعتمدة (${brandsArr.length} ماركة)`
                 : escapeHTML(brandsArr.join('، ') || 'غير محدد');
+            const editableBrandsValue = brandsArr.length >= 25 ? 'جميع السيارات' : escapeHTML(brandsArr.join('، '));
             const safeCatsText = escapeHTML(catsLabelsArr.join('، ') || 'جميع الـ 14 فئة');
+            const editableCatsValue = catsLabelsArr.length >= 14 ? 'جميع الـ 14 فئة' : escapeHTML(catsLabelsArr.join('، '));
             const dataStr = encodeURIComponent(JSON.stringify(data)).replace(/'/g, '%27');
             return `
-                <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" class="bg-slate-900/80 border ${isLiveOrderRescue ? 'border-amber-500/50' : (isPartial85 ? 'border-cyan-500/50' : 'border-slate-700/80')} p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
+                <div id="pending-sup-card-${safeId}" data-pending-sup-card="1" data-card-json="${dataStr}" class="bg-slate-900/85 border ${isLiveOrderRescue ? 'border-amber-500/50' : (isPartial85 ? 'border-cyan-500/50' : 'border-slate-700/80')} p-4 rounded-2xl text-xs shadow-md relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-1 h-full ${isLiveOrderRescue ? 'bg-amber-400' : (isPartial85 ? 'bg-cyan-400' : (isLegacyUpdate ? 'bg-purple-500' : (isHarajMined ? 'bg-brand-500' : 'bg-emerald-500')))}"></div>
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
                         <div class="flex items-center gap-1.5 flex-wrap">
-                            <p class="font-black text-white text-base">${safeName}</p>
+                            <p id="pending-card-title-${safeId}" class="font-black text-white text-base">${safeName}</p>
+                            <span id="pending-save-badge-${safeId}" class="${hasSavedReview ? '' : 'hidden'} text-[10px] font-black px-2.5 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-200 border border-emerald-400/50">✓ تم حفظ التعديل وجاهز للاعتماد</span>
                             ${isPartial85 ? `<span class="text-[10px] font-black px-2.5 py-0.5 rounded-lg bg-cyan-500/20 text-cyan-200 border border-cyan-400/50 shadow-sm">${escapeHTML(partial85BadgeLabel)}</span>` : ''}
                             ${isLiveOrderRescue ? `<span class="text-[10px] font-black px-2.5 py-0.5 rounded-lg bg-amber-500/20 text-amber-200 border border-amber-400/50 shadow-sm">${escapeHTML(rescueBadgeLabel)}</span>` : ''}
                             ${isLegacyUpdate ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40">تحديث مورد مسجل</span>' : ''}
                             ${isHarajMined ? '<span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/40">منصة حراج</span>' : ''}
                         </div>
-                        <span class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">${safeTypeLabel}</span>
+                        <div class="flex items-center gap-1.5">
+                            <span id="pending-card-type-${safeId}" class="text-[10px] font-black px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">${safeTypeLabel}</span>
+                            <button type="button" onclick="togglePendingCardEditDrawer('${safeId}')" class="text-[11px] font-black px-2.5 py-1 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-200 border border-cyan-400/40 transition">
+                                ✏️ تعديل الاسم والبيانات
+                            </button>
+                        </div>
                     </div>
                     <div class="flex flex-wrap items-center gap-2 mb-2">
-                        <span class="text-[11px] text-sky-300 font-bold bg-sky-500/10 px-2 py-0.5 rounded-lg border border-sky-500/20">📍 الحي الصناعي: ${safeDistrict}</span>
-                        <span dir="ltr" class="text-[11px] text-slate-300 font-mono bg-slate-950/80 inline-block px-2.5 py-0.5 rounded-lg border border-slate-800">${safePhone}</span>
+                        <span id="pending-card-district-${safeId}" class="text-[11px] text-sky-300 font-bold bg-sky-500/10 px-2 py-0.5 rounded-lg border border-sky-500/20">📍 الحي الصناعي: ${safeDistrict}</span>
+                        <span id="pending-card-phone-${safeId}" dir="ltr" class="text-[11px] text-slate-300 font-mono bg-slate-950/80 inline-block px-2.5 py-0.5 rounded-lg border border-slate-800">${safePhone}</span>
                         ${safeAdUrl ? `<a href="${safeAdUrl}" target="_blank" rel="noopener" class="text-[10px] text-brand-300 hover:text-brand-200 underline">🔗 إعلان حراج</a>` : ''}
+                    </div>
+                    <div class="mb-2">
+                        <span id="pending-card-contact-preview-${safeId}" class="inline-block text-[11px] font-black text-emerald-200 bg-emerald-950/55 border border-emerald-500/35 px-2.5 py-1 rounded-xl">📇 سيُحفظ في جهات الاتصال باسم: ${escapeHTML(resolvedContactPreview)}</span>
                     </div>
                     ${safeAdTitle ? `<p class="text-[11px] text-slate-300 mb-2 bg-slate-950/50 px-2.5 py-1.5 rounded-lg border border-slate-800/80">📢 ${safeAdTitle}</p>` : ''}
                     <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-2.5 space-y-1 text-[11px] text-slate-300 mb-3">
                         <p><strong class="text-brand-300">🚗 الماركات المعتمدة:</strong> ${safeBrandsText}</p>
                         <p><strong class="text-emerald-300">🔧 الفئات الدقيقة (من الـ 14):</strong> ${safeCatsText}</p>
                     </div>
-                    <div class="flex gap-2 mt-3">
-                        <button onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition">${isLegacyUpdate ? 'اعتماد التحديث وتوزيع الفرق' : 'اعتماد وتوزيع في الفرق'}</button>
-                        <button onclick="rejectSupplier('${safeId}')" class="flex-1 bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold py-2 rounded-xl hover:bg-rose-500 transition">رفض</button>
+
+                    <!-- لوحة التعديل السريع ومعاينة اسم جهة الاتصال قبل الاعتماد -->
+                    <div id="pending-edit-drawer-${safeId}" class="hidden bg-slate-950/90 border border-cyan-500/40 rounded-2xl p-3.5 mb-3 space-y-3">
+                        <p class="text-[11px] font-black text-cyan-300 border-b border-slate-800 pb-1.5">
+                            ✏️ راجع وعدّل اسم المتجر وبياناته قبل الاعتماد (يُحفظ بنفس هذا الاسم في الموقع وفي جهات اتصال البريد والهاتف):
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">اسم المتجر في المنصة</label>
+                                <input type="text" id="p-edit-shop-${safeId}" value="${safeName}" oninput="onPendingCardFieldInput('${safeId}')" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold text-white outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">الحي الصناعي</label>
+                                <input type="text" id="p-edit-district-${safeId}" value="${safeDistrict}" oninput="onPendingCardFieldInput('${safeId}')" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold text-white outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">رقم واتساب التسعير</label>
+                                <input type="tel" id="p-edit-phone-${safeId}" value="${safePhone}" dir="ltr" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-mono text-left text-white outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">التصنيف التشغيلي</label>
+                                <select id="p-edit-type-${safeId}" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold text-white outline-none">
+                                    <option value="specialized_used_importer" ${curSupplierType === 'specialized_used_importer' ? 'selected' : ''}>مستورد قطع مستعملة - السلي</option>
+                                    <option value="full_car_dismantler" ${curSupplierType === 'full_car_dismantler' ? 'selected' : ''}>تشليح تفكيك كامل - الحائر</option>
+                                    <option value="new_parts_dealer" ${curSupplierType === 'new_parts_dealer' ? 'selected' : ''}>جديد أصلي/تجاري</option>
+                                    <option value="general" ${curSupplierType === 'general' ? 'selected' : ''}>شامل (جديد ومستعمل)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">توجيه الفريق (A / B)</label>
+                                <select id="p-edit-team-${safeId}" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-bold text-white outline-none">
+                                    <option value="auto" ${curTeam !== 'A' && curTeam !== 'B' ? 'selected' : ''}>توزيع تلقائي ذكي (A ثم B)</option>
+                                    <option value="A" ${curTeam === 'A' ? 'selected' : ''}>Team A (الفريق الأساسي الأول)</option>
+                                    <option value="B" ${curTeam === 'B' ? 'selected' : ''}>Team B (الفريق الاحتياطي المساند)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">الماركات المعتمدة (بفاصلة)</label>
+                                <input type="text" id="p-edit-brands-${safeId}" value="${editableBrandsValue}" class="w-full px-3 py-2 glass-input rounded-xl text-xs text-slate-200 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-300 mb-1">أقسام القطع (بفاصلة)</label>
+                                <input type="text" id="p-edit-cats-${safeId}" value="${editableCatsValue}" class="w-full px-3 py-2 glass-input rounded-xl text-xs text-slate-200 outline-none">
+                            </div>
+                        </div>
+                        <div class="bg-emerald-950/40 border border-emerald-500/35 rounded-xl p-3 space-y-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-[11px] font-black text-emerald-300">👁️ معاينة وحقل اسم جهة الاتصال في الهاتف والبريد:</span>
+                                <div class="flex items-center gap-1.5">
+                                    <select id="p-edit-tpl-${safeId}" onchange="onPendingCardFieldInput('${safeId}', true)" class="px-2 py-1 rounded-lg glass-input text-[10px] font-bold text-emerald-200 outline-none">
+                                        <option value="prefixed" ${curTemplate === 'prefixed' ? 'selected' : ''}>مع بادئة "مورد حراج |"</option>
+                                        <option value="plain" ${curTemplate === 'plain' ? 'selected' : ''}>اسم المتجر الصافي فقط</option>
+                                    </select>
+                                    <button type="button" onclick="resetPendingContactNameAuto('${safeId}')" class="text-[10px] font-bold text-cyan-300 hover:text-cyan-200 px-2 py-1 rounded-lg bg-slate-900 border border-slate-700">↺ تلقائي</button>
+                                </div>
+                            </div>
+                            <input type="text" id="p-edit-contact-name-${safeId}" data-manual-override="${isManualContactOverride ? '1' : '0'}" value="${escapeHTML(resolvedContactPreview)}" oninput="this.dataset.manualOverride='1'; document.getElementById('pending-card-contact-preview-${safeId}').textContent='📇 سيُحفظ في جهات الاتصال باسم: '+this.value;" class="w-full px-3 py-2 glass-input rounded-xl text-xs font-black text-emerald-100 outline-none">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <button type="button" id="btn-save-pending-${safeId}" onclick="savePendingSupplierEditsUI('${safeId}')" class="bg-cyan-600/25 hover:bg-cyan-600 text-cyan-200 hover:text-white border border-cyan-500/40 font-black py-2 px-3 rounded-xl transition">
+                            💾 حفظ التعديلات أولاً
+                        </button>
+                        <button type="button" onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black py-2 px-3 rounded-xl transition shadow-md">
+                            ✅ موافقة واعتماد (حفظ بالموقع + جهات الاتصال)
+                        </button>
+                        <button type="button" onclick="rejectSupplier('${safeId}')" class="bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold py-2 px-3.5 rounded-xl hover:bg-rose-500 hover:text-white transition">
+                            رفض
+                        </button>
                     </div>
                 </div>
             `;
@@ -7157,7 +7953,11 @@
             } else {
                 badge.textContent = String(cardsHtml.length);
                 badge.classList.remove('hidden');
-                list.innerHTML = cardsHtml.join('');
+                // حماية الكتابة الحية للمدير: إذا كانت لوحة تعديل إحدى البطاقات مفتوحة الآن فلا نمسح حقول الإدخال أثناء الكتابة
+                const hasOpenEditDrawer = Array.from(list.querySelectorAll('[id^="pending-edit-drawer-"]')).some(el => !el.classList.contains('hidden'));
+                if (!hasOpenEditDrawer) {
+                    list.innerHTML = cardsHtml.join('');
+                }
             }
         }
 
@@ -7578,7 +8378,9 @@
 
         window.approveSupplier = async function(docId, dataStr) {
             if (currentRole !== 'admin') return;
-            const data = JSON.parse(decodeURIComponent(dataStr));
+            const rawInitialData = JSON.parse(decodeURIComponent(dataStr));
+            // قراءة أي تعديلات حالية في حقول البطاقة قبل إزالتها حتى لا يضيع حرف واحد ولو لم يضغط المدير "حفظ التعديلات أولاً"
+            const data = collectPendingCardEditsFromDom(docId, rawInitialData);
             const prevSuppliersBackup = [...suppliersDB];
             const cardEl = document.getElementById('pending-sup-card-' + docId) || document.getElementById('pending-sup-card-' + escapeHTML(docId));
             const savedCardHtml = cardEl ? cardEl.outerHTML : '';
@@ -7592,16 +8394,19 @@
                 ? [...ALL_14_SURGICAL_KEYS]
                 : (data.fine_categories || data.categories || []);
 
-            const normIncomingPhone = window.formatSaudiPhone(data.phone || '');
+            const normIncomingPhone = window.formatSaudiPhone(data.fast_pricing_phone || data.phone || '');
             const existingIdx = suppliersDB.findIndex((s) =>
                 (data.existing_supplier_id && (String(s.id) === String(data.existing_supplier_id) || Number(s.id) === Number(data.existing_supplier_id))) ||
                 (normIncomingPhone && window.formatSaudiPhone(s.phone || '') === normIncomingPhone)
             );
+            const finalShopName = data.shop_name || data.name || 'مورد معتمد';
             const updatedRecord = {
                 id: existingIdx >= 0 ? suppliersDB[existingIdx].id : Date.now().toString(),
-                name: data.shop_name || data.name,
-                phone: data.phone,
+                name: finalShopName,
+                phone: normIncomingPhone || data.phone,
                 district: data.district || null,
+                contact_display_name: data.contact_display_name || null,
+                contact_name_template: data.contact_name_template || 'prefixed',
                 supplier_type: data.supplier_type || 'general',
                 supplier_type_label_ar: resolveSupplierTypeBadgeText(data),
                 conditions: data.conditions || (data.supplier_type === 'new_parts_dealer' ? ['جديد'] : ['مستعمل']),
@@ -7618,22 +8423,47 @@
             renderSuppliersModalList();
             if (window.currentOrders) renderOrders(window.currentOrders);
 
-            // (ب) حفظ التعديلات سحابياً وتوزيع الفرق في السيرفر الخلفي واسترجاع الحالة عند الخطأ فقط
+            // (ب) حفظ التعديلات سحابياً وتوزيع الفرق في السيرفر الخلفي + المزامنة الفورية لـ Google Contacts
             try {
-                fetchBotBackend('/api/admin/pending-suppliers', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: docId, ...data, fine_categories: effectiveCategories })
-                }).then(() => fetchBotBackend('/api/admin/pending-suppliers/' + encodeURIComponent(docId) + '/approve', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                })).catch(() => {});
+                const backendApprovePromise = (async () => {
+                    await fetchBotBackend('/api/admin/pending-suppliers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: docId, ...data, fine_categories: effectiveCategories }),
+                        timeoutMs: 8000
+                    }).catch(() => null);
+                    const appRes = await fetchBotBackend('/api/admin/pending-suppliers/' + encodeURIComponent(docId) + '/approve', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...data, fine_categories: effectiveCategories }),
+                        timeoutMs: 14000
+                    });
+                    return (appRes && appRes.ok) ? await appRes.json().catch(() => null) : null;
+                })().catch(() => null);
 
-                await Promise.all([
+                const [, , approveOut] = await Promise.all([
                     setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB }),
-                    deleteDoc(doc(db, "pending_suppliers", docId))
+                    deleteDoc(doc(db, "pending_suppliers", docId)),
+                    backendApprovePromise
                 ]);
+
+                if (approveOut && approveOut.supplier) {
+                    const gResName = approveOut.supplier.google_resource_name || approveOut.google_contact_sync?.resourceName || null;
+                    if (gResName) {
+                        suppliersDB = suppliersDB.map(s => (s.phone === updatedRecord.phone || s.id === updatedRecord.id)
+                            ? { ...s, google_resource_name: gResName, contact_display_name: approveOut.google_contact_sync?.finalDisplayName || updatedRecord.contact_display_name }
+                            : s
+                        );
+                        setDoc(doc(db, "settings", "suppliers_v7"), { list: suppliersDB }).catch(() => {});
+                    }
+                }
+                window.loadGoogleContactsBarStatus();
+
+                if (approveOut?.google_contact_sync?.synced) {
+                    window.showAdminActionToast(`✅ تم اعتماد [${finalShopName}] في الموقع + تم حفظه تلقائياً في جهات اتصال البريد والهاتف!`, 'emerald');
+                } else {
+                    window.showAdminActionToast(`✅ تم اعتماد [${finalShopName}] في الموقع وحفظه في ملف جهات الاتصال (وسيُرفع تلقائياً إلى بريدك فور ربط Google Contacts من الشريط العلوي).`, 'cyan');
+                }
             } catch (e) {
                 pendingOptimisticPendingSupOps.delete(docId);
                 suppliersDB = prevSuppliersBackup;
