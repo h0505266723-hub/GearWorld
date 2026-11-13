@@ -2048,23 +2048,48 @@
                 <div id="harajMinerActionFeedback" class="hidden text-[11px] font-bold px-3 py-2 rounded-xl bg-slate-950/90 border border-slate-700 text-emerald-300"></div>
             </div>
 
-            <!-- درع التقطير الآمن الموحد لحملة الـ 280 مورداً + استقطاب حراج وخرائط جوجل (سقف 65/يوم) + قائمة واتساب غير مفعل -->
+            <!-- درع التقطير الآمن الموحد (35 مورداً/يوم موزعين ساعياً) + حفظ جهات الاتصال (Google Sync + VCF) + حالة القناتين -->
             <div id="verifierDripCampaignBox" class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3.5 mb-3 shrink-0 space-y-2.5">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-xs sm:text-sm font-black text-amber-300">🛡️ منظم عدم الحظر الموحد (تدقيق 45/يوم + استقطاب 20/يوم = 65/يوم):</span>
-                        <span id="verifierDripProgressBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">اليوم: 0 / 45</span>
+                        <span class="text-xs sm:text-sm font-black text-amber-300">🛡️ منظم الـ 35 مورداً/يوم (تدقيق 22 + استقطاب 13 | 2–3/ساعة | فاصل 18–27د):</span>
+                        <span id="verifierDripProgressBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">اليوم: 0 / 35 | الساعة: 0 / 3</span>
+                        <span id="governorRampBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-500/40">التدرج الآمن: 18 ➔ 26 ➔ 35</span>
                     </div>
                     <div class="flex items-center gap-1.5 flex-wrap">
+                        <button type="button" id="btnToggleForceFull35" onclick="toggleForceFull35ModeUI()" class="bg-indigo-600/80 hover:bg-indigo-500 text-white font-black py-1.5 px-2.5 rounded-xl text-[11px] transition flex items-center gap-1 shadow-sm" title="تجاوز تدرج الأيام الثلاثة وتثبيت سقف 35 مورداً فوراً عند تركيب شريحة جديدة">
+                            <span>⚡ تثبيت 35 فوراً (شريحة جديدة)</span>
+                        </button>
                         <button type="button" id="btnToggleVerifierDripCampaign" onclick="toggleVerifierDripCampaignUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm">
-                            <span>▶️ تشغيل حملة التدقيق الآمنة (45/يوم)</span>
+                            <span>▶️ تشغيل حملة التدقيق الآمنة (22/يوم)</span>
                         </button>
                         <button type="button" id="btnFilterWhatsAppInactive" onclick="toggleWhatsAppInactiveListUI()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5">
-                            <span>⚠️ موردون توقف لديهم الواتساب (<span id="waInactiveBadgeCount">0</span>)</span>
+                            <span>⚠️ واتساب متوقف (<span id="waInactiveBadgeCount">0</span>)</span>
                         </button>
                     </div>
                 </div>
-                <p id="verifierDripSummaryLine" class="text-[11px] text-slate-300 font-bold">فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 25 دقيقة كل 15 رسالة + أولوية فورية لإنقاذ طلبات العملاء.</p>
+                <p id="verifierDripSummaryLine" class="text-[11px] text-slate-300 font-bold">رسالة افتتاحية قصيرة بكلمة (مهتم) + سؤال واحد قصير لكل دور + تهدئة 90د بعد 7 رسائل بلا رد.</p>
+
+                <!-- شريط حفظ أسماء المحلات في الجهاز والهاتف قبل المراسلة + حالة القناتين (Baileys الوسيط مقابل Meta الرسمي) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 pt-2 border-t border-slate-800/90 text-[11px]">
+                    <div class="bg-slate-950/75 border border-emerald-500/25 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <div class="font-black text-emerald-300">📇 حفظ أسماء المحلات قبل المراسلة بـ 30 دقيقة</div>
+                            <div id="contactSaverStatusLine" class="text-slate-300 mt-0.5">محفوظ بالجهاز (.vcf + Baileys): 0 مورد | Google Contacts: غير مرتبط بعد</div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <button type="button" onclick="downloadDaily35BatchVcfUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-2.5 py-1.5 rounded-lg transition">📲 دفعة الـ 35 لليوم (.vcf)</button>
+                            <button type="button" onclick="triggerPreSync35ContactsUI()" class="bg-teal-600/80 hover:bg-teal-500 text-white font-black px-2 py-1.5 rounded-lg transition">🔄 حفظ دفعة اليوم</button>
+                            <button type="button" onclick="connectGoogleContactsOAuthUI()" class="bg-sky-600/80 hover:bg-sky-500 text-white font-black px-2 py-1.5 rounded-lg transition">🔗 ربط Google</button>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/75 border border-cyan-500/25 rounded-xl p-2.5 space-y-1">
+                        <div class="font-black text-cyan-300">🔀 معمارية القناتين المنفصلتين (الموردون ⇄ العملاء)</div>
+                        <div id="dualChannelBrokerLine" class="text-slate-200">🛠️ <span class="font-bold text-amber-200">SUPPLIER_BROKER:</span> Baileys الوسيط (استقطاب 35/يوم + جمع التسعيرات)</div>
+                        <div id="dualChannelCustomerLine" class="text-slate-300">🏢 <span class="font-bold text-emerald-200">CUSTOMER_OFFICIAL:</span> جسر Meta Cloud API جاهز (/api/meta-webhook) — يعمل مؤقتاً على Baileys (صفر رسائل باردة)</div>
+                    </div>
+                </div>
+
                 <div id="waInactiveListPanel" class="hidden border-t border-slate-800 pt-2.5 space-y-2 max-h-56 overflow-y-auto pr-1"></div>
             </div>
 
@@ -7167,11 +7192,17 @@
 
         let latestVerifierDripStatus = null;
         let latestWhatsAppInactiveSuppliers = [];
+        let latestGovernorBundle = null;
 
         function renderVerifierDripAndInactiveUI() {
             const badgeEl = document.getElementById('verifierDripProgressBadge');
+            const rampBadgeEl = document.getElementById('governorRampBadge');
+            const btnForce35 = document.getElementById('btnToggleForceFull35');
             const btnToggle = document.getElementById('btnToggleVerifierDripCampaign');
             const summaryLine = document.getElementById('verifierDripSummaryLine');
+            const contactLine = document.getElementById('contactSaverStatusLine');
+            const brokerLine = document.getElementById('dualChannelBrokerLine');
+            const customerLine = document.getElementById('dualChannelCustomerLine');
             const countSpan = document.getElementById('waInactiveBadgeCount');
             const panel = document.getElementById('waInactiveListPanel');
 
@@ -7180,25 +7211,64 @@
             if (latestVerifierDripStatus) {
                 const st = latestVerifierDripStatus;
                 const counts = st.counts || {};
-                const gov = st.outbound_governor || st.unified_governor || {};
-                const maxCap = Number(st.max_daily_outreach || 45);
+                const gov = (latestGovernorBundle && latestGovernorBundle.governor) || st.outbound_governor || st.unified_governor || {};
+                const maxVerifierCap = Number(gov.verifierDailyQuotaEffective || st.max_daily_outreach || 22);
+                const effectiveGlobalCap = Number(gov.dailyTargetEffective || gov.max_global_daily_cap || 35);
+                const hourSent = Number(gov.currentHourSentCount || 0);
+                const maxPerHour = Number(gov.maxColdOutreachPerHour || 3);
+
                 if (badgeEl) {
-                    badgeEl.textContent = `اليوم: ${Number(st.daily_sent_count || 0)} / ${maxCap} (الموحد: ${Number(gov.global_daily_sent || 0)}/${Number(gov.max_global_daily_cap || 65)}) | طابور التدقيق: ${Number(counts.remaining_queue || 0)}`;
+                    badgeEl.textContent = `الموحد اليوم: ${Number(gov.globalDailySent || gov.global_daily_sent || 0)}/${effectiveGlobalCap} | الساعة: ${hourSent}/${maxPerHour} | التدقيق: ${Number(st.daily_sent_count || 0)}/${maxVerifierCap}`;
+                }
+                if (rampBadgeEl) {
+                    const pausedTxt = gov.coldOutreachPaused ? '⏸️ الإرسال البارد مجمد لحماية الواتساب' : `التدرج (يوم ${Number(gov.rampDayNumber || 1)}): هدف ${effectiveGlobalCap}/يوم`;
+                    rampBadgeEl.textContent = gov.forceFull35Mode ? `⚡ مثبت على 35/يوم (${pausedTxt})` : pausedTxt;
+                }
+                if (btnForce35) {
+                    const isForced = Boolean(gov.forceFull35Mode);
+                    btnForce35.className = isForced
+                        ? 'bg-amber-600 hover:bg-amber-500 text-white font-black py-1.5 px-2.5 rounded-xl text-[11px] transition flex items-center gap-1 shadow-sm'
+                        : 'bg-indigo-600/80 hover:bg-indigo-500 text-white font-black py-1.5 px-2.5 rounded-xl text-[11px] transition flex items-center gap-1 shadow-sm';
+                    btnForce35.innerHTML = isForced
+                        ? '<span>🛡️ إعادة تفعيل تدرج (18 ➔ 26 ➔ 35)</span>'
+                        : '<span>⚡ تثبيت 35 فوراً (شريحة جديدة)</span>';
                 }
                 if (btnToggle) {
                     if (st.running) {
                         btnToggle.className = 'bg-amber-600 hover:bg-amber-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm';
-                        btnToggle.innerHTML = `<span>⏸️ إيقاف حملة التدقيق الآمنة (${maxCap}/يوم)</span>`;
+                        btnToggle.innerHTML = `<span>⏸️ إيقاف حملة التدقيق (${maxVerifierCap}/يوم)</span>`;
                     } else {
                         btnToggle.className = 'bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm';
-                        btnToggle.innerHTML = `<span>▶️ تشغيل حملة التدقيق الآمنة (${maxCap}/يوم)</span>`;
+                        btnToggle.innerHTML = `<span>▶️ تشغيل حملة التدقيق (${maxVerifierCap}/يوم)</span>`;
                     }
                 }
                 if (summaryLine) {
                     const sandboxHint = st.sandbox_active ? ' | 🛡️ وضع الاختبار الأحادي مفعل' : '';
+                    const brakeHint = gov.reputationCooldownActive
+                        ? ` | 🛑 تهدئة سمعة نشطة (بلا رد متتالي: ${Number(gov.consecutiveUnansweredColdCount || 0)}/7)`
+                        : ` | عداد عدم الرد المتتالي: ${Number(gov.consecutiveUnansweredColdCount || 0)}/7`;
                     summaryLine.textContent =
-                        (st.last_action || 'فاصل عشوائي (4.5–9.5 دقيقة) + استراحة 25 دقيقة كل 15 رسالة + فحص فردي عند الدور.') +
-                        ` — مرسل بانتظار رد: ${Number(counts.outreach_sent || 0)} | واتساب غير مفعل: ${Number(counts.whatsapp_inactive || 0)} | مراجعة هاتفية: ${Number(counts.needs_phone_call || 0)}${sandboxHint}`;
+                        (st.last_action || 'فاصل 18–27 دقيقة (2–3 موردين/ساعة) + رسالة افتتاحية قصيرة بكلمة (مهتم).') +
+                        ` — بانتظار رد: ${Number(counts.outreach_sent || 0)} | واتساب غير مفعل: ${Number(counts.whatsapp_inactive || 0)}${brakeHint}${sandboxHint}`;
+                }
+            }
+
+            if (latestGovernorBundle) {
+                const cs = latestGovernorBundle.contactsSync || {};
+                if (contactLine) {
+                    const gTxt = cs.googleConnected
+                        ? `✅ متصل بـ Google (${escapeHTML(cs.connectedEmail || 'مفعل')}) — مزامنة: ${Number(cs.googleSyncedCount || 0)}`
+                        : 'Google Contacts: بانتظار الربط (ملف .vcf الفوري جاهز)';
+                    contactLine.innerHTML = `محفوظ بالجهاز: <b>${Number(cs.totalSavedContacts || 0)}</b> مورد (دفعة اليوم: <b>${Number(cs.todayBatchCount || 0)}</b>/35) | ${gTxt}`;
+                }
+                const ch = (latestGovernorBundle.dualChannels && latestGovernorBundle.dualChannels.channels) || {};
+                if (brokerLine && ch.SUPPLIER_BROKER_CHANNEL) {
+                    const b = ch.SUPPLIER_BROKER_CHANNEL;
+                    brokerLine.innerHTML = `🛠️ <span class="font-bold text-amber-200">SUPPLIER_BROKER:</span> Baileys (${b.connected ? 'متصل ✅' : 'بانتظار الربط'}) — حصة اليوم: ${Number(b.daily_cold_quota || 35)} مورد`;
+                }
+                if (customerLine && ch.CUSTOMER_OFFICIAL_CHANNEL) {
+                    const c = ch.CUSTOMER_OFFICIAL_CHANNEL;
+                    customerLine.innerHTML = `🏢 <span class="font-bold text-emerald-200">CUSTOMER_OFFICIAL:</span> ${escapeHTML(c.active_mode_ar || 'Meta Webhook جاهز')} | حظر بارد: مفعل 100%`;
                 }
             }
 
@@ -7234,15 +7304,81 @@
         async function loadVerifierDripAndInactiveSuppliers() {
             if (currentRole !== 'admin') return;
             try {
-                const res = await fetchBotBackend('/api/admin/supplier-verifier/status', { method: 'GET', timeoutMs: 8000 });
+                const [res, govRes] = await Promise.all([
+                    fetchBotBackend('/api/admin/supplier-verifier/status', { method: 'GET', timeoutMs: 8000 }),
+                    fetchBotBackend('/api/admin/outbound-governor/status', { method: 'GET', timeoutMs: 8000 }).catch(() => null),
+                ]);
+                if (govRes && govRes.ok) {
+                    latestGovernorBundle = await govRes.json().catch(() => null);
+                }
                 if (res && res.ok) {
                     const data = await res.json();
                     latestVerifierDripStatus = data;
                     latestWhatsAppInactiveSuppliers = Array.isArray(data.whatsapp_inactive_items) ? data.whatsapp_inactive_items : [];
-                    renderVerifierDripAndInactiveUI();
                 }
+                renderVerifierDripAndInactiveUI();
             } catch (_e) {}
         }
+
+        window.toggleForceFull35ModeUI = async function() {
+            if (currentRole !== 'admin') return;
+            const currentForced = Boolean(latestGovernorBundle?.governor?.forceFull35Mode);
+            const res = await fetchBotBackend('/api/admin/outbound-governor/ramp-mode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ forceFull35Mode: !currentForced }),
+                timeoutMs: 8000
+            });
+            if (res && res.ok) {
+                await loadVerifierDripAndInactiveSuppliers();
+            }
+        };
+
+        window.downloadDaily35BatchVcfUI = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/suppliers/daily-batch.vcf?limit=35', { method: 'GET', timeoutMs: 15000 });
+            if (!res || !res.ok) {
+                alert('⚠️ تعذر تحميل ملف دفعة الـ 35 مورداً لليوم (.vcf). تأكد من اتصال السيرفر.');
+                return;
+            }
+            const vcfText = await res.text();
+            const blob = new Blob([vcfText], { type: 'text/vcard;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `haraj_daily_35_suppliers_${new Date().toISOString().slice(0, 10)}.vcf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 2500);
+            await loadVerifierDripAndInactiveSuppliers();
+        };
+
+        window.triggerPreSync35ContactsUI = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/google-contacts/pre-sync', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ limit: 35 }),
+                timeoutMs: 20000
+            });
+            if (res && res.ok) {
+                const d = await res.json().catch(() => ({}));
+                alert(`✅ تم حفظ وتجهيز أسماء (${Number(d.savedCount || 0)}) مورداً لدفعة اليوم بنجاح في الجهاز وملف VCF!`);
+                await loadVerifierDripAndInactiveSuppliers();
+            }
+        };
+
+        window.connectGoogleContactsOAuthUI = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/google-contacts/auth-url', { method: 'GET', timeoutMs: 8000 });
+            const data = res ? await res.json().catch(() => ({})) : {};
+            if (data && data.authUrl) {
+                window.open(data.authUrl, '_blank', 'noopener');
+            } else {
+                alert(data.setupNoteAr || 'لربط المزامنة السحابية التلقائية أضف GOOGLE_CONTACTS_CLIENT_ID و GOOGLE_CONTACTS_CLIENT_SECRET في ملف .env، أو استخدم زر (📲 دفعة الـ 35 لليوم .vcf) الجاهز الآن بضغطة واحدة.');
+            }
+        };
 
         window.toggleVerifierDripCampaignUI = async function() {
             if (currentRole !== 'admin') return;
