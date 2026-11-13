@@ -83,8 +83,6 @@
 }
   </script>
 
-  <link rel="preload" as="image" href="./assets/frames/scene1_bmw_exploded.jpg" fetchpriority="high" />
-
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -92,7 +90,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <script>
-    tailwind.config = {
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
       theme: {
         extend: {
           fontFamily: { tajawal: ['Tajawal', 'Cairo', 'sans-serif'] },
@@ -109,19 +108,13 @@
   </script>
 
   <style>
-    
     :root {
       --bg-deep: #05080f;
-      --bg-panel: rgba(8, 14, 27, 0.8);
-      --border-glass: rgba(56, 189, 248, 0.3);
       --cyan: #00d4ff;
-      --cyan-soft: rgba(0, 212, 255, 0.16);
       --amber: #f59e0b;
       --emerald: #10b981;
-      --whatsapp: #25d366;
       --text-main: #f8fafc;
-      --text-muted: #cbd5e1;
-      --font-ar: 'Cairo', system-ui, -apple-system, sans-serif;
+      --font-ar: 'Tajawal', 'Cairo', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
 
@@ -131,11 +124,11 @@
       padding: 0;
     }
 
-    /* CRITICAL: Never set overflow: hidden or overflow-x: hidden on html/body so position: sticky stays locked */
     html {
       background-color: var(--bg-deep);
       color: var(--text-main);
       font-family: var(--font-ar);
+      scroll-behavior: smooth;
     }
 
     body {
@@ -144,1011 +137,59 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ============ TOP FIXED HEADER & STAGE NAVIGATION ============ */
-    .top-header {
-      transition: transform 0.32s ease, opacity 0.32s ease;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 24px;
-      background: linear-gradient(180deg, rgba(5, 8, 15, 0.92) 0%, rgba(5, 8, 15, 0.68) 78%, rgba(5, 8, 15, 0) 100%);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    }
-
-    .brand-block {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-main);
-    }
-
-    .brand-pulse {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 14px var(--cyan), 0 0 28px rgba(0, 212, 255, 0.65);
-      animation: pulseGlow 2s infinite ease-in-out;
-      flex-shrink: 0;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.28); opacity: 0.7; }
-    }
-
-    .brand-title {
-      font-weight: 900;
-      font-size: 1.15rem;
-      letter-spacing: -0.2px;
-      line-height: 1.1;
-    }
-
-    .brand-sub {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 0.66rem;
-      color: var(--cyan);
-      letter-spacing: 1.2px;
-    }
-
-    .stage-nav-pills {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(10, 18, 34, 0.76);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 5px 8px;
-      border-radius: 999px;
-    }
-
-    .stage-pill {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: var(--font-ar);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 5px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.22s ease;
-      white-space: nowrap;
-    }
-
-    .stage-pill:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .stage-pill.active {
-      color: #03111c;
-      background: var(--cyan);
-      box-shadow: 0 0 16px rgba(0, 212, 255, 0.55);
-    }
-
-    .skip-order-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #25d366 0%, #10b981 100%);
-      color: #041b0e;
-      font-family: var(--font-ar);
-      font-weight: 800;
-      font-size: 0.9rem;
-      padding: 9px 18px;
-      border-radius: 999px;
-      text-decoration: none;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.38);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .skip-order-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(37, 211, 102, 0.58);
-    }
-
-    /* ============ BULLETPROOF STICKY TRACK ARCHITECTURE ============ */
-    #scrolly-track {
+    /* GPU-Accelerated Lightweight Hero (Zero Image Sequence Bloat — < 0.6s First Paint) */
+    .fast-hero-wrap {
       position: relative;
-      width: 100%;
-      height: 600vh;
-    }
-
-    #sticky-viewport {
-      position: sticky;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
       overflow: hidden;
-      background: radial-gradient(circle at center, #0c1629 0%, #05080f 100%);
-    }
-
-    /* All layers inside #sticky-viewport use position: absolute */
-    #scrolly-canvas {
-      max-width: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      z-index: 1;
-    }
-
-    .canvas-vignette {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      pointer-events: none;
       background:
-        radial-gradient(circle at 42% 48%, rgba(5, 8, 15, 0.02) 35%, rgba(5, 8, 15, 0.55) 100%),
-        linear-gradient(270deg, rgba(5, 8, 15, 0.38) 0%, rgba(5, 8, 15, 0.06) 34%, rgba(5, 8, 15, 0.35) 100%),
-        linear-gradient(180deg, rgba(5, 8, 15, 0.42) 0%, transparent 20%, transparent 78%, rgba(5, 8, 15, 0.72) 100%);
+        radial-gradient(circle at 82% 18%, rgba(0, 212, 255, 0.14), transparent 46%),
+        radial-gradient(circle at 14% 82%, rgba(16, 185, 129, 0.13), transparent 48%),
+        linear-gradient(180deg, #05080f 0%, #0b1324 100%);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.18);
     }
 
-    .scanline-grid {
+    .fast-hero-grid-bg {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 3;
+      inset: 0;
       pointer-events: none;
-      opacity: 0.16;
+      opacity: 0.18;
       background-image:
-        linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px);
-      background-size: 56px 56px;
+        linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+      background-size: 48px 48px;
       mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
       -webkit-mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
     }
 
-    /* ============ AI DIAGNOSTIC TECHNICAL HUD OVERLAY ============ */
-    .ai-tech-hud {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 4;
-      pointer-events: none;
-      transition: opacity 0.25s linear;
-    }
-
-    .hud-reticle {
-      display: none !important;
-    }
-
-    .hud-telemetry-box {
-      position: absolute;
-      right: 3%;
-      left: auto;
-      top: 72px;
-      bottom: auto;
-      width: auto;
-      max-width: 380px;
-      background: rgba(8, 13, 24, 0.42);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      border: 1px solid rgba(0, 212, 255, 0.22);
+    .gpu-pulse-dot {
+      width: 10px;
+      height: 10px;
       border-radius: 999px;
-      padding: 6px 14px;
-      direction: rtl;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-    }
-
-    .hud-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-    }
-
-    .hud-metrics,
-    .hud-progress-wrap {
-      display: none !important;
-    }
-
-    .hud-status-label {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--cyan);
-    }
-
-    .hud-live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
       background: #10b981;
-      box-shadow: 0 0 10px #10b981;
-    }
-
-    .hud-mode-code {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: #94a3b8;
-      direction: ltr;
-    }
-
-    .hud-metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .hud-metric-item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 8px;
-      padding: 6px 9px;
-    }
-
-    .hud-metric-label {
-      font-size: 0.68rem;
-      color: #94a3b8;
-      display: block;
-    }
-
-    .hud-metric-val {
-      font-family: var(--font-ar);
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: #f8fafc;
-      direction: rtl;
-      display: inline-block;
-    }
-
-    .hud-progress-wrap {
-      width: 100%;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .hud-progress-bar {
-      height: 100%;
-      width: 5%;
-      background: linear-gradient(90deg, var(--cyan), #10b981);
-      border-radius: 999px;
-    }
-
-    /* ============ STACKED ABSOLUTE STORY CARDS (01 -> 04 + VAN DISPATCH) ============ */
-    .stage-cards-layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 6;
-      pointer-events: none;
-    }
-
-    .story-card {
-      position: absolute;
-      right: 3%;
-      left: auto;
-      top: 50%;
-      width: min(380px, calc(100vw - 32px));
-      max-width: 380px;
-      background: rgba(10, 14, 24, 0.32);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-right: 4px solid var(--cyan);
-      border-radius: 18px;
-      padding: 18px 20px;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
-      opacity: 0;
-      visibility: hidden;
-      transform: translate3d(0, calc(-50% + 28px), 0);
-      will-change: opacity, transform;
-    }
-
-    .story-card.accent-amber {
-      border-right-color: var(--amber);
-    }
-
-    .story-card.accent-emerald {
-      border-right-color: var(--emerald);
-    }
-
-    .story-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.74rem;
-      font-weight: 800;
-      color: var(--cyan);
-      background: var(--cyan-soft);
-      border: 1px solid rgba(0, 212, 255, 0.35);
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-    }
-
-    .story-card.accent-amber .story-badge {
-      color: #fbbf24;
-      background: rgba(245, 158, 11, 0.16);
-      border-color: rgba(245, 158, 11, 0.45);
-    }
-
-    .story-card.accent-emerald .story-badge {
-      color: #34d399;
-      background: rgba(16, 185, 129, 0.16);
-      border-color: rgba(16, 185, 129, 0.45);
-    }
-
-    .story-headline {
-      font-size: clamp(1.22rem, 1.85vw, 1.58rem);
-      font-weight: 900;
-      line-height: 1.32;
-      color: #ffffff;
-      margin-bottom: 8px;
-      text-shadow: 0 3px 16px rgba(0, 0, 0, 0.75);
-    }
-
-    .story-desc {
-      font-size: clamp(0.86rem, 1.0vw, 0.94rem);
-      line-height: 1.62;
-      color: #e2e8f0;
-      margin-bottom: 12px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
-    }
-
-    .story-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .story-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 8px;
-      background: rgba(10, 14, 24, 0.42);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: #f1f5f9;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 26px;
-      right: 5vw;
-      z-index: 7;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #cbd5e1;
-      background: rgba(7, 13, 24, 0.78);
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    .mouse-wheel-icon {
-      width: 18px;
-      height: 28px;
-      border: 2px solid var(--cyan);
-      border-radius: 10px;
-      position: relative;
-    }
-
-    .mouse-wheel-icon::after {
-      content: '';
-      position: absolute;
-      top: 5px;
-      left: 50%;
-      width: 3px;
-      height: 6px;
-      background: var(--cyan);
-      border-radius: 2px;
-      transform: translateX(-50%);
-      animation: wheelScroll 1.5s infinite;
-    }
-
-    @keyframes wheelScroll {
-      0% { opacity: 1; top: 5px; }
-      100% { opacity: 0; top: 15px; }
-    }
-
-    /* ============ STAGE 05 (80% -> 100%): 3-COLUMN SPLIT SCREEN OVER CANVAS ============ */
-    .split-delivery-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 20;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      padding-top: 66px;
-      background: rgba(5, 8, 15, 0.82);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      will-change: opacity;
-    }
-
-    .customer-col {
-      position: relative;
-      overflow: hidden;
-      border-left: 1px solid rgba(255, 255, 255, 0.14);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 28px 24px;
+      box-shadow: 0 0 12px #10b981;
+      animation: gpuPulse 2.2s infinite ease-in-out;
       will-change: transform, opacity;
     }
 
-    .customer-col:last-child {
-      border-left: none;
+    @keyframes gpuPulse {
+      0%, 100% { transform: scale3d(1, 1, 1); opacity: 1; }
+      50% { transform: scale3d(1.28, 1.28, 1); opacity: 0.65; }
     }
 
-    .customer-bg {
-      max-width: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
-      transition: transform 0.65s ease;
-      z-index: 0;
+    .tier-fast-card {
+      background: rgba(15, 23, 42, 0.76);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 1.25rem;
+      padding: 1.1rem 1.15rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
     }
 
-    .customer-col:hover .customer-bg {
-      transform: scale(1.05);
+    .tier-fast-card:hover {
+      transform: translate3d(0, -3px, 0);
+      border-color: rgba(0, 212, 255, 0.5);
     }
-
-    .customer-shade {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      background: linear-gradient(
-        180deg,
-        rgba(5, 8, 15, 0.22) 0%,
-        rgba(5, 8, 15, 0.45) 42%,
-        rgba(5, 8, 15, 0.94) 100%
-      );
-    }
-
-    .customer-content {
-      position: relative;
-      z-index: 2;
-      background: rgba(8, 15, 29, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 18px;
-      padding: 20px;
-    }
-
-    .tier-ribbon {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.76rem;
-      font-weight: 800;
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 10px;
-    }
-
-    .tier-salvage {
-      background: rgba(0, 212, 255, 0.18);
-      color: var(--cyan);
-      border: 1px solid rgba(0, 212, 255, 0.45);
-    }
-
-    .tier-oem {
-      background: rgba(245, 158, 11, 0.18);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.45);
-    }
-
-    .tier-aftermarket {
-      background: rgba(16, 185, 129, 0.18);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.45);
-    }
-
-    .customer-title {
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-
-    .customer-desc {
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: #cbd5e1;
-      margin-bottom: 14px;
-    }
-
-    .customer-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      color: #94a3b8;
-      margin-bottom: 14px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .choose-tier-btn {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-family: var(--font-ar);
-      font-weight: 800;
-      font-size: 0.88rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .choose-tier-btn:hover {
-      background: var(--cyan);
-      color: #031320;
-      border-color: var(--cyan);
-    }
-
-    /* ============ WHATSAPP ORDER SECTION (APPEARS ONLY AFTER 600VH TRACK) ============ */
-    #order-section {
-      position: relative;
-      z-index: 30;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 96px 5vw 88px;
-      background:
-        radial-gradient(circle at 80% 15%, rgba(0, 212, 255, 0.11), transparent 45%),
-        radial-gradient(circle at 15% 85%, rgba(37, 211, 102, 0.1), transparent 45%),
-        #05080f;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .order-container {
-      max-width: 1080px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1.15fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .order-pitch h2 {
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight: 900;
-      line-height: 1.3;
-      margin-bottom: 16px;
-    }
-
-    .order-pitch p {
-      color: var(--text-muted);
-      font-size: 1.02rem;
-      line-height: 1.8;
-      margin-bottom: 24px;
-    }
-
-    .feature-checklist {
-      list-style: none;
-      display: grid;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .feature-checklist li {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #e2e8f0;
-    }
-
-    .check-badge {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: rgba(16, 185, 129, 0.18);
-      border: 1px solid rgba(16, 185, 129, 0.5);
-      color: #34d399;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      flex-shrink: 0;
-    }
-
-    .direct-whatsapp-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 20px;
-      border-radius: 12px;
-      border: 1px solid rgba(37, 211, 102, 0.45);
-      background: rgba(37, 211, 102, 0.12);
-      color: #4ade80;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 0.92rem;
-      transition: all 0.2s ease;
-    }
-
-    .direct-whatsapp-link:hover {
-      background: rgba(37, 211, 102, 0.24);
-      color: #ffffff;
-    }
-
-    .order-form-card {
-      background: rgba(10, 18, 34, 0.88);
-      border: 1px solid rgba(0, 212, 255, 0.26);
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
-    }
-
-    .tier-selector-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .tier-radio-btn {
-      padding: 11px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.04);
-      color: #cbd5e1;
-      font-family: var(--font-ar);
-      font-weight: 700;
-      font-size: 0.85rem;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-
-    .tier-radio-btn.selected {
-      background: rgba(0, 212, 255, 0.18);
-      border-color: var(--cyan);
-      color: #ffffff;
-      box-shadow: 0 0 18px rgba(0, 212, 255, 0.25);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    .field-group label {
-      font-size: 0.84rem;
-      font-weight: 700;
-      color: #cbd5e1;
-    }
-
-    .field-group input {
-      background: rgba(5, 10, 20, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 12px;
-      padding: 12px 14px;
-      color: #fff;
-      font-family: var(--font-ar);
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .field-group input:focus {
-      border-color: var(--cyan);
-    }
-
-    .whatsapp-submit-btn {
-      width: 100%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 15px 24px;
-      border-radius: 14px;
-      border: none;
-      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-      color: #ffffff;
-      font-family: var(--font-ar);
-      font-weight: 900;
-      font-size: 1.05rem;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(37, 211, 102, 0.35);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .whatsapp-submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 38px rgba(37, 211, 102, 0.5);
-    }
-
-    .footer-bar {
-      text-align: center;
-      padding: 26px 16px;
-      font-size: 0.84rem;
-      color: #64748b;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      background: #03060c;
-    }
-
-    /* ============ RESPONSIVE MOBILE & TABLET ============ */
-    @media (max-width: 1040px) {
-      .stage-nav-pills {
-        gap: 3px;
-        padding: 4px 6px;
-      }
-      .stage-pill {
-        font-size: 0.7rem;
-        padding: 4px 8px;
-      }
-      .order-container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .top-header {
-        flex-wrap: nowrap;
-        padding: 7px 12px;
-        gap: 8px;
-        height: 46px;
-        background: rgba(5, 8, 15, 0.78);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
-      .stage-nav-pills {
-        display: none !important;
-      }
-      .brand-title {
-        font-size: 0.95rem;
-      }
-      .brand-sub {
-        display: none;
-      }
-      .skip-order-btn {
-        font-size: 0.75rem;
-        padding: 6px 12px;
-      }
-      .canvas-vignette {
-        background:
-          linear-gradient(180deg, rgba(5, 8, 15, 0.38) 0%, transparent 16%, transparent 66%, rgba(5, 8, 15, 0.72) 100%);
-      }
-
-      /* 1. Ultra-thin single-line transparent HUD bar (<= 32px) & hidden reticle on mobile */
-      .hud-reticle {
-        display: none !important;
-      }
-      .hud-telemetry-box {
-        top: 52px;
-        bottom: auto;
-        left: 12px;
-        right: 12px;
-        width: auto;
-        height: 28px;
-        max-height: 32px;
-        padding: 0 12px;
-        border-radius: 999px;
-        background: rgba(10, 15, 25, 0.52);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        border: 1px solid rgba(0, 212, 255, 0.24);
-        display: flex;
-        align-items: center;
-        box-shadow: none;
-      }
-      .hud-header-row {
-        width: 100%;
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border-bottom: none;
-      }
-      .hud-status-label {
-        font-size: 0.72rem;
-        gap: 6px;
-      }
-      .hud-mode-code {
-        font-size: 0.64rem;
-      }
-      /* 1. Hide secondary HUD overlays on mobile so vertical 3-tier stack is 100% unobstructed */
-      .hud-reticle,
-      .hud-telemetry-box,
-      .hud-metrics,
-      .hud-progress-wrap {
-        display: none !important;
-      }
-
-      /* 2. Compact translucent bottom story card (<= 18% height so vertical stack is 100% visible) */
-      .story-card {
-        right: 10px;
-        left: 10px;
-        width: auto;
-        max-width: none;
-        top: auto;
-        bottom: 8px;
-        max-height: 18vh;
-        padding: 8px 12px;
-        border-radius: 12px;
-        background: rgba(10, 14, 24, 0.35);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.32);
-      }
-      .story-badge {
-        font-size: 0.62rem;
-        padding: 2px 8px;
-        margin-bottom: 4px;
-      }
-      .story-headline {
-        font-size: 0.92rem;
-        line-height: 1.24;
-        margin-bottom: 3px;
-      }
-      .story-desc {
-        font-size: 0.72rem;
-        line-height: 1.32;
-        margin-bottom: 5px;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      .story-tags {
-        gap: 4px;
-      }
-      .story-tag {
-        font-size: 0.60rem;
-        padding: 1px 6px;
-      }
-
-      /* 3. Mobile swipe-up scroll cue positioned cleanly without crowding bottom card */
-      .mouse-wheel-icon {
-        display: none !important;
-      }
-      .scroll-hint {
-        bottom: 156px;
-        right: 50%;
-        transform: translateX(50%);
-        white-space: nowrap;
-        font-size: 0.73rem;
-        padding: 5px 13px;
-        background: rgba(10, 15, 25, 0.62);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-      }
-
-      /* Stage 05 Mobile: 3 Compact Comparison Cards inside Sticky Viewport */
-      .split-delivery-overlay {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, minmax(0, 1fr));
-        gap: 8px;
-        padding: 54px 12px 12px;
-      }
-      .customer-col {
-        border-left: none;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        padding: 8px 10px;
-        min-height: 0;
-        justify-content: center;
-        align-items: flex-start;
-        background: #080d18;
-      }
-      .customer-bg {
-        width: 54%;
-        height: 100%;
-        left: 0;
-        right: auto;
-        object-fit: cover;
-        object-position: center 38%;
-      }
-      .customer-shade {
-        background: linear-gradient(
-          270deg,
-          rgba(7, 12, 22, 0.96) 0%,
-          rgba(7, 12, 22, 0.86) 44%,
-          rgba(7, 12, 22, 0.12) 72%,
-          rgba(7, 12, 22, 0.05) 100%
-        );
-      }
-      .customer-content {
-        width: 55%;
-        margin-left: auto;
-        padding: 8px 10px;
-        border-radius: 12px;
-        background: rgba(10, 15, 25, 0.52);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-      }
-      .tier-ribbon {
-        font-size: 0.66rem;
-        margin-bottom: 3px;
-        padding: 2px 8px;
-      }
-      .customer-title {
-        font-size: 0.94rem;
-        margin-bottom: 2px;
-      }
-      .customer-desc {
-        font-size: 0.73rem;
-        line-height: 1.36;
-        margin-bottom: 6px;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      .customer-meta {
-        display: none;
-      }
-      .choose-tier-btn {
-        padding: 6px 10px;
-        font-size: 0.76rem;
-        border-radius: 8px;
-      }
-      .form-grid,
-      .tier-selector-grid {
-        grid-template-columns: 1fr;
-      }
-      .order-form-card {
-        padding: 22px 18px;
-      }
-    }
-  
 
     /* ============ EXISTING OFFICIAL PLATFORM STYLES ============ */
     #order-section {
@@ -1159,12 +200,9 @@
       font-family: 'Tajawal', 'Cairo', sans-serif;
       background-color: #0f172a;
       background-image:
-        linear-gradient(180deg, rgba(15, 23, 42, 0.96) 0%, rgba(22, 33, 52, 0.94) 50%, rgba(15, 23, 42, 0.97) 100%),
-        url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1920&auto=format&fit=crop');
-      background-size: 100% 100%, cover;
-      background-position: center top;
-      background-repeat: no-repeat;
-      background-attachment: scroll;
+        radial-gradient(circle at 85% 12%, rgba(79, 70, 229, 0.16), transparent 45%),
+        radial-gradient(circle at 12% 88%, rgba(16, 185, 129, 0.12), transparent 45%),
+        linear-gradient(180deg, #0b1120 0%, #0f172a 50%, #0b1120 100%);
       color: #f8fafc;
     }
     .hidden { display: none !important; }
@@ -1175,213 +213,86 @@
     .checkbox-label input { width: 1.2rem; height: 1.15rem; accent-color: #4f46e5; cursor: pointer; margin-top: 0.1rem; }
     details > summary { list-style: none; outline: none; }
     details > summary::-webkit-details-marker { display: none; }
-    .glass-card { background: rgba(30, 41, 59, 0.78); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); transform: translateZ(0); backface-visibility: hidden; }
-    .glass-nav { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); transform: translateZ(0); }
-    .glass-input { background-color: rgba(15, 23, 42, 0.75); border: 1px solid rgba(71, 85, 85, 0.8); color: #ffffff; }
-    .glass-input:focus { border-color: #4f46e5; background-color: rgba(15, 23, 42, 0.95); }
+    .glass-card { background: rgba(30, 41, 59, 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); transform: translateZ(0); backface-visibility: hidden; }
+    .glass-nav { background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); transform: translateZ(0); }
+    .glass-input { background-color: rgba(15, 23, 42, 0.78); border: 1px solid rgba(71, 85, 105, 0.8); color: #ffffff; }
+    .glass-input:focus { border-color: #4f46e5; background-color: rgba(15, 23, 42, 0.96); }
   </style>
 </head>
 <body class="selection:bg-brand-500 selection:text-white">
 
-  <!-- FIXED TOP NAVIGATION & STAGE JUMP BUTTONS (01 -> 05) + SKIP TO #order-section -->
-  <header class="top-header">
-    <a href="#scrolly-track" id="brand-home-link" class="brand-block">
-      <span class="brand-pulse"></span>
-      <div>
-        <span class="brand-title">عالم التروس</span>
-        <span class="brand-sub">GEARS WORLD • AI AUTO PARTS</span>
-      </div>
-    </a>
-
-    <nav class="stage-nav-pills" aria-label="مراحل القصة">
-      <button type="button" class="stage-pill active" data-stage-btn="1" data-target-progress="0.06">01 المطابقة الرقمية (VIN)</button>
-      <button type="button" class="stage-pill" data-stage-btn="2" data-target-progress="0.35">02 بدي • ميكانيك • كهرباء</button>
-      <button type="button" class="stage-pill" data-stage-btn="3" data-target-progress="0.60">03 الجديد (وكالة وتجاري)</button>
-      <button type="button" class="stage-pill" data-stage-btn="4" data-target-progress="0.82">04 المستخدم المضمون (تشليح)</button>
-      <button type="button" class="stage-pill" data-stage-btn="5" data-target-progress="0.96">05 مقارنة المسارات للطلب</button>
-    </nav>
-
-    <a href="#order-section" id="skip-to-order-btn" class="skip-order-btn">
-      <span>تخطي للطلب السريع</span>
-      <span aria-hidden="true">⚡</span>
-    </a>
-  </header>
-
-  <!-- 600VH BULLETPROOF SCROLLYTELLING TRACK -->
-  <section id="scrolly-track" aria-label="رحلة مطابقة وتوريد القطعة">
-    <div id="sticky-viewport">
-      <!-- Layer 1: Fullscreen Photorealistic Canvas -->
-      <canvas id="scrolly-canvas"></canvas>
-
-      <!-- Layer 2 & 3: Cinematic Vignette & Scanline Grid -->
-      <div class="canvas-vignette"></div>
-      <div class="scanline-grid"></div>
-
-      <!-- Layer 4: Engineering Catalog & Inspection HUD -->
-      <div id="ai-tech-hud" class="ai-tech-hud">
-        <div id="hud-reticle" class="hud-reticle">
-          <span id="hud-reticle-tag" class="hud-reticle-tag">FRAMES 001–050 // VIN DIGITAL MATCH</span>
+  <!-- واجهة العرض العلوية الخفيفة فائقة السرعة (< 0.6s GPU-Accelerated — صفر استنزاف إطارات) -->
+  <section id="fast-hero-showcase" class="fast-hero-wrap py-6 sm:py-8 px-4" aria-label="منصة حراج القطع وعالم التروس">
+    <div class="fast-hero-grid-bg"></div>
+    <div class="max-w-5xl mx-auto relative z-10 space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="inline-flex items-center gap-2.5 bg-slate-900/80 border border-cyan-400/30 px-3.5 py-1.5 rounded-full text-xs font-black text-cyan-300">
+          <span class="gpu-pulse-dot"></span>
+          <span>مطابقة هندسية 100% برقم الهيكل (VIN) • تغطية شاملة لكافة مدن المملكة</span>
         </div>
-
-        <div class="hud-telemetry-box">
-          <div class="hud-header-row">
-            <span class="hud-status-label">
-              <span class="hud-live-dot"></span>
-              <span id="hud-stage-status">المطابقة الرقمية وبداية التفكيك</span>
-            </span>
-            <span id="hud-mode-code" class="hud-mode-code">01 / 04</span>
-          </div>
-          <div class="hud-metrics">
-            <div class="hud-metric-item">
-              <span class="hud-metric-label">الدقة والمعيار</span>
-              <span id="hud-accuracy" class="hud-metric-val">مطابقة 100% برقم الهيكل (VIN)</span>
-            </div>
-            <div class="hud-metric-item">
-              <span class="hud-metric-label">النطاق البصري</span>
-              <span id="hud-part-state" class="hud-metric-val">الإطارات 1–50 • تفكيك المركبة</span>
-            </div>
-          </div>
-          <div class="hud-progress-wrap">
-            <div id="hud-progress-bar" class="hud-progress-bar"></div>
-          </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <a href="/preview-showcase" class="inline-flex items-center gap-1.5 bg-indigo-500/15 hover:bg-indigo-500/30 border border-indigo-400/40 text-indigo-200 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition">
+            <span>✨</span>
+            <span>العرض التفاعلي ثلاثي الأبعاد (3D)</span>
+          </a>
+          <button type="button" id="topHeaderAdminBtn" onclick="openAdminDashboardEntry()" class="inline-flex items-center gap-1.5 bg-slate-900/90 hover:bg-brand-600 border border-brand-500/50 text-slate-100 hover:text-white text-xs font-extrabold px-3.5 py-2 rounded-xl transition">
+            <span>🔐</span>
+            <span>دخول المدير</span>
+          </button>
         </div>
       </div>
 
-      <!-- Layer 5: Stacked Absolute Stage Cards (200-Frame Continuous Story) -->
-      <div class="stage-cards-layer">
-        <!-- Stage 01 Card: Frames 1-50 (0% -> 25%) -->
-        <article id="stage-card-1" class="story-card" data-stage-card="1">
-          <div class="story-badge">الإطارات 1–50 • المطابقة الرقمية برقم الهيكل (VIN)</div>
-          <h1 id="story-headline" class="story-headline">المطابقة الرقمية برقم الهيكل (VIN) وبداية تفكيك المركبة</h1>
-          <p class="story-desc">
-            قراءة فورية لبيانات المركبة ومطابقتها مع الكتالوجات الهندسية المعتمدة لتحديد رقم القطعة المطابق لموديل سيارتك دون أي خطأ مع بدء التفكيك الهندسي الواقعي.
+      <div class="text-center sm:text-right flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+        <div class="space-y-2 max-w-2xl">
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">
+            حراج القطع <span class="text-cyan-400">|</span> عالم التروس
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 font-bold leading-relaxed">
+            تسعير ذكي فوري لقطع البدي والميكانيكا والكهرباء والقيور من شبكة الوكلاء والمستوردين والتشاليح المعتمدة مع شحن سريع لكافة المدن.
           </p>
-          <div class="story-tags">
-            <span class="story-tag">مطابقة رقم الهيكل VIN</span>
-            <span class="story-tag">تحديد رقم القطعة OEM</span>
-            <span class="story-tag">بداية تفكيك المركبة</span>
-          </div>
-        </article>
-
-        <!-- Stage 02 Card: Frames 51-100 (25% -> 50%) -->
-        <article id="stage-card-2" class="story-card" data-stage-card="2">
-          <div class="story-badge">الإطارات 51–100 • تغطية شاملة للقطاعات الثلاثة</div>
-          <h2 class="story-headline">تغطية شاملة: قطع البدي • قطع الميكانيك • قطع الكهرباء</h2>
-          <p class="story-desc">
-            تفكيك هندسي متكامل يبرز القطاعات الثلاثة بوضوح: قطع البدي (صدامات، رفارف، كبوت، شمعات)، قطع الميكانيك (قيور، طنجرات، محركات، عضلات)، وقطع الكهرباء (دينمو، سلف، كمبيوترات وشرائح قير).
-          </p>
-          <div class="story-tags">
-            <span class="story-tag">قطع البدي (صدامات • رفارف • شمعات)</span>
-            <span class="story-tag">قطع الميكانيك (قيور • طنجرات • محركات • عضلات)</span>
-            <span class="story-tag">قطع الكهرباء (دينمو • سلف • كمبيوترات وشرائح قير)</span>
-          </div>
-        </article>
-
-        <!-- Stage 03 Card: Frames 101-150 (50% -> 75%) -->
-        <article id="stage-card-3" class="story-card accent-amber" data-stage-card="3">
-          <div class="story-badge">الإطارات 101–150 • فتح الصندوق — خيارات الجديد</div>
-          <h2 class="story-headline">فتح الصندوق — خيارات الجديد: الأصلي وكالة (OEM) والبديل التجاري المعتمد</h2>
-          <p class="story-desc">
-            حركة كاميرا بانورامية متصلة نحو طاولة التوريد والفحص لاستعراض القطع الجديدة: الأصلي وكالة (OEM) بأعلى اعتمادية، والبديل التجاري المعتمد بجودة موثوقة وسعر اقتصادي.
-          </p>
-          <div class="story-tags">
-            <span class="story-tag">أصلي وكالة جديد (OEM)</span>
-            <span class="story-tag">بديل تجاري جديد معتمد</span>
-            <span class="story-tag">فتح الصندوق الرسمي</span>
-          </div>
-        </article>
-
-        <!-- Stage 04 Card: Frames 151-200 (75% -> 91%) -->
-        <article id="stage-card-4" class="story-card accent-emerald" data-stage-card="4">
-          <div class="story-badge">الإطارات 151–200 • المستخدم المضمون ومقارنة المسارات</div>
-          <h2 class="story-headline">خيار المستخدم المضمون (التشليح المفحوص) ومقارنة المسارات الثلاثة</h2>
-          <p class="story-desc">
-            لقطة قريبة فائقة الوضوح للقطعة الأصلية المستعملة والمفحوصة على بساط الفحص الهندسي كخيار مستخدم مضمون (تشليح مفحوص) بجانب الجديد الأصلي والتجاري للمقارنة الشفافة والطلب الفوري.
-          </p>
-          <div class="story-tags">
-            <span class="story-tag">المستخدم المضمون (التشليح المفحوص)</span>
-            <span class="story-tag">الأصلي وكالة + التجاري المعتمد</span>
-            <span class="story-tag">مقارنة المسارات الثلاثة للطلب الفوري</span>
-          </div>
-        </article>
-
-        <!-- Stage 05 Transition Card (hidden / merged into Stage 04 & Split Comparison) -->
-        <article id="stage-card-van" class="story-card" data-stage-card="5-van" style="display:none;">
-          <div class="story-badge">الإطارات 151–200 • مقارنة المسارات الثلاثة للطلب الفوري</div>
-          <h2 class="story-headline">اختر المسار الأنسب لسيارتك واطلبه فوراً</h2>
-          <p class="story-desc">
-            قارن بين الأصلي وكالة (OEM)، المستخدم المضمون (التشليح المفحوص)، والبديل التجاري المعتمد مع شحن مباشر لكافة مدن المملكة.
-          </p>
-        </article>
+        </div>
+        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 shrink-0">
+          <a href="#orderForm" id="skip-to-order-btn" class="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-400 hover:to-green-400 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-lg shadow-emerald-500/25 transition inline-flex items-center gap-2">
+            <span>اطلب قطعتك الآن</span>
+            <span>⚡</span>
+          </a>
+        </div>
       </div>
 
-      <!-- Scroll Cue -->
-      <div id="scroll-hint" class="scroll-hint">
-        <span class="mouse-wheel-icon"></span>
-        <span id="scroll-hint-text">اسحب للأعلى لمتابعة رحلة القطعة</span>
-      </div>
-
-      <!-- Layer 6: Stage 05 Climax (80% -> 100%) 3-Column Comparison Split Screen Over Canvas -->
-      <div id="split-delivery-overlay" class="split-delivery-overlay" aria-label="مقارنة الخيارات الثلاثة">
-        <!-- Option 1: Genuine OEM -->
-        <article class="customer-col" data-tier="أصلي وكالة (OEM)">
-          <img class="customer-bg" src="./assets/images/tiers/tier_oem_rolls.webp" loading="lazy" alt="قطع غيار أصلية وكالة OEM بتغليف المصنع الرسمي" />
-          <div class="customer-shade"></div>
-          <div class="customer-content">
-            <span class="tier-ribbon tier-oem">الخيار الأول • الأصلي وكالة (OEM)</span>
-            <h3 class="customer-title">قطع وكالة أصلية (OEM)</h3>
-            <p class="customer-desc">
-              قطع جديدة بتغليف المصنع الرسمي من الوكلاء والموزعين المعتمدين بمطابقة 100% لرقم الهيكل (VIN) وأعلى عمر افتراضي.
-            </p>
-            <div class="customer-meta">
-              <span>⚡ شحن مباشر وسريع</span>
-              <span>✔ مواصفات المصنع OEM</span>
-            </div>
-            <button type="button" class="choose-tier-btn" data-select-tier="أصلي وكالة (OEM)">
-              اختر فئة الأصلي وكالة (OEM) للطلب
-            </button>
+      <!-- مسارات التوريد الثلاثة للاختيار السريع بنقرة واحدة -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="tier-fast-card flex flex-col justify-between gap-2.5">
+          <div>
+            <span class="inline-block text-[11px] font-black text-amber-300 bg-amber-500/15 border border-amber-500/35 px-2.5 py-0.5 rounded-full mb-1.5">الخيار الأول • الأصلي وكالة (OEM)</span>
+            <h3 class="text-sm sm:text-base font-black text-white">قطع وكالة أصلية (OEM)</h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">بتغليف المصنع الرسمي ومطابقة 100% لرقم الشاصي (VIN).</p>
           </div>
-        </article>
+          <button type="button" data-select-tier="أصلي وكالة (OEM)" class="w-full bg-amber-500/15 hover:bg-amber-500 hover:text-slate-950 text-amber-200 border border-amber-500/40 font-black text-xs py-2 px-3 rounded-xl transition">
+            اختر الأصلي وكالة للطلب
+          </button>
+        </div>
 
-        <!-- Option 2: Inspected Salvage -->
-        <article class="customer-col" data-tier="تشليح مضمون (أصلي مستعمل مفحوص)">
-          <img class="customer-bg" src="./assets/images/tiers/tier_salvage_landcruiser.webp" loading="lazy" alt="قطع تشليح أصلية مستعملة مفحوصة ومضمونة" />
-          <div class="customer-shade"></div>
-          <div class="customer-content">
-            <span class="tier-ribbon tier-salvage">الخيار الثاني • التشليح المضمون</span>
-            <h3 class="customer-title">أصلي مستعمل مفحوص ومضمون</h3>
-            <p class="customer-desc">
-              قطع وكالة مستخرجة من مركبات سليمة ومفحوصة فنياً للتأكد من كفاءتها الميكانيكية والكهربائية بسعر اقتصادي مع ضمان التشغيل.
-            </p>
-            <div class="customer-meta">
-              <span>⚡ جاهزة للتركيب المباشر</span>
-              <span>✔ فحص فني وضمان تشغيل</span>
-            </div>
-            <button type="button" class="choose-tier-btn" data-select-tier="تشليح مضمون (أصلي مستعمل مفحوص)">
-              اختر فئة التشليح المضمون للطلب
-            </button>
+        <div class="tier-fast-card flex flex-col justify-between gap-2.5">
+          <div>
+            <span class="inline-block text-[11px] font-black text-cyan-300 bg-cyan-500/15 border border-cyan-500/35 px-2.5 py-0.5 rounded-full mb-1.5">الخيار الثاني • التشليح المضمون</span>
+            <h3 class="text-sm sm:text-base font-black text-white">أصلي مستعمل مفحوص ومضمون</h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">قطع أصلية مفحوصة فنياً بضمان تشغيل وسعر اقتصادي.</p>
           </div>
-        </article>
+          <button type="button" data-select-tier="تشليح مضمون (أصلي مستعمل مفحوص)" class="w-full bg-cyan-500/15 hover:bg-cyan-400 hover:text-slate-950 text-cyan-200 border border-cyan-500/40 font-black text-xs py-2 px-3 rounded-xl transition">
+            اختر التشليح المضمون للطلب
+          </button>
+        </div>
 
-        <!-- Option 3: Certified Aftermarket -->
-        <article class="customer-col" data-tier="بديل تجاري معتمد">
-          <img class="customer-bg" src="./assets/images/tiers/tier_aftermarket_camry.webp" loading="lazy" alt="بدائل تجارية عالية الجودة من مصانع عالمية معتمدة" />
-          <div class="customer-shade"></div>
-          <div class="customer-content">
-            <span class="tier-ribbon tier-aftermarket">الخيار الثالث • التجاري المعتمد</span>
-            <h3 class="customer-title">بديل تجاري بجودة معتمدة</h3>
-            <p class="customer-desc">
-              قطع جديدة من مصانع عالمية معتمدة تمنحك توازناً عملياً بين السعر الاقتصادي والجودة الموثوقة للاستخدام اليومي.
-            </p>
-            <div class="customer-meta">
-              <span>⚡ متوفر للشحن الفوري</span>
-              <span>✔ مصانع عالمية معتمدة</span>
-            </div>
-            <button type="button" class="choose-tier-btn" data-select-tier="بديل تجاري معتمد">
-              اختر فئة التجاري المعتمد للطلب
-            </button>
+        <div class="tier-fast-card flex flex-col justify-between gap-2.5">
+          <div>
+            <span class="inline-block text-[11px] font-black text-emerald-300 bg-emerald-500/15 border border-emerald-500/35 px-2.5 py-0.5 rounded-full mb-1.5">الخيار الثالث • التجاري المعتمد</span>
+            <h3 class="text-sm sm:text-base font-black text-white">بديل تجاري بجودة معتمدة</h3>
+            <p class="text-xs text-slate-300 mt-1 leading-relaxed">مصانع عالمية معتمدة توازن بين الجودة الموثوقة والسعر العملي.</p>
           </div>
-        </article>
+          <button type="button" data-select-tier="بديل تجاري معتمد" class="w-full bg-emerald-500/15 hover:bg-emerald-500 hover:text-slate-950 text-emerald-200 border border-emerald-500/40 font-black text-xs py-2 px-3 rounded-xl transition">
+            اختر التجاري المعتمد للطلب
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -1827,7 +738,7 @@
                             <span>📇</span>
                             <span>تصدير جهات اتصال الموردين (VCF)</span>
                         </button>
-                        <button onclick="switchTab('customer')" class="bg-rose-500/10 border border-rose-500/30 text-rose-400 px-4 py-2 rounded-xl text-xs font-bold hover:bg-rose-500 hover:text-white transition flex items-center gap-1.5 shadow-sm">
+                        <button type="button" id="adminBarLogoutBtn" onclick="logoutMasterAdminSession()" class="bg-rose-500/10 border border-rose-500/30 text-rose-400 px-4 py-2 rounded-xl text-xs font-bold hover:bg-rose-500 hover:text-white transition flex items-center gap-1.5 shadow-sm">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
                         </button>
                     </div>
@@ -2113,97 +1024,124 @@
         </div>
     </footer>
 
-    <!-- مودال طلبات الانضمام + شريط جاهزية التدشين (20 مورداً لكل فئة من الـ 14) -->
-    <div id="pendingModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-3 sm:p-4 animate-fade-in">
-        <div class="glass-card rounded-3xl p-4 sm:p-6 max-w-3xl w-full shadow-2xl max-h-[90vh] flex flex-col border border-slate-700/80">
+    <!-- مودال طلبات الانضمام (تتصدره البطاقات النشطة والمكتملة في الأعلى مفصولة عن طابور الأرقام التي لم ترد) -->
+    <div id="pendingModal" style="z-index: 99990;" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-3 sm:p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-4 sm:p-6 max-w-4xl w-full shadow-2xl max-h-[92vh] flex flex-col border border-slate-700/80">
             <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-3 shrink-0">
                 <div>
                     <h3 class="font-bold text-emerald-400 text-base sm:text-lg flex items-center gap-2">
-                        <i class="fa-solid fa-user-clock"></i> طلبات انضمام الموردين ومحرك التنقيب في حراج
+                        <i class="fa-solid fa-user-clock"></i> طلبات الانتظار ومراجعة واعتماد الموردين
                     </h3>
-                    <p class="text-[11px] text-slate-400 font-bold mt-0.5">فلترة بالذكاء الاصطناعي للمحلات والتشاليح والمستودعات التجارية بالرياض (استبعاد الأفراد 100%)</p>
+                    <p class="text-[11px] text-slate-400 font-bold mt-0.5">تتصدر القائمة البطاقات المكتملة والجاهزة للمراجعة والاعتماد، مفصولة بوضوح عن طابور الأرقام التي لم ترد بعد</p>
                 </div>
-                <button onclick="closePendingModal()" class="text-slate-400 hover:text-white bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center transition border border-slate-700 shrink-0">
+                <button type="button" onclick="closePendingModal()" class="text-slate-400 hover:text-white bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center transition border border-slate-700 shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- شريط جاهزية التدشين (Pre-Launch Supplier Readiness Bar: 20/20 per Category) -->
-            <div id="harajReadinessBarWrap" class="bg-slate-900/90 border border-brand-500/30 rounded-2xl p-3.5 mb-3 shrink-0 space-y-2.5">
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs sm:text-sm font-black text-white">📊 شريط جاهزية التدشين (نصاب 20 مورداً لكل فئة من الـ 14):</span>
-                        <span id="harajQuotaSummaryPill" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">14/14 فئة مكتملة ✅</span>
-                    </div>
-                    <span id="harajSandboxBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">🛡️ وضع الاختبار الأحادي مفعل (حماية أرقام الموردين)</span>
-                </div>
-
-                <!-- شبكة الفئات الـ 14 (20/20 ✅) -->
-                <div id="harajReadinessGrid14" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 max-h-36 overflow-y-auto pr-1 text-[11px]"></div>
-
-                <!-- أزرار تشغيل التنقيب وبدء مراسلة التدشين بالدفعات الآمنة -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                    <button type="button" id="btnRunHarajMiner" onclick="triggerHarajMiningRun()" class="bg-brand-600 hover:bg-brand-500 text-white font-black py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
-                        <span>🔍 تشغيل التنقيب في حراج لاستكمال النصاب (20 لكل فئة)</span>
-                    </button>
-                    <button type="button" id="btnStartHarajOutreach" onclick="triggerHarajSafeOutreach()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
-                        <span>📨 بدء مراسلة التدشين للموردين المستخرجين (دفعات آمنة)</span>
-                    </button>
-                </div>
-                <div id="harajMinerActionFeedback" class="hidden text-[11px] font-bold px-3 py-2 rounded-xl bg-slate-950/90 border border-slate-700 text-emerald-300"></div>
-            </div>
-
-            <!-- درع التقطير الآمن الموحد (35 مورداً/يوم موزعين ساعياً) + حفظ جهات الاتصال (Google Sync + VCF) + حالة القناتين -->
-            <div id="verifierDripCampaignBox" class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3.5 mb-3 shrink-0 space-y-2.5">
-                <div class="flex flex-wrap items-center justify-between gap-2">
+            <!-- القسم الأول في الأعلى: البطاقات النشطة والمكتملة الجاهزة للمراجعة والاعتماد -->
+            <div class="bg-emerald-950/25 border border-emerald-500/40 rounded-2xl p-3.5 mb-3 flex flex-col flex-1 min-h-[42vh] overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5 pb-2 border-b border-emerald-500/25 shrink-0">
                     <div class="flex items-center gap-2 flex-wrap">
-                        <span class="text-xs sm:text-sm font-black text-amber-300">🛡️ منظم الـ 35 مورداً/يوم (تدقيق 22 + استقطاب 13 | 2–3/ساعة | فاصل 18–27د):</span>
-                        <span id="verifierDripProgressBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">اليوم: 0 / 35 | الساعة: 0 / 3</span>
-                        <span id="governorRampBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-500/40">التدرج الآمن: 18 ➔ 26 ➔ 35</span>
+                        <span class="text-xs sm:text-sm font-black text-emerald-300">✅ البطاقات النشطة والمكتملة الجاهزة للمراجعة والاعتماد:</span>
+                        <span id="pendingActionableCountPill" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950">0 بطاقة جاهزة</span>
                     </div>
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <button type="button" id="btnToggleForceFull35" onclick="toggleForceFull35ModeUI()" class="bg-indigo-600/80 hover:bg-indigo-500 text-white font-black py-1.5 px-2.5 rounded-xl text-[11px] transition flex items-center gap-1 shadow-sm" title="تجاوز تدرج الأيام الثلاثة وتثبيت سقف 35 مورداً فوراً عند تركيب شريحة جديدة">
-                            <span>⚡ تثبيت 35 فوراً (شريحة جديدة)</span>
-                        </button>
-                        <button type="button" id="btnToggleVerifierDripCampaign" onclick="toggleVerifierDripCampaignUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm">
-                            <span>▶️ تشغيل حملة التدقيق الآمنة (22/يوم)</span>
-                        </button>
-                        <button type="button" id="btnFilterWhatsAppInactive" onclick="toggleWhatsAppInactiveListUI()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5">
-                            <span>⚠️ واتساب متوقف (<span id="waInactiveBadgeCount">0</span>)</span>
-                        </button>
-                    </div>
+                    <button type="button" onclick="loadHarajMinerReadinessAndPending()" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-emerald-200 border border-emerald-500/30 transition">
+                        🔄 تحديث البطاقات الحية
+                    </button>
                 </div>
-                <p id="verifierDripSummaryLine" class="text-[11px] text-slate-300 font-bold">رسالة افتتاحية قصيرة بكلمة (مهتم) + سؤال واحد قصير لكل دور + تهدئة 90د بعد 7 رسائل بلا رد.</p>
-
-                <!-- شريط حفظ أسماء المحلات في الجهاز والهاتف قبل المراسلة + حالة القناتين (Baileys الوسيط مقابل Meta الرسمي) -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 pt-2 border-t border-slate-800/90 text-[11px]">
-                    <div class="bg-slate-950/75 border border-emerald-500/25 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                            <div class="font-black text-emerald-300">📇 حفظ أسماء المحلات قبل المراسلة بـ 30 دقيقة</div>
-                            <div id="contactSaverStatusLine" class="text-slate-300 mt-0.5">محفوظ بالجهاز (.vcf + Baileys): 0 مورد | Google Contacts: غير مرتبط بعد</div>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-1.5">
-                            <button type="button" onclick="downloadDaily35BatchVcfUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-2.5 py-1.5 rounded-lg transition">📲 دفعة الـ 35 لليوم (.vcf)</button>
-                            <button type="button" onclick="triggerPreSync35ContactsUI()" class="bg-teal-600/80 hover:bg-teal-500 text-white font-black px-2 py-1.5 rounded-lg transition">🔄 حفظ دفعة اليوم</button>
-                            <button type="button" onclick="connectGoogleContactsOAuthUI()" class="bg-sky-600/80 hover:bg-sky-500 text-white font-black px-2 py-1.5 rounded-lg transition">🔗 ربط Google</button>
-                        </div>
-                    </div>
-                    <div class="bg-slate-950/75 border border-cyan-500/25 rounded-xl p-2.5 space-y-1">
-                        <div class="font-black text-cyan-300">🔀 معمارية القناتين المنفصلتين (الموردون ⇄ العملاء)</div>
-                        <div id="dualChannelBrokerLine" class="text-slate-200">🛠️ <span class="font-bold text-amber-200">SUPPLIER_BROKER:</span> Baileys الوسيط (استقطاب 35/يوم + جمع التسعيرات)</div>
-                        <div id="dualChannelCustomerLine" class="text-slate-300">🏢 <span class="font-bold text-emerald-200">CUSTOMER_OFFICIAL:</span> جسر Meta Cloud API جاهز (/api/meta-webhook) — يعمل مؤقتاً على Baileys (صفر رسائل باردة)</div>
-                    </div>
-                </div>
-
-                <div id="waInactiveListPanel" class="hidden border-t border-slate-800 pt-2.5 space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+                <div id="pendingListContainer" class="overflow-y-auto space-y-3 flex-1 pr-1"></div>
             </div>
 
-            <div id="pendingListContainer" class="overflow-y-auto space-y-3 flex-1 pr-1"></div>
+            <!-- القسم الثاني المنفصل بالأسفل: طابور الأرقام التي لم ترد بعد + أدوات التقطير والتنقيب -->
+            <details id="pendingUnrepliedAndToolsDetails" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 shrink-0 max-h-[34vh] overflow-y-auto">
+                <summary class="cursor-pointer flex flex-wrap items-center justify-between gap-2 text-xs font-black text-slate-300 hover:text-white select-none">
+                    <span>⏳ طابور الأرقام المراسَلة التي لم ترد بعد + أدوات التنقيب ومنظم الـ 35 مورداً/يوم (اضغط للفتح/الطي)</span>
+                    <span id="unrepliedQueueCountPill" class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/35">بانتظار رد: 0</span>
+                </summary>
+
+                <div class="pt-3 mt-2.5 border-t border-slate-800 space-y-3">
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2">
+                        <div class="text-[11px] font-black text-amber-300">📭 طابور الأرقام التي لم ترد بعد (مفصولة عن بطاقات المراجعة والاعتماد أعلاه):</div>
+                        <div id="unrepliedOutreachQueueContainer" class="space-y-1.5 max-h-36 overflow-y-auto pr-1 text-[11px] text-slate-300"></div>
+                    </div>
+
+                    <!-- شريط جاهزية التدشين (Pre-Launch Supplier Readiness Bar: 20/20 per Category) -->
+                    <div id="harajReadinessBarWrap" class="bg-slate-900/90 border border-brand-500/30 rounded-2xl p-3.5 space-y-2.5">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs sm:text-sm font-black text-white">📊 شريط جاهزية التدشين (نصاب 20 مورداً لكل فئة من الـ 14):</span>
+                                <span id="harajQuotaSummaryPill" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">14/14 فئة مكتملة ✅</span>
+                            </div>
+                            <span id="harajSandboxBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30">🛡️ وضع الاختبار الأحادي مفعل (حماية أرقام الموردين)</span>
+                        </div>
+
+                        <!-- شبكة الفئات الـ 14 (20/20 ✅) -->
+                        <div id="harajReadinessGrid14" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 max-h-36 overflow-y-auto pr-1 text-[11px]"></div>
+
+                        <!-- أزرار تشغيل التنقيب وبدء مراسلة التدشين بالدفعات الآمنة -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            <button type="button" id="btnRunHarajMiner" onclick="triggerHarajMiningRun()" class="bg-brand-600 hover:bg-brand-500 text-white font-black py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <span>🔍 تشغيل التنقيب في حراج لاستكمال النصاب (20 لكل فئة)</span>
+                            </button>
+                            <button type="button" id="btnStartHarajOutreach" onclick="triggerHarajSafeOutreach()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <span>📨 بدء مراسلة التدشين للموردين المستخرجين (دفعات آمنة)</span>
+                            </button>
+                        </div>
+                        <div id="harajMinerActionFeedback" class="hidden text-[11px] font-bold px-3 py-2 rounded-xl bg-slate-950/90 border border-slate-700 text-emerald-300"></div>
+                    </div>
+
+                    <!-- درع التقطير الآمن الموحد (35 مورداً/يوم موزعين ساعياً) + حفظ جهات الاتصال (Google Sync + VCF) + حالة القناتين -->
+                    <div id="verifierDripCampaignBox" class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-3.5 space-y-2.5">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-xs sm:text-sm font-black text-amber-300">🛡️ منظم الـ 35 مورداً/يوم (تدقيق 22 + استقطاب 13 | 2–3/ساعة | فاصل 18–27د):</span>
+                                <span id="verifierDripProgressBadge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700">اليوم: 0 / 35 | الساعة: 0 / 3</span>
+                                <span id="governorRampBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-500/40">التدرج الآمن: 18 ➔ 26 ➔ 35</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <button type="button" id="btnToggleForceFull35" onclick="toggleForceFull35ModeUI()" class="bg-indigo-600/80 hover:bg-indigo-500 text-white font-black py-1.5 px-2.5 rounded-xl text-[11px] transition flex items-center gap-1 shadow-sm" title="تجاوز تدرج الأيام الثلاثة وتثبيت سقف 35 مورداً فوراً عند تركيب شريحة جديدة">
+                                    <span>⚡ تثبيت 35 فوراً (شريحة جديدة)</span>
+                                </button>
+                                <button type="button" id="btnToggleVerifierDripCampaign" onclick="toggleVerifierDripCampaignUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5 shadow-sm">
+                                    <span>▶️ تشغيل حملة التدقيق الآمنة (22/يوم)</span>
+                                </button>
+                                <button type="button" id="btnFilterWhatsAppInactive" onclick="toggleWhatsAppInactiveListUI()" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 font-black py-1.5 px-3 rounded-xl text-[11px] transition flex items-center gap-1.5">
+                                    <span>⚠️ واتساب متوقف (<span id="waInactiveBadgeCount">0</span>)</span>
+                                </button>
+                            </div>
+                        </div>
+                        <p id="verifierDripSummaryLine" class="text-[11px] text-slate-300 font-bold">رسالة افتتاحية قصيرة بكلمة (مهتم) + سؤال واحد قصير لكل دور + تهدئة 90د بعد 7 رسائل بلا رد.</p>
+
+                        <!-- شريط حفظ أسماء المحلات في الجهاز والهاتف قبل المراسلة + حالة القناتين (Baileys الوسيط مقابل Meta الرسمي) -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 pt-2 border-t border-slate-800/90 text-[11px]">
+                            <div class="bg-slate-950/75 border border-emerald-500/25 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <div class="font-black text-emerald-300">📇 حفظ أسماء المحلات قبل المراسلة بـ 30 دقيقة</div>
+                                    <div id="contactSaverStatusLine" class="text-slate-300 mt-0.5">محفوظ بالجهاز (.vcf + Baileys): 0 مورد | Google Contacts: غير مرتبط بعد</div>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <button type="button" onclick="downloadDaily35BatchVcfUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-2.5 py-1.5 rounded-lg transition">📲 دفعة الـ 35 لليوم (.vcf)</button>
+                                    <button type="button" onclick="triggerPreSync35ContactsUI()" class="bg-teal-600/80 hover:bg-teal-500 text-white font-black px-2 py-1.5 rounded-lg transition">🔄 حفظ دفعة اليوم</button>
+                                    <button type="button" onclick="connectGoogleContactsOAuthUI()" class="bg-sky-600/80 hover:bg-sky-500 text-white font-black px-2 py-1.5 rounded-lg transition">🔗 ربط Google</button>
+                                </div>
+                            </div>
+                            <div class="bg-slate-950/75 border border-cyan-500/25 rounded-xl p-2.5 space-y-1">
+                                <div class="font-black text-cyan-300">🔀 معمارية القناتين المنفصلتين (الموردون ⇄ العملاء)</div>
+                                <div id="dualChannelBrokerLine" class="text-slate-200">🛠️ <span class="font-bold text-amber-200">SUPPLIER_BROKER:</span> Baileys الوسيط (استقطاب 35/يوم + جمع التسعيرات)</div>
+                                <div id="dualChannelCustomerLine" class="text-slate-300">🏢 <span class="font-bold text-emerald-200">CUSTOMER_OFFICIAL:</span> جسر Meta Cloud API جاهز (/api/meta-webhook) — يعمل مؤقتاً على Baileys (صفر رسائل باردة)</div>
+                            </div>
+                        </div>
+
+                        <div id="waInactiveListPanel" class="hidden border-t border-slate-800 pt-2.5 space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+            </details>
         </div>
     </div>
 
     <!-- مركز إعدادات الموقع والمنظومة الشامل (للمدير فقط) -->
-    <div id="waSettingsModal" class="fixed inset-0 z-[105] hidden flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-2 sm:p-4 animate-fade-in">
+    <div id="waSettingsModal" style="z-index: 99990;" class="fixed inset-0 z-[105] hidden flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-2 sm:p-4 animate-fade-in">
         <div class="glass-card rounded-3xl p-4 sm:p-6 max-w-4xl w-full shadow-2xl max-h-[93vh] flex flex-col border border-slate-700/80">
             <!-- رأس النافذة -->
             <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3 shrink-0">
@@ -2656,19 +1594,22 @@
     </div>
 
     <!-- مودال إدارة الموردين -->
-    <div id="suppliersModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-2 sm:p-4 animate-fade-in">
-        <div class="glass-card rounded-3xl p-6 max-w-5xl w-full shadow-2xl max-h-[95vh] flex flex-col border border-slate-700/80">
-            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
-                <h3 class="font-bold text-white text-xl flex items-center gap-2">
-                    <i class="fa-solid fa-address-book text-brand-500"></i> سجل الموردين والورش المعتمدة
-                </h3>
-                <button onclick="closeSuppliersModal()" class="text-slate-400 hover:text-white bg-slate-800 w-10 h-10 rounded-full flex items-center justify-center transition text-lg border border-slate-700">
+    <div id="suppliersModal" style="z-index: 99990;" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-2 sm:p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-4 sm:p-6 max-w-5xl w-full shadow-2xl max-h-[94vh] flex flex-col border border-slate-700/80">
+            <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-3 shrink-0">
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <h3 class="font-bold text-white text-lg sm:text-xl flex items-center gap-2">
+                        <i class="fa-solid fa-address-book text-brand-500"></i> سجل الموردين والورش المعتمدة
+                    </h3>
+                    <span id="suppliersTotalCountBadge" class="text-xs font-black px-3 py-1 rounded-full bg-brand-500/20 text-brand-200 border border-brand-500/40">0 مورد معتمد</span>
+                </div>
+                <button type="button" onclick="closeSuppliersModal()" class="text-slate-400 hover:text-white bg-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition text-lg border border-slate-700 shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             
-            <button onclick="openAddSupplierManual()" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-black py-3.5 rounded-2xl text-sm mb-4 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20">
-                <i class="fa-solid fa-plus-circle text-lg"></i> إضافة مورد جديد يدوياً للسحابة
+            <button type="button" onclick="openAddSupplierManual()" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-black py-3 rounded-2xl text-xs sm:text-sm mb-3 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 shrink-0">
+                <i class="fa-solid fa-plus-circle text-base"></i> إضافة مورد جديد يدوياً للسحابة وقاعدة البيانات
             </button>
             
             <div id="supplierFormContainer" class="bg-slate-900/90 p-5 rounded-2xl border border-slate-700/80 mb-4 overflow-y-auto flex-1 hidden shadow-inner">
@@ -2782,8 +1723,14 @@
                 </div>
             </div>
             
-            <h4 class="text-sm font-bold text-slate-300 mb-3 border-t border-slate-800 pt-4 mt-2">الموردين النشطين حالياً في النظام:</h4>
-            <div id="suppliersListContainer" class="overflow-y-auto space-y-3 pr-2 max-h-[35vh]"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-t border-slate-800 pt-3 mt-1 mb-3 shrink-0">
+                <h4 class="text-xs sm:text-sm font-black text-slate-200">الموردون المعتمدون النشطون حالياً في النظام:</h4>
+                <div class="relative flex-1 sm:max-w-md">
+                    <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="suppliersSearchInput" oninput="renderSuppliersModalList()" placeholder="بحث فوري بالاسم أو رقم الجوال أو الحي أو الماركة..." class="w-full pr-9 pl-3 py-2 rounded-xl glass-input outline-none text-xs font-bold text-white">
+                </div>
+            </div>
+            <div id="suppliersListContainer" class="overflow-y-auto space-y-2.5 pr-2 flex-1 min-h-[42vh] max-h-[58vh]"></div>
         </div>
     </div>
 
@@ -3021,8 +1968,10 @@
         // ==========================================
         // إعدادات الحسابات المشفرة بـ SHA-256 ونظام المندوبين الديناميكي
         // ==========================================
-        const adminPasswordHash = "f3e055913a0b1eb0f07317896f9a1bc466b9a50db85a7f882f3ffde9ffb23aca"; 
-        let activeAdminPasswordHash = adminPasswordHash;
+        const PRIMARY_ADMIN_PASSWORD_HASH = "f3e055913a0b1eb0f07317896f9a1bc466b9a50db85a7f882f3ffde9ffb23aca";
+        const SECONDARY_CLOUD_ADMIN_HASH = "0a0667865bc17f9d624bcf11088057bbab46336e7dae65f3d5366f4f7a18333e";
+        const adminPasswordHash = PRIMARY_ADMIN_PASSWORD_HASH;
+        let activeAdminPasswordHash = PRIMARY_ADMIN_PASSWORD_HASH;
         
         const affiliatesByHash = {
             "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab": "ثائر",
@@ -3039,6 +1988,10 @@
         }
 
         let currentRole = null; 
+        window.isMasterAdmin = false;
+        window.adminRole = null;
+        window.currentAdmin = null;
+        window.currentRole = null;
         let currentAffiliateId = null;
         let currentAffiliateProfile = null;
         let currentAffiliateLookupKeys = [];
@@ -3056,7 +2009,18 @@
         const pendingOptimisticPendingSupOps = new Set();
         const optimisticStatusTracker = new Map();
         let waSettings = JSON.parse(localStorage.getItem('waSettings')) || { customerApp: 'default', supplierApp: 'default' };
-        const audioAlert = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
+        let _adminAudioAlertInstance = null;
+        function playAdminOrderAlert() {
+            if (!isMasterAdminAuthenticated() && currentRole !== 'affiliate') return;
+            try {
+                if (!_adminAudioAlertInstance && typeof Audio === 'function') {
+                    _adminAudioAlertInstance = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav');
+                }
+                if (_adminAudioAlertInstance && typeof _adminAudioAlertInstance.play === 'function') {
+                    _adminAudioAlertInstance.play().catch(() => {});
+                }
+            } catch (_audErr) {}
+        }
         let isFirstLoad = true;
 
         // حالة مركز الإعدادات الشامل المتزامنة مع Firestore والسيرفر
@@ -3077,32 +2041,116 @@
         let unansweredSuppliersCache = [];
         let globalColdOutreachPausedState = true;
 
+        function isAcceptedMasterAdminHash(candidateHash) {
+            const clean = String(candidateHash || '').trim().toLowerCase();
+            if (!/^[a-f0-9]{64}$/.test(clean)) return false;
+            if (clean === activeAdminPasswordHash || clean === PRIMARY_ADMIN_PASSWORD_HASH) return true;
+            if (activeAdminPasswordHash === PRIMARY_ADMIN_PASSWORD_HASH && clean === SECONDARY_CLOUD_ADMIN_HASH) return true;
+            return false;
+        }
+
+        function isMasterAdminAuthenticated() {
+            return Boolean(currentRole === 'admin' || window.isMasterAdmin === true || window.adminRole === 'master_admin');
+        }
+        window.isMasterAdminAuthenticated = isMasterAdminAuthenticated;
+
+        function updateMasterAdminHeaderButtonsUI(isAuth) {
+            const navBtn = document.getElementById('adminLoginBtn');
+            const topBtn = document.getElementById('topHeaderAdminBtn');
+            if (isAuth) {
+                if (navBtn) {
+                    navBtn.dataset.adminConnected = '1';
+                    navBtn.className = 'text-xs md:text-sm font-black text-emerald-200 bg-emerald-600/25 border border-emerald-400/60 px-3.5 md:px-4 py-2.5 rounded-2xl hover:bg-rose-600 hover:text-white hover:border-rose-500 transition duration-300 shadow-md flex items-center gap-1.5';
+                    navBtn.innerHTML = '<span>🟢</span><span>المدير الرئيسي متصل (خروج)</span>';
+                }
+                if (topBtn) {
+                    topBtn.dataset.adminConnected = '1';
+                    topBtn.className = 'inline-flex items-center gap-1.5 bg-emerald-600/25 hover:bg-rose-600 border border-emerald-400/60 hover:border-rose-500 text-emerald-200 hover:text-white text-xs font-black px-3.5 py-2 rounded-xl transition';
+                    topBtn.innerHTML = '<span>🟢</span><span>المدير الرئيسي متصل (خروج)</span>';
+                }
+            } else {
+                if (navBtn) {
+                    navBtn.dataset.adminConnected = '0';
+                    navBtn.className = 'text-xs md:text-sm font-extrabold text-slate-100 bg-slate-800/90 border border-brand-500/50 px-3.5 md:px-4 py-2.5 rounded-2xl hover:bg-brand-500 hover:text-white hover:border-brand-500 transition duration-300 shadow-md flex items-center gap-1.5';
+                    navBtn.innerHTML = '<span>🔐</span><span>دخول المدير</span>';
+                }
+                if (topBtn) {
+                    topBtn.dataset.adminConnected = '0';
+                    topBtn.className = 'inline-flex items-center gap-1.5 bg-slate-900/90 hover:bg-brand-600 border border-brand-500/50 text-slate-100 hover:text-white text-xs font-extrabold px-3.5 py-2 rounded-xl transition';
+                    topBtn.innerHTML = '<span>🔐</span><span>دخول المدير</span>';
+                }
+            }
+        }
+
         function clearStoredAdminAuthTokens() {
             activeAdminSessionToken = null;
             try {
                 localStorage.removeItem('adminToken');
                 localStorage.removeItem('adminPasswordHash');
                 localStorage.removeItem('haraj_admin_token');
+                localStorage.removeItem('isMasterAdmin');
+                localStorage.removeItem('adminRole');
                 sessionStorage.removeItem('adminToken');
                 sessionStorage.removeItem('adminPasswordHash');
                 sessionStorage.removeItem('haraj_admin_token');
+                sessionStorage.removeItem('isMasterAdmin');
+                sessionStorage.removeItem('adminRole');
             } catch (_stErr) {}
         }
 
         function persistAdminAuthTokens(token, passHash) {
             try {
-                if (token) {
-                    localStorage.setItem('haraj_admin_token', token);
-                    localStorage.setItem('adminToken', token);
-                    sessionStorage.setItem('haraj_admin_token', token);
-                    sessionStorage.setItem('adminToken', token);
+                const effTok = token || passHash || '';
+                if (effTok) {
+                    localStorage.setItem('haraj_admin_token', effTok);
+                    localStorage.setItem('adminToken', effTok);
+                    sessionStorage.setItem('haraj_admin_token', effTok);
+                    sessionStorage.setItem('adminToken', effTok);
                 }
                 if (passHash) {
                     localStorage.setItem('adminPasswordHash', passHash);
                     sessionStorage.setItem('adminPasswordHash', passHash);
                 }
+                localStorage.setItem('isMasterAdmin', 'true');
+                localStorage.setItem('adminRole', 'master_admin');
+                sessionStorage.setItem('isMasterAdmin', 'true');
+                sessionStorage.setItem('adminRole', 'master_admin');
             } catch (_pErr) {}
         }
+
+        function setUnifiedMasterAdminState(isAuth, { token = '', passHash = '' } = {}) {
+            if (isAuth) {
+                const cleanHash = /^[a-f0-9]{64}$/i.test(String(passHash || '').trim())
+                    ? String(passHash).trim().toLowerCase()
+                    : activeAdminPasswordHash;
+                const cleanTok = String(token || activeAdminSessionToken || cleanHash || '').trim();
+                activeAdminPasswordHash = cleanHash;
+                activeAdminSessionToken = cleanTok;
+                currentRole = 'admin';
+                window.currentRole = 'admin';
+                window.isMasterAdmin = true;
+                window.adminRole = 'master_admin';
+                window.currentAdmin = {
+                    role: 'master_admin',
+                    isMasterAdmin: true,
+                    authenticated: true,
+                    token: cleanTok
+                };
+                persistAdminAuthTokens(cleanTok, cleanHash);
+                updateMasterAdminHeaderButtonsUI(true);
+            } else {
+                clearStoredAdminAuthTokens();
+                if (currentRole === 'admin') {
+                    currentRole = null;
+                }
+                window.currentRole = currentRole;
+                window.isMasterAdmin = false;
+                window.adminRole = null;
+                window.currentAdmin = null;
+                updateMasterAdminHeaderButtonsUI(false);
+            }
+        }
+        window.setUnifiedMasterAdminState = setUnifiedMasterAdminState;
 
         function getStoredAdminCandidateToken() {
             try {
@@ -3121,49 +2169,88 @@
             }
         }
 
+        function getStoredAdminPasswordHash() {
+            try {
+                return (
+                    localStorage.getItem('adminPasswordHash') ||
+                    sessionStorage.getItem('adminPasswordHash') ||
+                    ''
+                ).trim().toLowerCase();
+            } catch (_hErr) {
+                return '';
+            }
+        }
+
         async function verifyAdminSessionWithBackend(candidateToken = '') {
             const tok = String(candidateToken || getStoredAdminCandidateToken() || '').trim();
-            if (!tok) return { checked: true, valid: false, status: 401 };
+            const savedHash = getStoredAdminPasswordHash();
+            if (!tok && !savedHash) return { checked: true, valid: false, status: 401 };
+
             const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             const targetUrl = isLocalOrigin ? '/api/admin/session-check' : 'http://localhost:3000/api/admin/session-check';
+            const hashMatchesCloudOrDefault = isAcceptedMasterAdminHash(savedHash) || isAcceptedMasterAdminHash(tok);
+
             const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 3500);
+            const timer = setTimeout(() => controller.abort(), isLocalOrigin ? 3000 : 1800);
             try {
                 const res = await fetch(targetUrl, {
                     method: 'GET',
                     cache: 'no-store',
                     headers: {
-                        'X-Admin-Token': tok,
-                        'X-Admin-Password-Hash': tok
+                        'X-Admin-Token': tok || savedHash,
+                        'X-Admin-Password-Hash': savedHash || tok
                     },
                     signal: controller.signal
                 });
-                if (res.status === 401) {
-                    clearStoredAdminAuthTokens();
-                    return { checked: true, valid: false, status: 401 };
-                }
+
                 if (res.ok) {
-                    const data = await res.json().catch(() => ({}));
+                    const data = await res.json().catch(() => null);
                     if (data && (data.authenticated || data.valid)) {
-                        activeAdminSessionToken = tok;
-                        try {
-                            const savedHash = localStorage.getItem('adminPasswordHash') || sessionStorage.getItem('adminPasswordHash') || '';
-                            if (/^[a-f0-9]{64}$/i.test(savedHash)) {
-                                activeAdminPasswordHash = savedHash.toLowerCase();
-                            } else if (/^[a-f0-9]{64}$/i.test(tok)) {
-                                activeAdminPasswordHash = tok.toLowerCase();
-                            }
-                        } catch (_hErr) {}
-                        return { checked: true, valid: true, status: 200, data };
+                        const verifiedHash = /^[a-f0-9]{64}$/i.test(savedHash)
+                            ? savedHash
+                            : (/^[a-f0-9]{64}$/i.test(tok) ? tok.toLowerCase() : activeAdminPasswordHash);
+                        setUnifiedMasterAdminState(true, { token: tok || verifiedHash, passHash: verifiedHash });
+                        return { checked: true, valid: true, status: 200, data, source: 'backend' };
                     }
                 }
+
+                // على الدومين السحابي (harajparts.com / GitHub Pages): إذا رجع 404 أو لم يكن السيرفر المحلي متطابقاً بينما الهاش السحابي صحيح، يمنع منعاً باتاً مسح التوكن أو طرد المدير!
+                if (!isLocalOrigin) {
+                    if (res.status !== 401 || hashMatchesCloudOrDefault) {
+                        if (hashMatchesCloudOrDefault || localStorage.getItem('isMasterAdmin') === 'true') {
+                            const effHash = isAcceptedMasterAdminHash(savedHash) ? savedHash : (isAcceptedMasterAdminHash(tok) ? tok : activeAdminPasswordHash);
+                            setUnifiedMasterAdminState(true, { token: tok || effHash, passHash: effHash });
+                            return { checked: true, valid: true, status: 200, source: 'firestore_unified' };
+                        }
+                    }
+                }
+
+                // فقط عندما يرفض السيرفر المحلي الحي التوكن والهاش صراحةً (401) ولا يطابق الهاش السحابي
+                if (res.status === 401 && !hashMatchesCloudOrDefault) {
+                    setUnifiedMasterAdminState(false);
+                    return { checked: true, valid: false, status: 401 };
+                }
+
+                if (hashMatchesCloudOrDefault) {
+                    const effHash = isAcceptedMasterAdminHash(savedHash) ? savedHash : tok;
+                    setUnifiedMasterAdminState(true, { token: tok || effHash, passHash: effHash });
+                    return { checked: true, valid: true, status: 200, source: 'hash_fallback' };
+                }
+
                 return { checked: false, valid: false, status: res.status };
             } catch (_netErr) {
+                // عند تعذر الوصول للسيرفر المحلي من harajparts.com (CORS / Mixed-Content / Offline): لا يُمسح التوكن أبداً!
+                if (hashMatchesCloudOrDefault || (!isLocalOrigin && localStorage.getItem('isMasterAdmin') === 'true' && tok)) {
+                    const effHash = isAcceptedMasterAdminHash(savedHash) ? savedHash : (isAcceptedMasterAdminHash(tok) ? tok : activeAdminPasswordHash);
+                    setUnifiedMasterAdminState(true, { token: tok || effHash, passHash: effHash });
+                    return { checked: true, valid: true, status: 200, source: 'offline_firestore' };
+                }
                 return { checked: false, valid: false, status: 0 };
             } finally {
                 clearTimeout(timer);
             }
         }
+        window.verifyAdminSessionWithBackend = verifyAdminSessionWithBackend;
 
         window.toggleAdminModalPassVisibility = function() {
             const inp = document.getElementById('adminModalPasswordInput');
@@ -3261,7 +2348,23 @@
             if (resolver) resolver(null);
         };
 
+        window.logoutMasterAdminSession = function() {
+            setUnifiedMasterAdminState(false);
+            suppliersDB = [];
+            window.orderSuppliers = {};
+            if (typeof window.closeWaSettingsModal === 'function') window.closeWaSettingsModal();
+            if (typeof window.closeSuppliersModal === 'function') window.closeSuppliersModal();
+            if (typeof window.closePendingModal === 'function') window.closePendingModal();
+            if (typeof window.closeWhatsAppLoginModal === 'function') window.closeWhatsAppLoginModal();
+            return window.switchTab('customer');
+        };
+
         window.openAdminDashboardEntry = function() {
+            const adminViewEl = document.getElementById('admin-view');
+            const isAdminOpenNow = Boolean(adminViewEl && !adminViewEl.classList.contains('hidden'));
+            if (isMasterAdminAuthenticated() && isAdminOpenNow) {
+                return window.logoutMasterAdminSession();
+            }
             return window.switchTab('admin', 'default');
         };
 
@@ -3676,7 +2779,7 @@
             setTimeout(() => URL.revokeObjectURL(url), 2500);
         };
 
-        // تهيئة أزرار الوصول السريع على localhost وفحص التوكن المخزن تلقائياً عند فتح الصفحة
+        // تهيئة الصفحة للزائر العادي بـ 0ms (بدون أي استعلامات أو مؤقتات إدارية إلا عند فتح وضع الإدارة #admin أو ?admin=1)
         (function initQuickWaHeaderAndSessionCheckOnBoot() {
             const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             const quickWaBtn = document.getElementById('headerWaLoginQuickBtn');
@@ -3705,24 +2808,31 @@
                     } catch (_) {}
                 }, 400);
             };
+
             const storedTok = getStoredAdminCandidateToken();
-            if (storedTok) {
-                verifyAdminSessionWithBackend(storedTok).then((chk) => {
-                    if (wantsAdminTab) {
-                        window.switchTab('admin');
-                        triggerPostGoogleConnectBanner();
-                    }
-                });
-            } else if (wantsAdminTab) {
+            const savedHash = getStoredAdminPasswordHash();
+            try {
+                if (storedTok && (localStorage.getItem('isMasterAdmin') === 'true' || isAcceptedMasterAdminHash(savedHash || storedTok))) {
+                    setUnifiedMasterAdminState(true, { token: storedTok, passHash: savedHash || storedTok });
+                }
+            } catch (_bootAuthErr) {}
+
+            // لا يتم تشغيل أي تحقق شبكي إداري أو فتح قنوات الإدارة إلا إذا طلب المستخدم وضع الإدارة صراحةً
+            if (wantsAdminTab) {
                 setTimeout(() => {
                     window.switchTab('admin');
                     triggerPostGoogleConnectBanner();
-                }, 150);
+                }, 50);
             }
         })();
 
         function handleAdminUnauthorized401(apiPath = '') {
-            clearStoredAdminAuthTokens();
+            const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            // على harajparts.com: يمنع منعاً باتاً مسح الجلسة أو إظهار تحذير 401 الأصفر إذا كان المدير موثقاً بالهاش المعتمد!
+            if (!isLocalOrigin && isAcceptedMasterAdminHash(activeAdminPasswordHash)) {
+                return;
+            }
+            setUnifiedMasterAdminState(false);
 
             const pendingList = document.getElementById('pendingListContainer');
             if (pendingList) {
@@ -3732,7 +2842,6 @@
             const nowMs = Date.now();
             if (nowMs - lastAdmin401PromptAt < 4000) return;
             lastAdmin401PromptAt = nowMs;
-            currentRole = null;
             if (typeof window.switchTab === 'function') {
                 setTimeout(() => {
                     window.switchTab('admin', 'reauth_401');
@@ -3740,15 +2849,15 @@
             }
         }
 
-        // جسر اتصال مرن مع سيرفر البوت (يدعم localhost وربط الجسر المحلي الصامت من الدومين الحي + كشف 401 الصريح)
+        // جسر اتصال مرن مع سيرفر البوت (يدعم localhost وربط الجسر المحلي من الدومين الحي مع تجديد التوكن الصامت ومنع حلقة 401)
         async function fetchBotBackend(apiPath, options = {}) {
             const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             const targetUrl = isLocalOrigin ? apiPath : `http://localhost:3000${apiPath}`;
             try {
                 const controller = new AbortController();
-                const timer = setTimeout(() => controller.abort(), options.timeoutMs || 5000);
+                const timer = setTimeout(() => controller.abort(), options.timeoutMs || (isLocalOrigin ? 5000 : 2500));
                 const mergedHeaders = { ...(options.headers || {}) };
-                if (currentRole === 'admin' && (activeAdminPasswordHash || activeAdminSessionToken)) {
+                if (isMasterAdminAuthenticated() && (activeAdminPasswordHash || activeAdminSessionToken)) {
                     if (!mergedHeaders['X-Admin-Password-Hash'] && !mergedHeaders['x-admin-password-hash'] && activeAdminPasswordHash) {
                         mergedHeaders['X-Admin-Password-Hash'] = activeAdminPasswordHash;
                     }
@@ -3766,10 +2875,43 @@
                         res &&
                         res.status === 401 &&
                         !options.skipAuthPrompt &&
-                        currentRole === 'admin' &&
+                        isMasterAdminAuthenticated() &&
                         /^\/api\/(?:admin|settings|supplier-hunter)\b/.test(String(apiPath || ''))
                     ) {
-                        handleAdminUnauthorized401(apiPath);
+                        if (!options._retriedSilentReauth && activeAdminPasswordHash) {
+                            try {
+                                const reLoginRes = await fetch(isLocalOrigin ? '/api/admin/login' : 'http://localhost:3000/api/admin/login', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-Admin-Password-Hash': activeAdminPasswordHash,
+                                        'X-Admin-Token': activeAdminPasswordHash
+                                    },
+                                    body: JSON.stringify({ admin_password_hash: activeAdminPasswordHash })
+                                });
+                                if (reLoginRes && reLoginRes.ok) {
+                                    const reLoginJson = await reLoginRes.json().catch(() => ({}));
+                                    if (reLoginJson && reLoginJson.success) {
+                                        setUnifiedMasterAdminState(true, {
+                                            token: reLoginJson.auth_token || activeAdminPasswordHash,
+                                            passHash: activeAdminPasswordHash
+                                        });
+                                        return fetchBotBackend(apiPath, {
+                                            ...options,
+                                            _retriedSilentReauth: true,
+                                            headers: {
+                                                ...(options.headers || {}),
+                                                'X-Admin-Password-Hash': activeAdminPasswordHash,
+                                                'X-Admin-Token': reLoginJson.auth_token || activeAdminPasswordHash
+                                            }
+                                        });
+                                    }
+                                }
+                            } catch (_reAuthErr) {}
+                        }
+                        if (isLocalOrigin || !isAcceptedMasterAdminHash(activeAdminPasswordHash)) {
+                            handleAdminUnauthorized401(apiPath);
+                        }
                     }
                     return res;
                 } finally {
@@ -3779,6 +2921,7 @@
                 return null;
             }
         }
+        window.fetchBotBackend = fetchBotBackend;
 
         const carBrandsData = {
             "ياباني": ["تويوتا", "لكزس", "نيسان", "إنفينيتي", "هوندا", "مازدا", "ميتسوبيشي", "سوبارو", "سوزوكي", "إيسوزو", "دايهاتسو"],
@@ -3971,28 +3114,31 @@
             }
         };
 
-        // مزامنة الإعدادات العامة وهاش المدير من السيرفر و Firestore فور فتح الموقع أو قبل تسجيل الدخول
-        async function syncPlatformConfigFromSources() {
-            // 1) جلب الإعدادات العامة من السيرفر إن كان متصلاً
-            const pubRes = await fetchBotBackend('/api/public/site-config', { method: 'GET' });
-            if (pubRes && pubRes.ok) {
-                try {
-                    const pubJson = await pubRes.json();
-                    if (pubJson.primary_whatsapp_number) {
-                        platformConfigState.primaryCustomerWa = window.formatSaudiPhone(pubJson.primary_whatsapp_number) || platformConfigState.primaryCustomerWa;
-                    }
-                    if (Array.isArray(pubJson.customer_contact_numbers) && pubJson.customer_contact_numbers.length > 1) {
-                        platformConfigState.supportNumbers = pubJson.customer_contact_numbers.slice(1).map((entry) => {
-                            if (typeof entry === 'object' && entry) {
-                                return { label: entry.label || 'دعم العملاء', phone: window.formatSaudiPhone(entry.phone) };
-                            }
-                            return { label: 'دعم العملاء', phone: window.formatSaudiPhone(entry) };
-                        }).filter((x) => x.phone);
-                    }
-                    if (Array.isArray(pubJson.shipping_companies) && pubJson.shipping_companies.length > 0 && platformConfigState.shippingCompanies.length === 0) {
-                        platformConfigState.shippingCompanies = pubJson.shipping_companies;
-                    }
-                } catch (_pubErr) {}
+        // مزامنة الإعدادات العامة وهاش المدير من السيرفر و Firestore (بدون حجب رسم الصفحة على الجوال أو الدومين الحي)
+        async function syncPlatformConfigFromSources(opts = {}) {
+            const isLocalOrigin = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            // 1) جلب الإعدادات العامة من السيرفر المحلي فقط إذا كنا على localhost أو طُلب الجسر المحلي صراحةً (لتجنب انتظار مهلة localhost على جوال الزائر في harajparts.com)
+            if (isLocalOrigin || opts.includeLocalBridge) {
+                const pubRes = await fetchBotBackend('/api/public/site-config', { method: 'GET', timeoutMs: 1800 });
+                if (pubRes && pubRes.ok) {
+                    try {
+                        const pubJson = await pubRes.json();
+                        if (pubJson.primary_whatsapp_number) {
+                            platformConfigState.primaryCustomerWa = window.formatSaudiPhone(pubJson.primary_whatsapp_number) || platformConfigState.primaryCustomerWa;
+                        }
+                        if (Array.isArray(pubJson.customer_contact_numbers) && pubJson.customer_contact_numbers.length > 1) {
+                            platformConfigState.supportNumbers = pubJson.customer_contact_numbers.slice(1).map((entry) => {
+                                if (typeof entry === 'object' && entry) {
+                                    return { label: entry.label || 'دعم العملاء', phone: window.formatSaudiPhone(entry.phone) };
+                                }
+                                return { label: 'دعم العملاء', phone: window.formatSaudiPhone(entry) };
+                            }).filter((x) => x.phone);
+                        }
+                        if (Array.isArray(pubJson.shipping_companies) && pubJson.shipping_companies.length > 0 && platformConfigState.shippingCompanies.length === 0) {
+                            platformConfigState.shippingCompanies = pubJson.shipping_companies;
+                        }
+                    } catch (_pubErr) {}
+                }
             }
 
             // 2) جلب وثيقة platform_config من Firestore (المرجع السحابي الموحد للجوال والكمبيوتر)
@@ -4067,8 +3213,10 @@
             );
         }
 
-        // تحميل الإعدادات العامة فور بدء الصفحة لتحديث WHATSAPP_NUMBER وكافة الأزرار
-        syncPlatformConfigFromSources();
+        // تأجيل مزامنة الإعدادات السحابية العامة لبعد اكتمال الرسم الأولي الفوري (< 0.2s) بدون أي استعلامات إدارية للزائر العادي
+        setTimeout(() => {
+            syncPlatformConfigFromSources({ includeLocalBridge: false }).catch(() => {});
+        }, 250);
 
         // ==========================================
         // تسجيل الشريك المسوق الجديد مع تشفير كلمة المرور بـ SHA-256
@@ -5255,12 +4403,24 @@
         };
 
         window.openWaSettingsModal = async () => {
-            if (currentRole !== 'admin') {
-                alert('⛔ هذا المركز مخصص للإدارة الرئيسية فقط.');
-                return;
+            if (!isMasterAdminAuthenticated()) {
+                if (currentRole === 'affiliate') {
+                    alert('⛔ هذا المركز مخصص للإدارة الرئيسية فقط.');
+                    return;
+                }
+                await window.switchTab('admin', 'default');
+                if (!isMasterAdminAuthenticated()) return;
             }
+            currentRole = 'admin';
+            window.currentRole = 'admin';
+            window.isMasterAdmin = true;
 
-            await syncPlatformConfigFromSources();
+            // فتح النافذة فوراً (0ms) أمام المدير الرئيسي قبل انتظار الشبكة
+            const modalEl = document.getElementById('waSettingsModal');
+            if (modalEl) modalEl.classList.remove('hidden');
+            window.switchSettingsTab('contact');
+
+            await syncPlatformConfigFromSources({ includeLocalBridge: true });
 
             // جلب أحدث البيانات التفصيلية من السيرفر (/api/admin/full-settings) إن كان متاحاً
             let loadedAiSettings = {};
@@ -5736,11 +4896,27 @@
             }
         };
         
-        window.openSuppliersModal = () => { if (currentRole !== 'admin') return; renderSuppliersModalList(); document.getElementById('suppliersModal').classList.remove('hidden'); };
+        window.openSuppliersModal = async () => {
+            if (!isMasterAdminAuthenticated()) {
+                await window.switchTab('admin', 'default');
+                if (!isMasterAdminAuthenticated()) return;
+            }
+            currentRole = 'admin';
+            document.getElementById('suppliersModal').classList.remove('hidden');
+            renderSuppliersModalList();
+            if (!Array.isArray(suppliersDB) || suppliersDB.length === 0) {
+                await loadSuppliersFromCloud();
+            }
+        };
         window.closeSuppliersModal = () => { document.getElementById('suppliersModal').classList.add('hidden'); cancelEdit(); };
-        window.openPendingModal = () => {
-            if (currentRole !== 'admin') return;
+        window.openPendingModal = async () => {
+            if (!isMasterAdminAuthenticated()) {
+                await window.switchTab('admin', 'default');
+                if (!isMasterAdminAuthenticated()) return;
+            }
+            currentRole = 'admin';
             document.getElementById('pendingModal').classList.remove('hidden');
+            renderCombinedPendingSuppliersView();
             if (typeof loadHarajMinerReadinessAndPending === 'function') {
                 loadHarajMinerReadinessAndPending();
             }
@@ -5813,17 +4989,22 @@
 
         window.switchTab = async function(tab, loginMode = 'default') {
             if (tab === 'admin') {
-                await syncPlatformConfigFromSources();
+                await syncPlatformConfigFromSources({ includeLocalBridge: true });
 
                 let restoredFromValidSession = false;
                 if (loginMode !== 'partner' && loginMode !== 'reauth_401') {
-                    const candidateTok = getStoredAdminCandidateToken();
-                    if (candidateTok) {
-                        const sessionCheck = await verifyAdminSessionWithBackend(candidateTok);
+                    if (isMasterAdminAuthenticated() && getStoredAdminCandidateToken()) {
+                        const sessionCheck = await verifyAdminSessionWithBackend(getStoredAdminCandidateToken());
                         if (sessionCheck.checked && sessionCheck.valid) {
                             restoredFromValidSession = true;
-                        } else if (sessionCheck.status === 401) {
-                            clearStoredAdminAuthTokens();
+                        }
+                    } else {
+                        const candidateTok = getStoredAdminCandidateToken();
+                        if (candidateTok) {
+                            const sessionCheck = await verifyAdminSessionWithBackend(candidateTok);
+                            if (sessionCheck.checked && sessionCheck.valid) {
+                                restoredFromValidSession = true;
+                            }
                         }
                     }
                 }
@@ -5833,7 +5014,7 @@
 
                 if (!restoredFromValidSession) {
                     const bannerText = loginMode === 'reauth_401'
-                        ? '⚠️ انتهت صلاحية الجلسة السابقة (401) وتم تنظيف التوكن القديم من المتصفح — أدخل كلمة مرور المدير للمتابعة.'
+                        ? '⚠️ انتهت صلاحية الجلسة السابقة على السيرفر المحلي — أدخل كلمة مرور المدير للمتابعة.'
                         : '';
                     const pass = await window.promptAdminPasswordModal({ loginMode, bannerText });
                     if (pass === null) return;
@@ -5849,25 +5030,26 @@
                             },
                             body: JSON.stringify({ admin_password_hash: passHash }),
                             skipAuthPrompt: true,
-                            timeoutMs: 4000
+                            timeoutMs: 3500
                         });
                         if (adminLoginRes && adminLoginRes.ok) {
                             const adminLoginJson = await adminLoginRes.json().catch(() => ({}));
                             if (adminLoginJson && adminLoginJson.success) {
                                 backendAdminVerified = true;
-                                activeAdminPasswordHash = passHash;
-                                activeAdminSessionToken = adminLoginJson.auth_token || passHash;
-                                persistAdminAuthTokens(activeAdminSessionToken, passHash);
+                                setUnifiedMasterAdminState(true, {
+                                    token: adminLoginJson.auth_token || passHash,
+                                    passHash
+                                });
                             }
                         }
                     } catch (_admLoginErr) {}
                 }
 
-                if (restoredFromValidSession || passHash === activeAdminPasswordHash || backendAdminVerified) {
-                    if (passHash) activeAdminPasswordHash = passHash;
-                    if (!activeAdminSessionToken) activeAdminSessionToken = activeAdminPasswordHash;
-                    persistAdminAuthTokens(activeAdminSessionToken, activeAdminPasswordHash);
-                    currentRole = 'admin';
+                if (restoredFromValidSession || isAcceptedMasterAdminHash(passHash) || backendAdminVerified) {
+                    setUnifiedMasterAdminState(true, {
+                        token: activeAdminSessionToken || passHash || activeAdminPasswordHash,
+                        passHash: isAcceptedMasterAdminHash(passHash) ? passHash : activeAdminPasswordHash
+                    });
                     currentAffiliateId = null;
                     currentAffiliateProfile = null;
                     currentAffiliateLookupKeys = [];
@@ -5940,7 +5122,11 @@
                                     }
                                 }
                             } catch (_) {}
-                            if (retryOk || retryHash === activeAdminPasswordHash) {
+                            if (retryOk || isAcceptedMasterAdminHash(retryHash)) {
+                                setUnifiedMasterAdminState(true, {
+                                    token: activeAdminSessionToken || retryHash,
+                                    passHash: retryHash
+                                });
                                 return window.switchTab('admin', 'default');
                             }
                             alert('❌ كلمة المرور غير صحيحة!');
@@ -5948,7 +5134,9 @@
                         return;
                     }
 
+                    setUnifiedMasterAdminState(false);
                     currentRole = 'affiliate';
+                    window.currentRole = 'affiliate';
                     currentAffiliateProfile = matchedAffiliate;
                     currentAffiliateId = matchedAffiliate.code || matchedAffiliate.name;
                     currentAffiliateLookupKeys = [...new Set(
@@ -7922,14 +7110,17 @@
                     </div>
 
                     <div class="flex flex-wrap gap-2 mt-3">
+                        <button type="button" onclick="togglePendingCardEditDrawer('${safeId}')" class="bg-slate-800 hover:bg-slate-700 text-cyan-200 border border-cyan-500/35 font-black py-2 px-3 rounded-xl transition">
+                            ✏️ تعديل الاسم والبيانات
+                        </button>
                         <button type="button" id="btn-save-pending-${safeId}" onclick="savePendingSupplierEditsUI('${safeId}')" class="bg-cyan-600/25 hover:bg-cyan-600 text-cyan-200 hover:text-white border border-cyan-500/40 font-black py-2 px-3 rounded-xl transition">
-                            💾 حفظ التعديلات أولاً
+                            💾 حفظ التعديلات
                         </button>
                         <button type="button" onclick="approveSupplier('${safeId}', '${dataStr}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black py-2 px-3 rounded-xl transition shadow-md">
-                            ✅ موافقة واعتماد (حفظ بالموقع + جهات الاتصال)
+                            ✅ موافقة واعتماد
                         </button>
                         <button type="button" onclick="rejectSupplier('${safeId}')" class="bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold py-2 px-3.5 rounded-xl hover:bg-rose-500 hover:text-white transition">
-                            رفض
+                            ❌ رفض
                         </button>
                     </div>
                 </div>
@@ -7967,61 +7158,96 @@
             return true;
         }
 
+        let latestUnrepliedOutreachQueue = [];
+
+        function renderUnrepliedOutreachQueueUI() {
+            const box = document.getElementById('unrepliedOutreachQueueContainer');
+            const pill = document.getElementById('unrepliedQueueCountPill');
+            if (!box) return;
+            const seenPh = new Set();
+            const mergedUnreplied = [];
+
+            for (const row of (latestUnrepliedOutreachQueue || [])) {
+                const ph = window.formatSaudiPhone(row?.phone || '');
+                if (!ph || seenPh.has(ph)) continue;
+                seenPh.add(ph);
+                mergedUnreplied.push(row);
+            }
+            for (const docItem of (latestFirestorePendingDocs || [])) {
+                if (!docItem?.data || isActionablePendingCardUI(docItem.data)) continue;
+                const st = String(docItem.data.status || '').toLowerCase();
+                if (st === 'approved' || st === 'rejected') continue;
+                const ph = window.formatSaudiPhone(docItem.data.phone || '');
+                if (!ph || seenPh.has(ph)) continue;
+                seenPh.add(ph);
+                mergedUnreplied.push(docItem.data);
+            }
+
+            if (pill) {
+                pill.textContent = `بانتظار رد: ${mergedUnreplied.length}`;
+            }
+            if (mergedUnreplied.length === 0) {
+                box.innerHTML = '<p class="text-slate-500 text-center py-2">لا توجد أرقام معلقة بدون رد حالياً.</p>';
+                return;
+            }
+            box.innerHTML = mergedUnreplied.slice(0, 60).map((u) => {
+                const nm = escapeHTML(u.shop_name || u.name || 'مورد قيد التواصل');
+                const ph = escapeHTML(u.phone || '');
+                const st = escapeHTML(u.outreach_status || 'contacted');
+                return `<div class="flex items-center justify-between gap-2 bg-slate-950/75 border border-slate-800/90 rounded-lg px-2.5 py-1.5"><span class="font-bold text-slate-300 truncate">${nm}</span><span dir="ltr" class="font-mono text-amber-300 shrink-0">${ph} (${st})</span></div>`;
+            }).join('');
+        }
+
         function renderCombinedPendingSuppliersView() {
             const list = document.getElementById('pendingListContainer');
             const badge = document.getElementById('pendingBadge');
+            const topCountPill = document.getElementById('pendingActionableCountPill');
             if (!list || !badge) return;
 
             const approvedPhones = new Set((suppliersDB || []).map(s => window.formatSaudiPhone(s.phone || '')));
             const seenPhoneBranchKeys = new Set();
             const seenPhones = new Set();
             const seenDocIds = new Set();
-            const cardsHtml = [];
+            const actionableItems = [];
 
-            for (const docItem of latestFirestorePendingDocs) {
-                if (!docItem || !isActionablePendingCardUI(docItem.data)) continue;
-                if (pendingOptimisticPendingSupOps.has(docItem.id) || seenDocIds.has(docItem.id)) continue;
-                const isLegacy = docItem.data?.onboarding_source === 'legacy_280_update' || Boolean(docItem.data?.existing_supplier_id);
-                const isRescue = docItem.data?.source === 'live_order_rescue' || docItem.data?.onboarding_source === 'live_order_rescue';
-                const isVerifiedOrPartial = ['onboarding_completed', 'partial_85', 'pending_review'].includes(String(docItem.data?.outreach_status || ''));
-                const ph = window.formatSaudiPhone(docItem.data?.phone || '');
-                const brIdx = Number(docItem.data?.branch_index || 1) || 1;
+            const pushUniqueActionable = (docId, itemData) => {
+                if (!itemData || !isActionablePendingCardUI(itemData)) return;
+                if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) return;
+                const isLegacy = itemData?.onboarding_source === 'legacy_280_update' || Boolean(itemData?.existing_supplier_id);
+                const isRescue = itemData?.source === 'live_order_rescue' || itemData?.onboarding_source === 'live_order_rescue';
+                const isVerifiedOrPartial = ['onboarding_completed', 'partial_85', 'pending_review'].includes(String(itemData?.outreach_status || ''));
+                const ph = window.formatSaudiPhone(itemData?.phone || '');
+                const brIdx = Number(itemData?.branch_index || 1) || 1;
                 const pbKey = ph ? `${ph}__b${brIdx}` : '';
-                if (pbKey && seenPhoneBranchKeys.has(pbKey)) continue;
-                if (ph && !isLegacy && !isRescue && !isVerifiedOrPartial && approvedPhones.has(ph)) continue;
-                seenDocIds.add(docItem.id);
-                if (pbKey) seenPhoneBranchKeys.add(pbKey);
-                if (ph) seenPhones.add(ph);
-                cardsHtml.push(buildPendingSupplierCardHtml(docItem.id, docItem.data));
-            }
-
-            for (const item of latestBackendPendingSuppliers) {
-                if (!item || !isActionablePendingCardUI(item)) continue;
-                const docId = String(item.id || ('pending_' + item.phone));
-                if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) continue;
-                const isLegacy = item.onboarding_source === 'legacy_280_update' || Boolean(item.existing_supplier_id);
-                const isRescue = item.source === 'live_order_rescue' || item.onboarding_source === 'live_order_rescue';
-                const isVerifiedOrPartial = ['onboarding_completed', 'partial_85', 'pending_review'].includes(String(item.outreach_status || ''));
-                const ph = window.formatSaudiPhone(item.phone || '');
-                const brIdx = Number(item.branch_index || 1) || 1;
-                const pbKey = ph ? `${ph}__b${brIdx}` : '';
-                if (pbKey && seenPhoneBranchKeys.has(pbKey)) continue;
-                if (ph && !isLegacy && !isRescue && !isVerifiedOrPartial && approvedPhones.has(ph)) continue;
+                if (pbKey && seenPhoneBranchKeys.has(pbKey)) return;
+                if (ph && !isLegacy && !isRescue && !isVerifiedOrPartial && approvedPhones.has(ph)) return;
                 seenDocIds.add(docId);
                 if (pbKey) seenPhoneBranchKeys.add(pbKey);
                 if (ph) seenPhones.add(ph);
-                cardsHtml.push(buildPendingSupplierCardHtml(docId, item));
+                const rank = String(itemData?.outreach_status || '') === 'onboarding_completed' ? 0 : 1;
+                actionableItems.push({ docId, data: itemData, rank });
+            };
+
+            for (const item of latestBackendPendingSuppliers) {
+                if (!item) continue;
+                pushUniqueActionable(String(item.id || ('pending_' + item.phone)), item);
+            }
+
+            for (const docItem of latestFirestorePendingDocs) {
+                if (!docItem) continue;
+                pushUniqueActionable(docItem.id, docItem.data);
             }
 
             for (const sup of latestHarajMinedSuppliers) {
                 if (!sup || !['onboarding_completed', 'partial_85', 'pending_review'].includes(String(sup.outreach_status || ''))) continue;
-                const docId = sup.id || ('haraj_' + sup.phone);
-                if (pendingOptimisticPendingSupOps.has(docId) || seenDocIds.has(docId)) continue;
-                const ph = window.formatSaudiPhone(sup.phone || '');
-                if (ph && (approvedPhones.has(ph) || seenPhones.has(ph))) continue;
-                seenDocIds.add(docId);
-                if (ph) seenPhones.add(ph);
-                cardsHtml.push(buildPendingSupplierCardHtml(docId, sup));
+                pushUniqueActionable(String(sup.id || ('haraj_' + sup.phone)), sup);
+            }
+
+            actionableItems.sort((a, b) => a.rank - b.rank);
+            const cardsHtml = actionableItems.map((entry) => buildPendingSupplierCardHtml(entry.docId, entry.data));
+
+            if (topCountPill) {
+                topCountPill.textContent = `${cardsHtml.length} بطاقة جاهزة للمراجعة`;
             }
 
             if (cardsHtml.length === 0) {
@@ -8036,6 +7262,7 @@
                     list.innerHTML = cardsHtml.join('');
                 }
             }
+            renderUnrepliedOutreachQueueUI();
         }
 
         function renderHarajReadinessBar(quotaSummary) {
@@ -8327,22 +7554,27 @@
         };
 
         async function loadHarajMinerReadinessAndPending() {
-            if (currentRole !== 'admin') return;
+            if (!isMasterAdminAuthenticated()) return;
             loadVerifierDripAndInactiveSuppliers();
             try {
-                const [minerRes, syncRes] = await Promise.all([
-                    fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 8000 }),
-                    fetchBotBackend('/api/admin/pending-suppliers/sync-firestore', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}), timeoutMs: 10000 })
+                const [minerRes, pendingRes] = await Promise.all([
+                    fetchBotBackend('/api/admin/haraj-miner/status', { method: 'GET', timeoutMs: 5000 }),
+                    fetchBotBackend('/api/admin/pending-suppliers?status=pending,pending_review,legacy_280_update,live_order_rescue,partial_85&sync_cloud=true', { method: 'GET', timeoutMs: 6000 })
                 ]);
-                if (syncRes && syncRes.ok) {
-                    const syncJson = await syncRes.json();
-                    latestBackendPendingSuppliers = Array.isArray(syncJson.items) ? syncJson.items : [];
-                } else {
-                    const pendingRes = await fetchBotBackend('/api/admin/pending-suppliers?status=pending,pending_review,legacy_280_update,live_order_rescue,partial_85&sync_cloud=true', { method: 'GET', timeoutMs: 8000 });
-                    if (pendingRes && pendingRes.ok) {
-                        const pendingJson = await pendingRes.json();
-                        latestBackendPendingSuppliers = Array.isArray(pendingJson.items) ? pendingJson.items : [];
+                if (pendingRes && pendingRes.ok) {
+                    const pendingJson = await pendingRes.json();
+                    latestBackendPendingSuppliers = Array.isArray(pendingJson.items) ? pendingJson.items : [];
+                    if (Array.isArray(pendingJson.unreplied_queue)) {
+                        latestUnrepliedOutreachQueue = pendingJson.unreplied_queue;
                     }
+                } else if (latestFirestorePendingDocs.length === 0) {
+                    // جلب مباشر وفوري من Firestore على harajparts.com عند عدم توفر السيرفر المحلي
+                    try {
+                        const fSnap = await getDocs(collection(db, "pending_suppliers"));
+                        const fDocs = [];
+                        fSnap.forEach((ds) => fDocs.push({ id: ds.id, data: ds.data() }));
+                        latestFirestorePendingDocs = fDocs;
+                    } catch (_fsPendErr) {}
                 }
                 if (minerRes && minerRes.ok) {
                     const payload = await minerRes.json();
@@ -8353,6 +7585,7 @@
                 renderCombinedPendingSuppliersView();
             } catch (_err) {
                 renderHarajReadinessBar(null);
+                renderCombinedPendingSuppliersView();
             }
         }
 
@@ -8953,46 +8186,96 @@
         };
 
         async function loadSuppliersFromCloud() {
-            if (currentRole !== 'admin') {
+            if (!isMasterAdminAuthenticated()) {
                 suppliersDB = [];
                 return;
             }
             try {
+                const localRes = await fetchBotBackend('/api/admin/suppliers', { method: 'GET', timeoutMs: 4000 });
+                if (localRes && localRes.ok) {
+                    const localJson = await localRes.json().catch(() => null);
+                    if (localJson && Array.isArray(localJson.items) && localJson.items.length > 0) {
+                        suppliersDB = localJson.items;
+                        renderSuppliersModalList();
+                        return;
+                    }
+                }
+            } catch (_localSupErr) {}
+
+            try {
                 const docSnap = await getDoc(doc(db, "settings", "suppliers_v7"));
-                if (docSnap.exists() && docSnap.data().list) { suppliersDB = docSnap.data().list; } else { suppliersDB = []; }
+                if (docSnap.exists() && Array.isArray(docSnap.data().list)) {
+                    suppliersDB = docSnap.data().list;
+                } else {
+                    suppliersDB = [];
+                }
                 renderSuppliersModalList();
-            } catch (error) {}
+            } catch (error) {
+                renderSuppliersModalList();
+            }
         }
 
-        function renderSuppliersModalList() {
+        window.renderSuppliersModalList = function renderSuppliersModalList() {
             const container = document.getElementById('suppliersListContainer');
+            const totalBadge = document.getElementById('suppliersTotalCountBadge');
+            const searchQuery = String(document.getElementById('suppliersSearchInput')?.value || '').trim().toLowerCase();
+
+            const filteredSuppliers = !searchQuery
+                ? suppliersDB
+                : suppliersDB.filter((sup) => {
+                    const hay = [
+                        sup.name || '',
+                        sup.phone || '',
+                        sup.district || '',
+                        Array.isArray(sup.brands) ? sup.brands.join(' ') : '',
+                        Array.isArray(sup.categories) ? sup.categories.join(' ') : '',
+                        sup.supplier_type_label_ar || ''
+                    ].join(' ').toLowerCase();
+                    return hay.includes(searchQuery);
+                });
+
+            if (totalBadge) {
+                totalBadge.textContent = searchQuery
+                    ? `${filteredSuppliers.length} من ${suppliersDB.length} مورد معتمد`
+                    : `${suppliersDB.length} مورد معتمد`;
+            }
+
             if (!container) return;
-            if (suppliersDB.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-8">لا يوجد موردين معتمدين.</p>';
+            if (filteredSuppliers.length === 0) {
+                container.innerHTML = searchQuery
+                    ? '<p class="text-xs text-slate-400 text-center py-8">لا يوجد مورد مطابق لعبارة البحث.</p>'
+                    : '<p class="text-xs text-slate-400 text-center py-8">لا يوجد موردين معتمدين.</p>';
                 return;
             }
-            const supplierRowsHtml = suppliersDB.map(sup => {
+            const supplierRowsHtml = filteredSuppliers.map(sup => {
                 const safeSupId = escapeHTML(sup.id);
                 const safeSupName = escapeHTML(sup.name);
+                const safePhone = escapeHTML(sup.phone || '');
+                const safeDistrict = sup.district ? escapeHTML(sup.district) : '';
                 const brandsCount = Array.isArray(sup.brands) ? sup.brands.length : 0;
                 const categoriesCount = Array.isArray(sup.categories) ? sup.categories.length : 0;
                 return `
-                    <div id="supplier-row-${safeSupId}" class="flex justify-between items-center bg-slate-900/80 border border-slate-700/80 p-4 rounded-2xl text-xs shadow-sm">
-                        <div class="flex-1">
-                            <p class="font-black text-white text-base mb-1.5">${safeSupName}</p>
+                    <div id="supplier-row-${safeSupId}" data-approved-supplier-row="1" class="flex justify-between items-center bg-slate-900/80 border border-slate-700/80 p-3.5 rounded-2xl text-xs shadow-sm">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                                <p class="font-black text-white text-sm sm:text-base truncate">${safeSupName}</p>
+                                ${safePhone ? `<span dir="ltr" class="font-mono text-[11px] font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-lg">${safePhone}</span>` : ''}
+                                ${safeDistrict ? `<span class="text-[10px] font-bold text-sky-300 bg-sky-500/10 border border-sky-500/25 px-2 py-0.5 rounded-lg">📍 ${safeDistrict}</span>` : ''}
+                            </div>
                             <div class="flex flex-wrap gap-2 text-[11px] text-slate-300">
                                 <p><span class="font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">تخصصات:</span> ${brandsCount} سيارة، ${categoriesCount} أقسام</p>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-2 ml-3 border-r border-slate-800 pr-3">
-                            <button onclick="editSupplier('${safeSupId}')" class="text-sky-400 bg-sky-500/10 w-9 h-9 rounded-xl flex justify-center items-center"><i class="fa-solid fa-pen text-xs"></i></button>
-                            <button onclick="deleteSupplier('${safeSupId}')" class="text-rose-400 bg-rose-500/10 w-9 h-9 rounded-xl flex justify-center items-center"><i class="fa-solid fa-trash text-xs"></i></button>
+                        <div class="flex items-center gap-2 ml-3 border-r border-slate-800 pr-3 shrink-0">
+                            <button type="button" onclick="editSupplier('${safeSupId}')" title="تعديل بيانات المورد" class="text-sky-300 hover:text-white bg-sky-500/15 hover:bg-sky-600 px-2.5 py-2 rounded-xl flex items-center gap-1 font-bold transition"><i class="fa-solid fa-pen text-xs"></i><span>تعديل</span></button>
+                            <button type="button" onclick="deleteSupplier('${safeSupId}')" title="حذف المورد" class="text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-600 w-9 h-9 rounded-xl flex justify-center items-center transition"><i class="fa-solid fa-trash text-xs"></i></button>
                         </div>
                     </div>
                 `;
             });
             container.innerHTML = supplierRowsHtml.join('');
-        }
+        };
+        const renderSuppliersModalList = window.renderSuppliersModalList;
 
         function updateLoadMoreOrdersButtonState(fetchedSnapSize) {
             const wrapEl = document.getElementById('loadMoreOrdersWrap');
@@ -9060,7 +8343,7 @@
 
                 const changes = snap.docChanges();
                 if (!isFirstLoad && changes.some(c => c.type === "added")) {
-                    audioAlert.play().catch(() => {});
+                    playAdminOrderAlert();
                 }
 
                 // تجنب إعادة بناء كامل القائمة إذا كان التغيير الوحيد حذفاً أو تبديل حالة تم تطبيقه متفائلاً (0ms) بالفعل في الـ DOM
@@ -9568,14 +8851,10 @@
 
   </div>
 
-  <!-- GSAP + ScrollTrigger -->
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-
   <script>
     // =========================================================================
-    // إعداد رقم الواتساب الموحد لجميع أزرار ونماذج الصفحة (يتحدث ديناميكياً من مركز الإعدادات الشامل):
+    // إعداد رقم الواتساب الموحد + تهيئة سنوات الصنع واختيار مسارات التوريد السريعة (< 0.6s بدون أي استنزاف إطارات)
+    // =========================================================================
     let WHATSAPP_NUMBER = window.WHATSAPP_NUMBER || '966509046024';
     window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
     window.addEventListener('haraj:whatsapp-number-updated', function (ev) {
@@ -9583,12 +8862,10 @@
         WHATSAPP_NUMBER = ev.detail.phone;
       }
     });
-    // =========================================================================
 
     window.addEventListener('DOMContentLoaded', function () {
       'use strict';
 
-      // توليد سنوات الصنع برمجياً داخل #carYear عند جاهزية الصفحة
       const carYearSelect = document.getElementById('carYear');
       if (carYearSelect && carYearSelect.options.length <= 1) {
         const yearFrag = document.createDocumentFragment();
@@ -9602,618 +8879,42 @@
         carYearSelect.appendChild(yearFrag);
       }
 
-      const track = document.getElementById('scrolly-track');
-      const canvas = document.getElementById('scrolly-canvas');
-      const ctx = canvas.getContext('2d', { alpha: false });
-
-      const HUD_STATES = [
-        {
-          min: 0.0,
-          max: 0.25,
-          accent: '#00d4ff',
-          status: 'المطابقة الرقمية وبداية التفكيك',
-          code: '01 / 04',
-          accuracy: 'مطابقة 100% برقم الهيكل (VIN)',
-          partState: 'الإطارات 1–50 • تفكيك المركبة',
-          reticleText: 'FRAMES 001–050 // VIN DIGITAL MATCH',
-          reticleScale: 1.0,
-          pillIndex: 0
-        },
-        {
-          min: 0.25,
-          max: 0.50,
-          accent: '#00d4ff',
-          status: 'تغطية شاملة: بدي • ميكانيك • كهرباء',
-          code: '02 / 04',
-          accuracy: 'صدامات ورفارف • قيور ومحركات • دينمو وكمبيوترات',
-          partState: 'الإطارات 51–100 • القطاعات الثلاثة',
-          reticleText: 'FRAMES 051–100 // BODY • MECH • ELEC',
-          reticleScale: 0.92,
-          pillIndex: 1
-        },
-        {
-          min: 0.50,
-          max: 0.75,
-          accent: '#f59e0b',
-          status: 'فتح الصندوق — خيارات الجديد (OEM + تجاري)',
-          code: '03 / 04',
-          accuracy: 'أصلي وكالة OEM + بديل تجاري معتمد',
-          partState: 'الإطارات 101–150 • القطع الجديدة',
-          reticleText: 'FRAMES 101–150 // NEW OEM & AFTERMARKET',
-          reticleScale: 0.90,
-          pillIndex: 2
-        },
-        {
-          min: 0.75,
-          max: 0.92,
-          accent: '#10b981',
-          status: 'خيار المستخدم المضمون (التشليح المفحوص)',
-          code: '04 / 04',
-          accuracy: 'مفحوص ومضمون + مقارنة الخيارات الثلاثة',
-          partState: 'الإطارات 151–200 • تشليح ومقارنة',
-          reticleText: 'FRAMES 151–200 // INSPECTED USED & COMPARE',
-          reticleScale: 0.94,
-          pillIndex: 3
-        },
-        {
-          min: 0.92,
-          max: 1.01,
-          accent: '#38bdf8',
-          status: 'مقارنة المسارات الثلاثة للطلب الفوري',
-          code: '04 / 04',
-          accuracy: 'أصلي وكالة • تشليح مضمون • تجاري معتمد',
-          partState: 'الإطارات 151–200 • الطلب المباشر',
-          reticleText: 'COMPARE & ORDER // 3 SUPPLY PATHS',
-          reticleScale: 0.96,
-          pillIndex: 4
-        }
-      ];
-
-      const CARD_WINDOWS = [
-        { el: document.getElementById('stage-card-1'), in0: -0.1, in1: 0.0, out0: 0.21, out1: 0.25 },
-        { el: document.getElementById('stage-card-2'), in0: 0.25, in1: 0.29, out0: 0.46, out1: 0.50 },
-        { el: document.getElementById('stage-card-3'), in0: 0.50, in1: 0.54, out0: 0.71, out1: 0.75 },
-        { el: document.getElementById('stage-card-4'), in0: 0.75, in1: 0.79, out0: 0.88, out1: 0.91 }
-      ];
-
-      const DEFAULT_FRAME_PATHS = {
-        scene1: './assets/frames/scene1_bmw_exploded.jpg',
-        scene2: './assets/frames/scene2_robot_salvage.jpg',
-        scene3: './assets/frames/scene3_warehouse_oem.jpg',
-        scene4: './assets/frames/scene4_warehouse_aftermarket.jpg',
-        scene5: './assets/frames/scene5_loading_van.jpg'
-      };
-
-      const loadedScenes = {};
-      const videoSequenceFrames = [];
-      let hasVideoSequences = false;
-
-      const state = {
-        progress: 0,
-        targetFrame: 0,
-        smoothFrame: 0,
-        activeHudIndex: -1,
-        mouseX: 0,
-        mouseY: 0,
-        targetMouseX: 0,
-        targetMouseY: 0,
-        isMobileLayout: window.innerWidth <= 768,
-        needsRender: true,
-        isTrackVisible: true,
-        rafId: 0
-      };
-
-      const hudRoot = document.getElementById('ai-tech-hud');
-      const hudStatus = document.getElementById('hud-stage-status');
-      const hudCode = document.getElementById('hud-mode-code');
-      const hudAccuracy = document.getElementById('hud-accuracy');
-      const hudPartState = document.getElementById('hud-part-state');
-      const hudProgressBar = document.getElementById('hud-progress-bar');
-      const hudReticle = document.getElementById('hud-reticle');
-      const hudReticleTag = document.getElementById('hud-reticle-tag');
-      const splitOverlay = document.getElementById('split-delivery-overlay');
-      const customerCols = Array.from(splitOverlay.querySelectorAll('.customer-col'));
-      const scrollHint = document.getElementById('scroll-hint');
-      const stagePills = Array.from(document.querySelectorAll('.stage-pill'));
-
-      function clamp01(v) {
-        return Math.max(0, Math.min(1, v));
-      }
-
-      function smoothstep(edge0, edge1, x) {
-        if (edge1 <= edge0) return x >= edge1 ? 1 : 0;
-        const t = clamp01((x - edge0) / (edge1 - edge0));
-        return t * t * (3 - 2 * t);
-      }
-
-      const CACHE_BUST_VER = '20s_v3';
-
-      function normalizeRelativePath(p) {
-        if (!p) return p;
-        const base = p.startsWith('./') || p.startsWith('http') ? p : `./${p}`;
-        return base.includes('?v=') ? base : `${base}?v=${CACHE_BUST_VER}`;
-      }
-
-      function computeRawTrackProgress() {
-        const rect = track.getBoundingClientRect();
-        const scrollable = Math.max(1, track.offsetHeight - window.innerHeight);
-        return clamp01(-rect.top / scrollable);
-      }
-
-      function loadImage(src) {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.decoding = 'async';
-          img.onload = () => {
-            if (typeof img.decode === 'function') {
-              img.decode().catch(() => {}).finally(() => resolve(img));
-            } else {
-              resolve(img);
-            }
-          };
-          img.onerror = () => resolve(null);
-          img.src = src;
-        });
-      }
-
-      async function initAssets() {
-        let manifest = null;
-        try {
-          const res = await fetch(`./assets/frames/manifest.json?v=${CACHE_BUST_VER}`, { cache: 'no-store' });
-          if (res.ok) manifest = await res.json();
-        } catch (_) {}
-
-        const frameMap = (manifest && manifest.frames) || DEFAULT_FRAME_PATHS;
-        await Promise.all(
-          Object.entries(DEFAULT_FRAME_PATHS).map(async ([key, fallbackSrc]) => {
-            const candidate = normalizeRelativePath(frameMap[key] || fallbackSrc);
-            const img = await loadImage(candidate);
-            if (img) loadedScenes[key] = img;
-          })
-        );
-
-        if (manifest && manifest.hasVideoSequences && (manifest.sequences || manifest.mobileSequences)) {
-          const activeSeqMap =
-            window.innerWidth <= 768 && manifest.mobileSequences && Object.keys(manifest.mobileSequences).length > 0
-              ? manifest.mobileSequences
-              : manifest.sequences || {};
-          const orderedSeqKeys = Object.keys(activeSeqMap).sort();
-          const allUrls = [];
-          for (const k of orderedSeqKeys) {
-            allUrls.push(...activeSeqMap[k].map(normalizeRelativePath));
-          }
-          if (allUrls.length > 4) {
-            const loadedSeq = await Promise.all(allUrls.map((u) => loadImage(u)));
-            const validSeq = loadedSeq.filter(Boolean);
-            if (validSeq.length > 4) {
-              videoSequenceFrames.push(...validSeq);
-              hasVideoSequences = true;
-            }
-          }
-        }
-
-        resizeCanvas();
-        const initP = computeRawTrackProgress();
-        applyProgress(initP);
-        state.smoothFrame = state.targetFrame;
-        window.__harajScrollyState = { state, videoSequenceFrames };
-        renderCanvas();
-      }
-
-      function resizeCanvas() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        state.isMobileLayout = w <= 768;
-        const hintTextEl = document.getElementById('scroll-hint-text');
-        if (hintTextEl) {
-          hintTextEl.textContent = state.isMobileLayout
-            ? 'اسحب للأعلى لمتابعة رحلة القطعة'
-            : 'مرّر للأسفل لمتابعة رحلة القطعة';
-        }
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        state.needsRender = true;
-      }
-
-      function drawCoverImage(img, alpha, scale, offsetX, offsetY) {
-        if (!img || alpha <= 0.001) return;
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        const iw = img.naturalWidth || (state.isMobileLayout ? 720 : 1280);
-        const ih = img.naturalHeight || (state.isMobileLayout ? 1280 : 720);
-
-        if (state.isMobileLayout) {
-          // On mobile (9:16 vertical stack), fit 100% of horizontal width (720px) and fit above the <=18% bottom card
-          const availH = vh * 0.84;
-          const fitScale = Math.min(vw / iw, (availH / ih) * 1.08);
-          const drawW = iw * fitScale;
-          const drawH = ih * fitScale;
-          const dx = (vw - drawW) * 0.5;
-          const dy = Math.max(4, (availH - drawH) * 0.45);
-
-          ctx.save();
-          ctx.globalAlpha = alpha;
-          ctx.drawImage(img, dx, dy, drawW, drawH);
-          ctx.restore();
-          return;
-        }
-
-        // On desktop (> 768px), scale to 95% of cover and shift left so the entire front of the car,
-        // pulled-out engine, and 3 boxes finish completely to the left of the right-hand .story-card.
-        const baseRatio = Math.max(vw / iw, vh / ih);
-        const finalScale = baseRatio * scale * 0.95;
-        const drawW = iw * finalScale;
-        const drawH = ih * finalScale;
-        const dx = Math.max(vw - drawW, -Math.round(vw * 0.03)) + offsetX * 0.35;
-        const dy = (vh - drawH) * 0.5 + offsetY * 0.35;
-
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.drawImage(img, dx, dy, drawW, drawH);
-        ctx.restore();
-      }
-
-      function drawAiScanSweep(p) {
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        const sweepY = ((p * 3.5) % 1) * vh;
-
-        const grad = ctx.createLinearGradient(0, sweepY - 50, 0, sweepY + 12);
-        grad.addColorStop(0, 'rgba(0, 212, 255, 0)');
-        grad.addColorStop(0.85, 'rgba(0, 212, 255, 0.09)');
-        grad.addColorStop(1, 'rgba(0, 212, 255, 0)');
-
-        ctx.save();
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, sweepY - 50, vw, 62);
-        ctx.restore();
-      }
-
-      function renderCanvas() {
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        const p = state.progress;
-
-        ctx.fillStyle = '#070b13';
-        ctx.fillRect(0, 0, vw, vh);
-
-        const px = state.mouseX * 18;
-        const py = state.mouseY * 12;
-
-        if (hasVideoSequences && videoSequenceFrames.length > 0) {
-          const maxIdx = videoSequenceFrames.length - 1;
-          const sf = Math.max(0, Math.min(maxIdx, state.smoothFrame));
-          const idxA = Math.floor(sf);
-          const idxB = Math.min(maxIdx, Math.ceil(sf));
-          const blend = sf % 1;
-
-          drawCoverImage(videoSequenceFrames[idxA], 1, 1.0, px, py);
-          if (idxB !== idxA && blend > 0.005) {
-            drawCoverImage(videoSequenceFrames[idxB], blend, 1.0, px, py);
-          }
-          return;
-        }
-
-        const s1 = loadedScenes.scene1;
-        const s2 = loadedScenes.scene2;
-        const s3 = loadedScenes.scene3;
-        const s4 = loadedScenes.scene4;
-        const s5 = loadedScenes.scene5;
-
-        if (p < 0.22) {
-          const tZoom = smoothstep(0.0, 0.22, p);
-          const fadeTo2 = smoothstep(0.16, 0.22, p);
-          drawCoverImage(s1, 1, 1.02 + tZoom * 0.56, px * 1.1, py * 1.1);
-          drawCoverImage(s2, fadeTo2, 1.16 - fadeTo2 * 0.1, px, py);
-        } else if (p < 0.42) {
-          const local = smoothstep(0.22, 0.42, p);
-          const fadeTo3 = smoothstep(0.36, 0.42, p);
-          const panOffset = fadeTo3 * -34;
-          drawCoverImage(s2, 1, 1.06 + local * 0.08, px + panOffset, py);
-          drawCoverImage(s3, fadeTo3, 1.12 - fadeTo3 * 0.07, px + (1 - fadeTo3) * 34, py);
-        } else if (p < 0.62) {
-          const local = smoothstep(0.42, 0.62, p);
-          const fadeTo4 = smoothstep(0.56, 0.62, p);
-          drawCoverImage(s3, 1, 1.05 + local * 0.08, px, py - fadeTo4 * 18);
-          drawCoverImage(s4, fadeTo4, 1.13 - fadeTo4 * 0.07, px, py + (1 - fadeTo4) * 20);
-        } else {
-          const local = smoothstep(0.62, 0.82, p);
-          const fadeTo5 = smoothstep(0.69, 0.75, p);
-          drawCoverImage(s4, 1, 1.06 + local * 0.07, px, py);
-          drawCoverImage(s5, fadeTo5, 1.12 - smoothstep(0.69, 0.9, p) * 0.08, px, py);
-        }
-      }
-
-      function updateStackedCards(p) {
-        const baseShift = state.isMobileLayout ? 0 : -50;
-
-        for (let i = 0; i < CARD_WINDOWS.length; i++) {
-          const cw = CARD_WINDOWS[i];
-          if (!cw.el) continue;
-
-          let alpha = 0;
-          let yPx = 28;
-
-          if (p >= cw.in0 && p <= cw.out1) {
-            if (p < cw.in1) {
-              const tIn = smoothstep(cw.in0, cw.in1, p);
-              alpha = tIn;
-              yPx = (1 - tIn) * 28;
-            } else if (p <= cw.out0) {
-              alpha = 1;
-              yPx = 0;
-            } else {
-              const tOut = smoothstep(cw.out0, cw.out1, p);
-              alpha = 1 - tOut;
-              yPx = -tOut * 24;
-            }
-          }
-
-          cw.el.style.opacity = alpha.toFixed(3);
-          cw.el.style.visibility = alpha > 0.01 ? 'visible' : 'hidden';
-          cw.el.style.pointerEvents = alpha > 0.6 ? 'auto' : 'none';
-          if (state.isMobileLayout) {
-            cw.el.style.transform = `translate3d(0, ${yPx.toFixed(1)}px, 0)`;
-          } else {
-            cw.el.style.transform = `translate3d(0, calc(${baseShift}% + ${yPx.toFixed(1)}px), 0)`;
-          }
-        }
-      }
-
-      function updateSplitScreen(p) {
-        const splitAlpha = smoothstep(0.91, 0.95, p);
-        const isVisible = splitAlpha > 0.005;
-
-        splitOverlay.style.opacity = splitAlpha.toFixed(3);
-        splitOverlay.style.visibility = isVisible ? 'visible' : 'hidden';
-        splitOverlay.style.pointerEvents = splitAlpha > 0.75 ? 'auto' : 'none';
-        splitOverlay.classList.toggle('active', p >= 0.91);
-
-        customerCols.forEach((col, i) => {
-          const colStart = 0.91 + i * 0.015;
-          const colProgress = smoothstep(colStart, colStart + 0.045, p);
-          const colY = (1 - colProgress) * 30;
-          col.style.opacity = colProgress.toFixed(3);
-          col.style.transform = `translate3d(0, ${colY.toFixed(1)}px, 0)`;
-        });
-
-        hudRoot.style.opacity = (1 - splitAlpha).toFixed(3);
-      }
-
-      function applyProgress(p) {
-        state.progress = p;
-        if (hasVideoSequences && videoSequenceFrames.length > 0) {
-          state.targetFrame = clamp01(p) * (videoSequenceFrames.length - 1);
-        }
-        state.needsRender = true;
-        if (typeof wakeCanvasLoopRef === 'function') wakeCanvasLoopRef();
-
-        hudProgressBar.style.width = `${Math.max(4, Math.round(p * 100))}%`;
-        const hideHint = p > 0.03;
-        scrollHint.style.opacity = hideHint ? '0' : '1';
-        scrollHint.style.pointerEvents = 'none';
-        scrollHint.style.visibility = hideHint ? 'hidden' : 'visible';
-
-        updateStackedCards(p);
-        updateSplitScreen(p);
-
-        let hIdx = HUD_STATES.findIndex((h) => p >= h.min && p < h.max);
-        if (hIdx === -1) hIdx = HUD_STATES.length - 1;
-
-        if (hIdx !== state.activeHudIndex) {
-          state.activeHudIndex = hIdx;
-          const h = HUD_STATES[hIdx];
-          hudStatus.textContent = h.status;
-          hudCode.textContent = h.code;
-          hudAccuracy.textContent = h.accuracy;
-          hudPartState.textContent = h.partState;
-          hudReticleTag.textContent = h.reticleText;
-          hudReticle.style.transform = `translate(-50%, -50%) scale(${h.reticleScale})`;
-          hudReticle.style.borderColor = h.accent;
-
-          stagePills.forEach((pill, idx) => {
-            pill.classList.toggle('active', idx === h.pillIndex);
-          });
-        }
-      }
-
-      function syncHeaderVisibility() {
-        const topHeader = document.querySelector('.top-header');
-        const orderSec = document.getElementById('order-section');
-        if (!topHeader || !orderSec) return;
-        const pastTrack = orderSec.getBoundingClientRect().top <= 80;
-        topHeader.style.transform = pastTrack ? 'translateY(-110%)' : 'translateY(0)';
-        topHeader.style.opacity = pastTrack ? '0' : '1';
-        topHeader.style.pointerEvents = pastTrack ? 'none' : 'auto';
-      }
-      window.addEventListener('scroll', syncHeaderVisibility, { passive: true });
-
-      function setupScrollEngine() {
-        const attachGsapOrNative = () => {
-          if (window.gsap && window.ScrollTrigger) {
-            window.gsap.registerPlugin(window.ScrollTrigger);
-            window.ScrollTrigger.create({
-              trigger: track,
-              start: 'top top',
-              end: 'bottom bottom',
-              scrub: 0.35,
-              onUpdate: (self) => {
-                applyProgress(self.progress);
-              }
-            });
-          } else {
-            window.addEventListener(
-              'scroll',
-              () => {
-                applyProgress(computeRawTrackProgress());
-              },
-              { passive: true }
-            );
-          }
-        };
-
-        if (document.readyState === 'complete') {
-          attachGsapOrNative();
-        } else {
-          window.addEventListener('load', attachGsapOrNative, { once: true });
-        }
-
-        stagePills.forEach((pill) => {
-          pill.addEventListener('click', () => {
-            const targetP = parseFloat(pill.getAttribute('data-target-progress') || '0');
-            const scrollable = Math.max(1, track.offsetHeight - window.innerHeight);
-            const targetY = track.offsetTop + scrollable * targetP;
-            window.scrollTo({ top: targetY, behavior: 'smooth' });
-          });
-        });
-
-        document.getElementById('brand-home-link').addEventListener('click', (e) => {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        document.getElementById('skip-to-order-btn').addEventListener('click', (e) => {
-          e.preventDefault();
-          const orderSec = document.getElementById('order-section');
-          if (orderSec) {
-            orderSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const skipBtn = document.getElementById('skip-to-order-btn');
+      if (skipBtn) {
+        skipBtn.addEventListener('click', function (e) {
+          const orderForm = document.getElementById('orderForm') || document.getElementById('order-section');
+          if (orderForm) {
+            e.preventDefault();
+            orderForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         });
       }
 
-      let wakeCanvasLoopRef = null;
-
-      function setupInteractions() {
-        state.isAdminTabOpen = Boolean(
-          document.getElementById('admin-view') &&
-          !document.getElementById('admin-view').classList.contains('hidden')
-        );
-
-        function tick() {
-          if (!state.isTrackVisible || state.isAdminTabOpen) {
-            state.rafId = 0;
-            return;
+      document.querySelectorAll('[data-select-tier]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const tier = btn.getAttribute('data-select-tier') || '';
+          const condSelect = document.getElementById('partCondition');
+          const partsTextarea = document.getElementById('carParts');
+          if (condSelect) {
+            condSelect.value = tier.includes('تشليح') ? 'مستعمل' : 'جديد';
           }
-          const dx = state.targetMouseX - state.mouseX;
-          const dy = state.targetMouseY - state.mouseY;
-          if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
-            state.mouseX += dx * 0.08;
-            state.mouseY += dy * 0.08;
-            state.needsRender = true;
+          if (partsTextarea && !partsTextarea.value.includes(tier)) {
+            partsTextarea.placeholder = 'الفئة المختارة: ' + tier + ' — اكتب اسم القطعة المطلوبة هنا...';
           }
-          if (hasVideoSequences && videoSequenceFrames.length > 0) {
-            const frameDiff = state.targetFrame - state.smoothFrame;
-            if (Math.abs(frameDiff) > 0.002) {
-              state.smoothFrame += frameDiff * 0.22;
-              state.needsRender = true;
-            } else if (state.smoothFrame !== state.targetFrame) {
-              state.smoothFrame = state.targetFrame;
-              state.needsRender = true;
-            }
+          const banner = document.getElementById('selected-tier-banner');
+          const bannerText = document.getElementById('selected-tier-name');
+          const tierWaLink = document.getElementById('tier-instant-wa-link');
+          if (banner && bannerText) {
+            bannerText.textContent = tier;
+            banner.classList.remove('hidden');
           }
-          if (state.needsRender) {
-            renderCanvas();
-            state.needsRender = false;
+          if (tierWaLink) {
+            const activeWa = window.WHATSAPP_NUMBER || WHATSAPP_NUMBER || '966509046024';
+            tierWaLink.href = 'https://wa.me/' + activeWa + '?text=' + encodeURIComponent('مرحباً، أرغب بطلب تسعيرة قطعة غيار - الفئة المختارة: ' + tier);
           }
-          state.rafId = requestAnimationFrame(tick);
-        }
-
-        function wakeCanvasLoop() {
-          if (!state.isTrackVisible || state.isAdminTabOpen) return;
-          if (!state.rafId) {
-            state.needsRender = true;
-            state.rafId = requestAnimationFrame(tick);
-          }
-        }
-        wakeCanvasLoopRef = wakeCanvasLoop;
-
-        // إيقاف رسم #scrolly-canvas فوراً بنسبة 100% طوال فترة فتح تبويب الإدارة، واستئنافه فقط عند العودة لواجهة التصفح
-        window.addEventListener('haraj:active-tab-changed', (ev) => {
-          state.isAdminTabOpen = Boolean(ev && ev.detail && ev.detail.isAdminOpen);
-          if (state.isAdminTabOpen) {
-            if (state.rafId) {
-              cancelAnimationFrame(state.rafId);
-              state.rafId = 0;
-            }
-          } else if (state.isTrackVisible) {
-            wakeCanvasLoop();
-          }
+          (document.getElementById('orderForm') || document.getElementById('order-section'))?.scrollIntoView({ behavior: 'smooth' });
         });
-
-        // الإيقاف الذكي لمحرك الـ Canvas عندما يكون #scrolly-track خارج الشاشة لتوفير 100% من المعالج وكرت الشاشة للوحة التحكم
-        if ('IntersectionObserver' in window && track) {
-          const trackVisibilityObserver = new IntersectionObserver(
-            (entries) => {
-              const entry = entries[0];
-              if (!entry) return;
-              if (entry.isIntersecting) {
-                state.isTrackVisible = true;
-                wakeCanvasLoop();
-              } else {
-                state.isTrackVisible = false;
-                if (state.rafId) {
-                  cancelAnimationFrame(state.rafId);
-                  state.rafId = 0;
-                }
-              }
-            },
-            { root: null, rootMargin: '120px 0px', threshold: 0 }
-          );
-          trackVisibilityObserver.observe(track);
-        }
-
-        window.addEventListener(
-          'mousemove',
-          (e) => {
-            if (!state.isTrackVisible || state.isAdminTabOpen) return;
-            state.targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-            state.targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-          },
-          { passive: true }
-        );
-
-        window.addEventListener('resize', () => {
-          resizeCanvas();
-          applyProgress(state.progress);
-          wakeCanvasLoop();
-          if (window.ScrollTrigger) window.ScrollTrigger.refresh();
-        });
-
-        wakeCanvasLoop();
-
-        document.querySelectorAll('[data-select-tier]').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const tier = btn.getAttribute('data-select-tier') || '';
-            const condSelect = document.getElementById('partCondition');
-            const partsTextarea = document.getElementById('carParts');
-            if (condSelect) {
-              condSelect.value = tier.includes('تشليح') ? 'مستعمل' : 'جديد';
-            }
-            if (partsTextarea && !partsTextarea.value.includes(tier)) {
-              partsTextarea.placeholder = 'الفئة المختارة: ' + tier + ' — اكتب اسم القطعة المطلوبة هنا...';
-            }
-            const banner = document.getElementById('selected-tier-banner');
-            const bannerText = document.getElementById('selected-tier-name');
-            const tierWaLink = document.getElementById('tier-instant-wa-link');
-            if (banner && bannerText) {
-              bannerText.textContent = tier;
-              banner.classList.remove('hidden');
-            }
-            if (tierWaLink) {
-              const activeWa = window.WHATSAPP_NUMBER || WHATSAPP_NUMBER || '966509046024';
-              tierWaLink.href = 'https://wa.me/' + activeWa + '?text=' + encodeURIComponent('مرحباً، أرغب بطلب تسعيرة قطعة غيار - الفئة المختارة: ' + tier);
-            }
-            document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
-          });
-        });
-      }
-
-      applyProgress(0);
-      setupScrollEngine();
-      setupInteractions();
-      initAssets();
+      });
     });
   </script>
 
