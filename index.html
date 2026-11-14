@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="theme-color" content="#0A0F1D" />
   <meta name="google" content="notranslate" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="haraj-ui-version" content="2026.11.14-v3" />
   <title>حراج القطع | عالم التروس — مطابقة وتوريد قطع غيار السيارات برقم الشاصي (VIN)</title>
   <meta name="description" content="منصة حراج القطع | عالم التروس (harajparts.com) — المنصة الذكية لمطابقة وتوريد قطع غيار السيارات برقم الشاصي (VIN) — أصلي وكالة • تجاري معتمد • تشليح مضمون بشحن سريع لكافة المدن." />
   <meta name="keywords" content="حراج القطع, عالم التروس, harajparts, harajparts.com, شركة دياريكو, قطع غيار السيارات, مطابقة رقم الهيكل VIN, تشليح مضمون, أصلي وكالة OEM, بديل تجاري معتمد" />
@@ -1126,11 +1130,18 @@
   <div id="order-section" class="min-h-screen flex flex-col justify-between pb-10">
     <!-- Selected Tier Notification + Direct Instant WhatsApp Banner -->
     <div class="max-w-5xl mx-auto px-4 pt-6 w-full">
-      <div id="selected-tier-banner" class="hidden mb-4 p-4 rounded-2xl bg-cyan-500/15 border border-cyan-400/40 text-cyan-200 flex flex-wrap items-center justify-between gap-3 text-sm font-bold">
+      <div id="selected-tier-banner" class="hidden mb-4 p-4 rounded-2xl bg-cyan-500/15 border border-cyan-400/40 text-cyan-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm font-bold">
         <span>✨ الفئة المختارة من العرض التفاعلي: <strong id="selected-tier-name" class="text-white"></strong></span>
-        <a id="tier-instant-wa-link" href="https://wa.me/966509046024" target="_blank" rel="noopener" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-4 py-2 rounded-xl transition">
-          اطلبها فوراً عبر واتساب 💬
-        </a>
+        <div class="w-full sm:w-[420px]" style="display: flex; flex-wrap: nowrap; gap: 8px; align-items: stretch;">
+          <a id="tier-instant-wa-link" href="https://wa.me/966509046024" target="_blank" rel="noopener" style="flex: 0 0 calc(72% - 4px); max-width: calc(72% - 4px); min-width: 0;" class="bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black px-3 py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-xs sm:text-sm shadow-md">
+            <i class="fa-brands fa-whatsapp text-base shrink-0"></i>
+            <span class="truncate">إرسال الطلب عبر الواتساب</span>
+          </a>
+          <button type="button" id="tier-instant-web-btn" onclick="window.handleQuickBannerWebOrderClick()" style="flex: 0 0 calc(28% - 4px); max-width: calc(28% - 4px); min-width: 0;" class="bg-slate-800/95 hover:bg-brand-600 text-cyan-200 hover:text-white border border-cyan-400/45 font-black px-2 py-2.5 rounded-xl transition flex items-center justify-center gap-1 text-[11px] sm:text-xs shadow-md" title="إرسال الطلب عبر الموقع مباشرة">
+            <i class="fa-solid fa-paper-plane text-[11px] text-cyan-300 shrink-0"></i>
+            <span class="whitespace-nowrap">عبر الموقع</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1325,10 +1336,16 @@
                         </div>
                     </div>
                     
-                    <button type="submit" id="orderSubmitWaBtn" class="w-full bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-lg py-4 rounded-2xl shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.01] active:scale-95 transition-all mt-6 flex items-center justify-center gap-2.5">
-                        <i class="fa-brands fa-whatsapp text-2xl" aria-hidden="true"></i>
-                        <span>إتمام الطلب وإرسال رسالة واتساب 💬</span>
-                    </button>
+                    <div id="orderFormSubmitRow" class="mt-6 w-full" style="display: flex; flex-wrap: nowrap; gap: 8px; align-items: stretch;">
+                        <button type="submit" id="orderSubmitWaBtn" style="flex: 0 0 calc(72% - 4px); max-width: calc(72% - 4px); min-width: 0;" class="bg-[#25D366] hover:bg-[#1ebe5b] text-white font-black text-sm sm:text-lg py-3.5 sm:py-4 px-2.5 sm:px-4 rounded-2xl shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-xl sm:text-2xl shrink-0" aria-hidden="true"></i>
+                            <span class="truncate">إرسال الطلب عبر الواتساب</span>
+                        </button>
+                        <button type="button" id="orderSubmitWebDirectBtn" onclick="window.submitOrderDirectViaWebsite()" style="flex: 0 0 calc(28% - 4px); max-width: calc(28% - 4px); min-width: 0;" title="إرسال الطلب عبر الموقع مباشرة بدون فتح تطبيق الواتساب" class="bg-slate-800/95 hover:bg-brand-600 text-cyan-200 hover:text-white font-black text-xs sm:text-sm py-3.5 sm:py-4 px-2 sm:px-3 rounded-2xl shadow-lg border border-cyan-400/45 hover:border-cyan-300 hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane text-xs sm:text-sm text-cyan-300 shrink-0" aria-hidden="true"></i>
+                            <span class="whitespace-nowrap">عبر الموقع</span>
+                        </button>
+                    </div>
                 </form>
 
                 <div id="successMsg" class="hidden mt-6 p-5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-2xl text-center font-bold" role="status" aria-live="polite">
@@ -1661,6 +1678,58 @@
                     </div>
                 </div>
 
+                <!-- 📊 بطاقة التحكم المباشر بملف Google Sheet المتوافق مع AppSheet + الحفظ اللحظي في الواتساب — للمدير فقط -->
+                <div id="adminApprovedSheetControlCard" class="hidden bg-slate-900/95 border border-cyan-500/45 rounded-2xl p-4 space-y-3 shadow-lg">
+                    <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-800 pb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-xs sm:text-sm font-black text-cyan-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-table-list text-emerald-400"></i>
+                                <span>حراج القطع - الموردون المعتمدون (Google Sheet &amp; AppSheet &amp; WhatsApp)</span>
+                            </h3>
+                            <span id="adminApprovedSheetStatusBadge" class="text-[11px] font-black px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/50">
+                                🟢 متصل بـ Google Cloud | محفوظ ومعتمد: 24 مورد
+                            </span>
+                        </div>
+                        <span id="adminApprovedSheetLastSyncText" class="text-[10px] font-bold text-slate-400">
+                            التزامن ثنائي الاتجاه نشط (بدون ملفات VCF يدوية)
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                        <button type="button" id="btnOpenApprovedGoogleSheet" onclick="openApprovedSuppliersGoogleSheetUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 px-3 rounded-xl text-xs font-black transition shadow-md flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>فتح ملف Google Sheet المباشر</span>
+                        </button>
+                        <button type="button" id="btnPreviewApprovedSheetInApp" onclick="openApprovedSuppliersSheetPreviewModal()" class="bg-cyan-500/20 hover:bg-cyan-500/35 text-cyan-200 border border-cyan-400/45 py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-eye"></i>
+                            <span>معاينة الجدول داخل الواجهة</span>
+                        </button>
+                        <button type="button" id="btnOpenInAppSheet" onclick="openOrSaveAppsheetUrlUI(false)" class="bg-indigo-500/20 hover:bg-indigo-500/35 text-indigo-200 border border-indigo-400/45 py-2.5 px-3 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                            <span>فتح في AppSheet</span>
+                        </button>
+                        <button type="button" id="btnSyncApprovedSheetNow" onclick="syncApprovedSheetAndWhatsAppNowUI(this)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 py-2.5 px-3 rounded-xl text-xs font-black transition shadow-md flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>مزامنة فورية الآن</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1">
+                        <div class="flex items-center gap-1.5">
+                            <input type="url" id="adminCustomSheetUrlInput" dir="ltr" placeholder="رابط أو معرف Google Sheet (يُملأ تلقائياً فور الإنشاء)..." class="flex-1 px-3 py-2 rounded-xl glass-input text-[11px] font-mono text-emerald-200 outline-none">
+                            <button type="button" onclick="saveCustomGoogleSheetLinkUI()" class="bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/35 px-3 py-2 rounded-xl text-[11px] font-black transition shrink-0">
+                                حفظ الجدول
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <input type="url" id="adminAppsheetUrlInput" dir="ltr" placeholder="رابط تطبيق AppSheet المباشر (اختياري للفتح بضغطة واحدة)..." class="flex-1 px-3 py-2 rounded-xl glass-input text-[11px] font-mono text-indigo-200 outline-none">
+                            <button type="button" onclick="openOrSaveAppsheetUrlUI(true)" class="bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-indigo-500/35 px-3 py-2 rounded-xl text-[11px] font-black transition shrink-0">
+                                حفظ AppSheet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 📖 قائمة انتظار المصطلحات المشكوك فيها (وكيل مراجعة المحادثات) — للمدير فقط -->
                 <div id="adminTerminologyAuditorWrap" class="hidden bg-slate-900/95 border border-violet-500/40 rounded-2xl p-4 space-y-3 shadow-lg">
                     <div class="flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-800 pb-3">
@@ -1806,6 +1875,9 @@
                     <button id="btn-invite" onclick="copySupplierRegLink(this)" class="bg-sky-500/10 border border-sky-500/30 text-sky-400 py-3.5 rounded-2xl text-xs md:text-sm font-bold hover:bg-sky-500 hover:text-white transition shadow-sm">
                         <i class="fa-solid fa-link block mb-1 text-xl"></i>رابط دعوة مورد
                     </button>
+                    <a id="btn-universal-agents" href="universal-agents.html" class="bg-amber-500/10 border border-amber-500/35 text-amber-300 py-3.5 rounded-2xl text-xs md:text-sm font-bold hover:bg-amber-500 hover:text-slate-950 transition shadow-sm text-center block">
+                        <i class="fa-solid fa-users-rays block mb-1 text-xl"></i>الوكلاء الشاملون (مندوبو القطاع)
+                    </a>
                     <button id="btn-affiliate" onclick="copyAffiliateLink(this)" class="hidden col-span-2 md:col-span-4 bg-amber-500/15 border border-amber-500/40 text-amber-300 py-3.5 rounded-2xl text-xs md:text-sm font-black hover:bg-amber-500 hover:text-slate-950 transition shadow-sm flex items-center justify-center gap-2">
                         <i class="fa-solid fa-bullhorn text-lg"></i>نسخ رابط التسويق الخاص بك ومشاركته مع العملاء
                     </button>
@@ -2431,15 +2503,52 @@
                         <i class="fa-solid fa-address-book text-brand-500"></i> سجل الموردين والورش المعتمدة
                     </h3>
                     <span id="suppliersTotalCountBadge" class="text-xs font-black px-3 py-1 rounded-full bg-brand-500/20 text-brand-200 border border-brand-500/40">0 مورد معتمد</span>
+                    <button type="button" id="btnExportApprovedVcf" onclick="exportApprovedSupplierContactsVcfUI(this)" class="text-xs font-black px-3 py-1 rounded-full bg-emerald-500/20 hover:bg-emerald-500 text-emerald-200 hover:text-slate-950 border border-emerald-500/40 transition inline-flex items-center gap-1" title="تصدير جهات اتصال الموردين الذين ردوا فعلياً وتم اعتماد أسمائهم فقط">
+                        <i class="fa-solid fa-file-arrow-down"></i> تصدير الأسماء المعتمدة فقط (VCF)
+                    </button>
+                    <a href="universal-agents.html" class="text-xs font-black px-3 py-1 rounded-full bg-amber-500/20 hover:bg-amber-500 text-amber-200 hover:text-slate-950 border border-amber-500/40 transition inline-flex items-center gap-1">
+                        <i class="fa-solid fa-users-rays"></i> الوكلاء الشاملون (مندوبو القطاع)
+                    </a>
                 </div>
                 <button type="button" onclick="closeSuppliersModal()" class="text-slate-400 hover:text-white bg-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition text-lg border border-slate-700 shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             
-            <button type="button" onclick="openAddSupplierManual()" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-black py-3 rounded-2xl text-xs sm:text-sm mb-3 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 shrink-0">
+            <button type="button" onclick="openAddSupplierManual()" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-black py-3 rounded-2xl text-xs sm:text-sm mb-2.5 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-500/20 shrink-0">
                 <i class="fa-solid fa-plus-circle text-base"></i> إضافة مورد جديد يدوياً للسحابة وقاعدة البيانات
             </button>
+
+            <!-- شريط التحكم السريع بجدول Google Sheet & AppSheet & WhatsApp داخل نافذة الموردين -->
+            <div id="suppliersModalApprovedSheetBar" class="bg-slate-900/95 border border-cyan-500/35 rounded-2xl p-2.5 mb-2.5 shrink-0 space-y-2">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-[11px] font-black text-cyan-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-table-list text-emerald-400"></i>
+                        <span>ورقة Approved_Suppliers (AppSheet &amp; WhatsApp):</span>
+                    </span>
+                    <span id="suppliersModalSheetStatusBadge" class="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/45">
+                        🟢 محفوظ في الواتساب: 24 مورد معتمد
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                    <button type="button" onclick="openApprovedSuppliersGoogleSheetUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white py-1.5 px-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>فتح ملف Google Sheet المباشر</span>
+                    </button>
+                    <button type="button" onclick="openApprovedSuppliersSheetPreviewModal()" class="bg-cyan-500/20 hover:bg-cyan-500/35 text-cyan-200 border border-cyan-400/40 py-1.5 px-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>معاينة الجدول داخل الواجهة</span>
+                    </button>
+                    <button type="button" onclick="openOrSaveAppsheetUrlUI(false)" class="bg-indigo-500/20 hover:bg-indigo-500/35 text-indigo-200 border border-indigo-400/40 py-1.5 px-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                        <span>فتح في AppSheet</span>
+                    </button>
+                    <button type="button" onclick="syncApprovedSheetAndWhatsAppNowUI(this)" class="bg-amber-500 hover:bg-amber-400 text-slate-950 py-1.5 px-2 rounded-xl text-[11px] font-black transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>مزامنة فورية الآن</span>
+                    </button>
+                </div>
+            </div>
             
             <div id="supplierFormContainer" class="bg-slate-900/90 p-5 rounded-2xl border border-slate-700/80 mb-4 overflow-y-auto flex-1 hidden shadow-inner">
                 <h4 id="formTitle" class="text-base font-black text-brand-400 border-b border-slate-800 pb-3 mb-5 flex items-center gap-2">
@@ -2468,13 +2577,14 @@
                         </label>
                         <div class="flex items-center gap-2">
                             <select id="newSupContactTpl" onchange="refreshApprovedSupplierContactPreview(true)" class="px-2.5 py-1 rounded-lg glass-input text-[11px] font-bold text-emerald-200 outline-none">
+                                <option value="detailed" selected>قالب رسمي: مورد [الاسم] - قطع غيار [التخصص] - [الموقع]</option>
                                 <option value="prefixed">قالب: مورد حراج | الاسم (الحي)</option>
                                 <option value="plain">قالب: اسم المتجر الصافي فقط</option>
                             </select>
                             <button type="button" onclick="resetApprovedSupplierContactAuto()" class="text-[11px] font-bold text-cyan-300 hover:text-cyan-200 px-2 py-1 rounded-lg bg-slate-900 border border-slate-700">↺ تلقائي</button>
                         </div>
                     </div>
-                    <input type="text" id="newSupContactName" data-manual-override="0" oninput="this.dataset.manualOverride='1'" placeholder="مورد حراج | اسم المتجر (الحي)" class="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs font-bold text-emerald-100 outline-none">
+                    <input type="text" id="newSupContactName" data-manual-override="0" oninput="this.dataset.manualOverride='1'" placeholder="مورد فلان الفلاني - قطع غيار إيسوزو - الدويرة الصناعية القديمة" class="w-full px-3.5 py-2.5 glass-input rounded-xl text-xs font-bold text-emerald-100 outline-none">
                 </div>
                 
                 <div class="bg-amber-500/10 p-4 rounded-2xl border border-amber-500/20 mb-5">
@@ -2552,11 +2662,18 @@
                 </div>
             </div>
             
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-t border-slate-800 pt-3 mt-1 mb-3 shrink-0">
-                <h4 class="text-xs sm:text-sm font-black text-slate-200">الموردون المعتمدون النشطون حالياً في النظام:</h4>
-                <div class="relative flex-1 sm:max-w-md">
-                    <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs absolute right-3.5 top-1/2 -translate-y-1/2"></i>
-                    <input type="text" id="suppliersSearchInput" oninput="renderSuppliersModalList()" placeholder="بحث فوري بالاسم أو رقم الجوال أو الحي أو الماركة..." class="w-full pr-9 pl-3 py-2 rounded-xl glass-input outline-none text-xs font-bold text-white">
+            <div class="flex flex-col gap-2 border-t border-slate-800 pt-3 mt-1 mb-3 shrink-0">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <h4 class="text-xs sm:text-sm font-black text-slate-200">الموردون المعتمدون النشطون حالياً في النظام:</h4>
+                    <div class="relative flex-1 sm:max-w-md">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="suppliersSearchInput" oninput="renderSuppliersModalList()" placeholder="بحث فوري بالاسم المحفوظ أو الجوال أو الحي أو الماركة..." class="w-full pr-9 pl-3 py-2 rounded-xl glass-input outline-none text-xs font-bold text-white">
+                    </div>
+                </div>
+                <div id="suppliersContactFilterBar" class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" data-sup-filter="all" onclick="setSuppliersContactFilterUI('all')" class="px-2.5 py-1 rounded-lg text-[11px] font-black bg-brand-500 text-white border border-brand-400 transition">الكل</button>
+                    <button type="button" data-sup-filter="approved_and_saved" onclick="setSuppliersContactFilterUI('approved_and_saved')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-emerald-300 border border-emerald-500/35 hover:bg-emerald-500/15 transition">✅ محفوظ ومعتمد (رد فعلياً)</button>
+                    <button type="button" data-sup-filter="pending_reply_and_approval" onclick="setSuppliersContactFilterUI('pending_reply_and_approval')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-amber-300 border border-amber-500/35 hover:bg-amber-500/15 transition">⏳ بانتظار الرد والاعتماد</button>
                 </div>
             </div>
             <div id="suppliersListContainer" class="overflow-y-auto space-y-2.5 pr-2 flex-1 min-h-[42vh] max-h-[58vh]"></div>
@@ -2565,6 +2682,52 @@
 
     <!-- شريط تنبيه فوري عائم للإدارة (حفظ التعديلات + الاعتماد ومزامنة جهات اتصال جوجل) -->
     <div id="adminFloatingToastBanner" style="z-index: 100050;" class="fixed top-4 left-1/2 -translate-x-1/2 hidden max-w-xl w-[94vw] px-4 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl text-xs sm:text-sm font-black text-center transition-all"></div>
+
+    <!-- نافذة معاينة جدول الموردين المعتمدين (Approved_Suppliers — AppSheet & WhatsApp) داخل الواجهة -->
+    <div id="approvedSheetPreviewModal" style="z-index: 100020;" class="fixed inset-0 hidden flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-2 sm:p-4 animate-fade-in">
+        <div class="glass-card rounded-3xl p-4 sm:p-6 max-w-6xl w-full shadow-2xl max-h-[92vh] flex flex-col border border-cyan-500/45 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3 shrink-0">
+                <div>
+                    <h3 class="font-black text-sm sm:text-lg text-cyan-300 flex items-center gap-2">
+                        <i class="fa-solid fa-table-list text-emerald-400"></i>
+                        <span>معاينة ورقة Approved_Suppliers (الموردون الذين ردوا وتم اعتمادهم فقط)</span>
+                    </h3>
+                    <p id="approvedSheetPreviewSubtitle" class="text-[11px] text-slate-400 font-bold mt-0.5">
+                        هيكل قياسي متوافق 100% مع AppSheet بمفتاح أساسي ثابت (Key_ID) ومربوط لحظياً مع Google Contacts وواتساب السيرفر.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="exportApprovedSheetCsvUI()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-csv"></i>
+                        <span>تحميل CSV لـ AppSheet</span>
+                    </button>
+                    <button type="button" onclick="closeApprovedSuppliersSheetPreviewModal()" class="text-slate-400 hover:text-white bg-slate-800 w-9 h-9 rounded-full flex items-center justify-center transition border border-slate-700">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-auto flex-1 rounded-2xl border border-slate-800 bg-slate-950/90">
+                <table class="w-full text-right text-xs border-collapse">
+                    <thead class="bg-slate-900 text-cyan-300 sticky top-0 z-10 border-b border-slate-700">
+                        <tr>
+                            <th class="p-2.5 font-black whitespace-nowrap">Key_ID</th>
+                            <th class="p-2.5 font-black">الاسم الموحد للواتساب (Saved_Contact_Name)</th>
+                            <th class="p-2.5 font-black whitespace-nowrap">رقم الواتساب الدولي</th>
+                            <th class="p-2.5 font-black whitespace-nowrap">رابط مباشر</th>
+                            <th class="p-2.5 font-black">اسم المحل</th>
+                            <th class="p-2.5 font-black">التخصص</th>
+                            <th class="p-2.5 font-black">الموقع</th>
+                            <th class="p-2.5 font-black whitespace-nowrap">الحالة</th>
+                            <th class="p-2.5 font-black whitespace-nowrap">وقت التحديث</th>
+                        </tr>
+                    </thead>
+                    <tbody id="approvedSheetPreviewTbody" class="divide-y divide-slate-800/80 text-slate-200 font-bold">
+                        <tr><td colspan="9" class="p-6 text-center text-slate-400">جاري تحميل بيانات الموردين المعتمدين...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <!-- نافذة تجربة حفظ اسم مورد والتحقق الفوري في بريد Google Contacts وهاتف الإدارة -->
     <div id="googleContactsTestModal" style="z-index: 99999;" class="fixed inset-0 hidden flex items-center justify-center bg-slate-950/90 backdrop-blur-md p-3 sm:p-4 animate-fade-in">
@@ -3629,6 +3792,9 @@
                     }
                     if (typeof window.loadGoogleContactsBarStatus === 'function') {
                         window.loadGoogleContactsBarStatus();
+                    }
+                    if (typeof window.loadApprovedSheetControlStatus === 'function') {
+                        window.loadApprovedSheetControlStatus();
                     }
                     try {
                         const cleanUrl = new URL(window.location.href);
@@ -5733,6 +5899,9 @@
             currentRole = 'admin';
             document.getElementById('suppliersModal').classList.remove('hidden');
             renderSuppliersModalList();
+            if (typeof window.loadApprovedSheetControlStatus === 'function') {
+                window.loadApprovedSheetControlStatus();
+            }
             if (!Array.isArray(suppliersDB) || suppliersDB.length === 0) {
                 await loadSuppliersFromCloud();
             }
@@ -5894,6 +6063,7 @@
                     document.getElementById('adminColdOutreachBadge')?.classList.remove('hidden');
                     document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.remove('hidden');
                     document.getElementById('adminGoogleContactsTopBar')?.classList.remove('hidden');
+                    document.getElementById('adminApprovedSheetControlCard')?.classList.remove('hidden');
                     document.getElementById('adminTerminologyAuditorWrap')?.classList.remove('hidden');
                     document.getElementById('adminMostDemandedAndTrainingWrap')?.classList.remove('hidden');
                     const liveEnginesWrap = document.getElementById('adminLiveEnginesMonitorWrap');
@@ -5908,6 +6078,9 @@
                     }
                     if (typeof window.loadGoogleContactsBarStatus === 'function') {
                         window.loadGoogleContactsBarStatus();
+                    }
+                    if (typeof window.loadApprovedSheetControlStatus === 'function') {
+                        window.loadApprovedSheetControlStatus();
                     }
                     if (typeof window.loadAdminTerminologyAuditorUI === 'function') {
                         window.loadAdminTerminologyAuditorUI();
@@ -6016,6 +6189,7 @@
                     document.getElementById('adminColdOutreachBadge')?.classList.add('hidden');
                     document.getElementById('unansweredSuppliersCatchUpWrap')?.classList.add('hidden');
                     document.getElementById('adminGoogleContactsTopBar')?.classList.add('hidden');
+                    document.getElementById('adminApprovedSheetControlCard')?.classList.add('hidden');
                     document.getElementById('adminTerminologyAuditorWrap')?.classList.add('hidden');
                     document.getElementById('adminMostDemandedAndTrainingWrap')?.classList.add('hidden');
                     if (typeof window.closeGoogleContactsTestModal === 'function') window.closeGoogleContactsTestModal();
@@ -7129,6 +7303,222 @@
             }
         };
 
+        window.showDirectWebsiteOrderSuccess = function(orderId, refCode, waConfirmationSent = false, mergeNote = '') {
+            const successEl = document.getElementById('successMsg');
+            const successTextEl = document.getElementById('successMsgText');
+            const waBtn = document.getElementById('successWaCheckoutBtn');
+            const primaryRef = orderId ? `#${escapeHTML(String(orderId))}` : `#${escapeHTML(String(refCode || ''))}`;
+            if (waBtn) {
+                waBtn.classList.add('hidden');
+                waBtn.classList.remove('flex');
+            }
+            if (successTextEl) {
+                const waStatusLine = waConfirmationSent
+                    ? '📲 تم إرسال رسالة تأكيد فورية بتفاصيل طلبك إلى جوالك على الواتساب.'
+                    : '📲 ستصلك عروض الأسعار فور ورودها على رقم جوالك المسجل عبر الواتساب.';
+                const extraMergeHtml = mergeNote
+                    ? `<br><span class="text-cyan-200 text-xs font-semibold">${escapeHTML(mergeNote)}</span>`
+                    : '';
+                successTextEl.innerHTML = `<i class="fa-solid fa-circle-check text-4xl mb-2 block text-emerald-400"></i>تم إرسال طلبك مباشرة عبر الموقع بنجاح ✅ — رقم الطلب المرجعي: (${primaryRef})<br><span class="text-emerald-200/95 text-sm">بدأت الآن دورة التسعير الآلي مع الموردين المعتمدين ومؤقت التصعيد الذكي (30 دقيقة).<br>${waStatusLine}</span>${extraMergeHtml}`;
+            }
+            if (successEl) successEl.classList.remove('hidden');
+            document.getElementById('order-section')?.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.handleQuickBannerWebOrderClick = function() {
+            const rawPhone = String(document.getElementById('custPhone')?.value || '').trim();
+            const fmtPhone = window.formatSaudiPhone ? window.formatSaudiPhone(rawPhone) : '';
+            const brandVal = String(document.getElementById('carBrandSpecific')?.value || '').trim();
+            const modelVal = String(document.getElementById('carModel')?.value || '').trim();
+            const yearVal = String(document.getElementById('carYear')?.value || '').trim();
+            const partsVal = String(document.getElementById('carParts')?.value || '').trim();
+            const vinVal = String(document.getElementById('carVin')?.value || '').trim();
+            if (/^9665\d{8}$/.test(fmtPhone) && ((brandVal && modelVal && yearVal && partsVal) || vinVal.length >= 11)) {
+                return window.submitOrderDirectViaWebsite();
+            }
+            document.getElementById('orderForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+                if (!fmtPhone) document.getElementById('custPhone')?.focus();
+                else document.getElementById('carParts')?.focus();
+            }, 300);
+        };
+
+        window.submitOrderDirectViaWebsite = async function() {
+            const formEl = document.getElementById('orderForm');
+            const btn = document.getElementById('orderSubmitWebDirectBtn');
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جاري الإرسال...</span>';
+                btn.disabled = true;
+            }
+            try {
+                const custNameVal = String(document.getElementById('custName')?.value || '').trim();
+                const rawPhoneVal = String(document.getElementById('custPhone')?.value || '').trim();
+                const custPhoneVal = window.formatSaudiPhone(rawPhoneVal);
+                if (!custPhoneVal || !/^9665\d{8}$/.test(custPhoneVal)) {
+                    alert('يرجى إدخال رقم جوال سعودي صحيح (مثال: 05xxxxxxxx) لتصلك التسعيرات عليه.');
+                    document.getElementById('custPhone')?.focus();
+                    return;
+                }
+
+                const imgFile = document.getElementById('carImage')?.files?.[0] || null;
+                let base64Image = '';
+                if (imgFile) {
+                    if (!imgFile.type || !imgFile.type.startsWith('image/')) {
+                        alert('الرجاء اختيار ملف صورة صالح فقط.');
+                        return;
+                    }
+                    base64Image = await convertImageToBase64(imgFile);
+                }
+
+                let finalBrand = String(document.getElementById('carBrandSpecific')?.value || '').trim();
+                if (finalBrand === 'أخرى') finalBrand = String(document.getElementById('customCarBrand')?.value || 'أخرى').trim();
+                const carModelVal = String(document.getElementById('carModel')?.value || '').trim();
+                const carYearVal = String(document.getElementById('carYear')?.value || '').trim();
+                const partConditionVal = String(document.getElementById('partCondition')?.value || 'جديد').trim() || 'جديد';
+                let finalCategory = String(document.getElementById('partCategory')?.value || 'ميكانيكا ومحركات').trim() || 'ميكانيكا ومحركات';
+                if (finalCategory === 'أخرى') finalCategory = String(document.getElementById('customPartCategory')?.value || 'أخرى').trim();
+                const carVinVal = String(document.getElementById('carVin')?.value || '').trim();
+                const carPartsVal = String(document.getElementById('carParts')?.value || '').trim();
+
+                const hasValidVin = carVinVal.replace(/[^A-Za-z0-9]/g, '').length >= 11;
+                if ((!finalBrand || !carModelVal || !carYearVal) && !hasValidVin && !base64Image) {
+                    alert('يرجى تحديد بيانات السيارة (الماركة، الموديل، وسنة الصنع) أو إدخال رقم الهيكل (VIN) أو إرفاق صورة الاستمارة.');
+                    document.getElementById('carBrandSpecific')?.focus();
+                    return;
+                }
+                if (!carPartsVal && !carVinVal && !base64Image) {
+                    alert('يرجى كتابة اسم القطعة المطلوبة أو إدخال رقم الهيكل (VIN) أو إرفاق صورة القطعة.');
+                    document.getElementById('carParts')?.focus();
+                    return;
+                }
+
+                const webRefCode = window.generateHarajWebRefCode();
+                const affiliateId = localStorage.getItem('affiliate_ref') || 'مباشر (بدون مندوب)';
+                const cleanAffiliateForBackend = affiliateId !== 'مباشر (بدون مندوب)' ? affiliateId : null;
+                const effectivePartsLabel = carPartsVal || (base64Image ? 'مرفق بالصورة (تحديد من صورة القطعة/الاستمارة)' : `فحص برقم الهيكل ${carVinVal}`);
+                const mappedBackendCategory =
+                    partConditionVal === 'مستعمل'
+                        ? 'scrap'
+                        : (finalCategory === 'بودي وهيكل خارجي' || finalCategory === 'زجاج ومرايا')
+                        ? 'body'
+                        : 'mechanic';
+
+                const orderPayload = {
+                    customer_name: custNameVal || 'عميل الموقع',
+                    customer_phone: custPhoneVal,
+                    car_brand: finalBrand || 'غير محدد',
+                    car_model: carModelVal || 'غير محدد',
+                    car_year: Number(carYearVal) || undefined,
+                    vin_number: carVinVal || null,
+                    part_name: effectivePartsLabel,
+                    part_category: mappedBackendCategory,
+                    speed_tier: 'balanced_45m',
+                    affiliate_code: cleanAffiliateForBackend,
+                    image_data: base64Image || null,
+                    web_ref_code: webRefCode,
+                    direct_website_submission: true,
+                    customer_initiated_checkout: false
+                };
+
+                let backendOrderResult = null;
+                try {
+                    const backendAbort = typeof AbortController === 'function' ? new AbortController() : null;
+                    const backendAbortTimer = backendAbort ? setTimeout(() => backendAbort.abort(), 11000) : null;
+                    let apiRes = await fetch('/api/website-order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        signal: backendAbort ? backendAbort.signal : undefined,
+                        body: JSON.stringify(orderPayload)
+                    }).catch(() => null);
+                    if ((!apiRes || apiRes.status === 404 || apiRes.status === 405) && typeof window.fetchBotBackend === 'function') {
+                        apiRes = await window.fetchBotBackend('/api/website-order', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(orderPayload),
+                            timeoutMs: 9000
+                        }).catch(() => null);
+                    }
+                    if (backendAbortTimer) clearTimeout(backendAbortTimer);
+                    if (apiRes && apiRes.ok) {
+                        backendOrderResult = await apiRes.json().catch(() => null);
+                    } else if (apiRes && apiRes.status === 400) {
+                        const errJson = await apiRes.json().catch(() => ({}));
+                        if (errJson.error) {
+                            alert(errJson.error);
+                            return;
+                        }
+                    }
+                } catch (_directBackendErr) {}
+
+                let cloudSaved = false;
+                try {
+                    const hasUploadedImage = Boolean(base64Image && base64Image.startsWith('data:image/'));
+                    const effectiveBotStatus = backendOrderResult?.success ? 'dispatched' : 'pending_dispatch';
+                    const createdOrderRef = await addDoc(collection(db, "orders"), {
+                        customerName: custNameVal || 'عميل الموقع',
+                        phone: custPhoneVal,
+                        brandGroup: document.getElementById('carOrigin')?.value || '',
+                        brand: finalBrand || 'غير محدد',
+                        model: carModelVal || 'غير محدد',
+                        year: carYearVal || '',
+                        partCondition: partConditionVal,
+                        partCategory: finalCategory,
+                        vin: carVinVal || 'لم يُدخل',
+                        parts: backendOrderResult?.part_name || effectivePartsLabel,
+                        backendOrderId: backendOrderResult?.order_id || null,
+                        botStatus: effectiveBotStatus,
+                        botRequestedAt: serverTimestamp(),
+                        webRefCode: webRefCode,
+                        customerInitiatedCheckout: false,
+                        directWebsiteSubmission: true,
+                        purchaseStatus: 'pending',
+                        hasImage: hasUploadedImage,
+                        imageData: '',
+                        affiliate: affiliateId,
+                        date: new Date().toLocaleString('ar-SA'),
+                        timestamp: serverTimestamp()
+                    });
+                    if (hasUploadedImage && createdOrderRef?.id) {
+                        orderImagesMemoryCache.set(createdOrderRef.id, base64Image);
+                        await setDoc(doc(db, "order_images", createdOrderRef.id), {
+                            orderId: createdOrderRef.id,
+                            imageData: base64Image,
+                            createdAt: serverTimestamp()
+                        });
+                    }
+                    cloudSaved = true;
+                } catch (_cloudErr) {
+                    if (!backendOrderResult?.success) throw _cloudErr;
+                }
+
+                if (!backendOrderResult?.success && !cloudSaved) {
+                    alert('تعذر الاتصال بالخادم لحفظ الطلب حالياً، يرجى المحاولة مرة أخرى.');
+                    return;
+                }
+
+                if (formEl) formEl.reset();
+                const brandSpecEl = document.getElementById('carBrandSpecific');
+                if (brandSpecEl) brandSpecEl.disabled = true;
+                document.getElementById('customCarBrand')?.classList.add('hidden');
+                document.getElementById('customPartCategory')?.classList.add('hidden');
+
+                window.showDirectWebsiteOrderSuccess(
+                    backendOrderResult?.order_id || null,
+                    backendOrderResult?.reference_number || webRefCode,
+                    Boolean(backendOrderResult?.whatsapp_confirmation_sent),
+                    backendOrderResult?.merged ? 'تم ضم القطعة لملف طلب سيارتك النشط لجمع التسعيرات معاً.' : ''
+                );
+            } catch (_submitErr) {
+                alert('حدث خطأ أثناء إرسال الطلب عبر الموقع، يرجى المحاولة مجدداً.');
+            } finally {
+                if (btn) {
+                    btn.innerHTML = orig;
+                    btn.disabled = false;
+                }
+            }
+        };
+
         let editingSupOldPhone = null;
         let editingSupGoogleResourceName = null;
         let adminToastHideTimer = null;
@@ -7140,7 +7530,7 @@
                 emerald: 'bg-emerald-950/95 text-emerald-100 border-emerald-400/60 shadow-emerald-500/20',
                 cyan: 'bg-cyan-950/95 text-cyan-100 border-cyan-400/60 shadow-cyan-500/20',
                 amber: 'bg-amber-950/95 text-amber-100 border-amber-400/60 shadow-amber-500/20',
-                rose: 'bg-rose-950/95 text-rose-100 border-rose-400/60 shadow-rose-500/20'
+                rose: 'bg-rose-950/95 text-rose-100 border-rose-500/60 shadow-rose-500/20'
             };
             el.className = `fixed top-4 left-1/2 -translate-x-1/2 max-w-xl w-[94vw] px-4 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-xl text-xs sm:text-sm font-black text-center transition-all ${toneClasses[tone] || toneClasses.emerald}`;
             el.textContent = message;
@@ -7151,10 +7541,25 @@
             }, 6500);
         };
 
-        window.buildGoogleContactNamePreviewUI = function(shopName, district, templateMode = 'prefixed') {
+        window.buildGoogleContactNamePreviewUI = function(shopName, district, templateMode = 'prefixed', brandsList = []) {
             const cleanShop = String(shopName || '').replace(/[\r\n\t]+/g, ' ').replace(/\s{2,}/g, ' ').trim() || 'مورد قطع غيار معتمد';
             const cleanDist = String(district || '').replace(/[\r\n\t]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
-            if (String(templateMode || '').trim().toLowerCase() === 'plain') {
+            const mode = String(templateMode || '').trim().toLowerCase();
+            if (mode === 'detailed') {
+                const strippedName = cleanShop
+                    .replace(/^\s*مورد\s+حراج\s*\|\s*/i, '')
+                    .replace(/^\s*مورد\s+/i, '')
+                    .trim() || 'معتمد';
+                const cleanBrands = Array.isArray(brandsList)
+                    ? brandsList.map((b) => String(b || '').trim()).filter(Boolean)
+                    : [];
+                const specLabel = cleanBrands.length > 0
+                    ? (cleanBrands.length === 2 ? `${cleanBrands[0]} و${cleanBrands[1]}` : cleanBrands.slice(0, 3).join(' / '))
+                    : 'سيارات عامة';
+                const locLabel = cleanDist || 'الرياض';
+                return `مورد ${strippedName} - قطع غيار ${specLabel} - ${locLabel}`;
+            }
+            if (mode === 'plain') {
                 return cleanShop;
             }
             if (cleanShop.startsWith('مورد حراج |')) {
@@ -7174,10 +7579,12 @@
             if (!contactEl) return;
             if (forceReset) contactEl.dataset.manualOverride = '0';
             if (contactEl.dataset.manualOverride === '1') return;
+            const checkedBrands = Array.from(document.querySelectorAll('.brand-cb:checked')).map((cb) => cb.value);
             contactEl.value = window.buildGoogleContactNamePreviewUI(
                 nameEl ? nameEl.value : '',
                 distEl ? distEl.value : '',
-                tplEl ? tplEl.value : 'prefixed'
+                tplEl ? tplEl.value : 'detailed',
+                checkedBrands
             );
         };
 
@@ -7214,6 +7621,192 @@
                     }
                 }
             } catch (_) {}
+        };
+
+        let cachedApprovedSheetStatus = null;
+
+        window.renderApprovedSheetPreviewRows = function(rows = []) {
+            const tbody = document.getElementById('approvedSheetPreviewTbody');
+            if (!tbody) return;
+            if (!Array.isArray(rows) || rows.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="p-6 text-center text-slate-400">لا يوجد موردون معتمدون ردوا فعلياً حالياً.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = rows.map((r) => `
+                <tr class="hover:bg-slate-900/70 transition">
+                    <td class="p-2.5 font-mono text-amber-300 whitespace-nowrap">${escapeHTML(r.Key_ID || '')}</td>
+                    <td class="p-2.5 text-emerald-200">${escapeHTML(r.Saved_Contact_Name || '')}</td>
+                    <td class="p-2.5 font-mono text-slate-200 whitespace-nowrap" dir="ltr">${escapeHTML(r.Phone_WhatsApp || '')}</td>
+                    <td class="p-2.5 whitespace-nowrap"><a href="${escapeHTML(r.WhatsApp_Direct_Link || '#')}" target="_blank" rel="noopener" class="text-emerald-400 hover:underline font-black">فتح واتساب 💬</a></td>
+                    <td class="p-2.5 text-white">${escapeHTML(r.Shop_Name || '')}</td>
+                    <td class="p-2.5 text-cyan-200">${escapeHTML(r.Specialty_Brands || '')}</td>
+                    <td class="p-2.5 text-slate-300">${escapeHTML(r.Location_Area || '')}</td>
+                    <td class="p-2.5 whitespace-nowrap"><span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 text-[10px]">${escapeHTML(r.Approval_Status || 'معتمد ومتفاعل')}</span></td>
+                    <td class="p-2.5 font-mono text-[10px] text-slate-400 whitespace-nowrap" dir="ltr">${escapeHTML(r.Updated_At || '')}</td>
+                </tr>
+            `).join('');
+        };
+
+        window.loadApprovedSheetControlStatus = async function() {
+            if (currentRole !== 'admin') return null;
+            try {
+                const res = await fetchBotBackend('/api/admin/approved-sheet/status', { method: 'GET', timeoutMs: 6000 });
+                if (!res || !res.ok) return null;
+                const st = await res.json();
+                cachedApprovedSheetStatus = st;
+
+                const count = Number(st.approvedSuppliersCount || 0);
+                const gCnt = Number(st.googleContactsSyncedCount || 0);
+                const emailTxt = st.ownerEmail || 'Google Cloud';
+                const sheetReady = Boolean(st.sheetConnected && st.spreadsheetUrl);
+
+                const mainBadge = document.getElementById('adminApprovedSheetStatusBadge');
+                const modalBadge = document.getElementById('suppliersModalSheetStatusBadge');
+                const lastSyncEl = document.getElementById('adminApprovedSheetLastSyncText');
+                const sheetInput = document.getElementById('adminCustomSheetUrlInput');
+                const appInput = document.getElementById('adminAppsheetUrlInput');
+
+                const statusText = sheetReady
+                    ? `🟢 متصل بـ Google Sheet & الواتساب (${emailTxt}) | معتمد: ${count} مورد`
+                    : `🟢 جهات اتصال الواتساب (${emailTxt}): ${gCnt}/${count} مورد | اضغط فتح الجدول لإنشائه في Drive`;
+
+                if (mainBadge) mainBadge.textContent = statusText;
+                if (modalBadge) {
+                    modalBadge.textContent = sheetReady
+                        ? `🟢 متصل بـ Sheet & الواتساب (${count} مورد معتمد)`
+                        : `🟢 محفوظ في الواتساب: ${count} مورد معتمد`;
+                }
+                if (lastSyncEl && st.lastSyncAt) {
+                    lastSyncEl.textContent = `آخر مزامنة: ${new Date(st.lastSyncAt).toLocaleString('ar-SA')}`;
+                }
+                if (sheetInput && st.spreadsheetUrl && !sheetInput.value) {
+                    sheetInput.value = st.spreadsheetUrl;
+                }
+                if (appInput && st.appsheetUrl && !appInput.value) {
+                    appInput.value = st.appsheetUrl;
+                }
+                if (Array.isArray(st.rows)) {
+                    window.renderApprovedSheetPreviewRows(st.rows);
+                }
+                return st;
+            } catch (_) {
+                return null;
+            }
+        };
+
+        window.openApprovedSuppliersGoogleSheetUI = async function() {
+            if (currentRole !== 'admin') return;
+            const st = cachedApprovedSheetStatus || (await window.loadApprovedSheetControlStatus());
+            if (st && st.spreadsheetUrl) {
+                window.open(st.spreadsheetUrl, '_blank', 'noopener');
+                return;
+            }
+            const base = (typeof window.getActiveBotBackendBase === 'function' && window.getActiveBotBackendBase()) || window.location.origin;
+            window.open(`${base.replace(/\/+$/, '')}/api/admin/approved-sheet/open`, '_blank', 'noopener');
+        };
+
+        window.openApprovedSuppliersSheetPreviewModal = async function() {
+            if (currentRole !== 'admin') return;
+            document.getElementById('approvedSheetPreviewModal')?.classList.remove('hidden');
+            await window.loadApprovedSheetControlStatus();
+        };
+
+        window.closeApprovedSuppliersSheetPreviewModal = function() {
+            document.getElementById('approvedSheetPreviewModal')?.classList.add('hidden');
+        };
+
+        window.saveCustomGoogleSheetLinkUI = async function() {
+            if (currentRole !== 'admin') return;
+            const val = String(document.getElementById('adminCustomSheetUrlInput')?.value || '').trim();
+            if (!val) {
+                window.showAdminActionToast('يرجى لصق رابط أو معرف Google Sheet أولاً.', 'amber');
+                return;
+            }
+            const res = await fetchBotBackend('/api/admin/approved-sheet/config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ spreadsheetUrl: val }),
+                timeoutMs: 12000
+            });
+            const data = res ? await res.json().catch(() => ({})) : {};
+            if (res && res.ok && data.success) {
+                cachedApprovedSheetStatus = data.status;
+                await window.loadApprovedSheetControlStatus();
+                window.showAdminActionToast('✅ تم ربط ملف Google Sheet ومزامنة الموردين المعتمدين فوراً!', 'emerald');
+            } else {
+                window.showAdminActionToast(data.error || 'تعذر ربط الجدول، تأكد من صلاحية المشاركة.', 'rose');
+            }
+        };
+
+        window.openOrSaveAppsheetUrlUI = async function(saveOnly = false) {
+            if (currentRole !== 'admin') return;
+            const inputEl = document.getElementById('adminAppsheetUrlInput');
+            const typedUrl = String(inputEl?.value || '').trim();
+            if (saveOnly) {
+                const res = await fetchBotBackend('/api/admin/approved-sheet/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ appsheetUrl: typedUrl }),
+                    timeoutMs: 8000
+                });
+                if (res && res.ok) {
+                    await window.loadApprovedSheetControlStatus();
+                    window.showAdminActionToast('✅ تم حفظ رابط تطبيق AppSheet بنجاح!', 'emerald');
+                }
+                return;
+            }
+            const targetUrl = typedUrl || cachedApprovedSheetStatus?.appsheetUrl || 'https://www.appsheet.com/Template/Apps';
+            window.open(targetUrl, '_blank', 'noopener');
+        };
+
+        window.syncApprovedSheetAndWhatsAppNowUI = async function(btnEl) {
+            if (currentRole !== 'admin') return;
+            const orig = btnEl ? btnEl.innerHTML : '';
+            if (btnEl) {
+                btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جاري المزامنة...</span>';
+                btnEl.disabled = true;
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/approved-sheet/sync-now', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ purgeUnreplied: false }),
+                    timeoutMs: 25000
+                });
+                const data = res ? await res.json().catch(() => ({})) : {};
+                if (res && res.ok && data.success) {
+                    cachedApprovedSheetStatus = data.status;
+                    await window.loadApprovedSheetControlStatus();
+                    await window.loadGoogleContactsBarStatus();
+                    await loadSuppliersFromCloud();
+                    window.showAdminActionToast(
+                        `✅ تمت المزامنة الفورية بنجاح (${data.status?.approvedSuppliersCount || 24} مورد معتمد في الجدول وجهات اتصال الواتساب)!`,
+                        'emerald'
+                    );
+                } else {
+                    window.showAdminActionToast(data.error || 'تعذر إتمام المزامنة الفورية.', 'rose');
+                }
+            } finally {
+                if (btnEl) {
+                    btnEl.innerHTML = orig;
+                    btnEl.disabled = false;
+                }
+            }
+        };
+
+        window.exportApprovedSheetCsvUI = async function() {
+            if (currentRole !== 'admin') return;
+            const res = await fetchBotBackend('/api/admin/approved-sheet/export.csv', { method: 'GET', timeoutMs: 8000 });
+            if (!res || !res.ok) return;
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Approved_Suppliers_AppSheet.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
         };
 
         window.connectGoogleContactsOAuthUI = async function() {
@@ -7394,7 +7987,7 @@
             if (distEl) distEl.value = '';
             document.getElementById('newSupPhone').value = '';
             const tplEl = document.getElementById('newSupContactTpl');
-            if (tplEl) tplEl.value = 'prefixed';
+            if (tplEl) tplEl.value = 'detailed';
             const contactEl = document.getElementById('newSupContactName');
             if (contactEl) { contactEl.dataset.manualOverride = '0'; contactEl.value = ''; }
             document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = false);
@@ -7418,12 +8011,14 @@
             let showPhone = sup.phone; if(showPhone.startsWith('9665')) showPhone = '05' + showPhone.substring(4);
             document.getElementById('newSupPhone').value = showPhone;
             const tplEl = document.getElementById('newSupContactTpl');
-            if (tplEl) tplEl.value = sup.contact_name_template || 'prefixed';
+            const effectiveTpl = sup.contact_name_template || 'detailed';
+            if (tplEl) tplEl.value = effectiveTpl;
             const contactEl = document.getElementById('newSupContactName');
             if (contactEl) {
-                const defaultPreview = window.buildGoogleContactNamePreviewUI(sup.name, sup.district || '', sup.contact_name_template || 'prefixed');
-                contactEl.value = sup.contact_display_name || defaultPreview;
-                contactEl.dataset.manualOverride = (sup.contact_display_name && sup.contact_display_name !== defaultPreview) ? '1' : '0';
+                const defaultPreview = window.buildGoogleContactNamePreviewUI(sup.name, sup.district || '', effectiveTpl, sup.brands || []);
+                const existingSaved = sup.saved_contact_name || sup.contact_display_name || '';
+                contactEl.value = existingSaved || defaultPreview;
+                contactEl.dataset.manualOverride = (existingSaved && existingSaved !== defaultPreview) ? '1' : '0';
             }
             
             document.querySelectorAll('.cond-cb').forEach(cb => cb.checked = sup.conditions && sup.conditions.includes(cb.value));
@@ -9129,35 +9724,133 @@
             }
         }
 
+        window.activeSuppliersContactFilter = 'all';
+
+        window.setSuppliersContactFilterUI = function(filterMode) {
+            window.activeSuppliersContactFilter = filterMode || 'all';
+            const bar = document.getElementById('suppliersContactFilterBar');
+            if (bar) {
+                bar.querySelectorAll('button[data-sup-filter]').forEach((b) => {
+                    const isAct = b.getAttribute('data-sup-filter') === window.activeSuppliersContactFilter;
+                    b.className = isAct
+                        ? 'px-2.5 py-1 rounded-lg text-[11px] font-black bg-brand-500 text-white border border-brand-400 transition'
+                        : 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-300 border border-slate-700 hover:border-slate-500 transition';
+                });
+            }
+            window.renderSuppliersModalList();
+        };
+
+        window.exportApprovedSupplierContactsVcfUI = async function(btn) {
+            if (currentRole !== 'admin') return;
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التصدير...';
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/suppliers/export-contacts.vcf', { method: 'GET', timeoutMs: 12000 });
+                if (!res || !res.ok) {
+                    alert('تعذر تصدير ملف جهات الاتصال المعتمدة (VCF). تأكد من اتصال الخادم.');
+                    return;
+                }
+                const vcfText = await res.text();
+                const cardCount = (vcfText.match(/BEGIN:VCARD/gi) || []).length;
+                const blob = new Blob([vcfText], { type: 'text/vcard;charset=utf-8' });
+                const dlUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = dlUrl;
+                a.download = `haraj_approved_replied_suppliers_${new Date().toISOString().slice(0, 10)}.vcf`;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    a.remove();
+                    URL.revokeObjectURL(dlUrl);
+                }, 400);
+                if (typeof window.showAdminActionToast === 'function') {
+                    window.showAdminActionToast(`📥 تم تصدير (${cardCount}) جهة اتصال معتمدة فقط (الموردون الذين ردوا فعلياً وتم اعتمادهم).`, 'emerald');
+                }
+            } catch (_) {
+                alert('حدث خطأ أثناء تصدير جهات الاتصال المعتمدة.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            }
+        };
+
+        window.approveAndSaveSupplierContactUI = async function(supId, btn) {
+            if (currentRole !== 'admin') return;
+            const orig = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+            }
+            try {
+                const res = await fetchBotBackend('/api/admin/suppliers/' + encodeURIComponent(supId) + '/approve-contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({}),
+                    timeoutMs: 10000
+                });
+                const out = res ? await res.json().catch(() => ({})) : {};
+                if (!res || !res.ok || !out.success) {
+                    alert(out.error || 'تعذر اعتماد وحفظ اسم المورد في جهات الاتصال.');
+                    return;
+                }
+                if (out.supplier) {
+                    suppliersDB = suppliersDB.map((s) => String(s.id) === String(supId) ? { ...s, ...out.supplier } : s);
+                    window.renderSuppliersModalList();
+                } else {
+                    await loadSuppliersFromCloud();
+                }
+                if (typeof window.showAdminActionToast === 'function') {
+                    window.showAdminActionToast(`✅ تم توليد واعتماد الاسم الرسمي بجهات الاتصال: ${out.saved_contact_name || ''}`, 'emerald');
+                }
+            } catch (_) {
+                alert('حدث خطأ أثناء اعتماد وحفظ اسم المورد.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = orig;
+                }
+            }
+        };
+
         window.renderSuppliersModalList = function renderSuppliersModalList() {
             const container = document.getElementById('suppliersListContainer');
             const totalBadge = document.getElementById('suppliersTotalCountBadge');
             const searchQuery = String(document.getElementById('suppliersSearchInput')?.value || '').trim().toLowerCase();
+            const contactFilter = window.activeSuppliersContactFilter || 'all';
 
-            const filteredSuppliers = !searchQuery
-                ? suppliersDB
-                : suppliersDB.filter((sup) => {
-                    const hay = [
-                        sup.name || '',
-                        sup.phone || '',
-                        sup.district || '',
-                        Array.isArray(sup.brands) ? sup.brands.join(' ') : '',
-                        Array.isArray(sup.categories) ? sup.categories.join(' ') : '',
-                        sup.supplier_type_label_ar || ''
-                    ].join(' ').toLowerCase();
-                    return hay.includes(searchQuery);
-                });
+            const filteredSuppliers = suppliersDB.filter((sup) => {
+                const isSavedApproved = Boolean(sup.saved_contact_name && Number(sup.has_replied) === 1 && Number(sup.is_contact_approved) === 1) || sup.contact_save_status === 'approved_and_saved';
+                if (contactFilter === 'approved_and_saved' && !isSavedApproved) return false;
+                if (contactFilter === 'pending_reply_and_approval' && isSavedApproved) return false;
+                if (!searchQuery) return true;
+                const hay = [
+                    sup.name || '',
+                    sup.saved_contact_name || '',
+                    sup.contact_save_status_label_ar || '',
+                    sup.phone || '',
+                    sup.district || '',
+                    Array.isArray(sup.brands) ? sup.brands.join(' ') : '',
+                    Array.isArray(sup.categories) ? sup.categories.join(' ') : '',
+                    sup.supplier_type_label_ar || ''
+                ].join(' ').toLowerCase();
+                return hay.includes(searchQuery);
+            });
 
             if (totalBadge) {
-                totalBadge.textContent = searchQuery
+                totalBadge.textContent = (searchQuery || contactFilter !== 'all')
                     ? `${filteredSuppliers.length} من ${suppliersDB.length} مورد معتمد`
                     : `${suppliersDB.length} مورد معتمد`;
             }
 
             if (!container) return;
             if (filteredSuppliers.length === 0) {
-                container.innerHTML = searchQuery
-                    ? '<p class="text-xs text-slate-400 text-center py-8">لا يوجد مورد مطابق لعبارة البحث.</p>'
+                container.innerHTML = (searchQuery || contactFilter !== 'all')
+                    ? '<p class="text-xs text-slate-400 text-center py-8">لا يوجد مورد مطابق للتصفية أو عبارة البحث.</p>'
                     : '<p class="text-xs text-slate-400 text-center py-8">لا يوجد موردين معتمدين.</p>';
                 return;
             }
@@ -9168,6 +9861,10 @@
                 const safeDistrict = sup.district ? escapeHTML(sup.district) : '';
                 const brandsCount = Array.isArray(sup.brands) ? sup.brands.length : 0;
                 const categoriesCount = Array.isArray(sup.categories) ? sup.categories.length : 0;
+                const isSavedApproved = Boolean(sup.saved_contact_name && Number(sup.has_replied) === 1 && Number(sup.is_contact_approved) === 1) || sup.contact_save_status === 'approved_and_saved';
+                const contactBadgeHtml = isSavedApproved
+                    ? `<span class="text-[10px] font-black text-emerald-300 bg-emerald-500/15 border border-emerald-500/35 px-2 py-0.5 rounded-lg">✅ محفوظ بجهات الاتصال: ${escapeHTML(sup.saved_contact_name)}</span>`
+                    : `<span class="text-[10px] font-bold text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-lg">⏳ بانتظار الرد والاعتماد</span>`;
                 return `
                     <div id="supplier-row-${safeSupId}" data-approved-supplier-row="1" class="flex justify-between items-center bg-slate-900/80 border border-slate-700/80 p-3.5 rounded-2xl text-xs shadow-sm">
                         <div class="flex-1 min-w-0">
@@ -9176,11 +9873,13 @@
                                 ${safePhone ? `<span dir="ltr" class="font-mono text-[11px] font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-lg">${safePhone}</span>` : ''}
                                 ${safeDistrict ? `<span class="text-[10px] font-bold text-sky-300 bg-sky-500/10 border border-sky-500/25 px-2 py-0.5 rounded-lg">📍 ${safeDistrict}</span>` : ''}
                             </div>
-                            <div class="flex flex-wrap gap-2 text-[11px] text-slate-300">
+                            <div class="flex flex-wrap items-center gap-2 text-[11px] text-slate-300">
                                 <p><span class="font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">تخصصات:</span> ${brandsCount} سيارة، ${categoriesCount} أقسام</p>
+                                ${contactBadgeHtml}
                             </div>
                         </div>
                         <div class="flex items-center gap-2 ml-3 border-r border-slate-800 pr-3 shrink-0">
+                            <button type="button" onclick="approveAndSaveSupplierContactUI('${safeSupId}', this)" title="توليد واعتماد الاسم في جهات الاتصال المعتمدة" class="text-emerald-300 hover:text-white bg-emerald-500/15 hover:bg-emerald-600 px-2.5 py-2 rounded-xl flex items-center gap-1 font-bold transition"><i class="fa-solid fa-address-card text-xs"></i><span>${isSavedApproved ? 'تحديث الاسم' : 'اعتماد الاسم'}</span></button>
                             <button type="button" onclick="editSupplier('${safeSupId}')" title="تعديل بيانات المورد" class="text-sky-300 hover:text-white bg-sky-500/15 hover:bg-sky-600 px-2.5 py-2 rounded-xl flex items-center gap-1 font-bold transition"><i class="fa-solid fa-pen text-xs"></i><span>تعديل</span></button>
                             <button type="button" onclick="deleteSupplier('${safeSupId}')" title="حذف المورد" class="text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-600 w-9 h-9 rounded-xl flex justify-center items-center transition"><i class="fa-solid fa-trash text-xs"></i></button>
                         </div>
@@ -9504,6 +10203,77 @@
             }
         };
 
+        window.dispatchOrderDirectFromSiteUI = async function(orderId, targetMode = 'suppliers', btn = null) {
+            if (currentRole !== 'admin') return;
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التوجيه المباشر...';
+            }
+            try {
+                const order = Array.isArray(window.currentOrders) ? window.currentOrders.find((o) => o.id === orderId) : null;
+                if (!order) {
+                    alert('تعذر العثور على بيانات هذا الطلب.');
+                    return;
+                }
+                const mappedCat = order.partCondition === 'مستعمل'
+                    ? 'scrap'
+                    : (order.partCategory === 'بودي وهيكل خارجي' || order.partCategory === 'زجاج ومرايا' ? 'body' : 'mechanic');
+                const payload = {
+                    dispatch_target: targetMode,
+                    order_id: order.backendOrderId || undefined,
+                    firestore_doc_id: orderId,
+                    customer_name: order.customerName || 'عميل الموقع',
+                    customer_phone: order.phone || '',
+                    car_brand: order.brand || '',
+                    car_model: order.model || '',
+                    car_year: Number(order.year) || undefined,
+                    vin_number: order.vin && order.vin !== 'لم يُدخل' ? order.vin : null,
+                    part_name: order.parts || '',
+                    part_category: mappedCat,
+                    allow_resend: true
+                };
+                const res = await fetchBotBackend('/api/admin/orders/direct-dispatch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    timeoutMs: 12000
+                });
+                const out = res ? await res.json().catch(() => ({})) : {};
+                if (!res || !res.ok || !out.success) {
+                    alert(out.error || 'تعذر الاتصال بسيرفر البوت لتوجيه الطلب مباشرة من الموقع.');
+                    return;
+                }
+                try {
+                    await setDoc(doc(db, 'orders', orderId), {
+                        backendOrderId: out.order_id || order.backendOrderId || null,
+                        botStatus: 'dispatched',
+                        botRequestedAt: serverTimestamp()
+                    }, { merge: true });
+                } catch (_) {}
+                if (typeof window.showAdminActionToast === 'function') {
+                    if (targetMode === 'universal_agents') {
+                        const notifiedCnt = Number(out.universal_dispatch?.notifiedCount || 0);
+                        window.showAdminActionToast(
+                            notifiedCnt > 0
+                                ? `🧭 تم توجيه الطلب (#${out.order_id}) من الموقع فوراً إلى (${notifiedCnt}) وكيل شامل نشط!`
+                                : `🧭 تم اعتماد الطلب (#${out.order_id}) لتوجيهه للوكلاء الشاملين (أضف أو فعّل وكيلاً شاملاً مطابقاً لإرسال الرسالة).`,
+                            'amber'
+                        );
+                    } else {
+                        window.showAdminActionToast(`🚀 تم إرسال وتوجيه الطلب (#${out.order_id}) من الموقع إلى شبكة الموردين وبدء دورة التسعير الآلي!`, 'emerald');
+                    }
+                }
+            } catch (_) {
+                alert('حدث خطأ أثناء توجيه الطلب من الموقع.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+        };
+
         function isOrderPurchaseCompleted(order) {
             if (!order) return false;
             if (order.purchaseStatus === 'completed' || order.status === 'completed') return true;
@@ -9658,21 +10428,36 @@
                     ? `<div class="mt-3 mb-2"><button type="button" onclick="loadAndViewOrderImage('${safeOrderId}', this)" class="bg-brand-500/15 hover:bg-brand-500/25 text-brand-300 border border-brand-500/35 text-xs font-bold px-3.5 py-2 rounded-xl transition inline-flex items-center gap-2 shadow-sm">🖼️ عرض الصورة المرفقة</button></div>`
                     : "";
 
-                // زر الذكاء الاصطناعي يظهر للإدارة فقط
+                // أزرار الإرسال والتوجيه الفوري من الموقع (للموردين أو الوكلاء الشاملين) — للإدارة فقط
                 let aiBtnHtml = '';
-                if(rankedEscalationPool.length > 0 && currentRole === 'admin') {
+                if (currentRole === 'admin') {
                     const isAlreadyDispatched = order.botStatus === 'pending_dispatch' || order.botStatus === 'dispatched';
-                    aiBtnHtml = isAlreadyDispatched
-                        ? `
-                    <button onclick="requestAIPricing('${safeOrderId}', this)" class="w-full mt-4 mb-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2 border border-emerald-500/50">
-                        <i class="fa-solid fa-check text-lg"></i>
-                        تم إرسال الطلب للموردين آلياً (Group A ⬅️ Group B ⬅️ Group C)
-                    </button>`
-                        : `
-                    <button onclick="requestAIPricing('${safeOrderId}', this)" class="w-full mt-4 mb-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-[0_0_15px_rgba(79,70,229,0.3)] transition-all flex items-center justify-center gap-2 border border-indigo-500/50">
-                        <i class="fa-solid fa-robot animate-pulse text-lg"></i>
-                        طلب تسعيرة آلياً عبر شبكة الموردين (البوت - تصعيد مجموعات 4×3)
-                    </button>`;
+                    const mainAiPoolBtn = rankedEscalationPool.length > 0
+                        ? (isAlreadyDispatched
+                            ? `
+                        <button onclick="requestAIPricing('${safeOrderId}', this)" class="w-full mt-3 mb-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-[0_0_15px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2 border border-emerald-500/50 text-xs sm:text-sm">
+                            <i class="fa-solid fa-check text-base"></i>
+                            تم إرسال الطلب للموردين آلياً (Group A ⬅️ Group B ⬅️ Group C)
+                        </button>`
+                            : `
+                        <button onclick="requestAIPricing('${safeOrderId}', this)" class="w-full mt-3 mb-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-[0_0_15px_rgba(79,70,229,0.3)] transition-all flex items-center justify-center gap-2 border border-indigo-500/50 text-xs sm:text-sm">
+                            <i class="fa-solid fa-robot animate-pulse text-base"></i>
+                            طلب تسعيرة آلياً عبر شبكة الموردين (البوت - تصعيد مجموعات 4×3)
+                        </button>`)
+                        : '';
+                    aiBtnHtml = `
+                        ${mainAiPoolBtn}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2 mb-2">
+                            <button type="button" onclick="dispatchOrderDirectFromSiteUI('${safeOrderId}', 'suppliers', this)" class="w-full bg-cyan-600/25 hover:bg-cyan-600 text-cyan-200 hover:text-white border border-cyan-500/45 font-black text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>إرسال/توجيه الطلب من الموقع للموردين</span>
+                            </button>
+                            <button type="button" onclick="dispatchOrderDirectFromSiteUI('${safeOrderId}', 'universal_agents', this)" class="w-full bg-amber-500/20 hover:bg-amber-500 text-amber-200 hover:text-slate-950 border border-amber-500/45 font-black text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-users-rays"></i>
+                                <span>توجيه الطلب من الموقع للوكلاء الشاملين</span>
+                            </button>
+                        </div>
+                    `;
                 }
 
                 let btnHtml = '';

@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#05080f" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>الوكلاء الشاملون (مندوبو القطاع) — عمليات التاجر | حراج القطع</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { tajawal: ['Cairo', 'Tajawal', 'sans-serif'] },
+          colors: {
+            brand: {
+              400: '#818cf8',
+              500: '#4f46e5',
+              600: '#4338ca',
+              700: '#3730a3'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --bg-deep: #05080f;
+      --bg-panel: rgba(11, 18, 34, 0.88);
+      --border-glass: rgba(56, 189, 248, 0.25);
+      --font-ar: 'Cairo', 'Tajawal', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(79, 70, 229, 0.16), transparent 35%),
+        radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.12), transparent 35%),
+        radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.08), transparent 40%);
+      color: #f8fafc;
+      font-family: var(--font-ar);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .glass-card {
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .glass-input {
+      background: rgba(2, 6, 23, 0.78);
+      border: 1px solid rgba(71, 85, 105, 0.65);
+      color: #f8fafc;
+      transition: all 0.2s ease;
+    }
+
+    .glass-input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22);
+    }
+
+    .cat-chip-selected {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.35), rgba(14, 165, 233, 0.28));
+      border-color: #38bdf8 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+    }
+  </style>
+</head>
+<body class="pb-16">
+
+  <!-- شريط علوي موحد بهوية عمليات التاجر -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/90 bg-slate-950/90 backdrop-blur-xl">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500/25 to-brand-500/30 border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-lg">
+          <i class="fa-solid fa-users-rays text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 text-[11px] font-bold text-slate-400">
+            <span>حراج القطع | عالم التروس</span>
+            <span>•</span>
+            <span class="text-cyan-400">عمليات التاجر</span>
+          </div>
+          <h1 class="text-base sm:text-xl font-black text-white tracking-tight">
+            الوكلاء الشاملون (مندوبو القطاع)
+          </h1>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          id="btnEscalateNow"
+          onclick="triggerEscalationSweepNow()"
+          class="bg-amber-500/15 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-sm"
+          title="فحص الطلبات المفتوحة التي تجاوزت 30 دقيقة دون تسعيرة وتوجيهها للوكلاء الشاملين الآن"
+        >
+          <i class="fa-solid fa-bolt"></i>
+          <span>فحص وتصعيد المتأخر الآن</span>
+        </button>
+
+        <a
+          href="/?admin=1#admin"
+          id="btnBackToMerchantOps"
+          class="bg-slate-800/90 hover:bg-slate-700 text-slate-100 border border-slate-700 px-3.5 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5"
+        >
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>العودة لعمليات التاجر</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- إشعار التنبيهات السريع -->
+  <div id="toastBanner" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm shadow-2xl border transition-all"></div>
+
+  <!-- بوابة التحقق من صلاحية عمليات التاجر عند الدخول المباشر بدون جلسة -->
+  <section id="authGateSection" class="hidden max-w-md mx-auto px-4 pt-16">
+    <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-700/80 space-y-5 text-center">
+      <div class="w-16 h-16 rounded-2xl bg-brand-500/20 border border-brand-500/40 flex items-center justify-center mx-auto text-brand-400">
+        <i class="fa-solid fa-shield-halved text-2xl"></i>
+      </div>
+      <div>
+        <h2 class="text-lg font-black text-white">تسجيل دخول عمليات التاجر</h2>
+        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+          أدخل كلمة المرور الرئيسية للوصول إلى إدارة الوكلاء الشاملين (مندوبي القطاع).
+        </p>
+      </div>
+      <form id="adminLoginForm" onsubmit="submitAdminLogin(event)" class="space-y-3 text-right">
+        <div>
+          <label for="adminPasswordInput" class="block text-xs font-bold text-slate-300 mb-1.5">كلمة مرور عمليات التاجر</label>
+          <input
+            type="password"
+            id="adminPasswordInput"
+            required
+            placeholder="••••••••"
+            class="w-full px-4 py-3 rounded-xl glass-input outline-none text-sm"
+          />
+        </div>
+        <p id="authErrorMsg" class="hidden text-xs font-bold text-rose-400"></p>
+        <button
+          type="submit"
+          id="adminLoginSubmitBtn"
+          class="w-full bg-brand-500 hover:bg-brand-600 text-white font-black py-3 rounded-xl text-sm transition shadow-lg shadow-brand-500/25"
+        >
+          دخول إلى صفحة الوكلاء الشاملين
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- المحتوى الرئيسي لصفحة الوكلاء الشاملين -->
+  <main id="mainMerchantContent" class="max-w-6xl mx-auto px-4 pt-6 space-y-6">
+
+    <!-- بطاقة تعريفية لآلية التصعيد الذكي بعد 30 دقيقة -->
+    <section class="glass-card rounded-3xl p-4 sm:p-5 border border-cyan-500/25 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            مؤقت التصعيد التلقائي (30 دقيقة): نشط
+          </span>
+          <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+            🔒 حماية كاملة لبيانات العميل وأسرار المحلات
+          </span>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-300 font-semibold leading-relaxed pt-1">
+          يراقب النظام الطلبات المفتوحة كل دقيقة؛ وعند مرور <strong class="text-amber-300">30 دقيقة</strong> دون وصول تسعيرة من الموردين العاديين، يطابق ماركة السيارة تلقائياً ويرسل الطلب للوكلاء الشاملين النشطين في نفس الفئة (أو فئة <strong class="text-cyan-300">شامل لجميع الفئات</strong>) مع قبول عرض واحد أو عدة عروض من محلات السوق المختلفة.
+        </p>
+      </div>
+    </section>
+
+    <!-- شريط الإحصائيات الحية -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" id="statsCardsGrid">
+      <div class="glass-card rounded-2xl p-4 border border-slate-800">
+        <div class="text-xs font-bold text-slate-400 flex items-center justify-between">
+          <span>إجمالي الوكلاء الشاملين</span>
+          <i class="fa-solid fa-users text-brand-400"></i>
+        </div>
+        <div id="statTotalAgents" class="text-2xl sm:text-3xl font-black text-white mt-2 font-mono">0</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 border border-emerald-500/25">
+        <div class="text-xs font-bold text-emerald-300 flex items-center justify-between">
+          <span>الوكلاء النشطون حالياً</span>
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        </div>
+        <div id="statActiveAgents" class="text-2xl sm:text-3xl font-black text-emerald-400 mt-2 font-mono">0</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 border border-amber-500/25">
+        <div class="text-xs font-bold text-amber-300 flex items-center justify-between">
+          <span>الطلبات المصعّدة للميدان</span>
+          <i class="fa-solid fa-stopwatch text-amber-400"></i>
+        </div>
+        <div id="statEscalatedOrders" class="text-2xl sm:text-3xl font-black text-amber-300 mt-2 font-mono">0</div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 border border-cyan-500/25">
+        <div class="text-xs font-bold text-cyan-300 flex items-center justify-between">
+          <span>التسعيرات الواردة عبرهم</span>
+          <i class="fa-solid fa-tags text-cyan-400"></i>
+        </div>
+        <div id="statSubmittedQuotes" class="text-2xl sm:text-3xl font-black text-cyan-300 mt-2 font-mono">0</div>
+      </div>
+    </section>
+
+    <!-- أداة إرسال وتوجيه الطلب من الموقع مباشرة (للموردين أو الوكلاء الشاملين) دون استخدام الجوال الشخصي -->
+    <section id="directWebsiteDispatchSection" class="glass-card rounded-3xl p-5 sm:p-6 border border-emerald-500/35 shadow-xl space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3.5">
+        <div>
+          <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane text-emerald-400"></i>
+            <span>إرسال / توجيه طلب من الموقع مباشرة (بدون إرسال يدوي من الجوال)</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">
+            اختر طلباً مفتوحاً مسجلاً أو أدخل بيانات طلب جديد هنا ليرسله البوت فوراً من الموقع إلى الموردين أو إلى الوكلاء الشاملين.
+          </p>
+        </div>
+        <button
+          type="button"
+          onclick="loadOpenOrdersForDirectDispatch()"
+          class="bg-slate-800 hover:bg-slate-700 text-cyan-300 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700 transition flex items-center gap-1.5"
+        >
+          <i class="fa-solid fa-rotate"></i>
+          <span>تحديث الطلبات المفتوحة</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        <div>
+          <label for="directDispatchOrderSelect" class="block text-xs font-bold text-slate-200 mb-1.5">
+            اختيار طلب مفتوح حالي (أو اتركه لإنشاء طلب فوري جديد):
+          </label>
+          <select
+            id="directDispatchOrderSelect"
+            onchange="onSelectOpenOrderForDispatch()"
+            class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-bold cursor-pointer"
+          >
+            <option value="" class="bg-slate-900">➕ إنشاء وتوجيه طلب جديد مباشرة من هنا...</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="directDispatchSpecificAgentSelect" class="block text-xs font-bold text-slate-200 mb-1.5">
+            تحديد وكيل شامل بعينه (اختياري عند التوجيه للوكلاء الشاملين):
+          </label>
+          <select
+            id="directDispatchSpecificAgentSelect"
+            class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-bold cursor-pointer"
+          >
+            <option value="" class="bg-slate-900">🤖 مطابقة تلقائية لجميع الوكلاء الشاملين المختصين بالماركة</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="directDispatchNewOrderFields" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+        <div>
+          <label for="ddCarBrandInput" class="block text-[11px] font-bold text-slate-300 mb-1">ماركة السيارة *</label>
+          <input type="text" id="ddCarBrandInput" placeholder="مثال: إيسوزو / تويوتا / فورد" class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-semibold" />
+        </div>
+        <div>
+          <label for="ddCarModelInput" class="block text-[11px] font-bold text-slate-300 mb-1">الموديل والسنة</label>
+          <input type="text" id="ddCarModelInput" placeholder="مثال: ديماكس 2022" class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-semibold" />
+        </div>
+        <div>
+          <label for="ddPartNameInput" class="block text-[11px] font-bold text-slate-300 mb-1">القطع المطلوبة *</label>
+          <input type="text" id="ddPartNameInput" placeholder="مثال: طرمبة ديزل + فلاتر" class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-semibold" />
+        </div>
+        <div>
+          <label for="ddCustPhoneInput" class="block text-[11px] font-bold text-slate-300 mb-1">جوال العميل (اختياري)</label>
+          <input type="tel" id="ddCustPhoneInput" dir="ltr" placeholder="05xxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-mono text-left" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+        <button
+          type="button"
+          id="btnDirectDispatchSuppliers"
+          onclick="submitDirectOrderDispatchFromPanel('suppliers', this)"
+          class="bg-cyan-600/25 hover:bg-cyan-600 text-cyan-200 hover:text-white border border-cyan-500/45 font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm"
+        >
+          <i class="fa-solid fa-paper-plane"></i>
+          <span>إرسال/توجيه الطلب للموردين</span>
+        </button>
+
+        <button
+          type="button"
+          id="btnDirectDispatchUniversal"
+          onclick="submitDirectOrderDispatchFromPanel('universal_agents', this)"
+          class="bg-amber-500/20 hover:bg-amber-500 text-amber-200 hover:text-slate-950 border border-amber-500/45 font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm"
+        >
+          <i class="fa-solid fa-users-rays"></i>
+          <span>توجيه الطلب للوكلاء الشاملين</span>
+        </button>
+
+        <button
+          type="button"
+          id="btnDirectDispatchBoth"
+          onclick="submitDirectOrderDispatchFromPanel('both', this)"
+          class="bg-emerald-600/25 hover:bg-emerald-600 text-emerald-200 hover:text-white border border-emerald-500/45 font-black py-3 px-4 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm"
+        >
+          <i class="fa-solid fa-bolt"></i>
+          <span>توجيه مزدوج (الموردين + الوكلاء معاً)</span>
+        </button>
+      </div>
+
+      <div id="directDispatchResultBox" class="hidden rounded-2xl p-3.5 text-xs font-bold border"></div>
+    </section>
+
+    <!-- نموذج إضافة / تعديل وكيل شامل -->
+    <section id="agentFormSection" class="glass-card rounded-3xl p-5 sm:p-6 border border-brand-500/35 shadow-xl space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3.5">
+        <h2 id="formHeadingTitle" class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+          <i class="fa-solid fa-user-plus text-brand-400"></i>
+          <span>إضافة وكيل شامل جديد (مندوب قطاع)</span>
+        </h2>
+        <button
+          type="button"
+          id="cancelEditBtn"
+          onclick="resetAgentForm()"
+          class="hidden bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700 transition"
+        >
+          إلغاء التعديل
+        </button>
+      </div>
+
+      <form id="universalAgentForm" onsubmit="handleSaveAgent(event)" class="space-y-5">
+        <input type="hidden" id="editingAgentId" value="" />
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label for="agentNameInput" class="block text-xs sm:text-sm font-bold text-slate-200 mb-1.5">
+              اسم الوكيل الشامل / المندوب <span class="text-rose-400">*</span>
+            </label>
+            <input
+              type="text"
+              id="agentNameInput"
+              required
+              placeholder="مثال: أبو فهد — مندوب قطاع الألماني والياباني"
+              class="w-full px-4 py-3 rounded-xl glass-input outline-none text-xs sm:text-sm font-semibold"
+            />
+          </div>
+
+          <div>
+            <label for="agentPhoneInput" class="block text-xs sm:text-sm font-bold text-slate-200 mb-1.5">
+              رقم الواتساب المعتمد <span class="text-rose-400">*</span>
+            </label>
+            <input
+              type="tel"
+              id="agentPhoneInput"
+              required
+              dir="ltr"
+              placeholder="05xxxxxxxx"
+              class="w-full px-4 py-3 rounded-xl glass-input outline-none text-xs sm:text-sm font-mono text-left"
+            />
+          </div>
+
+          <div>
+            <label for="agentStatusSelect" class="block text-xs sm:text-sm font-bold text-slate-200 mb-1.5">
+              حالة التفعيل
+            </label>
+            <select
+              id="agentStatusSelect"
+              class="w-full px-4 py-3 rounded-xl glass-input outline-none text-xs sm:text-sm font-bold cursor-pointer"
+            >
+              <option value="1" class="bg-slate-900 text-emerald-300">🟢 نشط (يستقبل طلبات التصعيد)</option>
+              <option value="0" class="bg-slate-900 text-amber-300">⏸️ متوقف مؤقتاً</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- اختيار الفئات المتعددة + إضافة فئة مخصصة -->
+        <div class="bg-slate-950/75 border border-slate-800 rounded-2xl p-4 space-y-3.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="text-xs sm:text-sm font-black text-cyan-300">
+                الفئات المختص بها (يمكن اختيار فئة واحدة أو عدة فئات معاً):
+              </span>
+              <p class="text-[11px] text-slate-400 mt-0.5">
+                اختر الفئات الدقيقة التي يغطيها المندوب في السوق، أو اختر "شامل لجميع الفئات" ليعمل كمظلة عامة.
+              </p>
+            </div>
+            <button
+              type="button"
+              onclick="toggleCustomCategoryBox()"
+              class="bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/35 px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-plus"></i>
+              <span>إضافة فئة مخصصة</span>
+            </button>
+          </div>
+
+          <!-- صندوق إنشاء فئة مخصصة -->
+          <div id="customCategoryCreatorBox" class="hidden bg-slate-900/95 border border-cyan-500/35 rounded-xl p-3.5 space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <input
+                type="text"
+                id="newCategoryLabelInput"
+                placeholder="اسم الفئة الجديدة (مثال: شاحنات وديزل / لكزس وتويوتا)"
+                class="px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-semibold"
+              />
+              <input
+                type="text"
+                id="newCategoryKeywordsInput"
+                placeholder="ماركات مطابقة مفصولة بفاصلة (اختياري، مثال: مان، مرسيدس شاحنات، ايسوزو)"
+                class="px-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-semibold"
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="createNewCustomCategory()"
+                class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black px-4 py-2 rounded-xl text-xs transition"
+              >
+                حفظ الفئة واختيارها
+              </button>
+            </div>
+          </div>
+
+          <div id="formCategoriesCheckboxes" class="flex flex-wrap gap-2 pt-1"></div>
+        </div>
+
+        <div>
+          <label for="agentNotesInput" class="block text-xs sm:text-sm font-bold text-slate-200 mb-1.5">
+            المنطقة / السوق / ملاحظات التغطية الميدانية
+          </label>
+          <input
+            type="text"
+            id="agentNotesInput"
+            placeholder="مثال: الصناعية القديمة + تشاليح الحائر — يتعامل مع 35 محل قطع ألماني وياباني"
+            class="w-full px-4 py-3 rounded-xl glass-input outline-none text-xs sm:text-sm"
+          />
+        </div>
+
+        <div class="flex flex-wrap items-center justify-end gap-3 pt-1">
+          <button
+            type="submit"
+            id="saveAgentSubmitBtn"
+            class="w-full sm:w-auto bg-gradient-to-r from-brand-500 to-indigo-600 hover:from-brand-600 hover:to-indigo-700 text-white font-black px-7 py-3 rounded-xl text-xs sm:text-sm transition shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span id="saveAgentSubmitLabel">إضافة وحفظ الوكيل الشامل</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- شريط الفلترة حسب الفئة + البحث الفوري + قائمة الوكلاء الشاملين -->
+    <section class="glass-card rounded-3xl p-5 sm:p-6 border border-slate-800 space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-network-wired text-emerald-400"></i>
+            <span>قائمة الوكلاء الشاملين ومندوبي القطاع</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">
+            تصفية حسب الفئة أو تعديل وتفعيل/إيقاف أي وكيل شامل بضغطة زر واحدة.
+          </p>
+        </div>
+
+        <div class="relative w-full md:w-72">
+          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input
+            type="text"
+            id="searchAgentsInput"
+            oninput="renderAgentsList()"
+            placeholder="بحث بالاسم، الجوال، أو السوق..."
+            class="w-full pr-9 pl-3.5 py-2.5 rounded-xl glass-input outline-none text-xs font-semibold"
+          />
+        </div>
+      </div>
+
+      <!-- أزرار التصفية حسب الفئة -->
+      <div id="categoryFilterBar" class="flex flex-wrap items-center gap-2"></div>
+
+      <!-- بطاقات الوكلاء الشاملين -->
+      <div id="agentsCardsContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
+        <div class="col-span-full text-center py-10 text-slate-400 text-sm font-bold">
+          جاري تحميل قائمة الوكلاء الشاملين...
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const state = {
+      categories: [],
+      agents: [],
+      stats: {
+        total_agents: 0,
+        active_agents: 0,
+        paused_agents: 0,
+        escalated_orders_count: 0,
+        submitted_quotes_count: 0
+      },
+      selectedFormCategories: new Set(['all']),
+      activeCategoryFilter: 'all_filter'
+    };
+
+    function getStoredAdminCredentials() {
+      const tok =
+        localStorage.getItem('haraj_admin_token') ||
+        localStorage.getItem('adminToken') ||
+        '';
+      const passHash = localStorage.getItem('adminPasswordHash') || '';
+      return { tok: tok.trim(), passHash: passHash.trim() };
+    }
+
+    function buildAdminHeaders(extra = {}) {
+      const { tok, passHash } = getStoredAdminCredentials();
+      const headers = { 'Content-Type': 'application/json', ...extra };
+      if (tok || passHash) {
+        headers['X-Admin-Token'] = tok || passHash;
+        headers['X-Admin-Password-Hash'] = passHash || tok;
+      }
+      return headers;
+    }
+
+    function showToast(message, isError = false) {
+      const el = document.getElementById('toastBanner');
+      if (!el) return;
+      el.textContent = message;
+      el.className =
+        'fixed bottom-5 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm shadow-2xl border transition-all ' +
+        (isError
+          ? 'bg-rose-950/95 text-rose-200 border-rose-500/50'
+          : 'bg-emerald-950/95 text-emerald-200 border-emerald-500/50');
+      el.classList.remove('hidden');
+      clearTimeout(window.__uaToastTimer);
+      window.__uaToastTimer = setTimeout(() => {
+        el.classList.add('hidden');
+      }, 3600);
+    }
+
+    function escapeHtml(val) {
+      return String(val ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    async function sha256Hex(text) {
+      if (!window.crypto || !window.crypto.subtle) return '';
+      const buf = await window.crypto.subtle.digest(
+        'SHA-256',
+        new TextEncoder().encode(String(text))
+      );
+      return Array.from(new Uint8Array(buf))
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+
+    function toggleAuthView(isAuthenticated) {
+      const gate = document.getElementById('authGateSection');
+      const main = document.getElementById('mainMerchantContent');
+      if (isAuthenticated) {
+        gate.classList.add('hidden');
+        main.classList.remove('hidden');
+      } else {
+        gate.classList.remove('hidden');
+        main.classList.add('hidden');
+      }
+    }
+
+    async function submitAdminLogin(ev) {
+      ev.preventDefault();
+      const input = document.getElementById('adminPasswordInput');
+      const errEl = document.getElementById('authErrorMsg');
+      const rawPass = String(input.value || '').trim();
+      if (!rawPass) return;
+
+      errEl.classList.add('hidden');
+      try {
+        const hashed = await sha256Hex(rawPass);
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            admin_password: rawPass,
+            admin_password_hash: hashed || undefined
+          })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) {
+          errEl.textContent = data.error || 'كلمة المرور غير صحيحة.';
+          errEl.classList.remove('hidden');
+          return;
+        }
+        if (data.auth_token) {
+          localStorage.setItem('haraj_admin_token', data.auth_token);
+          localStorage.setItem('adminToken', data.auth_token);
+        }
+        if (hashed) {
+          localStorage.setItem('adminPasswordHash', hashed);
+        }
+        localStorage.setItem('isMasterAdmin', 'true');
+        localStorage.setItem('adminRole', 'master_admin');
+        input.value = '';
+        toggleAuthView(true);
+        await loadUniversalAgentsData();
+      } catch (err) {
+        errEl.textContent = 'تعذر الاتصال بالخادم، يرجى المحاولة مجدداً.';
+        errEl.classList.remove('hidden');
+      }
+    }
+
+    async function loadUniversalAgentsData() {
+      try {
+        const res = await fetch('/api/admin/universal-agents', {
+          headers: buildAdminHeaders()
+        });
+        if (res.status === 401) {
+          toggleAuthView(false);
+          return;
+        }
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'تعذر تحميل البيانات');
+        }
+        toggleAuthView(true);
+        state.categories = Array.isArray(data.categories) ? data.categories : [];
+        state.agents = Array.isArray(data.agents) ? data.agents : [];
+        if (data.stats) state.stats = data.stats;
+
+        renderStats();
+        renderFormCategoryChips();
+        renderFilterPills();
+        renderAgentsList();
+        renderDirectDispatchAgentSelect();
+        await loadOpenOrdersForDirectDispatch();
+      } catch (err) {
+        showToast(err.message || 'حدث خطأ أثناء تحميل بيانات الوكلاء الشاملين', true);
+      }
+    }
+
+    let cachedOpenOrders = [];
+
+    function renderDirectDispatchAgentSelect() {
+      const sel = document.getElementById('directDispatchSpecificAgentSelect');
+      if (!sel) return;
+      const currentVal = sel.value || '';
+      const activeList = state.agents.filter((a) => Boolean(a.is_active));
+      sel.innerHTML =
+        '<option value="" class="bg-slate-900">🤖 مطابقة تلقائية لجميع الوكلاء الشاملين المختصين بالماركة</option>' +
+        activeList
+          .map(
+            (a) =>
+              `<option value="${Number(a.id)}" class="bg-slate-900">${escapeHtml(a.name)} (${escapeHtml(formatDisplayPhone(a.phone))})</option>`
+          )
+          .join('');
+      if (currentVal) sel.value = currentVal;
+    }
+
+    async function loadOpenOrdersForDirectDispatch() {
+      const sel = document.getElementById('directDispatchOrderSelect');
+      if (!sel) return;
+      try {
+        const res = await fetch('/api/admin/orders/open-list', {
+          headers: buildAdminHeaders()
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        cachedOpenOrders = Array.isArray(data.orders) ? data.orders : [];
+        const prevVal = sel.value || '';
+        sel.innerHTML =
+          '<option value="" class="bg-slate-900">➕ إنشاء وتوجيه طلب جديد مباشرة من هنا...</option>' +
+          cachedOpenOrders
+            .map((o) => {
+              const label = `#${o.order_id} — ${o.car_brand || ''} ${o.car_model || ''} ${o.car_year || ''} | ${String(o.part_name || '').slice(0, 42)}`;
+              return `<option value="${Number(o.order_id)}" class="bg-slate-900">${escapeHtml(label)}</option>`;
+            })
+            .join('');
+        if (prevVal && cachedOpenOrders.some((o) => String(o.order_id) === String(prevVal))) {
+          sel.value = prevVal;
+        }
+        onSelectOpenOrderForDispatch();
+      } catch (_) {}
+    }
+
+    function onSelectOpenOrderForDispatch() {
+      const sel = document.getElementById('directDispatchOrderSelect');
+      const fieldsWrap = document.getElementById('directDispatchNewOrderFields');
+      if (!sel || !fieldsWrap) return;
+      const selectedId = String(sel.value || '').trim();
+      if (!selectedId) {
+        fieldsWrap.classList.remove('opacity-60');
+        return;
+      }
+      const ord = cachedOpenOrders.find((o) => String(o.order_id) === selectedId);
+      if (ord) {
+        document.getElementById('ddCarBrandInput').value = ord.car_brand || '';
+        document.getElementById('ddCarModelInput').value = [ord.car_model || '', ord.car_year || ''].filter(Boolean).join(' ');
+        document.getElementById('ddPartNameInput').value = ord.part_name || '';
+        document.getElementById('ddCustPhoneInput').value = formatDisplayPhone(ord.customer_phone || '');
+        fieldsWrap.classList.add('opacity-60');
+      }
+    }
+
+    async function submitDirectOrderDispatchFromPanel(targetMode, btn) {
+      const selOrderId = String(document.getElementById('directDispatchOrderSelect')?.value || '').trim();
+      const specificAgentId = String(document.getElementById('directDispatchSpecificAgentSelect')?.value || '').trim();
+      const rawBrand = String(document.getElementById('ddCarBrandInput')?.value || '').trim();
+      const rawModelYear = String(document.getElementById('ddCarModelInput')?.value || '').trim();
+      const rawPart = String(document.getElementById('ddPartNameInput')?.value || '').trim();
+      const rawPhone = String(document.getElementById('ddCustPhoneInput')?.value || '').trim();
+      const resBox = document.getElementById('directDispatchResultBox');
+
+      if (!selOrderId && (!rawBrand || !rawPart)) {
+        showToast('يرجى اختيار طلب مفتوح أو كتابة ماركة السيارة والقطع المطلوبة أولاً.', true);
+        return;
+      }
+
+      let parsedYear = undefined;
+      let parsedModel = rawModelYear;
+      const yearMatch = rawModelYear.match(/\b(19\d{2}|20\d{2})\b/);
+      if (yearMatch) {
+        parsedYear = Number(yearMatch[1]);
+        parsedModel = rawModelYear.replace(yearMatch[0], '').trim();
+      }
+
+      const origHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال من الموقع...';
+      }
+
+      try {
+        const res = await fetch('/api/admin/orders/direct-dispatch', {
+          method: 'POST',
+          headers: buildAdminHeaders(),
+          body: JSON.stringify({
+            dispatch_target: targetMode,
+            order_id: selOrderId ? Number(selOrderId) : undefined,
+            universal_agent_id: specificAgentId ? Number(specificAgentId) : undefined,
+            car_brand: rawBrand || undefined,
+            car_model: parsedModel || undefined,
+            car_year: parsedYear,
+            part_name: rawPart || undefined,
+            customer_phone: rawPhone || undefined,
+            allow_resend: true
+          })
+        });
+        const out = await res.json().catch(() => ({}));
+        if (!res.ok || !out.success) {
+          throw new Error(out.error || 'تعذر تنفيذ التوجيه المباشر للطلب.');
+        }
+
+        const uniCnt = Number(out.universal_dispatch?.notifiedCount || 0);
+        const msgSummary =
+          targetMode === 'suppliers'
+            ? `✅ تم إرسال وتوجيه الطلب (#${out.order_id}) من الموقع إلى الموردين المعتمدين وبدء التسعير الآلي فوراً.`
+            : targetMode === 'universal_agents'
+            ? `✅ تم توجيه الطلب (#${out.order_id}) من الموقع للوكلاء الشاملين (أُرسل إلى ${uniCnt} وكيل شامل نشط).`
+            : `✅ تم التوجيه المزدوج للطلب (#${out.order_id}) للموردين المعتمدين + (${uniCnt}) وكيل شامل نشط.`;
+
+        if (resBox) {
+          resBox.className = 'rounded-2xl p-3.5 text-xs font-bold border bg-emerald-950/75 border-emerald-500/45 text-emerald-200';
+          resBox.textContent = msgSummary;
+          resBox.classList.remove('hidden');
+        }
+        showToast(msgSummary);
+        await loadUniversalAgentsData();
+      } catch (err) {
+        if (resBox) {
+          resBox.className = 'rounded-2xl p-3.5 text-xs font-bold border bg-rose-950/75 border-rose-500/45 text-rose-200';
+          resBox.textContent = err.message || 'حدث خطأ أثناء توجيه الطلب.';
+          resBox.classList.remove('hidden');
+        }
+        showToast(err.message, true);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origHtml;
+        }
+      }
+    }
+
+    function renderStats() {
+      document.getElementById('statTotalAgents').textContent = state.stats.total_agents ?? 0;
+      document.getElementById('statActiveAgents').textContent = state.stats.active_agents ?? 0;
+      document.getElementById('statEscalatedOrders').textContent = state.stats.escalated_orders_count ?? 0;
+      document.getElementById('statSubmittedQuotes').textContent = state.stats.submitted_quotes_count ?? 0;
+    }
+
+    function renderFormCategoryChips() {
+      const container = document.getElementById('formCategoriesCheckboxes');
+      if (!container) return;
+      container.innerHTML = state.categories
+        .map((cat) => {
+          const isSelected = state.selectedFormCategories.has(cat.key);
+          return `
+            <button
+              type="button"
+              data-cat-key="${escapeHtml(cat.key)}"
+              onclick="toggleFormCategory('${escapeHtml(cat.key)}')"
+              class="px-3.5 py-2 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 ${
+                isSelected
+                  ? 'cat-chip-selected'
+                  : 'bg-slate-900/90 border-slate-700 text-slate-300 hover:border-slate-500'
+              }"
+            >
+              <i class="fa-solid ${isSelected ? 'fa-square-check text-cyan-300' : 'fa-square text-slate-600'}"></i>
+              <span>${escapeHtml(cat.label_ar)}</span>
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function toggleFormCategory(catKey) {
+      if (state.selectedFormCategories.has(catKey)) {
+        if (state.selectedFormCategories.size > 1) {
+          state.selectedFormCategories.delete(catKey);
+        } else {
+          showToast('يجب اختيار فئة واحدة على الأقل للوكيل الشامل.', true);
+        }
+      } else {
+        state.selectedFormCategories.add(catKey);
+      }
+      renderFormCategoryChips();
+    }
+
+    function toggleCustomCategoryBox() {
+      const box = document.getElementById('customCategoryCreatorBox');
+      box.classList.toggle('hidden');
+      if (!box.classList.contains('hidden')) {
+        document.getElementById('newCategoryLabelInput').focus();
+      }
+    }
+
+    async function createNewCustomCategory() {
+      const labelInput = document.getElementById('newCategoryLabelInput');
+      const kwInput = document.getElementById('newCategoryKeywordsInput');
+      const label_ar = String(labelInput.value || '').trim();
+      const brand_keywords = String(kwInput.value || '').trim();
+      if (!label_ar) {
+        showToast('يرجى كتابة اسم الفئة المخصصة أولاً.', true);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/admin/universal-agents/categories', {
+          method: 'POST',
+          headers: buildAdminHeaders(),
+          body: JSON.stringify({ label_ar, brand_keywords })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'تعذر إنشاء الفئة');
+        }
+        state.categories = Array.isArray(data.categories) ? data.categories : state.categories;
+        if (data.category && data.category.key) {
+          state.selectedFormCategories.add(data.category.key);
+        }
+        labelInput.value = '';
+        kwInput.value = '';
+        document.getElementById('customCategoryCreatorBox').classList.add('hidden');
+        renderFormCategoryChips();
+        renderFilterPills();
+        showToast(`تمت إضافة الفئة "${data.category.label_ar}" بنجاح.`);
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    function renderFilterPills() {
+      const bar = document.getElementById('categoryFilterBar');
+      if (!bar) return;
+
+      const pills = [
+        {
+          key: 'all_filter',
+          label: 'جميع الفئات',
+          count: state.agents.length
+        },
+        ...state.categories.map((c) => ({
+          key: c.key,
+          label: c.label_ar,
+          count: state.agents.filter((a) => Array.isArray(a.categories) && a.categories.includes(c.key)).length
+        }))
+      ];
+
+      bar.innerHTML = pills
+        .map((p) => {
+          const active = state.activeCategoryFilter === p.key;
+          return `
+            <button
+              type="button"
+              onclick="setCategoryFilter('${escapeHtml(p.key)}')"
+              class="px-3 py-1.5 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 ${
+                active
+                  ? 'bg-brand-500 text-white border-brand-400 shadow-md shadow-brand-500/20'
+                  : 'bg-slate-900/85 text-slate-300 border-slate-700/80 hover:border-slate-500'
+              }"
+            >
+              <span>${escapeHtml(p.label)}</span>
+              <span class="px-1.5 py-0.5 rounded-md text-[10px] font-mono ${
+                active ? 'bg-white/20 text-white' : 'bg-slate-800 text-slate-400'
+              }">${p.count}</span>
+            </button>
+          `;
+        })
+        .join('');
+    }
+
+    function setCategoryFilter(catKey) {
+      state.activeCategoryFilter = catKey;
+      renderFilterPills();
+      renderAgentsList();
+    }
+
+    function getFilteredAgents() {
+      const q = String(document.getElementById('searchAgentsInput')?.value || '')
+        .trim()
+        .toLowerCase();
+
+      return state.agents.filter((agent) => {
+        if (
+          state.activeCategoryFilter !== 'all_filter' &&
+          !(Array.isArray(agent.categories) && agent.categories.includes(state.activeCategoryFilter))
+        ) {
+          return false;
+        }
+        if (!q) return true;
+        return (
+          String(agent.name || '').toLowerCase().includes(q) ||
+          String(agent.phone || '').includes(q) ||
+          String(agent.region_notes || '').toLowerCase().includes(q) ||
+          String(agent.specialty_display || '').toLowerCase().includes(q)
+        );
+      });
+    }
+
+    function formatDisplayPhone(phone) {
+      const p = String(phone || '');
+      if (p.startsWith('966') && p.length === 12) {
+        return '0' + p.slice(3);
+      }
+      return p;
+    }
+
+    function renderAgentsList() {
+      const container = document.getElementById('agentsCardsContainer');
+      if (!container) return;
+
+      const list = getFilteredAgents();
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full bg-slate-950/60 border border-dashed border-slate-800 rounded-2xl p-10 text-center space-y-2">
+            <i class="fa-solid fa-users-slash text-2xl text-slate-600"></i>
+            <p class="text-sm font-bold text-slate-300">لا يوجد وكلاء شاملون مطابقون للتصفية الحالية</p>
+            <p class="text-xs text-slate-500">أضف وكيلاً شاملاً جديداً من النموذج أعلاه ليبدأ باستقبال الطلبات المتأخرة بعد 30 دقيقة تلقائياً.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list
+        .map((agent) => {
+          const isActive = Boolean(agent.is_active);
+          const labels = Array.isArray(agent.categories_labels) ? agent.categories_labels : [];
+          return `
+            <article class="bg-slate-950/80 border ${
+              isActive ? 'border-slate-700/90 hover:border-brand-400/60' : 'border-slate-800/70 opacity-80'
+            } rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4 transition shadow-md">
+              <div class="space-y-3">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                      <h3 class="text-sm sm:text-base font-black text-white">${escapeHtml(agent.name)}</h3>
+                      <span class="text-[11px] font-black px-2.5 py-0.5 rounded-full border ${
+                        isActive
+                          ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/35'
+                          : 'bg-amber-500/15 text-amber-300 border-amber-500/35'
+                      }">
+                        ${isActive ? '🟢 نشط' : '⏸️ متوقف مؤقتاً'}
+                      </span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400 mt-1.5 font-mono" dir="ltr">
+                      <a href="https://wa.me/${escapeHtml(agent.phone)}" target="_blank" rel="noopener" class="text-emerald-400 hover:underline inline-flex items-center gap-1">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>${escapeHtml(formatDisplayPhone(agent.phone))}</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 shrink-0">
+                    <div class="bg-slate-900 border border-amber-500/30 rounded-xl px-3 py-1.5 text-center" title="عدد الطلبات المتأخرة المسندة لهذا الوكيل الشامل">
+                      <div class="text-[10px] font-bold text-slate-400">الطلبات المسندة</div>
+                      <div class="text-sm font-black text-amber-300 font-mono">${Number(agent.assigned_orders_count || 0)}</div>
+                    </div>
+                    <div class="bg-slate-900 border border-cyan-500/30 rounded-xl px-3 py-1.5 text-center" title="عدد عروض التسعير المستلمة منه">
+                      <div class="text-[10px] font-bold text-slate-400">العروض المقدمة</div>
+                      <div class="text-sm font-black text-cyan-300 font-mono">${Number(agent.quotes_submitted_count || 0)}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-1.5">
+                  ${labels
+                    .map(
+                      (lbl) =>
+                        `<span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-brand-500/15 text-indigo-200 border border-brand-500/35">${escapeHtml(lbl)}</span>`
+                    )
+                    .join('')}
+                </div>
+
+                ${
+                  agent.region_notes
+                    ? `<p class="text-xs text-slate-300 bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-2 leading-relaxed">
+                         <i class="fa-solid fa-location-dot text-amber-400 ml-1"></i>
+                         ${escapeHtml(agent.region_notes)}
+                       </p>`
+                    : ''
+                }
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-2 border-t border-slate-800/90 pt-3">
+                <button
+                  type="button"
+                  onclick="toggleAgentActiveStatus(${Number(agent.id)}, ${!isActive})"
+                  class="px-3 py-1.5 rounded-xl text-xs font-black border transition flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-amber-500/10 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border-amber-500/35'
+                      : 'bg-emerald-500/15 hover:bg-emerald-500 text-emerald-300 hover:text-white border-emerald-500/35'
+                  }"
+                >
+                  <i class="fa-solid ${isActive ? 'fa-pause' : 'fa-play'}"></i>
+                  <span>${isActive ? 'إيقاف مؤقت' : 'تفعيل الآن'}</span>
+                </button>
+
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onclick="startEditAgent(${Number(agent.id)})"
+                    class="bg-sky-500/15 hover:bg-sky-500 text-sky-300 hover:text-white border border-sky-500/35 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1"
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>تعديل</span>
+                  </button>
+                  <button
+                    type="button"
+                    onclick="confirmDeleteAgent(${Number(agent.id)})"
+                    class="bg-rose-500/15 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/35 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                    <span>حذف</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+          `;
+        })
+        .join('');
+    }
+
+    async function handleSaveAgent(ev) {
+      ev.preventDefault();
+      const editingId = String(document.getElementById('editingAgentId').value || '').trim();
+      const name = String(document.getElementById('agentNameInput').value || '').trim();
+      const phone = String(document.getElementById('agentPhoneInput').value || '').trim();
+      const is_active = document.getElementById('agentStatusSelect').value === '1';
+      const region_notes = String(document.getElementById('agentNotesInput').value || '').trim();
+      const categories = Array.from(state.selectedFormCategories);
+
+      if (!name || !phone) {
+        showToast('يرجى تعبئة الاسم ورقم الواتساب.', true);
+        return;
+      }
+
+      const submitBtn = document.getElementById('saveAgentSubmitBtn');
+      submitBtn.disabled = true;
+
+      try {
+        const url = editingId
+          ? `/api/admin/universal-agents/${encodeURIComponent(editingId)}`
+          : '/api/admin/universal-agents';
+        const method = editingId ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: buildAdminHeaders(),
+          body: JSON.stringify({
+            name,
+            phone,
+            categories,
+            region_notes,
+            is_active
+          })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'تعذر حفظ بيانات الوكيل الشامل.');
+        }
+
+        resetAgentForm();
+        await loadUniversalAgentsData();
+        showToast(editingId ? 'تم تحديث بيانات الوكيل الشامل بنجاح.' : 'تمت إضافة الوكيل الشامل بنجاح.');
+      } catch (err) {
+        showToast(err.message, true);
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    function startEditAgent(agentId) {
+      const agent = state.agents.find((a) => Number(a.id) === Number(agentId));
+      if (!agent) return;
+
+      document.getElementById('editingAgentId').value = String(agent.id);
+      document.getElementById('agentNameInput').value = agent.name || '';
+      document.getElementById('agentPhoneInput').value = formatDisplayPhone(agent.phone || '');
+      document.getElementById('agentStatusSelect').value = agent.is_active ? '1' : '0';
+      document.getElementById('agentNotesInput').value = agent.region_notes || '';
+
+      state.selectedFormCategories = new Set(
+        Array.isArray(agent.categories) && agent.categories.length > 0 ? agent.categories : ['all']
+      );
+      renderFormCategoryChips();
+
+      document.getElementById('formHeadingTitle').innerHTML =
+        '<i class="fa-solid fa-user-pen text-amber-400"></i><span>تعديل بيانات الوكيل الشامل: ' +
+        escapeHtml(agent.name) +
+        '</span>';
+      document.getElementById('saveAgentSubmitLabel').textContent = 'حفظ التعديلات';
+      document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+      document.getElementById('agentFormSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetAgentForm() {
+      document.getElementById('editingAgentId').value = '';
+      document.getElementById('agentNameInput').value = '';
+      document.getElementById('agentPhoneInput').value = '';
+      document.getElementById('agentStatusSelect').value = '1';
+      document.getElementById('agentNotesInput').value = '';
+      state.selectedFormCategories = new Set(['all']);
+      renderFormCategoryChips();
+
+      document.getElementById('formHeadingTitle').innerHTML =
+        '<i class="fa-solid fa-user-plus text-brand-400"></i><span>إضافة وكيل شامل جديد (مندوب قطاع)</span>';
+      document.getElementById('saveAgentSubmitLabel').textContent = 'إضافة وحفظ الوكيل الشامل';
+      document.getElementById('cancelEditBtn').classList.add('hidden');
+    }
+
+    async function toggleAgentActiveStatus(agentId, nextActive) {
+      try {
+        const res = await fetch(`/api/admin/universal-agents/${encodeURIComponent(agentId)}`, {
+          method: 'PATCH',
+          headers: buildAdminHeaders(),
+          body: JSON.stringify({ is_active: Boolean(nextActive) })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'تعذر تغيير حالة التفعيل.');
+        }
+        await loadUniversalAgentsData();
+        showToast(nextActive ? 'تم تفعيل الوكيل الشامل بنجاح.' : 'تم إيقاف الوكيل الشامل مؤقتاً.');
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function confirmDeleteAgent(agentId) {
+      const agent = state.agents.find((a) => Number(a.id) === Number(agentId));
+      if (!agent) return;
+      if (!window.confirm(`هل أنت متأكد من حذف الوكيل الشامل "${agent.name}" نهائياً؟`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/admin/universal-agents/${encodeURIComponent(agentId)}`, {
+          method: 'DELETE',
+          headers: buildAdminHeaders()
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'تعذر حذف الوكيل الشامل.');
+        }
+        if (String(document.getElementById('editingAgentId').value) === String(agentId)) {
+          resetAgentForm();
+        }
+        await loadUniversalAgentsData();
+        showToast('تم حذف الوكيل الشامل بنجاح.');
+      } catch (err) {
+        showToast(err.message, true);
+      }
+    }
+
+    async function triggerEscalationSweepNow() {
+      const btn = document.getElementById('btnEscalateNow');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/admin/universal-agents/escalate-now', {
+          method: 'POST',
+          headers: buildAdminHeaders(),
+          body: JSON.stringify({ ignore_work_hours: false, threshold_minutes: 30 })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'تعذر تنفيذ الفحص الفوري.');
+        }
+        await loadUniversalAgentsData();
+        const count = Array.isArray(data.result?.escalatedOrders)
+          ? data.result.escalatedOrders.length
+          : 0;
+        if (data.result?.reason === 'outside_working_hours') {
+          showToast('نحن حالياً خارج أوقات دوام الموردين الرسمية؛ سيعمل التصعيد تلقائياً وقت الدوام.');
+        } else {
+          showToast(
+            count > 0
+              ? `تم تصعيد (${count}) طلب متأخر للوكلاء الشاملين بنجاح.`
+              : 'تم الفحص: لا توجد طلبات متأخرة (أكثر من 30 دقيقة بدون عروض) تحتاج تصعيداً حالياً.'
+          );
+        }
+      } catch (err) {
+        showToast(err.message, true);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const { tok, passHash } = getStoredAdminCredentials();
+      if (!tok && !passHash) {
+        toggleAuthView(false);
+        return;
+      }
+      loadUniversalAgentsData();
+    });
+  </script>
+</body>
+</html>
